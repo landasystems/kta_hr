@@ -120,6 +120,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "master_umk": false,
             "master_departement": false,
             "master_jnskomplain": false,
+            "master_jamsostek": false,
             "transaksi_bom": false,
             "transaksi_validasibom": false,
             "transaksi_tambahitem": false,
