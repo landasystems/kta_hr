@@ -1,0 +1,6 @@
+*
+!.gitignore
+!/gii-2.0.4/
+!/logs/
+!/debug/
+!/cache/
