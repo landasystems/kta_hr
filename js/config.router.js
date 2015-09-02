@@ -247,6 +247,21 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                //alat pelindung diri
+                                .state('master.apd', {
+                                    url: '/apd',
+                                    templateUrl: 'tpl/m_apd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load([]).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/apd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
                                 // umk
                                 .state('master.umk', {
                                     url: '/umk',
