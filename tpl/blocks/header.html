@@ -25,30 +25,26 @@
                     <div class="col-sm-12">
                         <div class="row">
 
-<!--                            <div class="col-xs-3">
+                            <div class="col-xs-3">
                                 <div class="m-l-xs m-t-xs m-b-xs font-bold">Master</div>
                                 <ul class="list-unstyled l-h-2x">
 
-                                    <li ng-show="user.akses.master_barang">
-                                        <a ui-sref="master.barang"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang</a>
+                                    <li ng-show="user.akses.master_stokatk">
+                                        <a ui-sref="master.stokatk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Daftar Stok ATK</a>
                                     </li>
-                                    <li ng-show="user.akses.master_jenisbrg">
-                                        <a ui-sref="master.jenisbrg"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jenis Barang</a>
+                                    <li ng-show="user.akses.master_filelegalitas">
+                                        <a ui-sref="master.filelegalitas"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>File Legalitas</a>
                                     </li>
-                                    <li ng-show="user.akses.master_customer">
+<!--                                    <li ng-show="user.akses.master_customer">
                                         <a ui-sref="master.customer"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Customer</a>
                                     </li>
                                     <li ng-show="user.akses.master_supplier">
                                         <a ui-sref="master.supplier"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Supplier</a>
-                                    </li>
+                                    </li>-->
                                 </ul>
-                            </div>-->
+                            </div>
                             <div class="col-xs-3">
                                 <ul class="list-unstyled l-h-2x">
-
-<!--                                    <li ng-show="user.akses.master_modelkendaraan">
-                                        <a ui-sref="master.modelkendaraan"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Model Kendaraan</a>
-                                    </li>-->
                                     <li ng-show="user.akses.master_kalender">
                                         <a ui-sref="master.kalender"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Kalender</a>
                                     </li>
@@ -61,6 +57,9 @@
                                     
                                     <li ng-show="user.akses.master_apd">
                                         <a ui-sref="master.apd"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Alat Pelindung Diri</a>
+                                    </li>
+                                    <li ng-show="user.akses.master_potongan">
+                                        <a ui-sref="master.potongan"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Potongan</a>
                                     </li>
 
                                 </ul>
@@ -110,19 +109,25 @@
             </a>
             <div class="dropdown-menu wrapper w-full bg-white">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Engineering</div>
+                    <div class="col-sm-3">
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Pegawai</div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <ul class="list-unstyled l-h-2x">
-                                    <li ng-show="user.akses.transaksi_bom">
-                                        <a ui-sref="transaksi.bom"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Bill of Material</a>
+                                <ul class="list-unstyled l-h-4">
+                                    <li ng-show="user.akses.transaksi_karyawanmasuk">
+                                        <a ui-sref="transaksi.karyawanmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_validasibom">
-                                        <a ui-sref="transaksi.validasibom"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Validasi Bom</a>
+                                    <li ng-show="user.akses.transaksi_karyawankeluar">
+                                        <a ui-sref="transaksi.karyawankeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_tambahitem">
-                                        <a ui-sref="transaksi.tambahitem"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Tambahan Items</a>
+                                    <li ng-show="user.akses.transaksi_ijazah">
+                                        <a ui-sref="transaksi.ijazah"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_lamarankerja">
+                                        <a ui-sref="transaksi.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_pendaftaranjamsostek">
+                                        <a ui-sref="transaksi.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
                                     </li>
                                 </ul>
                             </div>

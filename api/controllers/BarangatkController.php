@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblstockapd;
+use app\models\Tblstockatk;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApdController extends Controller {
+class BarangatkController extends Controller {
 
     public function behaviors() {
         return [
@@ -56,15 +56,15 @@ class ApdController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_stock_apd')
+        $query->from('tbl_stock_atk')
                 ->select('*')
-                ->orderBy('kode_apd DESC')
+                ->orderBy('kode_brng DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_apd'], -3)) + 1;
-        $kode = 'APD' . substr('000' . $urut, -3);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_brng'], -3)) + 1;
+        $kode = 'ATK' . substr('000' . $urut, -3);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +74,7 @@ class ApdController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_apd ASC";
+        $sort = "kode_brng DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +99,7 @@ class ApdController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_stock_apd')
+                ->from('tbl_stock_atk')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -107,11 +107,11 @@ class ApdController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
+                if ($key == "kat") {
+                    $query->andFilterWhere(['=', $key, $val]);
+                } else {
                     $query->andFilterWhere(['like', $key, $val]);
-//                }
+                }
             }
         }
 
@@ -137,7 +137,7 @@ class ApdController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblstockapd();
+        $model = new Tblstockatk();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -177,7 +177,7 @@ class ApdController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblstockapd::findOne($id)) !== null) {
+        if (($model = Tblstockatk::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -224,10 +224,10 @@ class ApdController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_stock_apd')
+        $query->from('tbl_stock_atk')
                 ->select("*")
-                ->where(['like', 'kode_apd', $params['nama']])
-                ->orWhere(['like', 'nama_apd', $params['nama']]);
+                ->where(['like', 'kode_brng', $params['nama']])
+                ->orWhere(['like', 'nama_brng', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();

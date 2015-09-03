@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblstockapd;
+use app\models\Tblijazah;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class ApdController extends Controller {
+class IjazahController extends Controller {
 
     public function behaviors() {
         return [
@@ -56,15 +56,15 @@ class ApdController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_stock_apd')
+        $query->from('tbl_ijazah')
                 ->select('*')
-                ->orderBy('kode_apd DESC')
+                ->orderBy('no DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_apd'], -3)) + 1;
-        $kode = 'APD' . substr('000' . $urut, -3);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no'], -3)) + 1;
+        $kode = 'IJZ' . substr('000' . $urut, -3);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +74,7 @@ class ApdController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_apd ASC";
+        $sort = "no DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +99,7 @@ class ApdController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_stock_apd')
+                ->from('tbl_ijazah')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -137,7 +137,7 @@ class ApdController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblstockapd();
+        $model = new Tblijazah();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -177,7 +177,7 @@ class ApdController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblstockapd::findOne($id)) !== null) {
+        if (($model = Tblijazah::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -224,10 +224,10 @@ class ApdController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_stock_apd')
+        $query->from('tbl_ijazah')
                 ->select("*")
-                ->where(['like', 'kode_apd', $params['nama']])
-                ->orWhere(['like', 'nama_apd', $params['nama']]);
+                ->where(['like', 'no', $params['nama']])
+                ->orWhere(['like', 'atas_nama', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
