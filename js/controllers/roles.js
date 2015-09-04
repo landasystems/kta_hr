@@ -126,6 +126,9 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "master_filelegalitas": false,
             "transaksi_bom": false,
             "transaksi_ijazah": false,
+            "transaksi_karyawan": false,
+            "transaksi_lamarankerja": false,
+            "transaksi_pendaftaranjamsostek": false,
             "rekap_supplier": false,
             "notif_bom": false,
         }

@@ -376,6 +376,37 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                //karyawan
+                                .state('transaksi.karyawan', {
+                                    url: '/karyawankeluar',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_karyawan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load([]).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/karyawan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.lamarankerja', {
+                                    url: '/lamarankerja',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_lamarankerja/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('angularFileUpload').then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/lamarankerja.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
                                 // Rekap
                                 .state('rekap', {
                                     url: '/rekap',
