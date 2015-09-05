@@ -355,13 +355,13 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
-                                // Transaksi
-                                .state('transaksi', {
-                                    url: '/transaksi',
+                                // Pegawai
+                                .state('pegawai', {
+                                    url: '/pegawai',
                                     templateUrl: 'tpl/app.html'
                                 })
                                 //Ijazah
-                                .state('transaksi.ijazah', {
+                                .state('pegawai.ijazah', {
                                     url: '/ijazah',
                                     params: {'form': null},
                                     templateUrl: 'tpl/t_ijazah/index.html',
@@ -377,8 +377,8 @@ angular.module('app')
                                     }
                                 })
                                 //karyawan
-                                .state('transaksi.karyawan', {
-                                    url: '/karyawankeluar',
+                                .state('pegawai.karyawan', {
+                                    url: '/karyawan',
                                     params: {'form': null},
                                     templateUrl: 'tpl/t_karyawan/index.html',
                                     resolve: {
@@ -392,7 +392,7 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                .state('transaksi.lamarankerja', {
+                                .state('pegawai.lamarankerja', {
                                     url: '/lamarankerja',
                                     params: {'form': null},
                                     templateUrl: 'tpl/t_lamarankerja/index.html',
@@ -402,6 +402,21 @@ angular.module('app')
                                                 return $ocLazyLoad.load('angularFileUpload').then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/lamarankerja.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('pegawai.penilaiankontrak', {
+                                    url: '/penilaiankontrak',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/p_penilaiankontrak/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load([]).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/penilaiankontrak.js');
                                                         }
                                                 );
                                             }]

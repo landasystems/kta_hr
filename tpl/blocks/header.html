@@ -114,20 +114,41 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <ul class="list-unstyled l-h-4">
-                                    <li ng-show="user.akses.transaksi_karyawanmasuk">
-                                        <a ui-sref="transaksi.karyawanmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
+                                    <li ng-show="user.akses.pegawaii_karyawanmasuk">
+                                        <a ui-sref="pegawai.karyawanmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_karyawankeluar">
-                                        <a ui-sref="transaksi.karyawankeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
+                                    <li ng-show="user.akses.pegawai_karyawankeluar">
+                                        <a ui-sref="pegawai.karyawankeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_ijazah">
-                                        <a ui-sref="transaksi.ijazah"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah</a>
+                                    <li ng-show="user.akses.pegawai_ijazah">
+                                        <a ui-sref="pegawai.ijazah"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_lamarankerja">
-                                        <a ui-sref="transaksi.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
+                                    <li ng-show="user.akses.pegawai_lamarankerja">
+                                        <a ui-sref="pegawai.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_pendaftaranjamsostek">
-                                        <a ui-sref="transaksi.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
+                                    <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
+                                        <a ui-sref="pegawai.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <ul class="list-unstyled l-h-4">
+                                    <li ng-show="user.akses.pegawai_penilaiankontrak">
+                                        <a ui-sref="pegawai.penilaiankontrak"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Penilaian Karyawan Kontrak</a>
+                                    </li>
+                                    <li ng-show="user.akses.pegawai_karyawankeluar">
+                                        <a ui-sref="pegawai.karyawankeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
+                                    </li>
+                                    <li ng-show="user.akses.pegawai_ijazah">
+                                        <a ui-sref="pegawai.ijazah"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah</a>
+                                    </li>
+                                    <li ng-show="user.akses.pegawai_lamarankerja">
+                                        <a ui-sref="pegawai.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
+                                    </li>
+                                    <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
+                                        <a ui-sref="pegawai.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
                                     </li>
                                 </ul>
                             </div>
