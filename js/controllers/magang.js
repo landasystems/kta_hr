@@ -72,6 +72,9 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
         $scope.is_view = false;
         $scope.formtitle = "Form Tambah Data Magang";
         $scope.form = {};
+        $scope.form.tgl = new Date();
+        $scope.form.tgl_mulai = new Date();
+        $scope.form.tgl_selesai = new Date();
         Data.get('magang/kode').then(function (data) {
             $scope.form.no_magang = data.kode;
         });
@@ -81,6 +84,9 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_mulai = new Date(form.tgl_mulai);
+        $scope.form.tgl_selesai = new Date(form.tgl_selesai);
         $scope.formtitle = "Edit Data : " + form.no_magang;
     };
     $scope.view = function (form) {
