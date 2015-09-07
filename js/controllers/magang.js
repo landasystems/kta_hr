@@ -46,6 +46,21 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
         });
         $scope.isLoading = false;
     };
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
+    };
+    $scope.open2 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened2 = true;
+    };
+    $scope.open3 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened3 = true;
+    };
     $scope.excel = function () {
         Data.get('magang', paramRef).then(function (data) {
             window.location = 'api/web/magang/excel';
@@ -63,7 +78,6 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
     };
     $scope.update = function (form) {
         $scope.form = form;
-        $scope.selectJenis(form);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
@@ -71,20 +85,21 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
     };
     $scope.view = function (form) {
         $scope.form = form;
-        $scope.selectJenis(form);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.no_magang;
-        $scope.qty(form.max, form.saldo);
     };
-    $scope.cari = function (nama) {
+    $scope.cariBagian = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('bagian/cari', data).then(function (data) {
-                $scope.listKaryawan = data.data;
+                $scope.listBagian = data.data;
             });
         }
+    };
+    $scope.retBagian = function(item,form){
+        form.bagian = item.kd_bagian;
     };
     $scope.save = function (form) {
         if ($scope.uploader.queue.length > 0) {
