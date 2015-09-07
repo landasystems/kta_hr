@@ -422,6 +422,21 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                .state('pegawai.magang', {
+                                    url: '/magang',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/p_magang/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['angularFileUpload']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/magang.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
                                 // Rekap
                                 .state('rekap', {
                                     url: '/rekap',

@@ -130,6 +130,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "pegawai_lamarankerja": false,
             "pegawai_pendaftaranjamsostek": false,
             "pegawai_penilaiankontrak": false,
+            "pegawai_magang": false,
             "rekap_supplier": false,
             "notif_bom": false,
         }

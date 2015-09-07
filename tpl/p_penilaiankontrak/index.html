@@ -5,9 +5,9 @@
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
             <div class="panel-heading">
-                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
+                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"><i class="fa fa-search"></i> Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
+                    <!--<button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>-->
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
@@ -15,13 +15,13 @@
                 <div class="form-horizontal">
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Kode</label>
+                            <label class="col-sm-2 control-label">No. Kontrak</label>
                             <div class="col-sm-3">
-                                <input st-search="kode_brng" class="form-control"/>
+                                <input st-search="no_kntrk" class="form-control"/>
                             </div>
-                            <label class="col-sm-2 control-label">Nama ATK</label>
+                            <label class="col-sm-2 control-label">Nama Karyawan</label>
                             <div class="col-sm-3">
-                                <input st-search="nama_brng" class="form-control"/>
+                                <input st-search="nama" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -32,6 +32,7 @@
                     <thead>
                         <tr>
                             <th st-sort="no_kntrk">No. Kontrak</th>
+                            <th st-sort="nama">Nama Karyawan</th>
                             <th st-sort="tgl">Tanggal</th>
                             <th st-sort="nm_kontrak">Nama Kontrak</th>
                             <th st-sort="penilaian">Penilaian</th>
@@ -42,6 +43,7 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                             <td>{{row.no_kntrk}}</td>
+                            <td>{{row.nama}}</td>
                             <td>{{row.tgl| date}}</td>
                             <td>{{row.nm_kontrak}}</td>
                             <td>{{row.penilaian}}</td>
