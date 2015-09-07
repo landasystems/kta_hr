@@ -56,7 +56,7 @@ class MagangController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "no_magang DESC";
+        $sort = "mag.no_magang DESC";
         $offset = 0;
         $limit = 10;
 
@@ -81,7 +81,8 @@ class MagangController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_magang')
+                ->from('tbl_magang as mag')
+                ->join('LEFT JOIN', 'tbl_bagian as bag', 'mag.bagian = bag.kd_bagian')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -102,6 +103,12 @@ class MagangController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        foreach($models as $key => $val){
+            if(!empty($val['kd_bagian'])){
+                $bagian = \app\models\TblBagian::findOne($val['kd_bagian']);
+                $models[$key]['Bagian'] = $bagian->attributes;
+            }
+        }
         $totalItems = $query->count();
 
         $this->setHeader(200);

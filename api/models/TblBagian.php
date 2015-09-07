@@ -5,19 +5,20 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_kary_bag".
+ * This is the model class for table "tbl_bagian".
  *
- * @property string $nik
  * @property string $kd_bagian
+ * @property string $bagian
+ * @property integer $urutan
  */
-class Tblkarybag extends \yii\db\ActiveRecord
+class TblBagian extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_kary_bag';
+        return 'tbl_bagian';
     }
 
     /**
@@ -26,7 +27,10 @@ class Tblkarybag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nik', 'kd_bagian'], 'string', 'max' => 20]
+            [['kd_bagian'], 'required'],
+            [['urutan'], 'integer'],
+            [['kd_bagian'], 'string', 'max' => 20],
+            [['bagian'], 'string', 'max' => 100]
         ];
     }
 
@@ -36,8 +40,9 @@ class Tblkarybag extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'nik' => 'Nik',
             'kd_bagian' => 'Kd Bagian',
+            'bagian' => 'Bagian',
+            'urutan' => 'Urutan',
         ];
     }
 }

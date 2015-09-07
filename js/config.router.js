@@ -437,6 +437,36 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                .state('pegawai.prakerin', {
+                                    url: '/prakerin',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/p_prakerin/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['angularFileUpload']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/prakerin.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('pegawai.pendaftaranjamsostek', {
+                                    url: '/pendaftaranjamsostek',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/p_pendaftaranjamsostek/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/pendaftaranjamsostek.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
                                 // Rekap
                                 .state('rekap', {
                                     url: '/rekap',

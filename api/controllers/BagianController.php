@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tbllamarankaryawan;
+use app\models\Bagian;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class LamarankerjaController extends Controller {
+class BagianController extends Controller {
 
     public function behaviors() {
         return [
@@ -20,28 +20,60 @@ class LamarankerjaController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'list' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
-                    'jenis' => ['get'],
                     'kode' => ['get'],
                     'cari' => ['get'],
                 ],
             ]
         ];
     }
+    
+     public function actionCari() {
+        
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_bagian')
+                ->select("*")
+                ->where(['like', 'kd_bagian', $params['nama']])
+                ->orWhere(['like', 'bagian', $params['nama']]);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+    
+    public function actionList() {
+        $query = new Query;
+        $query->from('tbl_bagian')
+                ->select("*")
+                ->orderBy('id_section ASC');
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
 
     public function beforeAction($event) {
         $action = $event->id;
         if (isset($this->actions[$action])) {
             $verbs = $this->actions[$action];
-        } else if (excel(isset($this->actions['*']))) {
+        } elseif (excel(isset($this->actions['*']))) {
             $verbs = $this->actions['*'];
         } else {
             return $event->isValid;
         }
         $verb = Yii::$app->getRequest()->getMethod();
         $allowed = array_map('strtoupper', $verbs);
+//        Yii::error($allowed);
 
         if (!in_array($verb, $allowed)) {
 
@@ -54,30 +86,31 @@ class LamarankerjaController extends Controller {
     }
 
     public function actionKode() {
-        $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_lamaran_karyawan')
+        $query->from('tbl_bagian')
                 ->select('*')
-                ->orderBy('no_lamaran DESC')
+                ->orderBy('kd_bagian DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
-        $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['no_lamaran'], -5)) + 1;
-        $kode = 'LK' . substr('00000' . $urut, -5);
-
+        $models = $command->query()->read();
+        $kode_mdl = (substr($models['kd_bagian'], -4) + 1);
+        $kode = substr('0000' . $kode_mdl, strlen($kode_mdl));
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'kode' => $kode));
+
+        echo json_encode(array('status' => 1, 'kode' => 'BG' . $kode));
     }
+    
+    
 
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "no_lamaran DESC";
+        $sort = "tbl_bagian.kd_bagian ASC";
         $offset = 0;
         $limit = 10;
-
+        //        Yii::error($params);
         //limit & offset pagination
         if (isset($params['limit']))
             $limit = $params['limit'];
@@ -99,19 +132,17 @@ class LamarankerjaController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_lamaran_karyawan')
+                ->from('tbl_bagian')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("tbl_bagian.*,tbl_department.department");
 
         //filter
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
-//                }
+                
+                $query->andFilterWhere(['like', 'tbl_bagian.'.$key, $val]);
+               
             }
         }
 
@@ -137,8 +168,9 @@ class LamarankerjaController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tbllamarankaryawan();
+        $model = new Bagian();
         $model->attributes = $params;
+        
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -153,7 +185,7 @@ class LamarankerjaController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-
+    
         if ($model->save()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -177,7 +209,7 @@ class LamarankerjaController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tbllamarankaryawan::findOne($id)) !== null) {
+        if (($model = Bagian::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -211,30 +243,16 @@ class LamarankerjaController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-    public function actionExcel() {
+    
+      public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/expmaster/section", ['models' => $models]);
     }
-
-    public function actionCari() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('tbl_lamaran_karyawan')
-                ->select("*")
-                ->where(['like', 'no_lamaran', $params['nama']])
-                ->orWhere(['like', 'nama', $params['nama']]);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models));
-    }
-
 }
 
 ?>

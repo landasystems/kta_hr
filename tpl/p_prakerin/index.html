@@ -1,7 +1,7 @@
-<div ng-controller="magangCtrl">
+<div ng-controller="prakerinCtrl">
 
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Pegawai - Data Magang</h1>
+        <h1 class="m-n font-thin h3">Pegawai - Data Prakerin</h1>
     </div>
 
     <div class="wrapper-md" ng-show="!is_edit">
@@ -19,13 +19,13 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">No Magang</label>
                             <div class="col-sm-9">
-                                <input st-search="mag.no_magang" class="form-control"/>
+                                <input st-search="pra.no_prakerin" class="form-control"/>
                             </div>
-                        </div>    
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Nama</label>
                             <div class="col-sm-9">
-                                <input st-search="mag.nama" class="form-control"/>
+                                <input st-search="pra.nama" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -33,13 +33,13 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Asal Sekolah</label>
                             <div class="col-sm-9">
-                                <input st-search="mag.asal_sekolah" class="form-control"/>
+                                <input st-search="pra.asal_sekolah" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">No Surat Rekomendasi</label>
                             <div class="col-sm-9">
-                                <input st-search="mag.no_surat_rekomendasi" class="form-control"/>
+                                <input st-search="pra.no_surat_rekomendasi" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                 <table class="table table-striped table-hover" >
                     <thead>
                         <tr>
-                            <th st-sort="no_magang">No</th>
+                            <th st-sort="no_prakerin">No</th>
                             <th st-sort="tgl">Tanggal</th>
                             <th st-sort="nama">Nama</th>
                             <th st-sort="no_surat_rekomendasi">No. Surat Rekom</th>
@@ -63,7 +63,7 @@
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
-                            <td>{{row.no_magang}}</td>
+                            <td>{{row.no_prakerin}}</td>
                             <td>{{row.tgl| date}}</td>
                             <td>{{row.nama}}</td>
                             <td>{{row.no_surat_rekomendasi}}</td>
@@ -102,14 +102,14 @@
                 <form name="landaform" class="form-horizontal form-validation">
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
-                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noimage.jpg'}}" class="img-thumbnail"></center>
+                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
                             <center><input type="file" nv-file-select="" uploader="uploader" /></center>
                         </div>
                         <div class="col-md-8 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">No Magang</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_magang" ng-disabled="is_view" readonly>
+                                    <input type="text" class="form-control" ng-model="form.no_prakerin" ng-disabled="is_view" readonly>
                                 </div>
                             </div>
                             <div class="form-group">

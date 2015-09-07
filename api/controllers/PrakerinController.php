@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tbllamarankaryawan;
+use app\models\TblPrakerin;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class LamarankerjaController extends Controller {
+class PrakerinController extends Controller {
 
     public function behaviors() {
         return [
@@ -23,9 +23,8 @@ class LamarankerjaController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
-                    'jenis' => ['get'],
-                    'kode' => ['get'],
                     'cari' => ['get'],
+                    'kode' => ['get']
                 ],
             ]
         ];
@@ -53,28 +52,11 @@ class LamarankerjaController extends Controller {
         return true;
     }
 
-    public function actionKode() {
-        $params = json_decode(file_get_contents("php://input"), true);
-        $query = new Query;
-        $query->from('tbl_lamaran_karyawan')
-                ->select('*')
-                ->orderBy('no_lamaran DESC')
-                ->limit(1);
-
-        $command = $query->createCommand();
-        $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['no_lamaran'], -5)) + 1;
-        $kode = 'LK' . substr('00000' . $urut, -5);
-
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'kode' => $kode));
-    }
-
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "no_lamaran DESC";
+        $sort = "pra.no_prakerin DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +81,8 @@ class LamarankerjaController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_lamaran_karyawan')
+                ->from('tbl_prakerin as pra')
+                ->join('LEFT JOIN', 'tbl_bagian as bag', 'pra.bagian = bag.kd_bagian')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -110,7 +93,7 @@ class LamarankerjaController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
@@ -120,11 +103,34 @@ class LamarankerjaController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        foreach($models as $key => $val){
+            if(!empty($val['kd_bagian'])){
+                $bagian = \app\models\TblBagian::findOne($val['kd_bagian']);
+                $models[$key]['Bagian'] = $bagian->attributes;
+            }
+        }
         $totalItems = $query->count();
 
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionKode() {
+//        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('tbl_prakerin')
+                ->select('*')
+                ->orderBy('no_prakerin DESC')
+                ->limit(1);
+
+        $command = $query->createCommand();
+        $models = $command->queryOne();
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_prakerin'], -5)) + 1;
+        $kode = 'PR' . substr('00000' . $urut, -5);
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'kode' => $kode));
     }
 
     public function actionView($id) {
@@ -137,7 +143,7 @@ class LamarankerjaController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tbllamarankaryawan();
+        $model = new TblPrakerin();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -177,7 +183,7 @@ class LamarankerjaController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tbllamarankaryawan::findOne($id)) !== null) {
+        if (($model = TblPrakerin::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -224,10 +230,11 @@ class LamarankerjaController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_lamaran_karyawan')
+        $query->from('tbl_prakerin')
                 ->select("*")
-                ->where(['like', 'no_lamaran', $params['nama']])
-                ->orWhere(['like', 'nama', $params['nama']]);
+                ->where(['like', 'no_prakerin', $params['nama']])
+                ->orWhere(['like', 'nama', $params['nama']])
+                ->limit(10);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
