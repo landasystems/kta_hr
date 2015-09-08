@@ -467,7 +467,132 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                // Rekap
+                                // Transaksi
+                                .state('transaksi', {
+                                    url: '/transaksi',
+                                    templateUrl: 'tpl/app.html'
+                                })
+                                .state('transaksi.agendapelatihan', {
+                                    url: '/pendaftaranjamsostek',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_agendapelatihan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/agendapelatihan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.agendaumum', {
+                                    url: '/agendaumum',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_agendaumum/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/agendaumum.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.atkkeluar', {
+                                    url: '/atkkeluar',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_atkkeluar/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/atkkeluar.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.atkmasuk', {
+                                    url: '/atkmasuk',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_atkmasuk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/atkmasuk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.karyawankeluar', {
+                                    url: '/karyawankeluar',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_karyawankeluar/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/karyawankeluar.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.karyawanspd', {
+                                    url: '/karyawanspd',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_karyawanspd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/karyawanspd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.lamarankerja', {
+                                    url: '/lamarankerja',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_lamarankerja/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/lamarankerja.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.p2k3', {
+                                    url: '/p2k3',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_p2k3/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/p2k3.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                //
                                 .state('rekap', {
                                     url: '/rekap',
                                     templateUrl: 'tpl/app.html'
