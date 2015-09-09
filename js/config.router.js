@@ -500,7 +500,7 @@ angular.module('app')
                                             }]
                                     }})
                                 .state('transaksi.agendapelatihan', {
-                                    url: '/pendaftaranjamsostek',
+                                    url: '/agendapelatihan',
                                     params: {'form': null},
                                     templateUrl: 'tpl/t_agendapelatihan/index.html',
                                     resolve: {
