@@ -30,10 +30,16 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         $scope.isLoading = false;
     };
     $scope.excel = function () {
-        Data.get('departement', paramRef).then(function (data) {
-            window.location = 'api/web/departement/excel';
+        Data.get('atkkeluar', paramRef).then(function (data) {
+            window.location = 'api/web/atkkeluar/excel';
         });
-    }
+    };
+
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
+    };
 
     $scope.create = function (form) {
         $scope.is_edit = true;
@@ -41,29 +47,36 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
+        $scope.form.tgl = new Date();
         $scope.detBarang = [{}];
-        Data.get('departement/kode').then(function (data) {
-            $scope.form.id_department = data.kode;
+        Data.get('atkkeluar/kode').then(function (data) {
+            $scope.form.no_transaksi = data.kode;
         });
     };
     $scope.update = function (form) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.is_create = false;
-        $scope.formtitle = "Edit Data : " + form.id_department;
+        $scope.formtitle = "Edit Data : " + form.no_transaksi;
         $scope.form = form;
+        $scope.form.tgl = new Date(form.tgl);
         $scope.retDetail(form);
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.id_department;
+        $scope.formtitle = "Lihat Data : " + form.no_transaksi;
         $scope.form = form;
         $scope.retDetail(form);
     };
-    $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'departement/create' : 'departement/update/' + form.id_department;
-        Data.post(url, form).then(function (result) {
+    $scope.save = function (form,detail) {
+        var data = {
+            form : form,
+            detail : detail
+        };
+        
+        var url = ($scope.is_create == true) ? 'atkkeluar/create' : 'atkkeluar/update/' + form.no_transaksi;
+        Data.post(url, data).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
@@ -83,21 +96,59 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('departement/delete/' + row.id_department).then(function (result) {
+            Data.delete('atkkeluar/delete/' + row.no_transaksi).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
     };
-    
-    $scope.getBarangAtk = function(det,item){
-       det.kd_brng = item.kode_brng;
-       det.jumlah_brng = item.jumlah_brng;
+
+    $scope.cariBarangAtk = function (nama) {
+        if (nama.length > 2) {
+            Data.get('barangatk/cari', {nama: nama}).then(function (data) {
+                $scope.barangAtk = data.data;
+            });
+        }
     };
-    
-    $scope.retDetail = function(form){
-        Data.get('atkkeluar/view/'+ form.no_transaksi).then(function(data){
+
+    $scope.getBarangAtk = function (det, item) {
+        det.kd_brng = item.kode_brng;
+        det.nm_brng = item.nama_brng;
+        det.jumlah_brng = item.jumlah_brng;
+    };
+    $scope.cariPegawai = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.detPegawai = data.data;
+            });
+        }
+    };
+
+    $scope.getPegawai= function (form, item) {
+        form.kd_karyawan = item.nik;
+    };
+
+    $scope.retDetail = function (form) {
+        Data.get('atkkeluar/view/' + form.no_transaksi).then(function (data) {
             $scope.detBarang = data.data;
         });
+    };
+
+    $scope.addrow = function () {
+        $scope.detBarang.unshift({
+            id: 0,
+            barang: [],
+            jmlh_brng: 0,
+            kd_brng: '',
+        });
+    };
+    $scope.removeRow = function (paramindex) {
+        var comArr = eval($scope.detBarang);
+        if (comArr.length > 1) {
+            $scope.detBarang.splice(paramindex, 1);
+        } else {
+            alert("Something gone wrong");
+        }
     };
 
 

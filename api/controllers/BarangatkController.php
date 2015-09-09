@@ -227,7 +227,8 @@ class BarangatkController extends Controller {
         $query->from('tbl_stock_atk')
                 ->select("*")
                 ->where(['like', 'kode_brng', $params['nama']])
-                ->orWhere(['like', 'nama_brng', $params['nama']]);
+                ->orWhere(['like', 'nama_brng', $params['nama']])
+                ->limit(10);
 
         $command = $query->createCommand();
         $models = $command->queryAll();

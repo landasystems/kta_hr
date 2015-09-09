@@ -3,15 +3,15 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TblDtransAtkKeluar;
-use app\models\TblHtransAtkKeluar;
+use app\models\TblDtransAtk;
+use app\models\TblHtransAtk;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class AtkkeluarController extends Controller {
+class AtkmasukController extends Controller {
 
     public function behaviors() {
         return [
@@ -57,7 +57,7 @@ class AtkkeluarController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_htrans_atk_keluar')
+        $query->from('tbl_htrans_atk')
                 ->select('*')
                 ->orderBy('no_transaksi DESC')
                 ->limit(1);
@@ -65,7 +65,7 @@ class AtkkeluarController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryOne();
         $urut = (empty($models)) ? 1 : ((int) substr($models['no_transaksi'], -5)) + 1;
-        $kode = 'KATK' . substr('00000' . $urut, -5);
+        $kode = 'MATK' . substr('00000' . $urut, -5);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -100,7 +100,7 @@ class AtkkeluarController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_htrans_atk_keluar as atk')
+                ->from('tbl_htrans_atk as atk')
                 ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
                 ->orderBy($sort)
                 ->select("*");
@@ -140,7 +140,7 @@ class AtkkeluarController extends Controller {
 
 //        $model = $this->findModel($id);
         $detail = array();
-        $findDet = TblDtransAtkKeluar::findAll(['no_trans' => $id]);
+        $findDet = TblDtransAtk::findAll(['no_trans' => $id]);
         if (!empty($findDet)) {
             foreach ($findDet as $key => $val) {
                 $detail[$key] = $val->attributes;
@@ -155,19 +155,19 @@ class AtkkeluarController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new TblHtransAtkKeluar();
+        $model = new TblHtransAtk();
         $model->attributes = $params['form'];
 
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
-                $detail = new TblDtransAtkKeluar();
+                $detail = new TblDtransAtk();
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
                 
                 $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
                 if(!empty($stock)){
-                    $stock->jumlah_brng = ($stock->jumlah_brng - $detail->jmlh_brng);
+                    $stock->jumlah_brng = ($stock->jumlah_brng + $detail->jmlh_brng);
                     $stock->save();
                 }
             }
@@ -186,19 +186,19 @@ class AtkkeluarController extends Controller {
         $model->attributes = $params['form'];
 
         if ($model->save()) {
-//            $delDet = TblDtransAtkKeluar::deleteAll(['no_trans' => $model->no_transaksi]);
+//            $delDet = TblDtransAtk::deleteAll(['no_trans' => $model->no_transaksi]);
             foreach ($params['detail'] as $key => $val) {
-                $detail = TblDtransAtkKeluar::findOne($val['id']);
+                $detail = TblDtransAtk::findOne($val['id']);
                 $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransAtkKeluar();                
+                    $detail = new TblDtransAtk();                
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
                 
                 $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
                 if(!empty($stock)){
-                    $stock->jumlah_brng = $stock->jumlah_brng + $jmlLama - $detail->jmlh_brng;
+                    $stock->jumlah_brng = $stock->jumlah_brng - $jmlLama + $detail->jmlh_brng;
                     $stock->save();
                 }
             }
@@ -224,7 +224,7 @@ class AtkkeluarController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = TblHtransAtkKeluar::findOne($id)) !== null) {
+        if (($model = TblHtransAtk::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -271,7 +271,7 @@ class AtkkeluarController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_htrans_atk_keluar')
+        $query->from('tbl_htrans_atk')
                 ->select("*")
                 ->where(['like', 'no_transaksi', $params['nama']]);
 

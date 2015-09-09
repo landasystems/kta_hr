@@ -1,4 +1,4 @@
-app.controller('karyawanCtrl', function($scope, Data, toaster) {
+app.controller('agendaPelatihanCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -29,11 +29,6 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened1 = true;
-    };
-    $scope.open2 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened2 = true;
     };
     $scope.create = function(form) {
         $scope.is_create = true;
