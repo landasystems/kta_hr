@@ -1,4 +1,4 @@
-app.controller('departmentCtrl', function ($scope, Data, toaster) {
+app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
     //init data
     var tableStateRef;
     var paramRef;
@@ -22,7 +22,7 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('departement', param).then(function (data) {
+        Data.get('atkkeluar', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
@@ -41,6 +41,7 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
+        $scope.detBarang = [{}];
         Data.get('departement/kode').then(function (data) {
             $scope.form.id_department = data.kode;
         });
@@ -51,12 +52,14 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.formtitle = "Edit Data : " + form.id_department;
         $scope.form = form;
+        $scope.retDetail(form);
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.id_department;
         $scope.form = form;
+        $scope.retDetail(form);
     };
     $scope.save = function (form) {
         var url = ($scope.is_create == true) ? 'departement/create' : 'departement/update/' + form.id_department;
@@ -85,6 +88,17 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
             });
         }
     };
+    
+    $scope.getBarangAtk = function(det,item){
+       det.kd_brng = item.kode_brng;
+       det.jumlah_brng = item.jumlah_brng;
+    };
+    
+    $scope.retDetail = function(form){
+        Data.get('atkkeluar/view/'+ form.no_transaksi).then(function(data){
+            $scope.detBarang = data.data;
+        });
+    };
 
 
-})
+});

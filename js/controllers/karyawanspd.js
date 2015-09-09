@@ -53,8 +53,8 @@ app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
         $scope.formtitle = "Form Tambah Karyawan SPD";
         $scope.form = {};
         $scope.form.tgl = new Date();
-        $scope.form.tgl_mulai = new Date();
-        $scope.form.tgl_selesai = new Date();
+        $scope.form.tgl_berangkat = new Date();
+        $scope.form.tgl_kembali = new Date();
         Data.get('karyawanspd/kode').then(function (data) {
             $scope.form.no_spd = data.kode;
         });
@@ -65,8 +65,8 @@ app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.form.tgl = new Date(form.tgl);
-        $scope.form.tgl_mulai = new Date(form.tgl_mulai);
-        $scope.form.tgl_selesai = new Date(form.tgl_selesai);
+        $scope.form.tgl_berangkat = new Date(form.tgl_mulai);
+        $scope.form.tgl_kembali = new Date(form.tgl_selesai);
         $scope.formtitle = "Edit Data : " + form.no_spd;
     };
     $scope.view = function (form) {

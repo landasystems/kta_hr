@@ -12,7 +12,7 @@ angular.module('app')
 
                 // config
                 $scope.app = {
-                    name: 'KTA Karoseri',
+                    name: 'KTA HRD',
                     version: '1.1',
                 }
 
