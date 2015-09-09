@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TblPrakerin;
+use app\models\TblJpelatihan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class PrakerinController extends Controller {
+class JpelatihanController extends Controller {
 
     public function behaviors() {
         return [
@@ -24,7 +24,6 @@ class PrakerinController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
-                    'kode' => ['get']
                 ],
             ]
         ];
@@ -56,7 +55,7 @@ class PrakerinController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "pra.no_prakerin DESC";
+        $sort = "no_jpelatihan DESC";
         $offset = 0;
         $limit = 10;
 
@@ -81,8 +80,7 @@ class PrakerinController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_prakerin as pra')
-                ->join('LEFT JOIN', 'tbl_bagian as bag', 'pra.bagian = bag.kd_bagian')
+                ->from('tbl_jpelatihan')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -93,7 +91,7 @@ class PrakerinController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                $query->andFilterWhere(['like', $key, $val]);
+                    $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
@@ -103,34 +101,11 @@ class PrakerinController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach($models as $key => $val){
-            if(!empty($val['kd_bagian'])){
-                $bagian = \app\models\TblBagian::findOne($val['kd_bagian']);
-                $models[$key]['Bagian'] = $bagian->attributes;
-            }
-        }
         $totalItems = $query->count();
 
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
-    }
-
-    public function actionKode() {
-//        $params = json_decode(file_get_contents("php://input"), true);
-        $query = new Query;
-        $query->from('tbl_prakerin')
-                ->select('*')
-                ->orderBy('no_prakerin DESC')
-                ->limit(1);
-
-        $command = $query->createCommand();
-        $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['no_prakerin'], -5)) + 1;
-        $kode = 'PR' . substr('00000' . $urut, -5);
-
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'kode' => $kode));
     }
 
     public function actionView($id) {
@@ -143,7 +118,7 @@ class PrakerinController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new TblPrakerin();
+        $model = new TblJpelatihan();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -183,7 +158,7 @@ class PrakerinController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = TblPrakerin::findOne($id)) !== null) {
+        if (($model = TblJpelatihan::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -225,21 +200,6 @@ class PrakerinController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         return $this->render("/expmaster/barang", ['models' => $models]);
-    }
-
-    public function actionCari() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('tbl_prakerin')
-                ->select("*")
-                ->where(['like', 'no_prakerin', $params['nama']])
-                ->orWhere(['like', 'nama', $params['nama']])
-                ->limit(10);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
 }
