@@ -120,6 +120,7 @@ class JpelatihanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new TblJpelatihan();
         $model->attributes = $params;
+        $model->tgl = date('Y-m-d',strtotime($model->tgl));
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -134,6 +135,7 @@ class JpelatihanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        $model->tgl = date('Y-m-d',strtotime($model->tgl));
 
         if ($model->save()) {
             $this->setHeader(200);

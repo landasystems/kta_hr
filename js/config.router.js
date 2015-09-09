@@ -355,51 +355,7 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
-                                 // Rekap
-                                .state('trans', {
-                                    url: '/trans',
-                                    templateUrl: 'tpl/app.html'
-                                })
-                                //
-                                .state('trans.jpelatihan', {
-                                    url: '/jpelatihan',
-                                    templateUrl: 'tpl/t_jpelatihan/index.html',
-                                    resolve: {
-                                        deps: ['$ocLazyLoad',
-                                            function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load(['daterangepicker']).then(
-                                                        function () {
-                                                            return $ocLazyLoad.load('js/controllers/jpelatihan.js');
-                                                        }
-                                                );
-                                            }]
-                                    }})
-                                .state('trans.hsetalk', {
-                                    url: '/hsetalk',
-                                    templateUrl: 'tpl/t_hsetalk/index.html',
-                                    resolve: {
-                                        deps: ['$ocLazyLoad',
-                                            function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load(['daterangepicker']).then(
-                                                        function () {
-                                                            return $ocLazyLoad.load('js/controllers/hsetalk.js');
-                                                        }
-                                                );
-                                            }]
-                                    }})
-                                .state('trans.p2k3', {
-                                    url: '/p2k3',
-                                    templateUrl: 'tpl/t_p2k3/index.html',
-                                    resolve: {
-                                        deps: ['$ocLazyLoad',
-                                            function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load(['daterangepicker']).then(
-                                                        function () {
-                                                            return $ocLazyLoad.load('js/controllers/p2k3.js');
-                                                        }
-                                                );
-                                            }]
-                                    }})
+                                
                                 // Pegawai
                                 .state('pegawai', {
                                     url: '/pegawai',
@@ -517,6 +473,32 @@ angular.module('app')
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'
                                 })
+                                .state('transaksi.jpelatihan', {
+                                    url: '/jpelatihan',
+                                    templateUrl: 'tpl/t_jpelatihan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/jpelatihan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('transaksi.hsetalk', {
+                                    url: '/hsetalk',
+                                    templateUrl: 'tpl/t_hsetalk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/hsetalk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi.agendapelatihan', {
                                     url: '/pendaftaranjamsostek',
                                     params: {'form': null},
