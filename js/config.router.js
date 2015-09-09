@@ -355,6 +355,7 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
+                                
                                 // Pegawai
                                 .state('pegawai', {
                                     url: '/pegawai',
@@ -472,6 +473,32 @@ angular.module('app')
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'
                                 })
+                                .state('transaksi.jpelatihan', {
+                                    url: '/jpelatihan',
+                                    templateUrl: 'tpl/t_jpelatihan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/jpelatihan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('transaksi.hsetalk', {
+                                    url: '/hsetalk',
+                                    templateUrl: 'tpl/t_hsetalk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/hsetalk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi.agendapelatihan', {
                                     url: '/pendaftaranjamsostek',
                                     params: {'form': null},

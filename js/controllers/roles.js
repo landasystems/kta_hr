@@ -132,6 +132,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "transaksi_karyawankeluar": false,
             "transaksi_lamarankerja": false,
             "transaksi_p2k3": false,
+            "transaksi_jpelatihan": false,
             "pegawai_ijazah": false,
             "pegawai_karyawan": false,
             "pegawai_lamarankerja": false,
@@ -142,7 +143,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_supplier": false,
             "notif_bom": false,
         }
-        angular.forEach($scope.form.akses, function ($value, $key) {
+        angular.forEach(akses, function ($value, $key) {
             if ($key.indexOf(module) >= 0)
                 $scope.form.akses[$key] = valueCheck;
         });
