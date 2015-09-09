@@ -35,12 +35,12 @@
                                     <li ng-show="user.akses.master_filelegalitas">
                                         <a ui-sref="master.filelegalitas"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>File Legalitas</a>
                                     </li>
-<!--                                    <li ng-show="user.akses.master_customer">
-                                        <a ui-sref="master.customer"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Customer</a>
+                                    <li ng-show="user.akses.master_barangatk">
+                                        <a ui-sref="master.barangatk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang ATK</a>
                                     </li>
-                                    <li ng-show="user.akses.master_supplier">
-                                        <a ui-sref="master.supplier"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Supplier</a>
-                                    </li>-->
+                                    <!--                                                                        <li ng-show="user.akses.master_supplier">
+                                                                                                                <a ui-sref="master.supplier"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Supplier</a>
+                                                                                                            </li>-->
                                 </ul>
                             </div>
                             <div class="col-xs-3">
@@ -54,7 +54,7 @@
                                     <li ng-show="user.akses.master_jamsostek">
                                         <a ui-sref="master.jamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jamsostek</a>
                                     </li>
-                                    
+
                                     <li ng-show="user.akses.master_apd">
                                         <a ui-sref="master.apd"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Alat Pelindung Diri</a>
                                     </li>
@@ -144,39 +144,222 @@
                                     <li ng-show="user.akses.pegawai_prakerin">
                                         <a ui-sref="pegawai.prakerin"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Prakerin</a>
                                     </li>
-                                    <li ng-show="user.akses.pegawai_lamarankerja">
-                                        <a ui-sref="pegawai.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
-                                    </li>
-                                    <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
-                                        <a ui-sref="pegawai.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
-                                    </li>
+                                    <!--                                    <li ng-show="user.akses.pegawai_lamarankerja">
+                                                                            <a ui-sref="pegawai.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
+                                                                        </li>
+                                                                        <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
+                                                                            <a ui-sref="pegawai.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
+                                                                        </li>-->
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-5 b-l b-light">
-                        
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Transaksi</div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <ul class="list-unstyled l-h-2x">
+                                    <li ng-show="user.akses.transaksi_agendapelatihan">
+                                        <a ui-sref="transaksi.agendapelatihan"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Agenda Pelatihan</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_agendaumum">
+                                        <a ui-sref="transaksi.agendaumum"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Agenda Umum</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_karyawanspd">
+                                        <a ui-sref='transaksi.karyawanspd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan SPD</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_karyawankeluar">
+                                        <a ui-sref='transaksi.karyawankeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xs-6">
+                                <ul class="list-unstyled l-h-2x">
+                                    <li ng-show="user.akses.transaksi_lamarankerja">
+                                        <a ui-sref="transaksi.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_atkmasuk">
+                                        <a ui-sref='transaksi.atkmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>ATK Masuk</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_atkkeluar">
+                                        <a ui-sref='transaksi.atkkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>ATK Keluar</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_p2k3">
+                                        <a ui-sref='transaksi.p2k3'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>TIM P2K3</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-5 b-l b-light">
-                        
-                    </div>
+                    <!--<div class="col-sm-5 b-l b-light">-->
+                    <!--<div class="m-l-xs m-t-xs m-b-xs font-bold">Logistic</div>-->
+                    <!--<div class="row">-->
+                    <!--<div class="col-xs-6">-->
+                    <!--<ul class="list-unstyled l-h-2x">-->
+                    <!--                                    <li ng-show="user.akses.transaksi_spprutin">
+                                                            <a ui-sref='transaksi.spprutin'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>SPP Rutin</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_sppnonrutin">
+                                                            <a ui-sref='transaksi.sppnonrutin'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>SPP Non Rutin</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_purchaseorder">
+                                                            <a ui-sref='transaksi.purchaseorder'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Purchase Order</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_bktbarangmasuk">
+                                                            <a ui-sref="transaksi.bktbarangmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Bukti Barang Masuk</a>
+                                                        </li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--                            <div class="col-xs-6">
+                                                    <ul class="list-unstyled l-h-2x">-->
+                    <!--<li ng-show="user.akses.transaksi_bktbarangkeluar">-->
+                    <!--                                        <a ui-sref="transaksi.bktbarangkeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Bukti Barang Keluar</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_valbarangkeluar">
+                                                            <a ui-sref="transaksi.valbarangkeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Validasi Barang Keluar</a>
+                                                        </li>-->
+                    <!--                                    <li ng-show="user.akses.transaksi_returbuktibarangmasuk">
+                                                            <a ui-sref="transaksi.returbuktibarangmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur Bukti Barang Masuk</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_returbuktibarangkeluar">
+                                                            <a ui-sref="transaksi.returbuktibarangkeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur Bukti Barang Keluar</a>
+                                                        </li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <hr style="margin: 10px 0 0px 0;"/>
                 <div class="row">
-                    
+                    <!--                    <div class="col-sm-5 b-l b-light">
+                                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Transaksi Karyawan</div>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <ul class="list-unstyled l-h-2x">
+                                                        <li ng-show="user.akses.transaksi_karyawanspd">
+                                                            <a ui-sref='transaksi.karyawanspd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Data Karyawan SPD</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_worderkeluar">
+                                                            <a ui-sref='transaksi.worderkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Work Order Keluar</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_winprogress">
+                                                            <a ui-sref='transaksi.winprogress'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Work In Progress</a>
+                                                        </li>
+                                                        <li ng-show="user.akses.transaksi_spk">
+                                                            <a ui-sref="transaksi.spk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Surat Perintah Kerja</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <ul class="list-unstyled l-h-2x">
+                                                        <li ng-show="user.akses.transaksi_kpb">
+                                                            <a ui-sref='transaksi.kpb'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Kartu Pengambilan Bahan</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                    <div class="col-sm-7 b-l b-light">
+
+                    </div>
                 </div>
             </div>
         </li>
-        <li class="dropdown pos-stc" dropdown>
-            <a href class="dropdown-toggle" dropdown-toggle>
-                <i class="glyphicon glyphicon-print icon text-info-lter"></i> 
-                <span>Rekap</span> 
-                <span class="caret"></span>
-            </a>
-            <div class="dropdown-menu wrapper w-full bg-white">
-                
-            </div>
-        </li>
+        <!--        <li class="dropdown pos-stc" dropdown>
+                    <a href class="dropdown-toggle" dropdown-toggle>
+                        <i class="glyphicon glyphicon-print icon text-info-lter"></i> 
+                        <span>Rekap</span> 
+                        <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu wrapper w-full bg-white">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <ul class="list-unstyled l-h-2x">
+                                            <li ng-show="user.akses.rekap_barangmasuk">
+                                                <a ui-sref='rekap.barangmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang Masuk</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_barangkeluar">
+                                                <a ui-sref='rekap.barangkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang Keluar</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_bom">
+                                                <a ui-sref='rekap.bom'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Bill Of Material</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_bstk">
+                                                <a ui-sref='rekap.bstk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>BSTK</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_claimunit">
+                                                <a ui-sref='rekap.claimunit'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Claim Unit</a>
+                                            </li>
+        
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <ul class="list-unstyled l-h-2x">
+                                            <li ng-show="user.akses.rekap_chassisin">
+                                                <a ui-sref='rekap.chassisin'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Chassis In</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_deliveryunit">
+                                                <a ui-sref='rekap.deliveryunit'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Delivery Unit</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_pergerakanbarang">
+                                                <a ui-sref='rekap.pergerakanbarang'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pergerakan Barang</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_ujimutu">
+                                                <a ui-sref='rekap.ujimutu'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pengajuan Uji Mutu</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_purchaseorder">
+                                                <a ui-sref='rekap.purchaseorder'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Purchase Order</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 b-l b-light">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <ul class="list-unstyled l-h-2x">
+                                            <li ng-show="user.akses.rekap_retbarangkeluar">
+                                                <a ui-sref='rekap.retbarangkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur BBK</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_retbarangmasuk">
+                                                <a ui-sref='rekap.retbarangmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur BBM</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_rubahbentuk">
+                                                <a ui-sref='rekap.rubahbentuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rubah Bentuk</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_spp">
+                                                <a ui-sref='rekap.spp'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>SPP</a>
+                                            </li>
+                                            <li ng-show="user.akses.rekap_suratpesanan">
+                                                <a ui-sref='rekap.suratpesanan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Surat Pesanan</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <ul class="list-unstyled l-h-2x">
+                                            <ul class="list-unstyled l-h-2x">
+                                                <li ng-show="user.akses.rekap_schedule">
+                                                    <a ui-sref='rekap.schedule'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Schedule</a>
+                                                </li>
+                                                <li ng-show="user.akses.rekap_wokeluar">
+                                                    <a ui-sref='rekap.wokeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WO Keluar</a>
+                                                </li>
+                                                <li ng-show="user.akses.rekap_wip">
+                                                    <a ui-sref='rekap.wip'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WIP</a>
+                                                </li>
+                                                <li ng-show="user.akses.rekap_womasuk">
+                                                    <a ui-sref='rekap.womasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WO Masuk</a>
+                                                </li>
+                                            </ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>-->
     </ul>
     <!-- / link and dropdown -->
 
