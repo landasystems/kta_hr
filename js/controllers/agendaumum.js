@@ -1,4 +1,4 @@
-app.controller('karyawanCtrl', function($scope, Data, toaster) {
+app.controller('agendaUmumCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -19,7 +19,7 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('karyawan', param).then(function(data) {
+        Data.get('agendaumum', param).then(function(data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
@@ -41,8 +41,9 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Ijazah";
         $scope.form = {};
-        Data.get('karyawan/kode',form).then(function(data){
-            $scope.form.no = data.kode;
+        $scope.form.tgl = new Date();
+        Data.get('agendaumum/kode',form).then(function(data){
+            $scope.form.no_agenda = data.kode;
         });
     };
     $scope.update = function(form) {
@@ -50,17 +51,18 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + form.no;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.formtitle = "Edit Data : " + form.no_agenda;
     };
     $scope.view = function(form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.no;
+        $scope.formtitle = "Lihat Data : " + form.no_agenda;
     };
     $scope.save = function(form) {
-        var url = ($scope.is_create == true) ? 'karyawan/create/' : 'karyawan/update/' + form.no;
+        var url = ($scope.is_create == true) ? 'agendaumum/create/' : 'agendaumum/update/' + form.no_agenda;
         Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -80,7 +82,7 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
     };
     $scope.delete = function(row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('karyawan/delete/' + row.no).then(function(result) {
+            Data.delete('agendaumum/delete/' + row.no_agenda).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }

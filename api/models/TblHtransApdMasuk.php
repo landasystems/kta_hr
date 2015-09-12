@@ -5,19 +5,21 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tbl_htrans_atk_keluar".
+ * This is the model class for table "tbl_htrans_apd_masuk".
  *
  * @property string $no_transaksi
  * @property string $tgl
+ *
+ * @property TblDtransApdMasuk[] $tblDtransApdMasuks
  */
-class TblHtransAtkKeluar extends \yii\db\ActiveRecord
+class TblHtransApdMasuk extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'tbl_htrans_atk_keluar';
+        return 'tbl_htrans_apd_masuk';
     }
 
     /**
@@ -27,8 +29,8 @@ class TblHtransAtkKeluar extends \yii\db\ActiveRecord
     {
         return [
             [['no_transaksi'], 'required'],
-            [['tgl','kd_karyawan'], 'safe'],
-            [['no_transaksi','kd_karyawan'], 'string', 'max' => 20]
+            [['tgl'], 'safe'],
+            [['no_transaksi'], 'string', 'max' => 20]
         ];
     }
 
@@ -41,5 +43,13 @@ class TblHtransAtkKeluar extends \yii\db\ActiveRecord
             'no_transaksi' => 'No Transaksi',
             'tgl' => 'Tgl',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTblDtransApdMasuks()
+    {
+        return $this->hasMany(TblDtransApdMasuk::className(), ['no_trans' => 'no_transaksi']);
     }
 }

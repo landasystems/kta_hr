@@ -27,8 +27,8 @@ class TblHtransAtk extends \yii\db\ActiveRecord
     {
         return [
             [['no_transaksi'], 'required'],
-            [['tgl'], 'safe'],
-            [['no_transaksi'], 'string', 'max' => 20]
+            [['tgl','kd_karyawan'], 'safe'],
+            [['no_transaksi','kd_karyawan'], 'string', 'max' => 20]
         ];
     }
 
@@ -40,6 +40,7 @@ class TblHtransAtk extends \yii\db\ActiveRecord
         return [
             'no_transaksi' => 'No Transaksi',
             'tgl' => 'Tgl',
+            'kd_karyawan' => 'Karyawan'
         ];
     }
 }
