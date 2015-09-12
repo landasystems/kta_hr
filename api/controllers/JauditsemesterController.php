@@ -3,14 +3,15 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblstockatk;
+use app\models\TblHjauditSemester;
+use app\models\TblDjauditSemester;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class BarangatkController extends Controller {
+class JauditsemesterController extends Controller {
 
     public function behaviors() {
         return [
@@ -23,9 +24,8 @@ class BarangatkController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
-                    'jenis' => ['get'],
-                    'kode' => ['get'],
                     'cari' => ['get'],
+                    'kode' => ['get'],
                 ],
             ]
         ];
@@ -56,15 +56,15 @@ class BarangatkController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_stock_atk')
+        $query->from('tbl_hjaudit_semester')
                 ->select('*')
-                ->orderBy('kode_brng DESC')
+                ->orderBy('no_audit DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_brng'], -3)) + 1;
-        $kode = 'ATK' . substr('000' . $urut, -3);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_audit'], -8)) + 1;
+        $kode = 'AS' . substr('00000000' . $urut, -8);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +74,7 @@ class BarangatkController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_brng DESC";
+        $sort = "no_audit DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +99,7 @@ class BarangatkController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_stock_atk')
+                ->from('tbl_hjaudit_semester')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -107,11 +107,11 @@ class BarangatkController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-                if ($key == "kat") {
-                    $query->andFilterWhere(['=', $key, $val]);
-                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
-                }
+//                if ($key == "kat") {
+//                    $query->andFilterWhere(['=', $key, $val]);
+//                } else {
+                $query->andFilterWhere(['like', $key, $val]);
+//                }
             }
         }
 
@@ -129,18 +129,36 @@ class BarangatkController extends Controller {
 
     public function actionView($id) {
 
-        $model = $this->findModel($id);
+//        $model = $this->findModel($id);
+        $detail = array();
+        $findDet = TblDjauditSemester::findAll(['no' => $id]);
+        if (!empty($findDet)) {
+            foreach ($findDet as $key => $val) {
+                $detail[$key] = $val->attributes;
+                $auditee = \app\models\Tblkaryawan::findOne($val['auditee']);
+                $auditor = \app\models\Tblkaryawan::findOne($val['auditor']);
+                $detail[$key]['teraudit'] = $auditee->attributes;
+                $detail[$key]['pengaudit'] = $auditor->attributes;
+            }
+        }
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $detail), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblstockatk();
-        $model->attributes = $params;
+        $model = new TblHjauditSemester();
+        $model->attributes = $params['form'];
+//        $model->tgl = date('Y-m-d',strtotime($model->tgl));
 
         if ($model->save()) {
+            foreach ($params['detail'] as $key => $val) {
+                $detail = new TblDjauditSemester();
+                $detail->no = $model->no_audit;
+                $detail->attributes = $val;
+                $detail->save();
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -152,9 +170,16 @@ class BarangatkController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+            $delDet = TblDtransAtkKeluar::deleteAll(['no_trans' => $model->no_transaksi]);
+            foreach ($params['detail'] as $key => $val) {
+                $detail = new TblDjauditSemester();
+                $detail->no = $model->no_audit;
+                $detail->attributes = $val;
+                $detail->save();
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -177,7 +202,7 @@ class BarangatkController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblstockatk::findOne($id)) !== null) {
+        if (($model = TblHjauditSemester::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -218,22 +243,7 @@ class BarangatkController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barangatk", ['models' => $models]);
-    }
-
-    public function actionCari() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('tbl_stock_atk')
-                ->select("*")
-                ->where(['like', 'kode_brng', $params['nama']])
-                ->orWhere(['like', 'nama_brng', $params['nama']])
-                ->limit(10);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models));
+        return $this->render("/expmaster/barang", ['models' => $models]);
     }
 
 }

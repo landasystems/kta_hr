@@ -223,9 +223,10 @@ class KaryawanController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_karyawan')
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_department as dep','kar.department = dep.id_department')
                 ->select("*")
-                ->where('nik like "%'.$params['nama'].'%" OR nama like "%'.$params['nama'].'%"')
+                ->where('kar.nik like "%'.$params['nama'].'%" OR kar.nama like "%'.$params['nama'].'%"')
                 ->limit(10);
 
         $command = $query->createCommand();

@@ -355,7 +355,7 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
-                                
+
                                 // Pegawai
                                 .state('pegawai', {
                                     url: '/pegawai',
@@ -468,12 +468,13 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                // Transaksi
-                                .state('transaksi', {
-                                    url: '/transaksi',
+                                // Jadwal
+                                .state('jadwal', {
+                                    url: '/jadwal',
                                     templateUrl: 'tpl/app.html'
                                 })
-                                .state('transaksi.jpelatihan', {
+
+                                .state('jadwal.jpelatihan', {
                                     url: '/jpelatihan',
                                     templateUrl: 'tpl/t_jpelatihan/index.html',
                                     resolve: {
@@ -486,6 +487,50 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('jadwal.penilaian', {
+                                    url: '/penilaian',
+                                    templateUrl: 'tpl/j_penilaian/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/jadwalpenilaian.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('jadwal.auditsemester', {
+                                    url: '/auditsemester',
+                                    templateUrl: 'tpl/j_auditsemester/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/jadwalauditsemester.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('jadwal.hsetalk', {
+                                    url: '/hsetalk',
+                                    templateUrl: 'tpl/j_hse/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/jadwalhse.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('transaksi', {
+                                    url: '/transaksi',
+                                    templateUrl: 'tpl/app.html'
+                                })
+
                                 .state('transaksi.hsetalk', {
                                     url: '/hsetalk',
                                     templateUrl: 'tpl/t_hsetalk/index.html',
@@ -614,6 +659,51 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/p2k3.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.pengeluaranapd', {
+                                    url: '/pengeluaranapd',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_pengeluaranapd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/pengeluaranapd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.pemasukanapd', {
+                                    url: '/pemasukanapd',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_pemasukanapd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/pemasukanapd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.pemakaianlistrikair', {
+                                    url: '/pemakaianlistrikair',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_pemakaianlistrikair/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/pemakaianlistrikair.js');
                                                         }
                                                 );
                                             }]

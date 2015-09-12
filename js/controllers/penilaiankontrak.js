@@ -38,7 +38,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawankontrak/cari', data).then(function (data) {
+            Data.get('karyawan/cari', data).then(function (data) {
                 $scope.listKaryawan = data.data;
             });
         }
@@ -55,11 +55,11 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Penilaian Karyawan Kontrak";
         $scope.form = {};
-        $scope.form.tgl = new Date();
+        $scope.form.tgl_hse = new Date();
     };
     $scope.update = function (form) {
         $scope.form = form;
-        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_hse = new Date(form.tgl_hse);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
@@ -73,7 +73,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         $scope.formtitle = "Lihat Data : " + form.no;
     };
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.id;
+        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.no;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -93,7 +93,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('penilaiankontrak/delete/' + row.id).then(function (result) {
+            Data.delete('penilaiankontrak/delete/' + row.no).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }

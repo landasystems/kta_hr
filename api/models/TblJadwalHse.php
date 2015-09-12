@@ -31,7 +31,7 @@ class TblJadwalHse extends \yii\db\ActiveRecord
             [['no'], 'required'],
             [['tgl_hse'], 'safe'],
             [['no'], 'string', 'max' => 20],
-            [['nama'], 'string', 'max' => 50],
+            [['nik_karyawan'], 'string', 'max' => 50],
             [['materi'], 'string', 'max' => 200]
         ];
     }
@@ -44,7 +44,7 @@ class TblJadwalHse extends \yii\db\ActiveRecord
         return [
             'no' => 'No',
             'tgl_hse' => 'Tgl Hse',
-            'nama' => 'Nama',
+            'nik_karyawan' => 'Nama',
             'materi' => 'Materi',
         ];
     }

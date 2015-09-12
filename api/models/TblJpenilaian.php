@@ -13,35 +13,32 @@ use Yii;
  * @property string $bagian
  * @property string $tgl_penilaian
  */
-class TblJpenilaian extends \yii\db\ActiveRecord
-{
+class TblJpenilaian extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'tbl_jpenilaian';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['no_jpenilaian'], 'required'],
             [['tgl_penilaian'], 'safe'],
-            [['no_jpenilaian', 'nik'], 'string', 'max' => 20],
-            [['nama'], 'string', 'max' => 200],
-            [['bagian'], 'string', 'max' => 300]
+            [['no_jpenilaian', 'nik', 'nik_penilai'], 'string', 'max' => 20],
+            [['nama', 'penilai'], 'string', 'max' => 200],
+            [['bagian', 'dep_penilai'], 'string', 'max' => 300]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'no_jpenilaian' => 'No Jpenilaian',
             'nik' => 'Nik',
@@ -50,4 +47,5 @@ class TblJpenilaian extends \yii\db\ActiveRecord
             'tgl_penilaian' => 'Tgl Penilaian',
         ];
     }
+
 }

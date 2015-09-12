@@ -1,4 +1,4 @@
-app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
+app.controller('pengeluaranApdCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -19,57 +19,35 @@ app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('jauditsemester', param).then(function (data) {
+        Data.get('pengeluaranapd', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
     };
+
+    $scope.excel = function () {
+        Data.get('pengeluaranapd', paramRef).then(function (data) {
+            window.location = 'api/web/pengeluaranapd/excel';
+        });
+    };
+    
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened1 = true;
     };
 
-    $scope.cariAuditee = function (nama) {
-        if (nama.length > 2) {
-            var data = {
-                nama: nama
-            };
-            Data.get('karyawan/cari', data).then(function (data) {
-                $scope.detAuditee = data.data;
-            });
-        }
-    };
-    $scope.getAuditee = function (det, item) {
-        det.auditee = item.nik;
-        det.dept_auditee = item.department;
-    };
-
-    $scope.cariAuditor = function (nama) {
-        if (nama.length > 2) {
-            var data = {
-                nama: nama
-            };
-            Data.get('karyawan/cari', data).then(function (data) {
-                $scope.detAuditor = data.data;
-            });
-        }
-    };
-    $scope.getAuditor = function (det, item) {
-        det.auditor = item.nik;
-        det.dept_auditor = item.department;
-    };
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Audit Semester";
+        $scope.formtitle = "Form Pengeluaran APD";
         $scope.form = {};
-        $scope.detAudit = [{}];
+        $scope.detBarang = [{}];
         $scope.form.tgl = new Date();
-        Data.get('jauditsemester/kode', form).then(function (data) {
-            $scope.form.no_audit = data.kode;
+        Data.get('pengeluaranapd/kode', form).then(function (data) {
+            $scope.form.no_transaksi = data.kode;
         });
     };
     $scope.update = function (form) {
@@ -78,16 +56,16 @@ app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.form.tgl = new Date(form.tgl);
-        $scope.formtitle = "Edit Data : " + form.no_audit;
-        $scope.retDetail(form.no_audit);
+        $scope.formtitle = "Edit Data : " + form.no_transaksi;
+        $scope.retDetail(form);
     };
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.no_audit;
-        $scope.retDetail(form.no_audit);
+        $scope.formtitle = "Lihat Data : " + form.no_transaksi;
+        $scope.retDetail(form);
     };
     $scope.save = function (form, detail) {
         var data = {
@@ -95,17 +73,16 @@ app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
             detail: detail
         };
 
-        var url = ($scope.is_create == true) ? 'jauditsemester/create' : 'jauditsemester/update/' + form.no_audit;
+        var url = ($scope.is_create == true) ? 'pengeluaranapd/create/' : 'pengeluaranapd/update/' + form.no_transaksi;
         Data.post(url, data).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
                 $scope.is_edit = false;
                 $scope.callServer(tableStateRef); //reload grid ulang
-                toaster.pop('success', "Berhasil", "Data berhasil tersimpan")
+                toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
             }
         });
-
     };
     $scope.cancel = function () {
         $scope.is_edit = false;
@@ -116,33 +93,59 @@ app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('jauditsemester/delete/' + row.no_audit).then(function (result) {
+            Data.delete('pengeluaranapd/delete/' + row.no_transaksi).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
     };
+
+    $scope.cariStockApd = function (nama) {
+        if (nama.length > 2) {
+            Data.get('apd/cari', {nama: nama}).then(function (data) {
+                $scope.barangAtk = data.data;
+            });
+        }
+    };
+
+    $scope.getBarangApd = function (det, item) {
+        det.kd_apd = item.kode_apd;
+        det.nm_apd = item.nama_apd;
+        det.jumlah_apd = item.jumlah_apd;
+    };
+    $scope.cariPegawai = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.detPegawai = data.data;
+            });
+        }
+    };
+
+    $scope.getPegawai = function (form, item) {
+        form.nik_karyawan = item.nik;
+    };
+
+    $scope.retDetail = function (form) {
+        Data.get('pengeluaranapd/view/' + form.no_transaksi).then(function (data) {
+            $scope.detBarang = data.data;
+        });
+    };
+
     $scope.addrow = function () {
-        $scope.detAudit.unshift({
+        $scope.detBarang.unshift({
             id: 0,
-            auditee: '',
-            dept_auditee: '',
-            teraudit: [],
-            auditor: '',
-            dept_auditor: '',
-            pengaudit: []
+            apd: [],
+            jmlh_apd: 0,
+            kd_apd: '',
         });
     };
     $scope.removeRow = function (paramindex) {
-        var comArr = eval($scope.detAudit);
+        var comArr = eval($scope.detBarang);
         if (comArr.length > 1) {
-            $scope.detAudit.splice(paramindex, 1);
+            $scope.detBarang.splice(paramindex, 1);
         } else {
             alert("Something gone wrong");
         }
     };
-    $scope.retDetail = function (no) {
-        Data.get('jauditsemester/view/'+no).then(function(data){
-            $scope.detAudit = data.data;
-        });
-    };
+
 });

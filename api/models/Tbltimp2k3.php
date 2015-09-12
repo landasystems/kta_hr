@@ -31,7 +31,7 @@ class Tbltimp2k3 extends \yii\db\ActiveRecord
             [['no_tim'], 'required'],
             [['tgl'], 'safe'],
             [['no_tim', 'bagian'], 'string', 'max' => 20],
-            [['nama'], 'string', 'max' => 50]
+            [['nik_karyawan'], 'string', 'max' => 50]
         ];
     }
 
@@ -43,7 +43,7 @@ class Tbltimp2k3 extends \yii\db\ActiveRecord
         return [
             'no_tim' => 'No Tim',
             'tgl' => 'Tgl',
-            'nama' => 'Nama',
+            'nik_karyawan' => 'Nama',
             'bagian' => 'Bagian',
         ];
     }

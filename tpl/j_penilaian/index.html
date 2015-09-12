@@ -1,6 +1,6 @@
-<div ng-app="app" ng-controller="karyawankeluarCtrl">
+<div ng-app="app" ng-controller="jadwalPenilaianCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Pegawai - Ijazah</h1>
+        <h1 class="m-n font-thin h3">Jadwal - Penilaian</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
@@ -23,14 +23,6 @@
                             <div class="col-sm-3">
                                 <input st-search="no_ijazah" class="form-control"/>
                             </div>
-                            <label class="col-sm-2 control-label">Atas Nama</label>
-                            <div class="col-sm-3">
-                                <input st-search="atas_nama" class="form-control"/>
-                            </div>
-                            <label class="col-sm-2 control-label">Status</label>
-                            <div class="col-sm-3">
-                                <input st-search="status" class="form-control"/>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,25 +31,23 @@
                 <table class="table table-striped table-hover" >
                     <thead>
                         <tr>
-                            <th st-sort="no">NO</th>
-                            <th st-sort="no_ijazah">NO Ijazah</th>
-                            <th st-sort="tgl_masuk">Tanggal Masuk</th>
-                            <th st-sort="atas_nama">Atas Nama</th>
-                            <th st-sort="nama_sekolah">Nama Sekolah</th>
-                            <th st-sort="tgl_keluar">Tanggal Keluar</th>
-                            <th st-sort="status">Status</th>
+                            <th st-sort="no_jpenilaian">NO</th>
+                            <th st-sort="tgl_penilaian">Tanggal Penilaian</th>
+                            <th st-sort="penilai">Penilai</th>
+                            <th st-sort="dep_penilai">Dept. Penilai</th>
+                            <th st-sort="nama">Yang Dinilai</th>
+                            <th st-sort="bagian">Dept. Dinilai</th>
                             <th style="text-align:right;">Action &nbsp;</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
-                            <td>{{row.no}}</td>
-                            <td>{{row.no_ijazah}}</td>
-                            <td>{{row.tgl_masuk| date}}</td>
-                            <td>{{row.atas_nama}}</td>
-                            <td>{{row.nama_sekolah}}</td>
-                            <td>{{row.tgl_keluar| date}}</td>
-                            <td>{{row.status}}</td>
+                            <td>{{row.no_jpenilaian}}</td>
+                            <td>{{row.tgl_penilaian| date}}</td>
+                            <td>{{row.penilai}}</td>
+                            <td>{{row.dep_penilai}}</td>
+                            <td>{{row.nama}}</td>
+                            <td>{{row.bagian}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
@@ -68,12 +58,12 @@
                     </tbody>
                     <tbody ng-show="isLoading">
                         <tr>
-                            <td colspan="4" class="text-center">Loading ... </td>
+                            <td colspan="7" class="text-center">Loading ... </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            <td colspan="7" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
                     </tfoot>
@@ -94,54 +84,18 @@
                     <div class="col-md-12 col-sm-12">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">NO</label>
+                                <label class="col-sm-4 control-label">NO Jadwal Penilaian</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.no" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">NO Ijazah</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.no_ijazah" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Masuk</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened1" ng-click="open1($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Atas Nama</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.atas_nama">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.no_jpenilaian" ng-disabled="is_view">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Sekolah</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.nama_sekolah">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Status</label>
-                                <div class="col-sm-8">
-                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'Masuk'">Masuk</label>
-                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'Keluar'">Keluar</label>
-                                </div>
-                            </div>
-                            <div class="form-group" ng-show="form.status == 'Keluar'">
-                                <label class="col-sm-4 control-label">Tanggal Keluar</label>
+                                <label class="col-sm-4 control-label">Tanggal Penilaian</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_keluar" is-open="opened2" ng-click="open2($event)"/>
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_penilaian" is-open="opened1" ng-click="open1($event)"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </span>
@@ -149,7 +103,62 @@
                                 </div>
                             </div>
                         </div>
-
+                        <br>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Penilai</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <ui-select on-select="getPenilai($item,form)" ng-model="form.bagPenilai" theme="bootstrap" required>
+                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                            <ui-select-choices refresh="cariPenilai($select.search)" repeat="val in detPenilai">
+                                                {{val.nik}}<br>
+                                                <small>{{val.nama}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.bagPenilai = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Departement Penilai</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.dep_penilai">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Yang Dinilai</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <ui-select on-select="getTernilai($item,form)" ng-model="form.ternilai" theme="bootstrap" required>
+                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                            <ui-select-choices refresh="cariTernilai($select.search)" repeat="val in detTernilai">
+                                                {{val.nik}}<br>
+                                                <small>{{val.nama}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.ternilai = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Departement Dinilai</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.bagian">
+                                </div>
+                            </div>
+                        </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
                         <div class="col-md-12 col-sm-12">
