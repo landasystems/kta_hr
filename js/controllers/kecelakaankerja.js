@@ -1,4 +1,4 @@
-app.controller('karyawanCtrl', function($scope, Data, toaster) {
+app.controller('kecelakaanKerjaCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -19,30 +19,40 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('karyawan', param).then(function(data) {
+        Data.get('kecelakaankerja', param).then(function(data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
+    };
+    $scope.cari = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.listKaryawan = data.data;
+            });
+        }
+    };
+    $scope.retKaryawan = function (item, form) {
+//        console.log(item);
+        form.nik = item.nik;
+        form.bagian = item.department;
     };
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened1 = true;
     };
-    $scope.open2 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened2 = true;
-    };
+    
     $scope.create = function(form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Karyawan";
+        $scope.formtitle = "Form Kecelakaan Kerja";
         $scope.form = {};
-        Data.get('karyawan/kode',form).then(function(data){
-            $scope.form.nik = data.kode;
+        $scope.form.tgl_kejadian = new Date();
+        Data.get('kecelakaankerja/kode',form).then(function(data){
+            $scope.form.no = data.kode;
         });
     };
     $scope.update = function(form) {
@@ -50,17 +60,18 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + form.nik;
+        $scope.form.tgl_kejadian = new Date(form.tgl_kejadian);
+        $scope.formtitle = "Edit Data : " + form.no;
     };
     $scope.view = function(form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.nik;
+        $scope.formtitle = "Lihat Data : " + form.no;
     };
     $scope.save = function(form) {
-        var url = ($scope.is_create == true) ? 'karyawan/create/' : 'karyawan/update/' + form.nik;
+        var url = ($scope.is_create == true) ? 'kecelakaankerja/create/' : 'kecelakaankerja/update/' + form.no;
         Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -80,7 +91,7 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
     };
     $scope.delete = function(row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('karyawan/delete/' + row.nik).then(function(result) {
+            Data.delete('kecelakaankerja/delete/' + row.no).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }

@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblkaryawan;
+use app\models\TblKecelakaanKerja;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class KaryawanController extends Controller {
+class KecelakaankerjaController extends Controller {
 
     public function behaviors() {
         return [
@@ -55,15 +55,15 @@ class KaryawanController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_karyawan')
+        $query->from('tbl_kecelakaan_kerja')
                 ->select('*')
-                ->orderBy('nik DESC')
+                ->orderBy('no DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['nik'], -5)) + 1;
-        $kode = substr('00000' . $urut, -5);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no'], -5)) + 1;
+        $kode = 'KK' . substr('00000' . $urut, -5);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -73,7 +73,7 @@ class KaryawanController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "nik DESC";
+        $sort = "kec.no DESC";
         $offset = 0;
         $limit = 10;
 
@@ -98,9 +98,10 @@ class KaryawanController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_karyawan')
+                ->from('tbl_kecelakaan_kerja as kec')
+                ->join('LEFT JOIN','tbl_karyawan as kar','kar.nik = kec.nik')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("*,kec.sub_section as bagian");
 
         //filter
         if (isset($params['filter'])) {
@@ -109,7 +110,7 @@ class KaryawanController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
@@ -119,6 +120,13 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+
+        foreach ($models as $key => $val) {
+            if (!empty($val['nik'])) {
+                $karyawan = \app\models\Tblkaryawan::findOne($val['nik']);
+                $models[$key]['karyawan'] = (empty($karyawan)) ? array() : $karyawan->attributes;
+            }
+        }
         $totalItems = $query->count();
 
         $this->setHeader(200);
@@ -136,8 +144,10 @@ class KaryawanController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblkaryawan();
+        $model = new TblKecelakaanKerja();
         $model->attributes = $params;
+        $model->sub_section = $params['bagian'];
+//        $model->tgl = date('Y-m-d',strtotime($model->tgl));
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -152,6 +162,7 @@ class KaryawanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        $model->sub_section = $params['bagian'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -176,7 +187,7 @@ class KaryawanController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblkaryawan::findOne($id)) !== null) {
+        if (($model = TblKecelakaanKerja::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -218,22 +229,6 @@ class KaryawanController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         return $this->render("/expmaster/barang", ['models' => $models]);
-    }
-
-    public function actionCari() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('tbl_karyawan as kar')
-                ->join('LEFT JOIN', 'tbl_department as dep','kar.department = dep.id_department')
-                ->join('LEFT JOIN', 'sub_section as sub','kar.sub_section= sub.id_sub')
-                ->select("*,sub.sub_section as subSection")
-                ->where('kar.nik like "%'.$params['nama'].'%" OR kar.nama like "%'.$params['nama'].'%"')
-                ->limit(10);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
 }

@@ -346,6 +346,15 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                .state('master.karyawan', {
+                                    url: '/karyawan',
+                                    templateUrl: 'tpl/m_karyawan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/karyawan.js');
+                                            }]
+                                    }})
                                 .state('master.roles', {
                                     url: '/roles',
                                     templateUrl: 'tpl/m_roles/index.html',
@@ -704,6 +713,21 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/pemakaianlistrikair.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.kecelakaankerja', {
+                                    url: '/kecelakaankerja',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_kecelakaankerja/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/kecelakaankerja.js');
                                                         }
                                                 );
                                             }]

@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TblDtransApdMasuk;
-use app\models\TblHtransApdMasuk;
+use app\models\TblDtransApdKeluar;
+use app\models\TblHtransApdKeluar;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -57,7 +57,7 @@ class PengeluaranapdController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_htrans_apd_masuk')
+        $query->from('tbl_htrans_apd_keluar')
                 ->select('*')
                 ->orderBy('no_transaksi DESC')
                 ->limit(1);
@@ -65,7 +65,7 @@ class PengeluaranapdController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryOne();
         $urut = (empty($models)) ? 1 : ((int) substr($models['no_transaksi'], -5)) + 1;
-        $kode = 'MAPD' . substr('00000' . $urut, -5);
+        $kode = 'KAPD' . substr('00000' . $urut, -5);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -100,7 +100,7 @@ class PengeluaranapdController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_htrans_apd_masuk as apd')
+                ->from('tbl_htrans_apd_keluar as apd')
                 ->join('LEFT JOIN', 'tbl_karyawan as peg','apd.nik_karyawan=peg.nik')
                 ->orderBy($sort)
                 ->select("*");
@@ -140,7 +140,7 @@ class PengeluaranapdController extends Controller {
 
 //        $model = $this->findModel($id);
         $detail = array();
-        $findDet = TblDtransApdMasuk::findAll(['no_trans' => $id]);
+        $findDet = TblDtransApdKeluar::findAll(['no_trans' => $id]);
         if (!empty($findDet)) {
             foreach ($findDet as $key => $val) {
                 $detail[$key] = $val->attributes;
@@ -155,19 +155,19 @@ class PengeluaranapdController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new TblHtransApdMasuk();
+        $model = new TblHtransApdKeluar();
         $model->attributes = $params['form'];
 
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
-                $detail = new TblDtransApdMasuk();
+                $detail = new TblDtransApdKeluar();
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
                 
                 $stock = \app\models\Tblstockapd::findOne($detail->kd_apd);
                 if(!empty($stock)){
-                    $stock->jumlah_apd = ($stock->jumlah_apd + $detail->jmlh_apd);
+                    $stock->jumlah_apd = ($stock->jumlah_apd - $detail->jmlh_apd);
                     $stock->save();
                 }
             }
@@ -186,19 +186,19 @@ class PengeluaranapdController extends Controller {
         $model->attributes = $params['form'];
 
         if ($model->save()) {
-//            $delDet = TblDtransApdMasuk::deleteAll(['no_trans' => $model->no_transaksi]);
+//            $delDet = TblDtransApdKeluar::deleteAll(['no_trans' => $model->no_transaksi]);
             foreach ($params['detail'] as $key => $val) {
-                $detail = TblDtransApdMasuk::findOne($val['id']);
+                $detail = TblDtransApdKeluar::findOne($val['id']);
                 $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransApdMasuk();                
+                    $detail = new TblDtransApdKeluar();                
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
                 
                 $stock = \app\models\Tblstockapd::findOne($detail->kd_apd);
                 if(!empty($stock)){
-                    $stock->jumlah_apd = $stock->jumlah_apd - $jmlLama + $detail->jmlh_apd;
+                    $stock->jumlah_apd = $stock->jumlah_apd + $jmlLama - $detail->jmlh_apd;
                     $stock->save();
                 }
             }
@@ -224,7 +224,7 @@ class PengeluaranapdController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = TblHtransApdMasuk::findOne($id)) !== null) {
+        if (($model = TblHtransApdKeluar::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -271,7 +271,7 @@ class PengeluaranapdController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_htrans_apd_masuk')
+        $query->from('tbl_htrans_apd_keluar')
                 ->select("*")
                 ->where(['like', 'no_transaksi', $params['nama']]);
 

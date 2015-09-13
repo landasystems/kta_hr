@@ -106,6 +106,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
         var akses = {
             "master_roles": false,
             "master_user": false,
+            "master_karyawan": false,
             "master_barang": false,
             "master_jenisbrg": false,
             "master_customer": false,
