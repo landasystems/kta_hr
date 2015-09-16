@@ -1,0 +1,78 @@
+<div ng-app="app" ng-controller="pemasukanApdCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Rekap - Pemasukan APD</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Pemasukan APD
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-info" style="text-align: center">
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3">Periode</label>
+                                        <div class="col-md-9">
+                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+                                                    <td
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Pemasukan APD<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
+                <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;vertical-align: center;">NO TRANSAKSI</th>
+                            <th style="text-align: center;vertical-align: center;">TANGGAL TRANSAKSI</th>
+                            <th style="text-align: center;vertical-align: center;">KODE APD</th>
+                            <th style="text-align: center;vertical-align: center;">NAMA APD</th>
+                            <th style="text-align: center;vertical-align: center;">JUMLAH</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!isLoading">
+                        <tr ng-repeat="row in list">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.tgl | date}}</td>
+                            <td align="center">{{row.kd_apd}}</td>
+                            <td align="center">{{row.nm_apd}}</td>
+                            <td align="center">{{row.jmlh_apd}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
+                        </tr>
+                    </tbody>
+                </table>			
+            </div>
+        </div>
+    </div>
+    <!--FORM-->
+</div>

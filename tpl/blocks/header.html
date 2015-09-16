@@ -17,7 +17,7 @@
         <li class="dropdown pos-stc" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
                 <i class="glyphicon glyphicon-th-large icon text-info-lter"></i>
-                <span>Master</span> 
+                <span style="font-size: 12px">Master</span> 
                 <span class="caret"></span>
             </a>
             <div class="dropdown-menu wrapper w-full bg-white">
@@ -252,90 +252,100 @@
         <li class="dropdown pos-stc" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
                 <i class="glyphicon glyphicon-print icon text-info-lter"></i> 
-                <span>Rekap</span> 
+                <span style="font-size: 12px">Rekap</span> 
                 <span class="caret"></span>
             </a>
             <div class="dropdown-menu wrapper w-full bg-white">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <div class="row">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Rekap</div>
                             <div class="col-xs-6">
                                 <ul class="list-unstyled l-h-2x">
-                                    <li ng-show="user.akses.rekap_barangmasuk">
-                                        <a ui-sref='rekap.barangmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang Masuk</a>
+                                    <li ng-show="user.akses.rekap_penilaiankontrak">
+                                        <a ui-sref='rekap.penilaiankontrak'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Penilaian Kontrak</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_barangkeluar">
-                                        <a ui-sref='rekap.barangkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Barang Keluar</a>
+                                    <li ng-show="user.akses.rekap_ijazahmasuk">
+                                        <a ui-sref='rekap.ijazahmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah Masuk</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_bom">
-                                        <a ui-sref='rekap.bom'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Bill Of Material</a>
+                                    <li ng-show="user.akses.rekap_ijazahkeluar">
+                                        <a ui-sref='rekap.ijazahkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Ijazah Keluar</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_bstk">
-                                        <a ui-sref='rekap.bstk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>BSTK</a>
+                                    <li ng-show="user.akses.rekap_lamarkerjaperpribadi">
+                                        <a ui-sref='rekap.lamarkerjaperpribadi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja per Data Pribadi</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_claimunit">
-                                        <a ui-sref='rekap.claimunit'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Claim Unit</a>
+                                    <li ng-show="user.akses.rekap_lamarkerjaperpend">
+                                        <a ui-sref='rekap.lamarkerjaperpend'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja per Pendidikan</a>
+                                    </li>
+                                    <li ng-show="user.akses.rekap_jamsostek">
+                                        <a ui-sref='rekap.jamsostek'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jamsostek</a>
                                     </li>
 
                                 </ul>
                             </div>
                             <div class="col-xs-6">
                                 <ul class="list-unstyled l-h-2x">
-                                    <li ng-show="user.akses.rekap_chassisin">
-                                        <a ui-sref='rekap.chassisin'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Chassis In</a>
+                                    <li ng-show="user.akses.rekap_karyawankeluar">
+                                        <a ui-sref='rekap.karyawankeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_deliveryunit">
-                                        <a ui-sref='rekap.deliveryunit'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Delivery Unit</a>
+                                    <li ng-show="user.akses.rekap_karyawanmasukpertunjangan">
+                                        <a ui-sref='rekap.karyawanmasukpertunjangan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Tunjangan</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_pergerakanbarang">
-                                        <a ui-sref='rekap.pergerakanbarang'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pergerakan Barang</a>
+                                    <li ng-show="user.akses.rekap_karyawanmasukpergaji">
+                                        <a ui-sref='rekap.karyawanmasukpergaji'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Gaji</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_ujimutu">
-                                        <a ui-sref='rekap.ujimutu'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pengajuan Uji Mutu</a>
+                                    <li ng-show="user.akses.rekap_karyawanmasukperdata">
+                                        <a ui-sref='rekap.karyawanmasukperdata'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Data Pribadi</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_purchaseorder">
-                                        <a ui-sref='rekap.purchaseorder'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Purchase Order</a>
+                                    <li ng-show="user.akses.rekap_karyawanmasukperpend">
+                                        <a ui-sref='rekap.karyawanmasukperpend'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Pendidikan</a>
+                                    </li>
+                                    <li ng-show="user.akses.rekap_karyawanmasukperpekerjaan">
+                                        <a ui-sref='rekap.karyawanmasukperpekerjaan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Pekerjaan</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4 b-l b-light">
+                    <div class="col-sm-6 b-l b-light">
                         <div class="row">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Laporan</div>
                             <div class="col-xs-6">
                                 <ul class="list-unstyled l-h-2x">
-                                    <li ng-show="user.akses.rekap_retbarangkeluar">
-                                        <a ui-sref='rekap.retbarangkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur BBK</a>
+                                    <li ng-show="user.akses.rekap_kecelakaankerja">
+                                        <a ui-sref='rekap.kecelakaankerja'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Kecelakaan Kerja</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_retbarangmasuk">
-                                        <a ui-sref='rekap.retbarangmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Retur BBM</a>
+                                    <li ng-show="user.akses.rekap_laporanapd">
+                                        <a ui-sref='rekap.laporanapd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pengeluaran APD</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_rubahbentuk">
-                                        <a ui-sref='rekap.rubahbentuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rubah Bentuk</a>
+                                    <li ng-show="user.akses.rekap_pemasukanapd">
+                                        <a ui-sref='rekap.pemasukanapd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pemasukan APD</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_spp">
-                                        <a ui-sref='rekap.spp'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>SPP</a>
+                                    <li ng-show="user.akses.rekap_laporanstokapd">
+                                        <a ui-sref='rekap.laporanstokapd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>StokAPD</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_suratpesanan">
-                                        <a ui-sref='rekap.suratpesanan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Surat Pesanan</a>
+                                    <li ng-show="user.akses.rekap_pemakianlat">
+                                        <a ui-sref='rekap.pemakianlat'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pemakaian Listrik, Air Telp</a>
                                     </li>
+
                                 </ul>
                             </div>
                             <div class="col-xs-6">
                                 <ul class="list-unstyled l-h-2x">
                                     <ul class="list-unstyled l-h-2x">
-                                        <li ng-show="user.akses.rekap_schedule">
-                                            <a ui-sref='rekap.schedule'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Schedule</a>
+                                        <li ng-show="user.akses.rekap_jadwalpelatihan">
+                                            <a ui-sref='rekap.jadwalpelatihan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jadwal Pelatihan</a>
                                         </li>
-                                        <li ng-show="user.akses.rekap_wokeluar">
-                                            <a ui-sref='rekap.wokeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WO Keluar</a>
+                                        <li ng-show="user.akses.rekap_jadwalauditsemester">
+                                            <a ui-sref='rekap.jadwalauditsemester'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jadwal Audit Semester</a>
                                         </li>
-                                        <li ng-show="user.akses.rekap_wip">
-                                            <a ui-sref='rekap.wip'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WIP</a>
+                                        <li ng-show="user.akses.rekap_jadwalapenilaian">
+                                            <a ui-sref='rekap.jadwalapenilaian'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>jadwal Penilaian</a>
                                         </li>
-                                        <li ng-show="user.akses.rekap_womasuk">
-                                            <a ui-sref='rekap.womasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>WO Masuk</a>
+                                        <li ng-show="user.akses.rekap_jadwalhsetalk">
+                                            <a ui-sref='rekap.jadwalhsetalk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jadwal HSE Talk</a>
                                         </li>
+
                                     </ul>
                                 </ul>
                             </div>
@@ -411,7 +421,7 @@
                     <img src="img/a0.jpg" alt="...">
                     <i class="on md b-white bottom"></i>
                 </span>
-                <span class="hidden-sm hidden-md">{{user.nama}}</span> <b class="caret"></b>
+                <span class="hidden-sm hidden-md" style="font-size: 12px">{{user.nama}}</span> <b class="caret"></b>
             </a>
             <!-- dropdown -->
             <ul class="dropdown-menu animated fadeInRight w">

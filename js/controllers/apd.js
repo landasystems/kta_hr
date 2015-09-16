@@ -75,4 +75,9 @@ app.controller('apdCtrl', function($scope, Data, toaster) {
             });
         }
     };
+    $scope.excel = function() {
+        Data.get('apd', paramRef).then(function(data) {
+            window.location = 'api/web/apd/excel';
+        });
+    };
 });

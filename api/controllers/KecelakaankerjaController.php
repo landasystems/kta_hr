@@ -22,6 +22,7 @@ class KecelakaankerjaController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'kode' => ['get'],
@@ -99,7 +100,7 @@ class KecelakaankerjaController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_kecelakaan_kerja as kec')
-                ->join('LEFT JOIN','tbl_karyawan as kar','kar.nik = kec.nik')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = kec.nik')
                 ->orderBy($sort)
                 ->select("*,kec.sub_section as bagian");
 
@@ -114,19 +115,32 @@ class KecelakaankerjaController extends Controller {
 //                }
             }
         }
+    }
+
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "kec.no DESC";
+        $offset = 0;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_kecelakaan_kerja as kec')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = kec.nik')
+                ->where('(kec.tgl_kejadian >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND kec.tgl_kejadian <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->orderBy($sort)
+                ->select("*,kec.sub_section as bagian");
 
         session_start();
         $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
 
-        foreach ($models as $key => $val) {
-            if (!empty($val['nik'])) {
-                $karyawan = \app\models\Tblkaryawan::findOne($val['nik']);
-                $models[$key]['karyawan'] = (empty($karyawan)) ? array() : $karyawan->attributes;
-            }
-        }
         $totalItems = $query->count();
 
         $this->setHeader(200);
@@ -224,11 +238,14 @@ class KecelakaankerjaController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        return $this->render("/exprekap/kecelakaankerja", ['models' => $models,'start' => $start,'end' => $end]);
     }
 
 }

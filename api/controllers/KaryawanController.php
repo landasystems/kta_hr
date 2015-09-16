@@ -20,8 +20,12 @@ class KaryawanController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'excelkeluar' => ['get'],
+                    'excelmasuk' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekapkeluar' => ['post'],
+                    'rekapmasuk' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'kode' => ['get'],
@@ -109,13 +113,72 @@ class KaryawanController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
 
         session_start();
         $_SESSION['query'] = $query;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekapkeluar() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "nik DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_karyawan')
+                ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl_keluar_kerja <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekapmasuk() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "nik DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('v_karyawan_masuk')
+                ->where('(tgl_masuk_kerja >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl_masuk_kerja <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -220,14 +283,40 @@ class KaryawanController extends Controller {
         return $this->render("/expmaster/barang", ['models' => $models]);
     }
 
+    public function actionExcelmasuk() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $rekap = (!empty($_GET['rekap']))? $_GET['rekap'] : '';
+        return $this->render("/exprekap/".$rekap, ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+    public function actionExcelkeluar() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        return $this->render("/exprekap/karyawankeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_karyawan as kar')
-                ->join('LEFT JOIN', 'tbl_department as dep','kar.department = dep.id_department')
-                ->join('LEFT JOIN', 'sub_section as sub','kar.sub_section= sub.id_sub')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'kar.department = dep.id_department')
+                ->join('LEFT JOIN', 'sub_section as sub', 'kar.sub_section= sub.id_sub')
                 ->select("*,sub.sub_section as subSection")
-                ->where('kar.nik like "%'.$params['nama'].'%" OR kar.nama like "%'.$params['nama'].'%"')
+                ->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%"')
                 ->limit(10);
 
         $command = $query->createCommand();

@@ -5,6 +5,7 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
+    $scope.tgl= new Date();
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -41,6 +42,7 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Ijazah";
         $scope.form = {};
+        $scope.form.tgl_masuk = new Date();
         Data.get('ijazah/kode',form).then(function(data){
             $scope.form.no = data.kode;
         });
@@ -50,6 +52,7 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.form.tgl_masuk = new Date(form.tgl_masuk);
         $scope.formtitle = "Edit Data : " + form.no;
     };
     $scope.view = function(form) {

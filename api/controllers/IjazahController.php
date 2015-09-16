@@ -19,9 +19,12 @@ class IjazahController extends Controller {
                 'actions' => [
                     'index' => ['get'],
                     'view' => ['get'],
+                    'excelkeluar' => ['get'],
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
+                    'rekapkeluar' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -110,13 +113,73 @@ class IjazahController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
 
         session_start();
         $_SESSION['query'] = $query;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no DESC";
+        $offset = 0;
+        $limit = 10;
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_ijazah')
+                ->where('status like "%Masuk%"')
+                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekapkeluar() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no DESC";
+        $offset = 0;
+        $limit = 10;
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_ijazah')
+                ->where('status like "%Keluar%"')
+                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -218,7 +281,19 @@ class IjazahController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        $params = $_SESSION['params'];
+        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+    }
+
+    public function actionExcelkeluar() {
+        session_start();
+        $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $params = $_SESSION['params'];
+        return $this->render("/exprekap/ijazahkeluar", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
     }
 
     public function actionCari() {

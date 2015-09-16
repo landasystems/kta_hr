@@ -1,10 +1,31 @@
-app.controller('karyawanCtrl', function($scope, Data, toaster) {
+app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader) {
+    var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
+    var uploader = $scope.uploader = new FileUploader({
+        url: 'img/upload.php?folder=barang&kode=' + kode_unik,
+        queueLimit: 1,
+        removeAfterUpload: true,
+    });
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function (item) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
+    //init data;
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
+//    $scope.qty = function (max, saldo) {
+//        var qty = max - saldo;
+//        $scope.form.qty = qty;
+//    };
+//    Data.get('karyawan/jenis').then(function(data) {
+//        $scope.jenis_brg = data.jenis_brg;
+//    });
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -19,7 +40,7 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('karyawan', param).then(function(data) {
+        Data.get('karyawan', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
@@ -35,33 +56,64 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
         $event.stopPropagation();
         $scope.opened2 = true;
     };
-    $scope.create = function(form) {
+    $scope.open3 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened3 = true;
+    };
+    $scope.excel = function () {
+        Data.get('karyawan', paramRef).then(function (data) {
+            window.location = 'api/web/karyawan/excel';
+        });
+    };
+    $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Karyawan";
+        $scope.formtitle = "Form Tambah Data Magang";
         $scope.form = {};
-        Data.get('karyawan/kode',form).then(function(data){
-            $scope.form.nik = data.kode;
-        });
+        $scope.form.tgl = new Date();
+        $scope.form.tgl_mulai = new Date();
+        $scope.form.tgl_selesai = new Date();
     };
-    $scope.update = function(form) {
+    $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_mulai = new Date(form.tgl_mulai);
+        $scope.form.tgl_selesai = new Date(form.tgl_selesai);
         $scope.formtitle = "Edit Data : " + form.nik;
     };
-    $scope.view = function(form) {
+    $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.nik;
     };
-    $scope.save = function(form) {
+    $scope.cariBagian = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('bagian/cari', data).then(function (data) {
+                $scope.listBagian = data.data;
+            });
+        }
+    };
+    $scope.retBagian = function(item,form){
+        form.bagian = item.kd_bagian;
+    };
+    $scope.save = function (form) {
+        if ($scope.uploader.queue.length > 0) {
+            $scope.uploader.uploadAll();
+            form.foto = kode_unik + "-" + $scope.uploader.queue[0].file.name;
+        } else {
+            form.foto = '';
+        }
+
         var url = ($scope.is_create == true) ? 'karyawan/create/' : 'karyawan/update/' + form.nik;
-        Data.post(url, form).then(function(result) {
+        Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
@@ -71,18 +123,19 @@ app.controller('karyawanCtrl', function($scope, Data, toaster) {
             }
         });
     };
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $scope.is_edit = false;
         $scope.is_view = false;
         if (!$scope.is_view) { //hanya waktu edit cancel, di load table lagi
             $scope.callServer(tableStateRef);
         }
     };
-    $scope.delete = function(row) {
+    $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('karyawan/delete/' + row.nik).then(function(result) {
+            Data.delete('karyawan/delete/' + row.nik).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
-    };
+    }
+    ;
 });

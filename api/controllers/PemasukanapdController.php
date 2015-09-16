@@ -23,6 +23,7 @@ class PemasukanapdController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -101,7 +102,7 @@ class PemasukanapdController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_htrans_apd_masuk as apd')
-                ->join('LEFT JOIN', 'tbl_karyawan as peg','apd.nik_karyawan=peg.nik')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg', 'apd.nik_karyawan=peg.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -123,13 +124,44 @@ class PemasukanapdController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        foreach($models as $key => $val){
-            if(!empty($val['nik_karyawan'])){
+
+        foreach ($models as $key => $val) {
+            if (!empty($val['nik_karyawan'])) {
                 $pegawai = \app\models\Tblkaryawan::findOne($val['nik_karyawan']);
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_transaksi DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_dtrans_apd_masuk as det')
+                ->join('LEFT JOIN', 'tbl_htrans_apd_masuk as trans', 'det.no_trans = trans.no_transaksi')
+                ->where('(trans.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND trans.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
 
         $this->setHeader(200);
 
@@ -164,9 +196,9 @@ class PemasukanapdController extends Controller {
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
-                
+
                 $stock = \app\models\Tblstockapd::findOne($detail->kd_apd);
-                if(!empty($stock)){
+                if (!empty($stock)) {
                     $stock->jumlah_apd = ($stock->jumlah_apd + $detail->jmlh_apd);
                     $stock->save();
                 }
@@ -191,13 +223,13 @@ class PemasukanapdController extends Controller {
                 $detail = TblDtransApdMasuk::findOne($val['id']);
                 $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransApdMasuk();                
+                    $detail = new TblDtransApdMasuk();
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
-                
+
                 $stock = \app\models\Tblstockapd::findOne($detail->kd_apd);
-                if(!empty($stock)){
+                if (!empty($stock)) {
                     $stock->jumlah_apd = $stock->jumlah_apd - $jmlLama + $detail->jmlh_apd;
                     $stock->save();
                 }
@@ -261,11 +293,14 @@ class PemasukanapdController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/pemasukanapd", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
     public function actionCari() {

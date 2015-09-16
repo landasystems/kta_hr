@@ -352,7 +352,11 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load('js/controllers/karyawan.js');
+                                                return $ocLazyLoad.load(['angularFileUpload', ]).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/karyawan.js');
+                                                        }
+                                                );
                                             }]
                                     }})
                                 .state('master.roles', {
@@ -739,33 +743,280 @@ angular.module('app')
                                     templateUrl: 'tpl/app.html'
                                 })
                                 //
-                                .state('rekap.purchaseorder', {
-                                    url: '/purchase-order',
-                                    templateUrl: 'tpl/r_purchase-order/index.html',
+                                .state('rekap.ijazahmasuk', {
+                                    url: '/ijazahmasuk',
+                                    templateUrl: 'tpl/r_ijazahmasuk/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_purchase-order.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_ijazahmasuk.js');
                                                         }
                                                 );
                                             }]
                                     }})
-                                //
-                                .state('rekap.customer', {
-                                    url: '/customer',
-                                    templateUrl: 'tpl/r_customer/index.html',
+                                .state('rekap.ijazahkeluar', {
+                                    url: '/ijazahkeluar',
+                                    templateUrl: 'tpl/r_ijazahkeluar/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load([]).then(
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/isidewe.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_ijazahkeluar.js');
                                                         }
                                                 );
                                             }]
-                                    }});
+                                    }})
+                                .state('rekap.penilaiankontrak', {
+                                    url: '/penilaiankontrak',
+                                    templateUrl: 'tpl/r_penilaiankontrak/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_penilaiankontrak.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.lamarkerjaperpribadi', {
+                                    url: '/lamarkerjaperpribadi',
+                                    templateUrl: 'tpl/r_lamarkerjaperpribadi/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_lamarkerjaperpribadi.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.lamarkerjaperpend', {
+                                    url: '/lamarkerjaperpend',
+                                    templateUrl: 'tpl/r_lamarkerjaperpend/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_lamarkerjaperpend.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.jamsostek', {
+                                    url: '/jamsostek',
+                                    templateUrl: 'tpl/r_jamsostek/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_jamsostek.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawankeluar', {
+                                    url: '/karyawankeluar',
+                                    templateUrl: 'tpl/r_karyawankeluar/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawankeluar.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasukpertunjangan', {
+                                    url: '/karyawanmasukpertunjangan',
+                                    templateUrl: 'tpl/r_karyawanmasukpertunjangan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasukpertunjangan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasukpergaji', {
+                                    url: '/karyawanmasukpergaji',
+                                    templateUrl: 'tpl/r_karyawanmasukpergaji/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasukpergaji.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasukperdata', {
+                                    url: '/karyawanmasukperdata',
+                                    templateUrl: 'tpl/r_karyawanmasukperdata/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasukperdata.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasukperpend', {
+                                    url: '/karyawanmasukperpend',
+                                    templateUrl: 'tpl/r_karyawanmasukperpend/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasukperpend.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasukperpekerjaan', {
+                                    url: '/karyawanmasukperpekerjaan',
+                                    templateUrl: 'tpl/r_karyawanmasukperpekerjaan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasukperpekerjaan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.kecelakaankerja', {
+                                    url: '/kecelakaankerja',
+                                    templateUrl: 'tpl/r_kecelakaankerja/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_kecelakaankerja.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.laporanapd', {
+                                    url: '/laporanapd',
+                                    templateUrl: 'tpl/r_laporanapd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_laporanapd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.pemasukanapd', {
+                                    url: '/pemasukanapd',
+                                    templateUrl: 'tpl/r_pemasukanapd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_pemasukanapd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.jadwalhsetalk', {
+                                    url: '/jadwalhsetalk',
+                                    templateUrl: 'tpl/r_jadwalhsetalk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalhsetalk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.jadwalauditsemester', {
+                                    url: '/jadwalauditsemester',
+                                    templateUrl: 'tpl/r_jadwalauditsemester/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalauditsemester.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.jadwalpelatihan', {
+                                    url: '/jadwalpelatihan',
+                                    templateUrl: 'tpl/r_jadwalpelatihan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalpelatihan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.laporanstokapd', {
+                                    url: '/laporanstokapd',
+                                    templateUrl: 'tpl/r_laporanstokapd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_laporanstokapd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.jadwalapenilaian', {
+                                    url: '/jadwalapenilaian',
+                                    templateUrl: 'tpl/r_jadwalapenilaian/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalapenilaian.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.pemakianlat', {
+                                    url: '/pemakianlat',
+                                    templateUrl: 'tpl/r_pemakianlat/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_pemakianlat.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                        //
 
                     }
                 ]);
