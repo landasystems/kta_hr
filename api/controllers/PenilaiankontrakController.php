@@ -22,6 +22,7 @@ class PenilaiankontrakController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'rekap' => ['post'],
@@ -233,6 +234,53 @@ class PenilaiankontrakController extends Controller {
                 ->from('tbl_penilaian_kontrak as pen')
                 ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.no_kntrk = kar.no_kontrak')
                 ->where('no_kontrak="' . $params['karyawan']['no_kontrak'] . '"')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        foreach ($models as $key => $val) {
+            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['no_kntrk']);
+            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
+        }
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekapall() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "tgl DESC";
+        $offset = 0;
+        $limit = 10;
+        
+        
+        //create query
+        $head = array();
+        $header= \app\models\Tblkaryawankontrak::findAll();
+        if(!empty($header)){
+            foreach($header as $key => $val){
+                $head[] = $val->attributes; 
+                $det = TblPenilaianKontrak::find()
+                        ->where('')
+                        ->all();
+                
+            }
+        }
+        
+        
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_penilaian_kontrak as pen')
+                ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.no_kntrk = kar.no_kontrak')
+//                ->where('no_kontrak="' . $params['karyawan']['no_kontrak'] . '"')
                 ->orderBy($sort)
                 ->select("*");
 

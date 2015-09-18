@@ -83,21 +83,111 @@
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation">
                     <div class="row">
+
+                        <div class="col-md-8 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">Data Diri</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Nama Lengkap</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. KTP</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.no_ktp" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tempat Lahir</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.tmpt_lahir" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tanggal Lahir</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened1" ng-click="open1($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Alamat Jalan</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.alamat_jln" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">RT / RW</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="form.rt" ng-disabled="is_view" required>
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-model="form.rw" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-4 col-sm-12">
                             <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
                             <center><input type="file" nv-file-select="" uploader="uploader" /></center>
                         </div>
-                        <div class="col-md-8 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Desa</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.desa" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Kecamatan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.kecamatan" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Kabupaten / Kota</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.kabupaten" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Kode Pos</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.kode_pos" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Agama</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.agama" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Status Pernikahan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.status_pernikahan" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Kewarganegaraan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.kewarganegaraan" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Kepegawaian</div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">NIK</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.nik" ng-disabled="is_view" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Lengkap</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -109,7 +199,20 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Departement</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <div class="input-group">
+                                        <ui-select on-select="retDepartment($select.selected,form)" ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
+                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                {{val.kd_bagian}}<br>
+                                                <small>{{val.bagian}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -134,46 +237,49 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Jabatan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.jabatan" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Lokasi Kantor</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" required>
                                 </div>
                             </div>
-                            
+
                         </div>
-                        <div class="col-md-12 col-sm-12">
+                        <br>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="col-md-6 col-sm-12">
                             <div class="m-l-xs m-t-xs m-b-xs font-bold">Riwayat Pendidikan</div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Pendidikan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.pendidikan" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Sekolah Asal</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.sekolah" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Jurusan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.jurusan" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">No Ijazah</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.departement" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.no_ijazah" ng-disabled="is_view" required>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <br>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
                     <div align="center">
                         <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
                         <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan Perubahan</button>

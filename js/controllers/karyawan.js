@@ -70,10 +70,9 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah Data Magang";
+        $scope.formtitle = "Form Tambah Data Karyawan";
         $scope.form = {};
-        $scope.form.tgl = new Date();
-        $scope.form.tgl_mulai = new Date();
+        $scope.form.tgl_masuk_kerja = new Date();
         $scope.form.tgl_selesai = new Date();
     };
     $scope.update = function (form) {
@@ -81,9 +80,8 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.form.tgl = new Date(form.tgl);
-        $scope.form.tgl_mulai = new Date(form.tgl_mulai);
-        $scope.form.tgl_selesai = new Date(form.tgl_selesai);
+//        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_masuk_kerja = new Date(form.tgl_masuk_kerja);
         $scope.formtitle = "Edit Data : " + form.nik;
     };
     $scope.view = function (form) {

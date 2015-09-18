@@ -352,6 +352,62 @@
                         </div>
                     </div>
                 </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="col-sm-12 b-l b-light">
+                        <div class="row">
+                            <!--<div class="m-l-xs m-t-xs m-b-xs font-bold">Laporan</div>-->
+                            <div class="col-xs-3">
+                                <ul class="list-unstyled l-h-2x">
+                                    <li ng-show="user.akses.rekap_agendapelatihan">
+                                        <a ui-sref='rekap.agendapelatihan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Agenda Pelatihan</a>
+                                    </li>
+                                    <li ng-show="user.akses.rekap_agendaumum">
+                                        <a ui-sref='rekap.agendaumum'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Agenda Umum</a>
+                                    </li>
+                                    <li ng-show="user.akses.rekap_rpenilaiankontrak">
+                                        <a ui-sref='rekap.rpenilaiankontrak'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Penilaian Kontrak</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="col-xs-3">
+                                <ul class="list-unstyled l-h-2x">
+                                    <ul class="list-unstyled l-h-2x">
+                                        <li ng-show="user.akses.rekap_karyawanspd">
+                                            <a ui-sref='rekap.karyawanspd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan SPD</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_filelegalitas">
+                                            <a ui-sref='rekap.filelegalitas'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>File Legalitas</a>
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div class="col-xs-3">
+                                <ul class="list-unstyled l-h-2x">
+                                    <ul class="list-unstyled l-h-2x">
+                                        <li ng-show="user.akses.rekap_atkkeluar">
+                                            <a ui-sref='rekap.atkkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>ATK Keluar</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_atkmasuk">
+                                            <a ui-sref='rekap.atkmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>ATK Masuk</a>
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                            <div class="col-xs-3">
+                                <ul class="list-unstyled l-h-2x">
+                                    <ul class="list-unstyled l-h-2x">
+                                        <li ng-show="user.akses.rekap_siswaprakerin">
+                                            <a ui-sref='rekap.siswaprakerin'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Siswa Prakerin</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_rekapmagang">
+                                            <a ui-sref='rekap.rekapmagang'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Siswa Magang</a>
+                                        </li>
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </li>
     </ul>

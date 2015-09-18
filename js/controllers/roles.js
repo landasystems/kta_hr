@@ -169,6 +169,15 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_laporanstokapd": false,
             "rekap_jadwalapenilaian": false,
             "rekap_pemakianlat": false,
+            "rekap_karyawanspd": false,
+            "rekap_filelegalitas": false,
+            "rekap_atkkeluar": false,
+            "rekap_atkmasuk": false,
+            "rekap_agendapelatihan": false,
+            "rekap_agendaumum": false,
+            "rekap_rekapmagang": false,
+            "rekap_siswaprakerin": false,
+            "rekap_rpenilaiankontrak": false,
             "notif_bom": false,
         }
         angular.forEach(akses, function ($value, $key) {

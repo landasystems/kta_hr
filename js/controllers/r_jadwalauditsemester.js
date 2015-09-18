@@ -1,52 +1,68 @@
-app.controller('rekapbarangkeluarCtrl', function ($scope, Data, toaster) {
-    //init data
+app.controller('pemakianLatCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
-    
-    $scope.displayed = [];
-    $scope.paginations = 0;
-    $scope.is_edit = false;
-    $scope.is_view = false;
-    $scope.is_create = false;
+    $scope.form = {};
+    $scope.show_detail = false;
 
-    $scope.callServer = function callServer(tableState) {
-        tableStateRef = tableState;
-        $scope.isLoading = true;
-        var offset = tableState.pagination.start || 0;
-        var limit = tableState.pagination.number || 10;
-        var param = {offset: offset, limit: limit};
-
-        if (tableState.sort.predicate) {
-            param['sort'] = tableState.sort.predicate;
-            param['order'] = tableState.sort.reverse;
+    $scope.print = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            Data.post('jauditsemester/rekap', form).then(function (data) {
+                window.open('api/web/jauditsemester/excel?print=true', "", "width=500");
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
         }
-        if (tableState.search.predicateObject) {
-            param['filter'] = tableState.search.predicateObject;
-        }
-        paramRef = param;
-        Data.get('bbk/rekap', param).then(function (data) {
-            $scope.displayed = data.data;
-            $scope.displayedPrint = data.dataPrint;
-            $scope.paginations = data.totalItems;
-            if(data.totalItems != 0) {
-                tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
-            }
-        });
-
-        $scope.isLoading = false;
     };
-    
-    $scope.excel = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excel';
-        });
-    }
-    $scope.excelbk = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excelbk';
-        });
-    }
-   
 
+    $scope.excelkeluar = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            Data.post('jauditsemester/rekap', form).then(function (data) {
+                window.location = 'api/web/jauditsemester/excel';
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
 
-})
+//    $scope.cariBarang = function ($query) {
+//        if ($query.length >= 3) {
+//            Data.get('jauditsemester/cari', {jauditsemester: $query}).then(function (data) {
+//                $scope.resultsjauditsemester = data.data;
+//            });
+//        }
+//    };
+
+    $scope.listSrc = [];
+    $scope.list = [];
+    $scope.view = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            $scope.show_detail = true;
+            Data.post('jauditsemester/rekap', form).then(function (data) {
+                $scope.listSrc = [];
+                var nomor = 1;
+                angular.forEach(data.data, function ($value, $key) {
+                    $scope.listSrc.push($value);
+                    $scope.listSrc[0].no = nomor;
+                });
+                var nomor = 2;
+                angular.forEach($scope.listSrc, function (val, key) {
+                    var au1 = ($scope.listSrc[key-1] != undefined)? $scope.listSrc[key-1] : [];
+                    var au2 = ($scope.listSrc[key] != undefined)? $scope.listSrc[key]: [];
+                    
+                    if (au1.no_audit != undefined) {
+                        if (au1.no_audit == au2.no_audit) {
+                            val.tgl = undefined;
+                            val.jam = undefined;
+                            $scope.listSrc[key].no = '';
+                        }else{
+                            $scope.listSrc[key].no = nomor;
+                            nomor++;
+                        }
+                    }
+                });
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+});

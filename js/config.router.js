@@ -1016,6 +1016,123 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.karyawanspd', {
+                                    url: '/karyawanspd',
+                                    templateUrl: 'tpl/r_karyawanspd/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanspd.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.filelegalitas', {
+                                    url: '/filelegalitas',
+                                    templateUrl: 'tpl/r_filelegalitas/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_filelegalitas.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.atkkeluar', {
+                                    url: '/atkkeluar',
+                                    templateUrl: 'tpl/r_atkkeluar/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_atkkeluar.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.atkmasuk', {
+                                    url: '/atkmasuk',
+                                    templateUrl: 'tpl/r_atkmasuk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_atkmasuk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.agendapelatihan', {
+                                    url: '/agendapelatihan',
+                                    templateUrl: 'tpl/r_agendapelatihan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_agendapelatihan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.agendaumum', {
+                                    url: '/agendaumum',
+                                    templateUrl: 'tpl/r_agendaumum/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_agendaumum.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.siswaprakerin', {
+                                    url: '/siswaprakerin',
+                                    templateUrl: 'tpl/r_siswaprakerin/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_siswaprakerin.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.rekapmagang', {
+                                    url: '/rekapmagang',
+                                    templateUrl: 'tpl/r_rekapmagang/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_rekapmagang.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.rpenilaiankontrak', {
+                                    url: '/rpenilaiankontrak',
+                                    templateUrl: 'tpl/r_rpenilaiankontrak/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_rpenilaiankontrak.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                         //
 
                     }

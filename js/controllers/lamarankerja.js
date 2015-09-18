@@ -1,17 +1,17 @@
-app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster, FileUploader) {
-    var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
-    var uploader = $scope.uploader = new FileUploader({
-        url: 'img/upload.php?folder=barang&kode=' + kode_unik,
-        queueLimit: 1,
-        removeAfterUpload: true,
-    });
-    uploader.filters.push({
-        name: 'imageFilter',
-        fn: function (item) {
-            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        }
-    });
+app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster) {
+//    var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
+//    var uploader = $scope.uploader = new FileUploader({
+//        url: 'img/upload.php?folder=barang&kode=' + kode_unik,
+//        queueLimit: 1,
+//        removeAfterUpload: true,
+//    });
+//    uploader.filters.push({
+//        name: 'imageFilter',
+//        fn: function (item) {
+//            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+//            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+//        }
+//    });
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
