@@ -22,6 +22,7 @@ class ApdController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -126,6 +127,35 @@ class ApdController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "kode_apd ASC";
+        $offset = 0;
+        $limit = 10;
+
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_stock_apd')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function actionView($id) {
 
@@ -218,7 +248,7 @@ class ApdController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/expmaster/stockapd", ['models' => $models]);
     }
 
     public function actionCari() {

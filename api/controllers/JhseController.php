@@ -22,6 +22,7 @@ class JhseController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'kode' => ['get'],
@@ -99,7 +100,7 @@ class JhseController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_jadwal_hse as hse')
-                ->join('LEFT JOIN','tbl_karyawan as kar','kar.nik = hse.nik_karyawan')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = hse.nik_karyawan')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -127,6 +128,49 @@ class JhseController extends Controller {
                 $models[$key]['karyawan'] = (empty($karyawan)) ? array() : $karyawan->attributes;
             }
         }
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "hse.no DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_jadwal_hse as hse')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = hse.nik_karyawan')
+                ->orderBy($sort)
+                ->select("*");
+
+        //filter
+        if (isset($params['filter'])) {
+            $filter = (array) json_decode($params['filter']);
+            foreach ($filter as $key => $val) {
+//                if ($key == "kat") {
+//                    $query->andFilterWhere(['=', $key, $val]);
+//                } else {
+                $query->andFilterWhere(['like', $key, $val]);
+//                }
+            }
+        }
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
         $totalItems = $query->count();
 
         $this->setHeader(200);
@@ -222,11 +266,14 @@ class JhseController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/jadwalhse", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
 }

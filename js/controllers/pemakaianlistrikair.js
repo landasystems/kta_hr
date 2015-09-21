@@ -1,4 +1,4 @@
-app.controller('barangatkCtrl', function($scope, Data, toaster) {
+app.controller('pemakaianLatCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -19,7 +19,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('barangatk', param).then(function(data) {
+        Data.get('pemakaianlat', param).then(function(data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
@@ -27,8 +27,8 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
     };
     
     $scope.excel = function() {
-        Data.get('barangatk', paramRef).then(function(data) {
-            window.location = 'api/web/barangatk/excel';
+        Data.get('pemakaianlat', paramRef).then(function(data) {
+            window.location = 'api/web/pemakaianlat/excel';
         });
     };
     
@@ -36,10 +36,10 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah APD";
+        $scope.formtitle = "Form Pemakaian Listrik Air Telp";
         $scope.form = {};
-        Data.get('barangatk/kode',form).then(function(data){
-            $scope.form.kode_brng = data.kode;
+        Data.get('pemakaianlat/kode',form).then(function(data){
+            $scope.form.no_pemakaian = data.kode;
         });
     };
     $scope.update = function(form) {
@@ -47,17 +47,17 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + form.kode_brng;
+        $scope.formtitle = "Edit Data : " + form.no_pemakaian;
     };
     $scope.view = function(form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.kode_brng;
+        $scope.formtitle = "Lihat Data : " + form.no_pemakaian;
     };
     $scope.save = function(form) {
-        var url = ($scope.is_create == true) ? 'barangatk/create/' : 'barangatk/update/' + form.kode_brng;
+        var url = ($scope.is_create == true) ? 'pemakaianlat/create/' : 'pemakaianlat/update/' + form.no_pemakaian;
         Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -77,7 +77,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
     };
     $scope.delete = function(row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('barangatk/delete/' + row.kode_brng).then(function(result) {
+            Data.delete('pemakaianlat/delete/' + row.no_pemakaian).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }

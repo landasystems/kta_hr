@@ -22,6 +22,7 @@ class MagangController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'kode' => ['get']
@@ -109,6 +110,36 @@ class MagangController extends Controller {
                 $models[$key]['Bagian'] = $bagian->attributes;
             }
         }
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "mag.no_magang DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_magang as mag')
+                ->join('LEFT JOIN', 'tbl_bagian as bag', 'mag.bagian = bag.kd_bagian')
+                ->where('(mag.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND mag.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
         $totalItems = $query->count();
 
         $this->setHeader(200);
@@ -220,11 +251,14 @@ class MagangController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/rekapmagang", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
     public function actionCari() {

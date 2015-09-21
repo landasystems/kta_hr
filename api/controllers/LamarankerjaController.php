@@ -20,6 +20,7 @@ class LamarankerjaController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'rekapperpribadi' => ['post'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -126,6 +127,35 @@ class LamarankerjaController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    public function actionRekapperpribadi() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "tgl DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_lamaran_karyawan')
+                ->where('tgl >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'"')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function actionView($id) {
 
@@ -214,11 +244,14 @@ class LamarankerjaController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        Yii::error($params);
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
+        return $this->render("/exprekap/".$render, ['models' => $models,'params' => $params]);
     }
 
     public function actionCari() {

@@ -30,7 +30,7 @@ class TblHtransApdMasuk extends \yii\db\ActiveRecord
         return [
             [['no_transaksi'], 'required'],
             [['tgl'], 'safe'],
-            [['no_transaksi'], 'string', 'max' => 20]
+            [['no_transaksi','nik_karyawan'], 'string', 'max' => 20]
         ];
     }
 
@@ -42,6 +42,7 @@ class TblHtransApdMasuk extends \yii\db\ActiveRecord
         return [
             'no_transaksi' => 'No Transaksi',
             'tgl' => 'Tgl',
+            'nik_karyawan' => 'NIK',
         ];
     }
 

@@ -22,6 +22,7 @@ class TbljamsostekController extends Controller {
                     'view' => ['get'],
                     'excel' => ['get'],
                     'create' => ['post'],
+                    'rekap' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
@@ -106,6 +107,35 @@ class TbljamsostekController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "jam.p_kepesertaan DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_jamsostek as jam')
+                ->join('LEFT JOIN','tbl_karyawan as kar','jam.nik = kar.nik')
+                ->orderBy($sort)
+                ->select("*");
+        
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function actionView($id) {
 
@@ -117,7 +147,7 @@ class TbljamsostekController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new JenisKomplain();
+        $model = new Tbljamsostek();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -195,11 +225,14 @@ class TbljamsostekController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/jeniskomplain", ['models'=>$models]);
+        return $this->render("/exprekap/jamsostek", ['models'=>$models,'start' => $start,'end' => $end]);
 
     }
 

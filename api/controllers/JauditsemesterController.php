@@ -23,6 +23,7 @@ class JauditsemesterController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'kode' => ['get'],
@@ -127,6 +128,38 @@ class JauditsemesterController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_audit DESC";
+        $offset = 0;
+        $limit = 10;
+
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_djaudit_semester as det')
+                ->join('LEFT JOIN','tbl_hjaudit_semester as jad','det.no = jad.no_audit')
+                ->join('LEFT JOIN','tbl_karyawan as tee','det.auditee = tee.nik')
+                ->join('LEFT JOIN','tbl_karyawan as tor','det.auditor = tor.nik')
+                ->where('(jad.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND jad.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '") AND jad.audit_ke='.$params['audit_ke'])
+                ->orderBy($sort)
+                ->select("jad.no_audit as no_audit, jad.tgl as tgl, jad.jam as jam, det.dept_auditee, det.dept_auditor, tee.nama as auditee, tor.nama as auditor");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
     public function actionView($id) {
 
 //        $model = $this->findModel($id);
@@ -173,7 +206,7 @@ class JauditsemesterController extends Controller {
         $model->attributes = $params['form'];
 
         if ($model->save()) {
-            $delDet = TblDtransAtkKeluar::deleteAll(['no_trans' => $model->no_transaksi]);
+            $delDet = TblDjauditSemester::deleteAll(['no' => $model->no_audit]);
             foreach ($params['detail'] as $key => $val) {
                 $detail = new TblDjauditSemester();
                 $detail->no = $model->no_audit;
@@ -239,11 +272,14 @@ class JauditsemesterController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/jadwalauditsemester", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
 }

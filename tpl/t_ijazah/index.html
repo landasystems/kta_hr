@@ -87,7 +87,10 @@
     <div class="wrapper-md" ng-show="is_edit">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{formtitle}} 
+                {{formtitle}}
+                <div class="btn-group pull-right" role="group" style="margin-top: -3px;" ng-show="is_view">
+                    <button type="button" class="btn btn-primary fa fa-print" ng-print print-element-id="printArea" ng-show="is_view">&nbsp;Cetak Laporan</button>
+                </div> 
             </div>
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation ">
@@ -160,6 +163,100 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div id="printArea" ng-show="is_view">
+        <div style="font-size: 10px;">
+            <table>
+                <tr>
+                    <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+                    <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 10px;">Autobody, Manufacturing - Transport Services</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 10px;">Minning Contractor - Trading Channel</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+        <br/>
+        <hr/>
+        <br/>
+        <div style="margin-top: 20px;">
+            <div style="text-align: right;"> Di Cetak pada {{tgl| date}}</div>
+            <div class="panel-heading"><center><h5>TANDA TERIMA IJAZAH</h5></center></div>
+            <div class="col-md-12 col-sm-12">
+                Pada tanggal {{form.tgl_masuk| date}} telah diterima ijazah asli, dengan data sebagai berikut.<br/>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td style="text-align: left;width: 25% !important;">Nama</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.atas_nama}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">No. Dokumen</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.no_ijazah}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Nama Sekolah</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.nama_sekolah}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group">
+                    Ijazah ini diserahkan kepada PT. Karya Tugas Anda Jl. Raya Sukorejo No. 1 Pasuruan - Jawa Timur selama yang bersangkutan masih bekerja di perusahaan kami. Apabila yang bersangkutan tidak lagi bekerja pada perusahaan kami maka ijazah tersebut akan dikembalikan.
+                    <br>Demikian dan terimakasih.
+                    <br>
+                    <br>
+                    Note : Untuk pengembalian ijazah asli harap memberitahukan kepada pihak perusahaan terlebih dahulu 1 (satu) minggu sebelumnya, dikarenakan ijazah tersebut kami simpan di bank.
+
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td style="width:33%;text-align: center;">Diserahkan</td>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;">Diterima</td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;height: 45px !important;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;">{{form.atas_nama}}</td>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;">Binti Rofikah</td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;">Diketahui</td>
+                            <td style="width:33%;text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;height: 45px !important;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;">Linda Susanto</td>
+                            <td style="width:33%;text-align: center;"></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

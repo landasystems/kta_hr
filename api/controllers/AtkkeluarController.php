@@ -23,6 +23,7 @@ class AtkkeluarController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -130,6 +131,37 @@ class AtkkeluarController extends Controller {
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_transaksi DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_dtrans_atk_keluar as det')
+                ->JOIN('LEFT JOIN','tbl_htrans_atk_keluar as atk' ,'det.no_trans = atk.no_transaksi')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
+                ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
 
         $this->setHeader(200);
 
@@ -261,11 +293,14 @@ class AtkkeluarController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
     public function actionCari() {
