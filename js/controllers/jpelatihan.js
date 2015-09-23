@@ -41,9 +41,12 @@ app.controller('jpelatihanCtrl', function($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Jadwal Pelatihan";
         $scope.form = {};
+        $scope.form.tgl = new Date();
+        
     };
     $scope.update = function(form) {
         $scope.form = form;
+        $scope.form.tgl = new Date(form.tgl);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
@@ -77,7 +80,7 @@ app.controller('jpelatihanCtrl', function($scope, Data, toaster) {
     };
     $scope.delete = function(row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('jpelatihan/delete/' + row.no).then(function(result) {
+            Data.delete('jpelatihan/delete/' + row.no_jpelatihan).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
