@@ -5,9 +5,9 @@
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
             <div class="panel-heading">
-                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
+                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"><i class="fa fa-search"></i> Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
+                    <!--<buttokaryawanSpdCtrln type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>-->
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
@@ -17,17 +17,17 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">NO</label>
                             <div class="col-sm-3">
-                                <input st-search="tim.no" class="form-control"/>
+                                <input st-search="no" class="form-control"/>
                             </div>
-                            <label class="col-sm-2 control-label">Nama Karyawan</label>
+                            <label class="col-sm-2 control-label">NIK</label>
                             <div class="col-sm-3">
-                                <input st-search="kar.nama" class="form-control"/>
+                                <input st-search="nik" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Bagian</label>
+                            <label class="col-sm-2 control-label">Nama</label>
                             <div class="col-sm-3">
-                                <input st-search="tim.bagian" class="form-control"/>
+                                <input st-search="nama" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -40,9 +40,10 @@
                             <th st-sort="no">NO</th>
                             <th st-sort="tgl_kejadian">Tanggal Kejadian</th>
                             <th st-sort="nik">NIK</th>
-                            <th st-sort="nama">Nama karyawan</th>
-                            <th st-sort="bagian">Bagian</th>
+                            <th st-sort="nama">Nama Pegawai</th>
+                            <th st-sort="sub_section">Sub Section</th>
                             <th st-sort="keterangan">Keterangan</th>
+                            <th st-sort="biaya">Biaya</th>
                             <th style="text-align:right;">Action &nbsp;</th>
                         </tr>
                     </thead>
@@ -54,6 +55,7 @@
                             <td>{{row.nama}}</td>
                             <td>{{row.bagian}}</td>
                             <td>{{row.keterangan}}</td>
+                            <td>{{row.biaya | currency}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
@@ -64,12 +66,12 @@
                     </tbody>
                     <tbody ng-show="isLoading">
                         <tr>
-                            <td colspan="5" class="text-center">Loading ... </td>
+                            <td colspan="4" class="text-center">Loading ... </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
                     </tfoot>
@@ -88,32 +90,27 @@
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation ">
                     <div class="col-md-12 col-sm-12">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">NO</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.no" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Kejadian</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_kejadian" is-open="opened1" ng-click="open1($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
+                        <div class="col-md-12 col-sm-12">
+                            <div class=" col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">NO</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-readonly="true" ng-model="form.no" ng-disabled="is_view">
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <br>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Karyawan</label>
+                                <label class="col-sm-4 control-label">NIK</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <ui-select on-select="retKaryawan($select.selected,form)" ng-disabled="is_view" ng-model="form.karyawan" theme="bootstrap">
+                                        <ui-select on-select="retKaryawan($item,form)" ng-model="form.karyawan" theme="bootstrap" required>
                                             <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
                                             <ui-select-choices refresh="cari($select.search)" repeat="val in listKaryawan">
-                                                {{val.nik}}<br>
+                                                {{val.nik}}
                                                 <small>{{val.nama}}</small>
                                             </ui-select-choices>
                                         </ui-select>
@@ -126,34 +123,53 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-4 control-label">Nama</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.nama" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-4 control-label">Bagian</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.bagian" ng-disabled="is_view">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.bagian" ng-disabled="is_view">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Biaya</label>
+                                <label class="col-sm-4 control-label">Tanggal Kejadian</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-pattern="/^[0-9.]+$/" ng-model="form.biaya" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_kejadian" is-open="opened3" ng-click="open3($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Keterangan</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" ng-model="form.keterangan" ng-disabled="is_view"></textarea>
+                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.keterangan" ng-disabled="is_view">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Biaya</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.biaya" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            
                         </div>
-                        <br>
-                        <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-12 col-sm-12">
-                            <center>
-                                <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
-                            </center>
-                        </div>
+                    </div>
+
+                    <br>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="col-md-12 col-sm-12">
+                        <center>
+                            <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
+                            <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
+                        </center>
                     </div>
                 </form>
             </div>

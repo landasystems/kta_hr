@@ -38,7 +38,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawan/cari', data).then(function (data) {
+            Data.get('karyawan/carikontrak', data).then(function (data) {
                 $scope.listKaryawan = data.data;
             });
         }
@@ -46,8 +46,9 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.retKaryawan = function (item, form) {
         form.no_kntrk = item.no_kontrak;
         form.nik = item.nik;
-        form.nama = item.nama;
-        form.status_karyawan = item.status_karyawan;
+        form.jabatan = item.jabatan;
+        form.department = item.department;
+        form.sub_section = item.sub_section;
     };
     $scope.create = function (form) {
         $scope.is_create = true;
@@ -63,17 +64,17 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + form.no;
+        $scope.formtitle = "Edit Data : " + form.nik;
     };
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.no;
+        $scope.formtitle = "Lihat Data : " + form.nik;
     };
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.no;
+        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.id;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -93,7 +94,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('penilaiankontrak/delete/' + row.no).then(function (result) {
+            Data.delete('penilaiankontrak/delete/' + row.id).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }

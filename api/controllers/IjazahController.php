@@ -173,7 +173,7 @@ class IjazahController extends Controller {
                 ->limit($limit)
                 ->from('tbl_ijazah')
                 ->where('status like "%Keluar%"')
-                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->andWhere('(tgl_keluar >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 

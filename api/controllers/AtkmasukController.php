@@ -148,9 +148,9 @@ class AtkmasukController extends Controller {
         //create query
         $query = new Query;
         $query->offset($offset)
-                ->limit($limit)
+//                ->limit($limit)
                 ->from('tbl_dtrans_atk as det')
-                ->JOIN('LEFT JOIN','tbl_htrans as atk' ,'det.no_trans = atk.no_transaksi')
+                ->JOIN('LEFT JOIN','tbl_htrans_atk as atk' ,'det.no_trans = atk.no_transaksi')
                 ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
                 ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
@@ -294,13 +294,16 @@ class AtkmasukController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/atkmasuk", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
-
+    
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;

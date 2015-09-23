@@ -321,9 +321,9 @@
                                     <li ng-show="user.akses.rekap_pemasukanapd">
                                         <a ui-sref='rekap.pemasukanapd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pemasukan APD</a>
                                     </li>
-                                    <li ng-show="user.akses.rekap_laporanstokapd">
+<!--                                    <li ng-show="user.akses.rekap_laporanstokapd">
                                         <a ui-sref='rekap.laporanstokapd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>StokAPD</a>
-                                    </li>
+                                    </li>-->
                                     <li ng-show="user.akses.rekap_pemakianlat">
                                         <a ui-sref='rekap.pemakianlat'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pemakaian Listrik, Air Telp</a>
                                     </li>
@@ -414,7 +414,7 @@
     <!-- / link and dropdown -->
 
     <!-- search form -->
-    <form class="navbar-form navbar-form-sm navbar-left shift hidden-sm" id="pencarian">
+<!--    <form class="navbar-form navbar-form-sm navbar-left shift hidden-sm" id="pencarian">
         <div class="form-group">
             <div class="input-group">
                 <ui-select on-select="pencarianDet($item)" ng-model="cari">
@@ -428,7 +428,7 @@
                 </span>
             </div>
         </div>
-    </form>
+    </form>-->
     <!-- / search form -->
 
     <!-- nabar right -->
@@ -436,13 +436,13 @@
         <li class="hidden-xs">
             <a ui-fullscreen></a>
         </li>
-        <li class="dropdown" dropdown>
+<!--        <li class="dropdown" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
                 <i class="fa fa-bell"></i>
                 <span class="visible-xs-inline">Notifications</span>
-                <!--<span class="badge badge-sm up bg-danger pull-right-xs">2</span>-->
+                <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
             </a>
-            <!-- dropdown -->
+             dropdown 
             <ul class="dropdown-menu animated fadeInRight w">
                 <li ng-show="user.akses.notif_bom">
                     <a ui-sref='notif.bom'>BOM</a>
@@ -469,8 +469,8 @@
                     <a ui-sref='notif.monitoring'>Monitoring</a>
                 </li>
             </ul>
-            <!-- / dropdown -->
-        </li>
+             / dropdown 
+        </li>-->
         <li class="dropdown" dropdown>
             <a href class="dropdown-toggle clear" dropdown-toggle>
                 <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">

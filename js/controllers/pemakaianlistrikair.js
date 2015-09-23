@@ -38,6 +38,8 @@ app.controller('pemakaianLatCtrl', function($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Pemakaian Listrik Air Telp";
         $scope.form = {};
+        $scope.form.tgl = new Date();
+        $scope.form.tgl_reff = new Date();
         Data.get('pemakaianlat/kode',form).then(function(data){
             $scope.form.no_pemakaian = data.kode;
         });
@@ -47,6 +49,8 @@ app.controller('pemakaianLatCtrl', function($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_reff = new Date(form.tgl_reff);
         $scope.formtitle = "Edit Data : " + form.no_pemakaian;
     };
     $scope.view = function(form) {

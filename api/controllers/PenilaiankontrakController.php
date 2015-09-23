@@ -84,7 +84,7 @@ class PenilaiankontrakController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
-                ->join('LEFT JOIN','tbl_karyawan_kontrak as kar','pen.no_kntrk = kar.no_kontrak')
+//                ->join('LEFT JOIN','tbl_karyawan as kar','pen.nik = kar.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -102,8 +102,13 @@ class PenilaiankontrakController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['no_kntrk']);
-            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
+            $kontrak = \app\models\Tblkaryawankontrak::getFullinfo($val['nik']);
+//            $models[$key]
+            
+            foreach($kontrak as $key2 => $val2){
+                $models[$key][$key2] = (empty($val2)) ? '' : $val2;
+            }
+            $models[$key]['karyawan'] = (empty($kontrak)) ? array() : $kontrak;
         }
         $totalItems = $query->count();
 
@@ -212,11 +217,12 @@ class PenilaiankontrakController extends Controller {
         $query = new Query;
         $query->from('tbl_penilaian_kontrak')
                 ->select("*")
-                ->where(['like', 'no_kntrk', $params['nama']])
+                ->where(['like', 'nik', $params['nama']])
                 ->orWhere(['like', 'nm_kontrak', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));
     }
@@ -232,8 +238,8 @@ class PenilaiankontrakController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
-                ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.no_kntrk = kar.no_kontrak')
-                ->where('no_kontrak="' . $params['karyawan']['no_kontrak'] . '"')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'pen.nik = kar.nik')
+                ->where('nik="' . $params['karyawan']['nik'] . '"')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -244,7 +250,7 @@ class PenilaiankontrakController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['no_kntrk']);
+            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
             $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
         }
         $totalItems = $query->count();
@@ -279,7 +285,7 @@ class PenilaiankontrakController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
-                ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.no_kntrk = kar.no_kontrak')
+                ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.nik = kar.no_kontrak')
 //                ->where('no_kontrak="' . $params['karyawan']['no_kontrak'] . '"')
                 ->orderBy($sort)
                 ->select("*");
@@ -291,7 +297,7 @@ class PenilaiankontrakController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['no_kntrk']);
+            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
             $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
         }
         $totalItems = $query->count();

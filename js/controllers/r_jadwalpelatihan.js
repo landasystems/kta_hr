@@ -1,52 +1,51 @@
-app.controller('rekapbarangkeluarCtrl', function ($scope, Data, toaster) {
+app.controller('jadwalPelatihanCtrl', function ($scope, Data, toaster) {
     //init data
     var tableStateRef;
     var paramRef;
-    
-    $scope.displayed = [];
-    $scope.paginations = 0;
-    $scope.is_edit = false;
-    $scope.is_view = false;
-    $scope.is_create = false;
+    $scope.form = {};
+    $scope.show_detail = false;
 
-    $scope.callServer = function callServer(tableState) {
-        tableStateRef = tableState;
-        $scope.isLoading = true;
-        var offset = tableState.pagination.start || 0;
-        var limit = tableState.pagination.number || 10;
-        var param = {offset: offset, limit: limit};
-
-        if (tableState.sort.predicate) {
-            param['sort'] = tableState.sort.predicate;
-            param['order'] = tableState.sort.reverse;
+    $scope.print = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            Data.post('jpelatihan/rekap', form).then(function (data) {
+                window.open('api/web/jpelatihan/excel?print=true', "", "width=500");
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
         }
-        if (tableState.search.predicateObject) {
-            param['filter'] = tableState.search.predicateObject;
-        }
-        paramRef = param;
-        Data.get('bbk/rekap', param).then(function (data) {
-            $scope.displayed = data.data;
-            $scope.displayedPrint = data.dataPrint;
-            $scope.paginations = data.totalItems;
-            if(data.totalItems != 0) {
-                tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
-            }
-        });
-
-        $scope.isLoading = false;
     };
-    
-    $scope.excel = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excel';
-        });
-    }
-    $scope.excelbk = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excelbk';
-        });
-    }
-   
 
+    $scope.excelkeluar = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            Data.post('jpelatihan/rekap', form).then(function (data) {
+                window.location = 'api/web/jpelatihan/excel';
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
 
-})
+//    $scope.cariBarang = function ($query) {
+//        if ($query.length >= 3) {
+//            Data.get('jpelatihan/cari', {jpelatihan: $query}).then(function (data) {
+//                $scope.resultsjpelatihan = data.data;
+//            });
+//        }
+//    };
+
+    $scope.listSrc = [];
+    $scope.list = [];
+    $scope.view = function (form) {
+        if ('tanggal' in form && form.tanggal.startDate != null) {
+            $scope.show_detail = true;
+            Data.post('jpelatihan/rekap', form).then(function (data) {
+                $scope.listSrc = [];
+                angular.forEach(data.data, function ($value, $key) {
+                    $scope.listSrc.push($value);
+                });
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+});

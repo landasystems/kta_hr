@@ -992,13 +992,13 @@ angular.module('app')
                                     }})
                                 .state('rekap.jadwalapenilaian', {
                                     url: '/jadwalapenilaian',
-                                    templateUrl: 'tpl/r_jadwalapenilaian/index.html',
+                                    templateUrl: 'tpl/r_jadwalpenilaian/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_jadwalapenilaian.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalpenilaian.js');
                                                         }
                                                 );
                                             }]

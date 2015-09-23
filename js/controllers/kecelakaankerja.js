@@ -36,7 +36,8 @@ app.controller('kecelakaanKerjaCtrl', function($scope, Data, toaster) {
     $scope.retKaryawan = function (item, form) {
 //        console.log(item);
         form.nik = item.nik;
-        form.bagian = item.department;
+        form.nama = item.nama;
+        form.bagian = item.bagian;
     };
     $scope.open1 = function ($event) {
         $event.preventDefault();

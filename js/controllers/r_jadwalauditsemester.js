@@ -1,4 +1,4 @@
-app.controller('pemakianLatCtrl', function ($scope, Data, toaster) {
+app.controller('jadwalAuditSemesterCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
