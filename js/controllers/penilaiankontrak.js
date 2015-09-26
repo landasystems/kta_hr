@@ -25,6 +25,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    $scope.tgl = new Date();
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -46,6 +47,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.retKaryawan = function (item, form) {
         form.no_kntrk = item.no_kontrak;
         form.nik = item.nik;
+        form.nama = item.nama;
         form.jabatan = item.jabatan;
         form.department = item.department;
         form.sub_section = item.sub_section;
@@ -80,8 +82,10 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
                 $scope.is_edit = false;
-                $scope.callServer(tableStateRef); //reload grid ulang
+                $scope.is_view = true;
+                $scope.view(form);
                 toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
+                $scope.callServer(tableStateRef); //reload grid ulang
             }
         });
     };
@@ -98,5 +102,36 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
+    };
+
+    $scope.nilaiTotal = function () {
+        var subTotal1 = 0;
+        var subTotal2 = 0;
+        var subTotal3 = 0;
+        subTotal1 = parseInt($scope.form.mutu_kerja) + parseInt($scope.form.pengetahuan_teknis) + parseInt($scope.form.tgjawab_pekerjaan) + parseInt($scope.form.kerjasama_komunikasi) + parseInt($scope.form.sikap_kerja) + parseInt($scope.form.inisiatif) + parseInt($scope.form.rasa_turut_memiliki) + parseInt($scope.form.disiplinitas);
+        subTotal3 = parseInt($scope.form.kehadiran) + parseInt($scope.form.administratif);
+        subTotal2 = parseInt($scope.form.kepemimpinan) + parseInt($scope.form.pelaksanaan_managerial) + parseInt($scope.form.problem_solving);
+
+        $scope.form.sub1 = ((subTotal1 / 100) * 40).toFixed(2);
+        $scope.form.sub2 = ((subTotal2 / 100) * 20).toFixed(2);
+        $scope.form.sub3 = ((subTotal3 / 100) * 40).toFixed(2);
+
+        $scope.form.nilaiFinal = (parseFloat($scope.form.sub1) + parseFloat($scope.form.sub2) + parseFloat($scope.form.sub3)).toFixed(2);
+
+    };
+    
+    $scope.nilaiToString = function(angka){
+        var hasil = '';
+        if(angka == 4){
+            hasil = 'A';
+        }else if(angka == 3){
+            hasil = 'B';
+        }else if(angka == 2){
+            hasil = 'C';
+        }else{
+            hasil = 'D';
+        }
+        
+        return hasil;
     };
 });

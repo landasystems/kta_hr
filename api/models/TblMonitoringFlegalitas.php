@@ -39,7 +39,8 @@ class TblMonitoringFlegalitas extends \yii\db\ActiveRecord
             [['no_mflegalitas', 'no_file'], 'string', 'max' => 20],
             [['nm_file'], 'string', 'max' => 200],
             [['instansi', 'atas_nm', 'jns_legalitas'], 'string', 'max' => 100],
-            [['ket'], 'string', 'max' => 300]
+            [['ket'], 'string', 'max' => 300],
+            [['no_mflegalitas'], 'unique']
         ];
     }
 

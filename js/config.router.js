@@ -539,6 +539,62 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('monitoring', {
+                                    url: '/monitoring',
+                                    templateUrl: 'tpl/app.html'
+                                })
+                                .state('monitoring.filelegalitas', {
+                                    url: '/filelegalitas',
+                                    templateUrl: 'tpl/mo_filelegalitas/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_filelegalitas.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.asuransikendaraan', {
+                                    url: '/asuransikendaraan',
+                                    templateUrl: 'tpl/mo_asuransikendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_asuransikendaraan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.servicekendaraan', {
+                                    url: '/servicekendaraan',
+                                    templateUrl: 'tpl/mo_servicekendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_servicekendaraan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.stnk', {
+                                    url: '/stnk',
+                                    templateUrl: 'tpl/mo_stnk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_stnk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'

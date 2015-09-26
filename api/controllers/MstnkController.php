@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TblPenilaianKontrak;
+use app\models\TblMonitoringStnk;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class PenilaiankontrakController extends Controller {
+class MstnkController extends Controller {
 
     public function behaviors() {
         return [
@@ -24,8 +24,9 @@ class PenilaiankontrakController extends Controller {
                     'update' => ['post'],
                     'rekap' => ['post'],
                     'delete' => ['delete'],
+                    'jenis' => ['get'],
+                    'kode' => ['get'],
                     'cari' => ['get'],
-                    'rekap' => ['post'],
                 ],
             ]
         ];
@@ -53,12 +54,28 @@ class PenilaiankontrakController extends Controller {
         return true;
     }
 
+    public function actionKode() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('tbl_monitoring_stnk')
+                ->select('*')
+                ->orderBy('no_mstnk DESC')
+                ->limit(1);
+
+        $command = $query->createCommand();
+        $models = $command->queryOne();
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_mstnk'], -5)) + 1;
+        $kode = 'MSTNK' . substr('00000' . $urut, -5);
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'kode' => $kode));
+    }
+
     public function actionIndex() {
-        //init variable
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "id DESC";
+        $sort = "no_mstnk DESC";
         $offset = 0;
         $limit = 10;
 
@@ -83,8 +100,7 @@ class PenilaiankontrakController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_penilaian_kontrak as pen')
-//                ->join('LEFT JOIN','tbl_karyawan as kar','pen.nik = kar.nik')
+                ->from('tbl_monitoring_stnk')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -92,7 +108,11 @@ class PenilaiankontrakController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
+//                if ($key == "kat") {
+//                    $query->andFilterWhere(['=', $key, $val]);
+//                } else {
                 $query->andFilterWhere(['like', $key, $val]);
+//                }
             }
         }
 
@@ -101,23 +121,50 @@ class PenilaiankontrakController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach ($models as $key => $val) {
-            $kontrak = \app\models\Tblkaryawankontrak::getFullinfo($val['nik']);
-//            $models[$key]
-
-            if (!empty($kontrak)) {
-                foreach ($kontrak as $key2 => $val2) {
-                    $models[$key][$key2] = (empty($val2)) ? '' : $val2;
-                }
+        $totalItems = $query->count();
+        
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $file = \app\models\TblKendaraan::find()->where(['nopol' => $val['nopol']])->one();
+                $models[$key]['kendaraan'] = (!empty($file)) ? $file->attributes : [];
             }
-            $models[$key]['karyawan'] = (empty($kontrak)) ? array() : $kontrak;
         }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_mstnk DESC";
+        $offset = 0;
+        $limit = 10;
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_monitoring_stnk')
+                ->where('status like "%Masuk%"')
+                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
         $totalItems = $query->count();
 
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
 
     public function actionView($id) {
 
@@ -129,7 +176,7 @@ class PenilaiankontrakController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new TblPenilaianKontrak();
+        $model = new TblMonitoringStnk();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -169,7 +216,7 @@ class PenilaiankontrakController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = TblPenilaianKontrak::findOne($id)) !== null) {
+        if (($model = TblMonitoringStnk::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -211,102 +258,21 @@ class PenilaiankontrakController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'params' => $params['karyawan']]);
+        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
     }
 
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_penilaian_kontrak')
+        $query->from('tbl_monitoring_stnk')
                 ->select("*")
-                ->where(['like', 'nik', $params['nama']])
-                ->orWhere(['like', 'nm_kontrak', $params['nama']]);
+                ->where(['like', 'no_mstnk', $params['nama']])
+                ->orWhere(['like', 'nopol', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));
-    }
-
-    public function actionRekap() {
-        $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
-        $sort = "tgl DESC";
-        $offset = 0;
-        $limit = 10;
-        //create query
-        $query = new Query;
-        $query->offset($offset)
-                ->limit($limit)
-                ->from('tbl_penilaian_kontrak as pen')
-                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'pen.nik = kar.nik')
-                ->where('nik="' . $params['karyawan']['nik'] . '"')
-                ->orderBy($sort)
-                ->select("*");
-
-        session_start();
-        $_SESSION['query'] = $query;
-        $_SESSION['params'] = $params;
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
-            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
-        }
-        $totalItems = $query->count();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
-    }
-
-    public function actionRekapall() {
-        $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
-        $sort = "tgl DESC";
-        $offset = 0;
-        $limit = 10;
-
-
-        //create query
-        $head = array();
-        $header = \app\models\Tblkaryawankontrak::findAll();
-        if (!empty($header)) {
-            foreach ($header as $key => $val) {
-                $head[] = $val->attributes;
-                $det = TblPenilaianKontrak::find()
-                        ->where('')
-                        ->all();
-            }
-        }
-
-
-        $query = new Query;
-        $query->offset($offset)
-                ->limit($limit)
-                ->from('tbl_penilaian_kontrak as pen')
-                ->join('LEFT JOIN', 'tbl_karyawan_kontrak as kar', 'pen.nik = kar.no_kontrak')
-//                ->where('no_kontrak="' . $params['karyawan']['no_kontrak'] . '"')
-                ->orderBy($sort)
-                ->select("*");
-
-        session_start();
-        $_SESSION['query'] = $query;
-        $_SESSION['params'] = $params;
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
-            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
-        }
-        $totalItems = $query->count();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
 }
