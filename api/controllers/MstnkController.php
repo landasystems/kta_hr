@@ -147,8 +147,7 @@ class MstnkController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_monitoring_stnk')
-                ->where('status like "%Masuk%"')
-                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->where('(tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -258,7 +257,7 @@ class MstnkController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        return $this->render("/exprekap/mostnk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
     }
 
     public function actionCari() {

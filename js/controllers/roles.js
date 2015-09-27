@@ -182,6 +182,9 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_rekapmagang": false,
             "rekap_siswaprakerin": false,
             "rekap_rpenilaiankontrak": false,
+            "rekap_moasuransi": false,
+            "rekap_moservice": false,
+            "rekap_mostnk": false,
             "notif_bom": false,
         }
         angular.forEach(akses, function ($value, $key) {

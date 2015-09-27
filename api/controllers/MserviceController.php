@@ -146,8 +146,7 @@ class MserviceController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_monitoring_service')
-                ->where('status like "%Masuk%"')
-                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->where('(tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -158,10 +157,23 @@ class MserviceController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
+        
+        $details = [];
+        $i = 0;
+        
+        foreach ($models as $key => $val) {
+            $detail = \app\models\Tblmonitoringdservice::findAll(['no' => $val['no_mservice']]);
+            if (!empty($detail)) {
+//                Yii::error($detail);
+                foreach ($detail as $key2 => $val2) {
+                    $details[$i] = $val2->attributes;
+                    $i++;
+                }
+            }
+        }
 
         $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models, 'detail' => $details, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
     public function actionView($id) {
@@ -169,8 +181,8 @@ class MserviceController extends Controller {
 //        $model = $this->findModel($id);
         $detail = \app\models\Tblmonitoringdservice::findAll(['no' => $id]);
         $models = [];
-        if(!empty($detail)){
-            foreach($detail as $key => $val){
+        if (!empty($detail)) {
+            foreach ($detail as $key => $val) {
                 $models[$key] = $val->attributes;
             }
         }
@@ -232,7 +244,7 @@ class MserviceController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
-        $delDetail = \app\models\Tblmonitoringdservice::deleteAll(['no'=> $id]);
+        $delDetail = \app\models\Tblmonitoringdservice::deleteAll(['no' => $id]);
 
         if ($model->delete()) {
             $this->setHeader(200);
@@ -287,7 +299,7 @@ class MserviceController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        return $this->render("/exprekap/moservicekendaraan", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
     }
 
     public function actionCari() {

@@ -1189,6 +1189,45 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.moasuransi', {
+                                    url: '/moasuransi',
+                                    templateUrl: 'tpl/r_mo_asuransi/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_asuransi.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.moservice', {
+                                    url: '/moservice',
+                                    templateUrl: 'tpl/r_mo_service/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_service.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.mostnk', {
+                                    url: '/mostnk',
+                                    templateUrl: 'tpl/r_mo_stnk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_stnk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                         //
 
                     }

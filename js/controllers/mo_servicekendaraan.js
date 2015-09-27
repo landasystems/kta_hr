@@ -34,7 +34,7 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/mservice/excel';
         });
     };
-    $scope.cari= function (nama) {
+    $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('kendaraan/cari', data).then(function (data) {
@@ -51,6 +51,7 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
         form.thn_pembuatan = item.thn_pembuatan;
         form.no_rangka = item.no_rangka;
         form.no_mesin = item.no_mesin;
+        form.user = item.user;
         form.masa_berlaku = item.masa_berlaku;
     };
 
@@ -90,7 +91,7 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.retDetail = function (no) {
-        Data.get('mservice/view/'+no.no_mservice).then(function(data){
+        Data.get('mservice/view/' + no.no_mservice).then(function (data) {
             $scope.detService = data.data;
         });
     };
