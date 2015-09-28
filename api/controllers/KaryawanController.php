@@ -28,6 +28,7 @@ class KaryawanController extends Controller {
                     'rekapmasuk' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
+                    'carikontrak' => ['get'],
                     'kode' => ['get'],
                 ],
             ]
@@ -143,7 +144,7 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl_keluar_kerja <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -159,6 +160,7 @@ class KaryawanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekapmasuk() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -172,7 +174,7 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('v_karyawan_masuk')
-                ->where('(tgl_masuk_kerja >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl_masuk_kerja <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -293,9 +295,10 @@ class KaryawanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $rekap = (!empty($_GET['rekap']))? $_GET['rekap'] : '';
-        return $this->render("/exprekap/".$rekap, ['models' => $models, 'start' => $start, 'end' => $end]);
+        $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end]);
     }
+
     public function actionExcelkeluar() {
         session_start();
         $query = $_SESSION['query'];
@@ -313,10 +316,31 @@ class KaryawanController extends Controller {
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_karyawan as kar')
-                ->join('LEFT JOIN', 'tbl_department as dep', 'kar.department = dep.id_department')
-                ->join('LEFT JOIN', 'sub_section as sub', 'kar.sub_section= sub.id_sub')
-                ->select("*,sub.sub_section as subSection")
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("*,sub.kerja as subSection,kar.nik, kar.nama,jab.jabatan,dep.department,sub.kerja as sub_section,sec.section")
                 ->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%"')
+                ->limit(10);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionCarikontrak() {
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("kar.nik, kar.nama,jab.jabatan,dep.department,sub.kerja as sub_section,sec.section")
+                ->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%" AND status_karyawan like "%Kontrak%"')
                 ->limit(10);
 
         $command = $query->createCommand();

@@ -368,6 +368,15 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
+                                .state('master.kendaraan', {
+                                    url: '/kendaraan',
+                                    templateUrl: 'tpl/m_kendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/kendaraan.js');
+                                            }]
+                                    }})
 
                                 // Pegawai
                                 .state('pegawai', {
@@ -535,6 +544,62 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/jadwalhse.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring', {
+                                    url: '/monitoring',
+                                    templateUrl: 'tpl/app.html'
+                                })
+                                .state('monitoring.filelegalitas', {
+                                    url: '/filelegalitas',
+                                    templateUrl: 'tpl/mo_filelegalitas/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_filelegalitas.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.asuransikendaraan', {
+                                    url: '/asuransikendaraan',
+                                    templateUrl: 'tpl/mo_asuransikendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_asuransikendaraan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.servicekendaraan', {
+                                    url: '/servicekendaraan',
+                                    templateUrl: 'tpl/mo_servicekendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_servicekendaraan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('monitoring.stnk', {
+                                    url: '/stnk',
+                                    templateUrl: 'tpl/mo_stnk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/mo_stnk.js');
                                                         }
                                                 );
                                             }]
@@ -992,13 +1057,13 @@ angular.module('app')
                                     }})
                                 .state('rekap.jadwalapenilaian', {
                                     url: '/jadwalapenilaian',
-                                    templateUrl: 'tpl/r_jadwalapenilaian/index.html',
+                                    templateUrl: 'tpl/r_jadwalpenilaian/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_jadwalapenilaian.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_jadwalpenilaian.js');
                                                         }
                                                 );
                                             }]
@@ -1129,6 +1194,45 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_rpenilaiankontrak.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.moasuransi', {
+                                    url: '/moasuransi',
+                                    templateUrl: 'tpl/r_mo_asuransi/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_asuransi.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.moservice', {
+                                    url: '/moservice',
+                                    templateUrl: 'tpl/r_mo_service/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_service.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.mostnk', {
+                                    url: '/mostnk',
+                                    templateUrl: 'tpl/r_mo_stnk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mo_stnk.js');
                                                         }
                                                 );
                                             }]

@@ -34,21 +34,17 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
     };
     $scope.update = function(form) {
         $scope.form = form;
-        $scope.selectJenis(form);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.formtitle = "Edit Data : " + form.nm_barang;
-        $scope.qty(form.max, form.saldo);
     };
     $scope.view = function(form) {
         $scope.form = form;
-        $scope.selectJenis(form);
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.nm_barang;
-        $scope.qty(form.max, form.saldo);
     };
     $scope.save = function(form) {
         var url = ($scope.is_create == true) ? 'barang/create/' : 'barang/update/' + form.kd_barang;

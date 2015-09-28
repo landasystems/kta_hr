@@ -25,6 +25,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    $scope.tgl = new Date();
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -38,7 +39,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawan/cari', data).then(function (data) {
+            Data.get('karyawan/carikontrak', data).then(function (data) {
                 $scope.listKaryawan = data.data;
             });
         }
@@ -47,7 +48,9 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         form.no_kntrk = item.no_kontrak;
         form.nik = item.nik;
         form.nama = item.nama;
-        form.status_karyawan = item.status_karyawan;
+        form.jabatan = item.jabatan;
+        form.department = item.department;
+        form.sub_section = item.sub_section;
     };
     $scope.create = function (form) {
         $scope.is_create = true;
@@ -63,24 +66,26 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Edit Data : " + form.no;
+        $scope.formtitle = "Edit Data : " + form.nik;
     };
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.no;
+        $scope.formtitle = "Lihat Data : " + form.nik;
     };
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.no;
+        var url = ($scope.is_create == true) ? 'penilaiankontrak/create/' : 'penilaiankontrak/update/' + form.id;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
                 $scope.is_edit = false;
-                $scope.callServer(tableStateRef); //reload grid ulang
+                $scope.is_view = true;
+                $scope.view(form);
                 toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
+                $scope.callServer(tableStateRef); //reload grid ulang
             }
         });
     };
@@ -93,9 +98,40 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('penilaiankontrak/delete/' + row.no).then(function (result) {
+            Data.delete('penilaiankontrak/delete/' + row.id).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
+    };
+
+    $scope.nilaiTotal = function () {
+        var subTotal1 = 0;
+        var subTotal2 = 0;
+        var subTotal3 = 0;
+        subTotal1 = parseInt($scope.form.mutu_kerja) + parseInt($scope.form.pengetahuan_teknis) + parseInt($scope.form.tgjawab_pekerjaan) + parseInt($scope.form.kerjasama_komunikasi) + parseInt($scope.form.sikap_kerja) + parseInt($scope.form.inisiatif) + parseInt($scope.form.rasa_turut_memiliki) + parseInt($scope.form.disiplinitas);
+        subTotal3 = parseInt($scope.form.kehadiran) + parseInt($scope.form.administratif);
+        subTotal2 = parseInt($scope.form.kepemimpinan) + parseInt($scope.form.pelaksanaan_managerial) + parseInt($scope.form.problem_solving);
+
+        $scope.form.sub1 = ((subTotal1 / 100) * 40).toFixed(2);
+        $scope.form.sub2 = ((subTotal2 / 100) * 20).toFixed(2);
+        $scope.form.sub3 = ((subTotal3 / 100) * 40).toFixed(2);
+
+        $scope.form.nilaiFinal = (parseFloat($scope.form.sub1) + parseFloat($scope.form.sub2) + parseFloat($scope.form.sub3)).toFixed(2);
+
+    };
+    
+    $scope.nilaiToString = function(angka){
+        var hasil = '';
+        if(angka == 4){
+            hasil = 'A';
+        }else if(angka == 3){
+            hasil = 'B';
+        }else if(angka == 2){
+            hasil = 'C';
+        }else{
+            hasil = 'D';
+        }
+        
+        return hasil;
     };
 });

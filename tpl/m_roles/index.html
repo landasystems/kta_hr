@@ -137,6 +137,13 @@
                                             </div>
                                             <div href="" class="list-group-item m-l">
                                                 <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.master_kendaraan">
+                                                    <i></i>
+                                                    Kendaraan Inventaris
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.master_jenisbrg">
                                                     <i></i>
                                                     Jenis barang
@@ -473,6 +480,51 @@
                                     <div class="panel panel-info">
                                         <div class="panel-heading">
                                             <label class="i-checks">
+                                                <input type="checkbox" ng-disabled="is_view" ng-model='selectMonitoring' ng-click="checkAll('monitoring', selectMonitoring)">
+                                                <i></i>
+                                                Monitoring
+                                            </label>
+                                        </div>
+                                        <div class="list-group bg-white">
+                                            <div class="list-group-item">
+                                                <b>Monitoring</b>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.monitoring_filelegalitas">
+                                                    <i></i>
+                                                    Monitoring File Legalitas
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.monitoring_asuransikendaraan">
+                                                    <i></i>
+                                                    Monitoring Asuransi Kendaraan
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.monitoring_servicekendaraan">
+                                                    <i></i>
+                                                    Monitoring Service Kendaraan
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.monitoring_stnk">
+                                                    <i></i>
+                                                    Monitoring STNK
+                                                </label>
+                                            </div>
+                                            <!--end-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <label class="i-checks">
                                                 <input type="checkbox" ng-disabled="is_view" ng-model='selectRekap' ng-click="checkAll('rekap', selectRekap)">
                                                 <i></i>
                                                 Rekap
@@ -687,6 +739,27 @@
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_rpenilaiankontrak">
                                                     <i></i>
                                                     Rekap Penilaian Kontrak
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_moasuransi">
+                                                    <i></i>
+                                                    Rekap Monitoring Asuransi
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_moservice">
+                                                    <i></i>
+                                                    Rekap Monitoring Service Kendaraan
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_mostnk">
+                                                    <i></i>
+                                                    Rekap Monitoring STNK
                                                 </label>
                                             </div>
                                         </div>

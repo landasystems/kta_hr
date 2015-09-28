@@ -85,8 +85,12 @@
                     <div class="row">
 
                         <div class="col-md-8 col-sm-12">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Kepegawaian</div>
                             <div class="form-group">
-                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">Data Diri</div>
+                                <label class="col-sm-3 control-label">NIK</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.nik" ng-disabled="is_view">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Nama Lengkap</label>
@@ -95,20 +99,147 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">No. KTP</label>
+                                <label class="col-sm-3 control-label">Inisial</label>
                                 <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.initial" ng-disabled="is_view" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Departement</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <ui-select on-select="retDepartment($select.selected,form)" ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
+                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                {{val.kd_bagian}}<br>
+                                                <small>{{val.bagian}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Section</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <ui-select on-select="retBagian($select.selected,form)" ng-disabled="is_view" ng-model="form.Bagian" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
+                                            <ui-select-choices refresh="cariBagian($select.search)" repeat="val in listBagian">
+                                                {{val.kd_bagian}}<br>
+                                                <small>{{val.bagian}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Bagian = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Sub Section</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <ui-select on-select="retBagian($select.selected,form)" ng-disabled="is_view" ng-model="form.Bagian" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
+                                            <ui-select-choices refresh="cariBagian($select.search)" repeat="val in listBagian">
+                                                {{val.kd_bagian}}<br>
+                                                <small>{{val.bagian}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Bagian = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Jabatan</label>
+                                <div class="col-sm-6">
+                                    <ui-select on-select="retJabatan($select.selected,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
+                                        <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
+                                        <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
+                                            {{val.id_jabatan}}<br>
+                                            <small>{{val.jabatan}}</small>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button ng-click="form.Jabatan = undefined" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 col-sm-12 img-thumbnail">
+                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
+                            <center><input type="file" nv-file-select="" uploader="uploader" /></center>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Lokasi Kantor</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Status Kepemilikan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.status_kepemilikan" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened2" ng-click="open2($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Status Karyawan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.status_karyawan" ng-disabled="is_view" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">Data Diri</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">No. KTP</label>
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.no_ktp" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Tempat Lahir</label>
-                                <div class="col-sm-6">
+                                <label class="col-sm-4 control-label">Tempat Lahir</label>
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.tmpt_lahir" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Tanggal Lahir</label>
-                                <div class="col-sm-6">
+                                <label class="col-sm-4 control-label">Tanggal Lahir</label>
+                                <div class="col-sm-8">
                                     <div class="input-group">
                                         <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened1" ng-click="open1($event)"/>
                                         <span class="input-group-addon">
@@ -118,31 +249,31 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Alamat Jalan</label>
-                                <div class="col-sm-6">
+                                <label class="col-sm-4 control-label">Alamat Jalan</label>
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.alamat_jln" ng-disabled="is_view" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">RT / RW</label>
-                                <div class="col-sm-3">
+                                <label class="col-sm-4 control-label">RT / RW</label>
+                                <div class="col-sm-4">
                                     <input type="text" class="form-control" ng-model="form.rt" ng-disabled="is_view" required>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <input type="text" class="form-control" ng-model="form.rw" ng-disabled="is_view" required>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
-                            <center><input type="file" nv-file-select="" uploader="uploader" /></center>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Desa</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.desa" ng-disabled="is_view" required>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Kecamatan</label>
@@ -182,72 +313,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Kepegawaian</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">NIK</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nik" ng-disabled="is_view" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Inisial</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.initial" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Departement</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <ui-select on-select="retDepartment($select.selected,form)" ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
-                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
-                                                {{val.kd_bagian}}<br>
-                                                <small>{{val.bagian}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.Department = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Bagian</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <ui-select on-select="retBagian($select.selected,form)" ng-disabled="is_view" ng-model="form.Bagian" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.kd_bagian}} - {{$select.selected.bagian}}</ui-select-match>
-                                            <ui-select-choices refresh="cariBagian($select.search)" repeat="val in listBagian">
-                                                {{val.kd_bagian}}<br>
-                                                <small>{{val.bagian}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.Bagian = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Jabatan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.jabatan" ng-disabled="is_view" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Lokasi Kantor</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" required>
-                                </div>
-                            </div>
 
-                        </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
                         <div class="col-md-6 col-sm-12">

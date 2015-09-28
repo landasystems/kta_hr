@@ -125,6 +125,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "master_barangatk": false,
             "master_stokatk": false,
             "master_filelegalitas": false,
+            "master_kendaraan": false,
             "transaksi_karyawanspd": false,
             "transaksi_agendapelatihan": false,
             "transaksi_agendaumum": false,
@@ -141,6 +142,10 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "jadwal_auditsemester": false,
             "jadwal_penilaian": false,
             "jadwal_hsetalk": false,
+            "monitoring_filelegalitas": false,
+            "monitoring_asuransikendaraan": false,
+            "monitoring_servicekendaraan": false,
+            "monitoring_stnk": false,
             "pegawai_ijazah": false,
             "pegawai_karyawan": false,
             "pegawai_lamarankerja": false,
@@ -178,6 +183,9 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_rekapmagang": false,
             "rekap_siswaprakerin": false,
             "rekap_rpenilaiankontrak": false,
+            "rekap_moasuransi": false,
+            "rekap_moservice": false,
+            "rekap_mostnk": false,
             "notif_bom": false,
         }
         angular.forEach(akses, function ($value, $key) {

@@ -74,6 +74,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader) {
         $scope.form = {};
         $scope.form.tgl_masuk_kerja = new Date();
         $scope.form.tgl_selesai = new Date();
+
     };
     $scope.update = function (form) {
         $scope.form = form;

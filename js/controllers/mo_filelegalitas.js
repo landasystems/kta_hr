@@ -1,4 +1,4 @@
-app.controller('departmentCtrl', function ($scope, Data, toaster) {
+app.controller('moFileLegalitasCtrl', function ($scope, Data, toaster) {
     //init data
     var tableStateRef;
     var paramRef;
@@ -22,18 +22,50 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('departement', param).then(function (data) {
+        Data.get('mlegalitas', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
 
         $scope.isLoading = false;
     };
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
+    };
+    $scope.open2 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened2 = true;
+    };
+    $scope.open3 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened3 = true;
+    };
+
     $scope.excel = function () {
-        Data.get('departement', paramRef).then(function (data) {
-            window.location = 'api/web/departement/excel';
+        Data.get('mlegalitas', paramRef).then(function (data) {
+            window.location = 'api/web/mlegalitas/excel';
         });
-    }
+    };
+
+    $scope.cariFile = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('filelegalitas/cari', data).then(function (data) {
+                $scope.results = data.data;
+            });
+        }
+    };
+    $scope.retFile = function (item, form) {
+        form.no_file = item.no_file;
+        form.nm_file = item.nm_file;
+        form.instansi = item.instansi;
+        form.atas_nm = item.atas_nm;
+        form.jns_legalitas = item.jns_legalitas;
+    };
 
     $scope.create = function (form) {
         $scope.is_edit = true;
@@ -41,25 +73,31 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
-        Data.get('departement/kode').then(function (data) {
-            $scope.form.id_department = data.kode;
+        $scope.form.tgl_mflegalitas = new Date();
+        $scope.form.tgl_pengesahan = new Date();
+        $scope.form.masa_berlaku = new Date();
+        Data.get('mlegalitas/kode').then(function (data) {
+            $scope.form.no_mflegalitas = data.kode;
         });
     };
     $scope.update = function (form) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.is_create = false;
-        $scope.formtitle = "Edit Data : " + form.id_department;
+        $scope.formtitle = "Edit Data : " + form.no_mflegalitas;
         $scope.form = form;
+        $scope.form.tgl_mflegalitas = new Date(form.tgl_mflegalitas);
+        $scope.form.tgl_pengesahan = new Date(form.tgl_pengesahan);
+        $scope.form.masa_berlaku = new Date(form.masa_berlaku);
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.id_department;
+        $scope.formtitle = "Lihat Data : " + form.no_mflegalitas;
         $scope.form = form;
     };
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'departement/create' : 'departement/update/' + form.id_department;
+        var url = ($scope.is_create == true) ? 'mlegalitas/create' : 'mlegalitas/update/' + form.no_mflegalitas;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -80,11 +118,10 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('departement/delete/' + row.id_department).then(function (result) {
+            Data.delete('mlegalitas/delete/' + row.no_mflegalitas).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
     };
 
-
-})
+});

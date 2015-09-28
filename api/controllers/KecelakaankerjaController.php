@@ -115,6 +115,22 @@ class KecelakaankerjaController extends Controller {
 //                }
             }
         }
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        foreach($models as $key => $val){
+            if(!empty($val['nik'])){
+                $karyawan = \app\models\TblKaryawan::findOne($val['nik']);
+                if(!empty($karyawan)){
+                    $models[$key]['karyawan'] = $karyawan->attributes;
+                }
+            }
+        }
+
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
     public function actionRekap() {
@@ -130,7 +146,7 @@ class KecelakaankerjaController extends Controller {
 //                ->limit($limit)
                 ->from('tbl_kecelakaan_kerja as kec')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = kec.nik')
-                ->where('(kec.tgl_kejadian >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND kec.tgl_kejadian <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'")')
+                ->where('(kec.tgl_kejadian >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND kec.tgl_kejadian <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*,kec.sub_section as bagian");
 
@@ -245,7 +261,7 @@ class KecelakaankerjaController extends Controller {
         $models = $command->queryAll();
         $start = $params['tanggal']['startDate'];
         $end = $params['tanggal']['endDate'];
-        return $this->render("/exprekap/kecelakaankerja", ['models' => $models,'start' => $start,'end' => $end]);
+        return $this->render("/exprekap/kecelakaankerja", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
 }

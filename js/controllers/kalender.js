@@ -34,7 +34,7 @@ app.controller('kalenderCtrl', function ($scope, Data, toaster) {
         Data.get('kalender', paramRef).then(function (data) {
             window.location = 'api/web/kalender/excel';
         });
-    }
+    };
 
     $scope.open1 = function ($event) {
         $event.preventDefault();

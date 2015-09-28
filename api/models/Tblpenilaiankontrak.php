@@ -30,7 +30,7 @@ class Tblpenilaiankontrak extends \yii\db\ActiveRecord
     {
         return [
             [['tgl'], 'safe'],
-            [['no_kntrk', 'nm_kontrak', 'penilaian'], 'string', 'max' => 20],
+            [['nik', 'nm_kontrak', 'penilaian'], 'string', 'max' => 20],
             [['keterangan'], 'string', 'max' => 100]
         ];
     }

@@ -51,9 +51,9 @@
                             <td>{{row.no_pemakian}}</td>
                             <td>{{row.tgl| date}}</td>
                             <td>{{row.no_reff}}</td>
-                            <td>{{row.tgl_reff | date}}</td>
+                            <td>{{row.tgl_reff| date}}</td>
                             <td>{{row.biaya}}</td>
-                            <td>{{row.jmlh | currency}}</td>
+                            <td>{{row.jmlh| currency}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
@@ -95,6 +95,9 @@
                                     <input type="text" class="form-control" ng-readonly="true" ng-model="form.no_pemakian" ng-disabled="is_view">
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tanggal Pemakian</label>
                                 <div class="col-sm-8">
@@ -107,65 +110,45 @@
                                 </div>
                             </div>
                         </div>
-                        <div class='col-md-6 col-sm-12'>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Pegawai Yang Mengeluarkan</label>
-                                <div class="col-sm-8">
-                                    <ui-select on-select="getPegawai(form,$item)" ng-model="form.karyawan" theme="bootstrap">
-                                        <ui-select-match placeholder="Cari Pegawai">{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
-                                        <ui-select-choices refresh="cariPegawai($select.search)" repeat="det in detPegawai">
-                                            <div>
-                                                {{det.nik}}
-                                            </div><br>
-                                            <small>{{det.nama}}</small>
-                                        </ui-select-choices>
-                                    </ui-select>
-                                </div>
-                            </div>
-                        </div>
 
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Detail Pengeluaran ATK</div>
-                        <div class="col-md-12 col-sm-12">
-                            <table class="table table-bordered det-trans table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th style="text-align: center;">Barang</th>
-                                        <th style="text-align: center;">Stock Saat Ini</th>
-                                        <th style="text-align: center;">Jumlah Pengeluaran</th>
-                                        <th style="width:10% !important;text-align: center;">#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="det in detBarang">
-                                        <td style="text-align: center;width:45%;">
-                                            <div class="input-group m-b" style="margin:0px;width:100%">
-                                                <ui-select on-select="getBarangAtk(det,$item)" ng-model="det.barang" theme="bootstrap">
-                                                    <ui-select-match placeholder="Cari Barang ATK">{{$select.selected.kode_brng}} - {{$select.selected.nama_brng}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariBarangAtk($select.search)" repeat="detail in barangAtk">
-                                                        <div>
-                                                            {{detail.kode_brng}}
-                                                        </div><br>
-                                                        <small>{{detail.nama_brng}}</small>
-                                                    </ui-select-choices>
-                                                </ui-select>
-                                            </div>
-                                        </td>
-                                        <td style="text-align: center !important;">
-                                            {{det.jumlah_brng}}
-                                        </td>
-                                        <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jmlh_brng" ng-disabled="is_view">
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <button type="button" ng-disabled="is_view" class="btn btn-info fa fa-plus" ng-click="addrow()" ng-show="$index == 0" style="width:100%; height:34px;"></button>
-                                            <button type="button" ng-disabled="is_view" class="btn btn-danger fa fa-minus-circle" ng-show="$index > 0" ng-click="removeRow($index)" style="width:100%;height:34px;"></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tfoot></tfoot>
-                            </table>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">NO Reff</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.no_reff" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Tanggal Reff</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-disabled="is_view" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_reff" is-open="opened1" ng-click="open1($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Pemakian</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" ng-model="form.biaya">
+                                        <option value="Biaya Telphone"> Biaya Telepon</option>
+                                        <option value="Biaya Listrik"> Biaya Listrik</option>
+                                        <option value="Biaya Air"> Biaya Air</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Jumlah</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="form.jmlh" ng-disabled="is_view">
+                                </div>
+                            </div>
                         </div>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
                         <div class="col-md-12 col-sm-12">

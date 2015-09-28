@@ -1,4 +1,4 @@
-app.controller('departmentCtrl', function ($scope, Data, toaster) {
+app.controller('moAsuransiCtrl', function ($scope, Data, toaster) {
     //init data
     var tableStateRef;
     var paramRef;
@@ -22,18 +22,50 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('departement', param).then(function (data) {
+        Data.get('masuransi', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
 
         $scope.isLoading = false;
     };
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
+    };
+    $scope.open2 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened2 = true;
+    };
+
     $scope.excel = function () {
-        Data.get('departement', paramRef).then(function (data) {
-            window.location = 'api/web/departement/excel';
+        Data.get('masuransi', paramRef).then(function (data) {
+            window.location = 'api/web/masuransi/excel';
         });
-    }
+    };
+
+    $scope.cari= function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('kendaraan/cari', data).then(function (data) {
+                $scope.results = data.data;
+            });
+        }
+    };
+    $scope.retriv = function (item, form) {
+        form.nopol = item.nopol;
+        form.merk = item.merk;
+        form.tipe = item.tipe;
+        form.model = item.model;
+        form.warna = item.warna;
+        form.thn_pembuatan = item.thn_pembuatan;
+        form.no_rangka = item.no_rangka;
+        form.no_mesin = item.no_mesin;
+        form.user = item.user ;
+        form.masa_berlaku = item.masa_berlaku;
+    };
 
     $scope.create = function (form) {
         $scope.is_edit = true;
@@ -41,25 +73,29 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
-        Data.get('departement/kode').then(function (data) {
-            $scope.form.id_department = data.kode;
+        $scope.form.tgl = new Date();
+        $scope.form.masa_berlaku = new Date();
+        Data.get('masuransi/kode').then(function (data) {
+            $scope.form.no_mansuransi = data.kode;
         });
     };
     $scope.update = function (form) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.is_create = false;
-        $scope.formtitle = "Edit Data : " + form.id_department;
+        $scope.formtitle = "Edit Data : " + form.no_mansuransi;
         $scope.form = form;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.masa_berlaku = new Date(form.masa_berlaku);
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.id_department;
+        $scope.formtitle = "Lihat Data : " + form.no_mansuransi;
         $scope.form = form;
     };
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'departement/create' : 'departement/update/' + form.id_department;
+        var url = ($scope.is_create == true) ? 'masuransi/create' : 'masuransi/update/' + form.no_mansuransi;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -80,7 +116,7 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('departement/delete/' + row.id_department).then(function (result) {
+            Data.delete('masuransi/delete/' + row.no_mansuransi).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
