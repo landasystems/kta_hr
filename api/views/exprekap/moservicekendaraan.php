@@ -34,7 +34,7 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h4>LAPORAN MONITORING ANSURANS KENDARAAN</h4><br/></center>
+<center><h4>LAPORAN MONITORING SERVICE KENDARAAN</h4><br/></center>
 <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
 
 <table width="100%" border="1" style="border-collapse: collapse;font-size: 9px !important;">

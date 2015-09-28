@@ -24,9 +24,6 @@ class KendaraanController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
-                    'listkaryawan' => ['get'],
-                    'listkaryawanabsent' => ['get'],
-                    'listkaryawansales' => ['get'],
                     'cari' => ['get'],
                 ],
             ]
@@ -69,22 +66,6 @@ class KendaraanController extends Controller {
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models));
-    }
-
-    public function actionKode() {
-        $query = new Query;
-        $query->from('tbl_kendaraan')
-                ->select('*')
-                ->orderBy('id_jabatan DESC')
-                ->limit(1);
-
-        $command = $query->createCommand();
-        $models = $command->query()->read();
-        $kode_mdl = (substr($models['id_jabatan'], -3) + 1);
-        $kode = substr('000' . $kode_mdl, strlen($kode_mdl));
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'kode' => 'JBTN' . $kode));
     }
 
     public function actionIndex() {
@@ -145,13 +126,6 @@ class KendaraanController extends Controller {
 
         $model = $this->findModel($id);
         $data = $model->attributes;
-        $subsec = \app\models\SubSection::find()
-                ->where(['kd_kerja' => $model['krj']])
-                ->One();
-        $kd_kerja = (isset($subsec->kd_kerja)) ? $subsec->kd_kerja : '';
-        $kerja = (isset($subsec->kerja)) ? $subsec->kerja : '';
-        $data['subSection'] = ['kd_kerja' => $kd_kerja, 'kerja' => $kerja];
-
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
     }

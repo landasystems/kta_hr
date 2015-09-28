@@ -34,6 +34,7 @@ class TblKendaraan extends \yii\db\ActiveRecord
     {
         return [
             [['nopol'], 'required'],
+            [['nopol'], 'unique'],
             [['nopol', 'merk', 'tipe', 'model', 'warna', 'thn_pembuatan'], 'string', 'max' => 20],
             [['no_rangka', 'no_mesin', 'user'], 'string', 'max' => 50]
         ];

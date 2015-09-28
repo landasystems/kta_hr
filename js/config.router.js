@@ -368,6 +368,15 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/roles.js');
                                             }]
                                     }})
+                                .state('master.kendaraan', {
+                                    url: '/kendaraan',
+                                    templateUrl: 'tpl/m_kendaraan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/kendaraan.js');
+                                            }]
+                                    }})
 
                                 // Pegawai
                                 .state('pegawai', {
