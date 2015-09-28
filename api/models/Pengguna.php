@@ -25,7 +25,7 @@ class Pengguna extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'm_user';
+        return 'tbl_user';
     }
 
     /**

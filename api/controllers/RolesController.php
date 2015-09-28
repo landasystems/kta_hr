@@ -53,7 +53,7 @@ class RolesController extends Controller {
     
     public function actionList() {
         $query = new Query;
-        $query->from('m_roles')
+        $query->from('tbl_roles')
                 ->where(['is_deleted'=>0])
                 ->select('*');
 
@@ -94,7 +94,7 @@ class RolesController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('m_roles')
+                ->from('tbl_roles')
                 ->orderBy($sort)
                 ->select("*");
 

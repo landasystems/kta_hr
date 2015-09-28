@@ -56,7 +56,7 @@ class PenggunaController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "m_user.nama ASC";
+        $sort = "tbl_user.nama ASC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);
@@ -81,11 +81,11 @@ class PenggunaController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-//                ->select('m_user.id as id', 'm_roles.nama as roles')
-                ->from(['m_user', 'm_roles'])
-                ->where('m_user.roles_id = m_roles.id')
+//                ->select('tbl_user.id as id', 'tbl_roles.nama as roles')
+                ->from(['tbl_user', 'tbl_roles'])
+                ->where('tbl_user.roles_id = tbl_roles.id')
                 ->orderBy($sort)
-                ->select("m_user.id as id, m_user.roles_id as roles_id, m_roles.nama as roles, m_user.username as username, m_user.is_deleted as is_deleted, m_user.nama, m_user.password");
+                ->select("tbl_user.id as id, tbl_user.roles_id as roles_id, tbl_roles.nama as roles, tbl_user.username as username, tbl_user.is_deleted as is_deleted, tbl_user.nama, tbl_user.password");
 
         //filter
         if (isset($params['filter'])) {
