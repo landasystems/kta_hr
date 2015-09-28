@@ -50,7 +50,7 @@ app.controller('apdCtrl', function($scope, Data, toaster) {
         $scope.formtitle = "Lihat Data : " + form.kode_apd;
     };
     $scope.save = function(form) {
-        var url = ($scope.is_create == true) ? 'apd/create/' : 'apd/update/' + form.kd_barang;
+        var url = ($scope.is_create == true) ? 'apd/create/' : 'apd/update/' + form.kode_apd;
         Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
