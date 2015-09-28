@@ -15,12 +15,12 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Nama</label>
                         <div class="col-sm-3">
-                            <input st-search="m_user.nama" class="form-control"/>
+                            <input st-search="tbl_user.nama" class="form-control"/>
 
                         </div>
                         <label class="col-sm-2 control-label">Username</label>
                         <div class="col-sm-3">
-                            <input st-search="m_user.username" class="form-control"/>
+                            <input st-search="tbl_user.username" class="form-control"/>
 
                         </div>
 
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Group</label>
                         <div class="col-sm-3">
-                            <select class="form-control m-b" st-search="m_user.roles_id">
+                            <select class="form-control m-b" st-search="tbl_user.roles_id">
                                 <option value="">-- Pilih Roles --</option>
                                 <option ng-repeat="roles in roleslist" value="{{roles.id}}">{{roles.nama}}</option>
                             </select>
@@ -38,7 +38,7 @@
                         </div>
                         <label class="col-sm-2 control-label">Status</label>
                         <div class="col-sm-3">
-                            <select stInputEvent="change" st-search="m_user.is_deleted" class="form-control">
+                            <select stInputEvent="change" st-search="tbl_user.is_deleted" class="form-control">
                                 <option value="0">Aktif</option>
                                 <option value="1">Terhapus</option>
                             </select>
@@ -53,9 +53,9 @@
                 <table class="table table-striped table-hover" >
                     <thead>
                         <tr>
-                            <th st-sort="m_user.nama">Nama</th>
-                            <th st-sort="m_roles.nama">Nama Grup</th>
-                            <th st-sort="m_user.username">Username</th>
+                            <th st-sort="tbl_user.nama">Nama</th>
+                            <th st-sort="tbl_roles.nama">Nama Grup</th>
+                            <th st-sort="tbl_user.username">Username</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
