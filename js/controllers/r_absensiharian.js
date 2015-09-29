@@ -30,7 +30,7 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
     $scope.list = [];
     $scope.view = function (form) {
             $scope.show_detail = true;
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
+            Data.get('absensi/absensiharian', form).then(function (data) {
                 $scope.listSrc = [];
                 angular.forEach(data.data, function ($value, $key) {
                     $scope.listSrc.push($value);
@@ -38,4 +38,6 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
             });
         
     };
+    
+    
 });
