@@ -1,3 +1,8 @@
+.control-label.required:after {
+  content:" *";
+  color:red;
+}
+
 /*---table margin & padding 0px*/
 .det-trans > tbody > tr > td{ 
     margin: 0px;

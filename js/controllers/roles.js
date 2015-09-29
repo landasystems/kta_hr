@@ -186,7 +186,14 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_moasuransi": false,
             "rekap_moservice": false,
             "rekap_mostnk": false,
-            "notif_bom": false,
+            "rekap_absensiharian": false,
+            "rekap_lemburharian": false,
+            "rekap_penggajianproduksi": false,
+            "rekap_laporanabsensiproduksi": false,
+            "rekap_absensi": false,
+            "rekap_lembur": false,
+            "rekap_absensiproduksi": false,
+            "rekap_absensioperator": false,
         }
         angular.forEach(akses, function ($value, $key) {
             if ($key.indexOf(module) >= 0)

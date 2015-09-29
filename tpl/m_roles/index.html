@@ -329,6 +329,49 @@
                                             <!--end-->
                                         </div>
                                     </div>
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <label class="i-checks">
+                                                <input type="checkbox" ng-disabled="is_view" ng-model='selectJadwal' ng-click="checkAll('jadwal', selectJadwal)">
+                                                <i></i>
+                                                Jadwal
+                                            </label>
+                                        </div>
+                                        <div class="list-group bg-white">
+                                            <div class="list-group-item">
+                                                <b>Jadwal</b>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_jpelatihan">
+                                                    <i></i>
+                                                    Jadwal Pelatihan
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_auditsemester">
+                                                    <i></i>
+                                                    Audit Semester
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_penilaian">
+                                                    <i></i>
+                                                    Jadwal Penilaian
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_hsetalk">
+                                                    <i></i>
+                                                    HSE Talk
+                                                </label>
+                                            </div>
+                                            <!--end-->
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="panel panel-info">
@@ -430,53 +473,6 @@
                                             <!--end-->
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">
-                                            <label class="i-checks">
-                                                <input type="checkbox" ng-disabled="is_view" ng-model='selectJadwal' ng-click="checkAll('jadwal', selectJadwal)">
-                                                <i></i>
-                                                Jadwal
-                                            </label>
-                                        </div>
-                                        <div class="list-group bg-white">
-                                            <div class="list-group-item">
-                                                <b>Jadwal</b>
-                                            </div>
-                                            <div href="" class="list-group-item m-l">
-                                                <label class="i-checks">
-                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_jpelatihan">
-                                                    <i></i>
-                                                    Jadwal Pelatihan
-                                                </label>
-                                            </div>
-                                            <div href="" class="list-group-item m-l">
-                                                <label class="i-checks">
-                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_auditsemester">
-                                                    <i></i>
-                                                    Audit Semester
-                                                </label>
-                                            </div>
-                                            <div href="" class="list-group-item m-l">
-                                                <label class="i-checks">
-                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_penilaian">
-                                                    <i></i>
-                                                    Jadwal Penilaian
-                                                </label>
-                                            </div>
-                                            <div href="" class="list-group-item m-l">
-                                                <label class="i-checks">
-                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.jadwal_hsetalk">
-                                                    <i></i>
-                                                    HSE Talk
-                                                </label>
-                                            </div>
-                                            <!--end-->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
                                     <div class="panel panel-info">
                                         <div class="panel-heading">
                                             <label class="i-checks">
@@ -520,6 +516,12 @@
                                             <!--end-->
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+
+                                </div>
+                                <div class="col-md-3">
+
                                 </div>
                                 <div class="col-md-3">
                                     <div class="panel panel-info">
@@ -760,6 +762,63 @@
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_mostnk">
                                                     <i></i>
                                                     Rekap Monitoring STNK
+                                                </label>
+                                            </div>
+                                            
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_absensiharian">
+                                                    <i></i>
+                                                    Cek Absensi Harian
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_lemburharian">
+                                                    <i></i>
+                                                    Cek Lembur Harian
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_penggajianproduksi">
+                                                    <i></i>
+                                                    Laporan Penggajian Produksi
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_laporanabsensiproduksi">
+                                                    <i></i>
+                                                    Laporan Absensi Produksi
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_absensi">
+                                                    <i></i>
+                                                    Rekap Absensi
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_lembur">
+                                                    <i></i>
+                                                    Rekap Lembur
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_absensiproduksi">
+                                                    <i></i>
+                                                    Rekap Absensi Produksi
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_absensioperator">
+                                                    <i></i>
+                                                    Rekap Absensi Operator
                                                 </label>
                                             </div>
                                         </div>

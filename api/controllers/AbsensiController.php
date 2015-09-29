@@ -1,0 +1,194 @@
+<?php
+
+namespace app\controllers;
+
+use Yii;
+use app\models\Tblkaryawan;
+use yii\data\ActiveDataProvider;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\db\Query;
+
+class KaryawanController extends Controller {
+
+    public function behaviors() {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'index' => ['get'],
+                    'view' => ['get'],
+                    'excel' => ['get'],
+                    'excelkeluar' => ['get'],
+                    'excelmasuk' => ['get'],
+                    'create' => ['post'],
+                    'update' => ['post'],
+                    'rekapkeluar' => ['post'],
+                    'rekapmasuk' => ['post'],
+                    'delete' => ['delete'],
+                    'cari' => ['get'],
+                    'carikontrak' => ['get'],
+                    'kode' => ['get'],
+                ],
+            ]
+        ];
+    }
+
+    public function beforeAction($event) {
+        $action = $event->id;
+        if (isset($this->actions[$action])) {
+            $verbs = $this->actions[$action];
+        } else if (excel(isset($this->actions['*']))) {
+            $verbs = $this->actions['*'];
+        } else {
+            return $event->isValid;
+        }
+        $verb = Yii::$app->getRequest()->getMethod();
+        $allowed = array_map('strtoupper', $verbs);
+
+        if (!in_array($verb, $allowed)) {
+
+            $this->setHeader(400);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'message' => 'Method not allowed'), JSON_PRETTY_PRINT);
+            exit;
+        }
+
+        return true;
+    }
+
+  
+
+    public function actionRekapkeluar() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "nik DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        Yii::app()->db->createCommand('SELECT pin, date(scan_date) as tanggal, min(scan_date) as masuk , max(scan_date) as keluar FROM `att_log` where pin = 8 and date(scan_date) = "2015-9-26" group by tanggal, pin order by pin, tanggal');
+        
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_karyawan')
+                ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    private function setHeader($status) {
+
+        $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
+        $content_type = "application/json; charset=utf-8";
+
+        header($status_header);
+        header('Content-type: ' . $content_type);
+        header('X-Powered-By: ' . "Nintriva <nintriva.com>");
+    }
+
+    private function _getStatusCodeMessage($status) {
+        $codes = Array(
+            200 => 'OK',
+            400 => 'Bad Request',
+            401 => 'Unauthorized',
+            402 => 'Payment Required',
+            403 => 'Forbidden',
+            404 => 'Not Found',
+            500 => 'Internal Server Error',
+            501 => 'Not Implemented',
+        );
+        return (isset($codes[$status])) ? $codes[$status] : '';
+    }
+
+    public function actionExcel() {
+        session_start();
+        $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        return $this->render("/expmaster/barang", ['models' => $models]);
+    }
+
+    public function actionExcelmasuk() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+
+    public function actionExcelkeluar() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        return $this->render("/exprekap/karyawankeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+
+    public function actionCari() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("*,sub.kerja as subSection,kar.nik, kar.nama,jab.jabatan,dep.department,sub.kerja as sub_section,sec.section")
+                ->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%"')
+                ->limit(10);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionCarikontrak() {
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("kar.nik, kar.nama,jab.jabatan,dep.department,sub.kerja as sub_section,sec.section")
+                ->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%" AND status_karyawan like "%Kontrak%"')
+                ->limit(10);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+}
+
+?>

@@ -2,6 +2,8 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
+    $scope.form.status = 'tidakhadir';
+    $scope.form.tanggal = new Date();
     $scope.show_detail = false;
 
     $scope.print = function (form) {
@@ -27,7 +29,6 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
             $scope.show_detail = true;
             Data.post('karyawan/rekapkeluar', form).then(function (data) {
                 $scope.listSrc = [];
@@ -35,8 +36,6 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
                     $scope.listSrc.push($value);
                 });
             });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
+        
     };
 });
