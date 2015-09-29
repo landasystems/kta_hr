@@ -221,7 +221,6 @@
                                     <li ng-show="user.akses.jadwal_hsetalk">
                                         <a ui-sref='jadwal.hsetalk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>HSE TALK</a>
                                     </li>
-
                                 </ul>
                             </div>
                             <div class="col-xs-3 b-l">
@@ -239,11 +238,9 @@
                                     <li ng-show="user.akses.monitoring_stnk">
                                         <a ui-sref='monitoring.stnk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Monitoring STNK</a>
                                     </li>
-
                                 </ul>
                             </div>
                             <div class="col-xs-3 b-l">
-                                
                             </div>
                         </div>
                     </div>
@@ -253,7 +250,7 @@
         <li class="dropdown pos-stc" dropdown>
             <a href class="dropdown-toggle" dropdown-toggle>
                 <i class="glyphicon glyphicon-print icon text-info-lter"></i> 
-                <span>Rekap & Report</span> 
+                <span>Laporan</span> 
                 <span class="caret"></span>
             </a>
             <div class="dropdown-menu wrapper w-full bg-white">
@@ -405,71 +402,44 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="col-xs-3 b-l">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Absensi & Penggajian</div>
+                            <ul class="list-unstyled l-h-2x">
+                                <li ng-show="user.akses.rekap_absensiharian">
+                                    <a ui-sref='rekap.absensiharian'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Cek Absensi Harian</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_lemburharian">
+                                    <a ui-sref='rekap.lemburharian'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Cek Lembur Harian</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_penggajianproduksi">
+                                    <a ui-sref='rekap.penggajianproduksi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Penggajian Produksi</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_laporanabsensiproduksi">
+                                    <a ui-sref='rekap.laporanabsensiproduksi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Absensi Produksi</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_absensi">
+                                    <a ui-sref='rekap.absensi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Absensi</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_lembur">
+                                    <a ui-sref='rekap.lembur'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Lembur</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_absensiproduksi">
+                                    <a ui-sref='rekap.absensiproduksi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Absensi Produksi</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_absensioperator">
+                                    <a ui-sref='rekap.absensioperator'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Absensi Operator</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </li>
     </ul>
-    <!-- / link and dropdown -->
-
-    <!-- search form -->
-    <!--    <form class="navbar-form navbar-form-sm navbar-left shift hidden-sm" id="pencarian">
-            <div class="form-group">
-                <div class="input-group">
-                    <ui-select on-select="pencarianDet($item)" ng-model="cari">
-                        <ui-select-match placeholder="Pencarian BOM...">{{$select.selected.nama}}</ui-select-match>
-                        <ui-select-choices refresh="pencarian($select.search)" repeat="val in results">
-                            {{val.kd_bom}}
-                        </ui-select-choices>
-                    </ui-select>
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </div>
-        </form>-->
-    <!-- / search form -->
-
-    <!-- nabar right -->
     <ul class="nav navbar-nav navbar-right">
         <li class="hidden-xs">
             <a ui-fullscreen></a>
         </li>
-        <!--        <li class="dropdown" dropdown>
-                    <a href class="dropdown-toggle" dropdown-toggle>
-                        <i class="fa fa-bell"></i>
-                        <span class="visible-xs-inline">Notifications</span>
-                        <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
-                    </a>
-                     dropdown 
-                    <ul class="dropdown-menu animated fadeInRight w">
-                        <li ng-show="user.akses.notif_bom">
-                            <a ui-sref='notif.bom'>BOM</a>
-                        </li>
-                        <li ng-show="user.akses.notif_chassismasuk">
-                            <a ui-sref='notif.chassismasuk'>Chassis Masuk</a>
-                        </li>
-                        <li ng-show="user.akses.notif_wo">
-                            <a ui-sref='notif.wo'>Work Order</a>
-                        </li>
-                        <li ng-show="user.akses.notif_wip">
-                            <a ui-sref='notif.wip'>Work In Progress</a>
-                        </li>
-                        <li ng-show="user.akses.notif_barang">
-                            <a ui-sref='notif.barang'>Notifikasi Barang</a>
-                        </li>
-                        <li ng-show="user.akses.notif_unit">
-                            <a ui-sref='notif.unit'>Notifikasi Unit</a>
-                        </li>
-                        <li ng-show="user.akses.notif_abk">
-                            <a ui-sref='notif.abk'>Autentikasi Barang Keluar</a>
-                        </li>
-                        <li ng-show="user.akses.notif_monitoring">
-                            <a ui-sref='notif.monitoring'>Monitoring</a>
-                        </li>
-                    </ul>
-                     / dropdown 
-                </li>-->
         <li class="dropdown" dropdown>
             <a href class="dropdown-toggle clear" dropdown-toggle>
                 <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
@@ -478,7 +448,6 @@
                 </span>
                 <span class="hidden-sm hidden-md">{{user.nama}}</span> <b class="caret"></b>
             </a>
-            <!-- dropdown -->
             <ul class="dropdown-menu animated fadeInRight w">
                 <li>
                     <a ui-sref="master.userprofile">Update Profile</a>
@@ -488,10 +457,6 @@
                     <a ng-click="logout()">Logout</a>
                 </li>
             </ul>
-            <!-- / dropdown -->
         </li>
     </ul>
-    <!-- / navbar right -->
-
 </div>
-<!-- / navbar collapse -->
