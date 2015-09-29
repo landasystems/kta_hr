@@ -111,10 +111,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Masuk</label>
+                                <label class="col-sm-4 control-label">Tgl Ijazah</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened1" ng-click="open1($event)"/>
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="opened1" ng-click="open1($event)"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </span>
@@ -122,13 +122,51 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Atas Nama</label>
+                                <label class="col-sm-4 control-label">Tanggal Masuk</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.atas_nama">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened2" ng-click="open2($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">ATAS NAMA </label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <ui-select on-select="getPegawai($item,form)" ng-disabled="is_view" ng-model="form.pegawai" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                            <ui-select-choices refresh="cariPegawai($select.search)" repeat="val in detPegawai">
+                                                {{val.nik}}<br>
+                                                <small>{{val.nama}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.pegawai = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Tempat, Tanggal Lahir</label>
+                                <div class="col-sm-3">
+                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.tempat_lahir">
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened3" ng-click="open3($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Nama Sekolah</label>
                                 <div class="col-sm-8">
@@ -146,7 +184,7 @@
                                 <label class="col-sm-4 control-label">Tanggal Keluar</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_keluar" is-open="opened2" ng-click="open2($event)"/>
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_keluar" is-open="opened4" ng-click="open4($event)"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </span>
@@ -190,27 +228,120 @@
         <br/>
         <hr/>
         <br/>
-        <div style="margin-top: 20px;">
-            <div style="text-align: right;"> Di Cetak pada {{tgl| date}}</div>
-            <div class="panel-heading"><center><h5>TANDA TERIMA IJAZAH</h5></center></div>
+        <div style="margin-top: 20px;" ng-if="form.status=='Masuk'">
+            <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
+            <div class="panel-heading"><center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center></div>
             <div class="col-md-12 col-sm-12">
-                Pada tanggal {{form.tgl_masuk| date}} telah diterima ijazah asli, dengan data sebagai berikut.<br/>
+                Pada tanggal {{form.tgl_masuk| date}} telah diserah diterimakan dokumen ijazah dengan data sebagai berikut.<br/>
                 <div class="form-group">
-                    <table>
+                    <table style="font-weight: bold;">
+                        <tr>
+                            <td style="text-align: left;">No. Ijazah</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.no_ijazah}}</td>
+                        </tr>
                         <tr>
                             <td style="text-align: left;width: 25% !important;">Nama</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.atas_nama}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;">No. Dokumen</td>
+                            <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir | date}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="text-align: left;">Sekolah</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.nama_sekolah}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Tgl Ijazah</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.tgl_ijazah}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group">
+                    Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan penitipan Ijazah di PT. KARYAWA TUGAS ANDA. Berkaitan dengan diterimanya yang bersangkutan diatas sebagai Karyawan.
+                    <br/>
+                    <br>Demikian berita acara ini, untuk dapat dipergunakaan sebagaimana mestinya.
+                    <br>
+                </div>
+                <br>
+                <br>
+                Sukorejo, {{form.tgl_masuk| date}}
+                <br>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td style="width:33%;">Yang menerima</td>
+                            <td style="width:33%;"></td>
+                            <td style="width:33%;">Yang menyerahkan</td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;text-align: center;height: 45px !important;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td style="width:33%;">
+                                Binti Rofikah<br>
+                                <hr>
+                                HRD Head
+                            </td>
+                            <td style="width:33%;"></td>
+                            <td style="width:33%;">{{form.atas_nama}}<br>
+                                <hr>
+                                Karyawan
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <br>
+                    <div >
+                        <i>
+                            <b><u>Keterangan :</u></b><br/>
+                            Berita acara serah terima ini WAJIB dikembalikan ke Perusahaan pada saat pengambilan Ijazah kepada karyawan yang bersangkutan. Apabila tidak dapat menunjukkan Berita Acara Ini, maka perusahaan tidak bertanggung jawab terhadap kondisi ijazah yang dimaksud.
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 20px;" ng-if="form.status=='Keluar'">
+            <div style="text-align: right;"> Di Cetak pada {{tgl| date}}</div>
+            <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
+            <div class="panel-heading"><center><h5>SERAH TERIMA IJAZAH</h5></center></div>
+            <div class="col-md-12 col-sm-12">
+                Pada tanggal {{form.tgl_masuk| date}} telah diserah terimakan dokumen Ijazah dengan data sebagai berikut.<br/>
+                <div class="form-group">
+                    <table>
+                        <tr>
+                            <td style="text-align: left;">No. Ijazah</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.no_ijazah}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;">Nama Sekolah</td>
+                            <td style="text-align: left;width: 25% !important;">Nama</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.atas_nama}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir | date}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="text-align: left;">Sekolah</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.nama_sekolah}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Tgl Ijazah</td>
+                            <td style="text-align: right;">:</td>
+                            <td>{{form.tgl_ijazah}}</td>
                         </tr>
                     </table>
                 </div>

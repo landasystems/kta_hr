@@ -194,7 +194,7 @@ class SubsectionController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-        $model->id_section = $params['Sections']['kd_kerja'];
+        $model->id_section = $params['Sections']['id_section'];
 
         if ($model->save()) {
             $this->setHeader(200);

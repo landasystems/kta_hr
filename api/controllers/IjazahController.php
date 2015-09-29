@@ -124,6 +124,13 @@ class IjazahController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
+        
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $pegawai = \app\models\TblKaryawan::findOne($val['nik']);
+                $models[$key]['pegawai'] = (empty($pegawai)) ? [] : $pegawai->attributes;
+            }
+        }
 
         $this->setHeader(200);
 

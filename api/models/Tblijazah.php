@@ -15,25 +15,23 @@ use Yii;
  * @property string $tgl_keluar
  * @property string $status
  */
-class Tblijazah extends \yii\db\ActiveRecord
-{
+class Tblijazah extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'tbl_ijazah';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['no'], 'required'],
-            [['tgl_masuk', 'tgl_keluar'], 'safe'],
-            [['no', 'no_ijazah', 'status'], 'string', 'max' => 20],
+            [['no', 'nik'], 'required'],
+            [['tgl_masuk', 'tgl_keluar', 'tgl_lahir', 'tempat_lahir', 'tgl_ijazah'], 'safe'],
+            [['no', 'nik', 'no_ijazah', 'status', 'tempat_lahir'], 'string', 'max' => 20],
             [['atas_nama', 'nama_sekolah'], 'string', 'max' => 50]
         ];
     }
@@ -41,16 +39,20 @@ class Tblijazah extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'no' => 'No',
             'tgl_masuk' => 'Tgl Masuk',
             'no_ijazah' => 'No Ijazah',
             'atas_nama' => 'Atas Nama',
+            'nik' => 'NIK',
             'nama_sekolah' => 'Nama Sekolah',
             'tgl_keluar' => 'Tgl Keluar',
             'status' => 'Status',
+            'tempat_lahir' => 'Tempat Lahir',
+            'tgl_ijazah' => 'Tanggal Ijazah',
+            'tgl_lahir' => 'Tanggal Lahir',
         ];
     }
+
 }

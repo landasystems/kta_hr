@@ -36,6 +36,34 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
         $event.stopPropagation();
         $scope.opened2 = true;
     };
+    $scope.open3 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened3 = true;
+    };
+    $scope.open4 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened4 = true;
+    };
+    
+    $scope.cariPegawai = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.detPegawai = data.data;
+            });
+        }
+    };
+
+    $scope.getPegawai = function (item, form) {
+//        console.log(item);
+        form.nik = item.nik;
+        form.atas_nama = item.nama;
+        form.tempat_lahir = item.tmpt_lahir;
+        form.tgl_lahir = new Date(item.tgl_lahir);
+    };
+    
     $scope.create = function(form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -43,6 +71,9 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
         $scope.formtitle = "Form Ijazah";
         $scope.form = {};
         $scope.form.tgl_masuk = new Date();
+        $scope.form.tgl_ijazah = new Date();
+        $scope.form.tgl_lahir = new Date();
+        $scope.form.tgl_keluar = new Date();
         Data.get('ijazah/kode',form).then(function(data){
             $scope.form.no = data.kode;
         });
@@ -53,6 +84,9 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.form.tgl_masuk = new Date(form.tgl_masuk);
+        $scope.form.tgl_ijazah = new Date(form.tgl_ijazah);
+        $scope.form.tgl_lahir = new Date(form.tgl_lahir);
+        $scope.form.tgl_keluar = new Date(form.tgl_keluar);
         $scope.formtitle = "Edit Data : " + form.no;
     };
     $scope.view = function(form) {
@@ -69,7 +103,9 @@ app.controller('ijazahCtrl', function($scope, Data, toaster) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
                 $scope.is_edit = false;
+                $scope.is_view = true;
                 $scope.callServer(tableStateRef); //reload grid ulang
+                $scope.view(form);
                 toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
             }
         });
