@@ -1,10 +1,10 @@
-<div ng-app="app" ng-controller="absensiharianCtrl">
+<div ng-app="app" ng-controller="lemburharianCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Cek Absensi Harian</h1>
+        <h1 class="m-n font-thin h3">Cek Lembur Harian</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Cek Absent Hari Ini
+            <div class="panel-heading">.:: Cek Lembur Hari Ini
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
@@ -20,15 +20,6 @@
                                         <label class="col-md-3 control-label required">Tanggal</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Status</label>
-                                        <div class="col-md-9">
-                                            <div class="btn-group">
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'hadir'">Hadir</label>
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'tidakhadir'">Tidak Hadir</label>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -56,25 +47,28 @@
 
         <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
-                LAPORAN {{show_form.labelstatus}}
+                LAPORAN LEMBUR HARIAN
                 <br/> TANGGAL : {{show_form.tanggal | date}}
-                <br/> JUMLAH : {{show_form.total}}
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
                         <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
                         <th style="text-align: center;vertical-align: center;">Nama</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Masuk</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Pulang</th>
+                        <th style="text-align: center;vertical-align: center;">Masuk</th>
+                        <th style="text-align: center;vertical-align: center;">Lembur Pagi</th>
+                        <th style="text-align: center;vertical-align: center;">Pulang</th>
+                        <th style="text-align: center;vertical-align: center;">Lembur Sore</th>
                     </tr>
                 </thead>
                 <tbody ng-show="!isLoading">
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.nik}}</td>
                         <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk| asDate | date:"shortTime"}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
+                        <td style="text-align: center" >{{row.masuk| asDate | date:"shortTime"}}</td>
+                        <td style="text-align: center" >{{row.lemburpagi}}</td>
+                        <td style="text-align: center" >{{row.keluar| asDate | date:"shortTime"}}</td>
+                        <td style="text-align: center" >{{row.lembursore}}</td>
                     </tr>
                     <tr>
                         <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>

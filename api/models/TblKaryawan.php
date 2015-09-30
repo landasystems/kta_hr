@@ -154,7 +154,11 @@ class TblKaryawan extends \yii\db\ActiveRecord
         ];
     }
     
-    public static function aktif(){
-        return TblKaryawan::find()->where('status="Kerja"')->all();
+    public static function aktif($niknama = ''){
+        $query = TblKaryawan::find()->where('status="Kerja"')->orderBy('nik');
+        if (!empty($niknama)){
+            $query->andWhere('(nik LIKE "%'.$niknama.'%" OR nama LIKE "%'.$niknama.'%")');
+        }
+        return $query->all();
     }
 }
