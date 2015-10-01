@@ -348,6 +348,7 @@
         </div>
     </div>
     <div id="printArea" ng-show="is_view">
+        <style src="css/print.css"></style>
         <div style="font-size: 10px;">
             <table>
                 <tr>
@@ -373,42 +374,37 @@
             <div style="text-align: right;"> Di Cetak pada {{tgl| date}}</div>
             <div class="panel-heading"><center><h5>PENILAIAN KARYAWAN KONTRAK</h5></center></div>
             <div class="col-md-12 col-sm-12">
-                <div class="col-md-6 col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">NIK :</label>
-                        <div class="col-sm-8">
-                            {{form.nik}}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Jabatan</label>
-                        <div class="col-sm-8">
-                            {{form.jabatan}}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Dept</label>
-                        <div class="col-sm-8">
-                            {{form.department}}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Divisi</label>
-                        <div class="col-sm-8">
-                            {{form.sub_section}}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
-
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Tanggal Penilaian</label>
-                        <div class="col-sm-8">
-                            <div class="input-group">
-                                {{form.tgl | date}}
-                            </div>
-                        </div>
-                    </div>
+                <div >
+                    <table style="width:40%">
+                        <tr>
+                            <td>NAMA</td>
+                            <td>:</td>
+                            <td>{{form.nama}}</td>
+                        </tr>
+                        <tr>
+                            <td>JABATAN</td>
+                            <td>:</td>
+                            <td>{{form.jabatan}}</td>
+                        </tr>
+                        <tr>
+                            <td>DEPT.</td>
+                            <td>:</td>
+                            <td>{{form.department}}</td>
+                        </tr>
+                        <tr>
+                            <td>DIVISI</td>
+                            <td>:</td>
+                            <td>{{form.sub_section}}</td>
+                        </tr>
+                    </table>
+                    <table style="width:40%" border="1" style="border-collapse: collapse;border-style: solid;">
+                        <tr>
+                            <td>Periode Penilaian</td>
+                        </tr>
+                        <tr>
+                            <td style="height: 40px"></td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="col-md-12 col-sm-12">
                     <div class="m-l-xs m-t-xs m-b-xs font-bold">I. KETERAMPILAN DAN KEPRIBADIAN (40%)</div>
@@ -416,7 +412,7 @@
                         Penilai : Kepala Departemen
                     </div>
                     <div class="form-group">
-                        <table style="border-collapse: collapse;border : 1px" border="1">
+                        <table  border="1" style="border-collapse: collapse;border-color: #000000;" >
                             <tbody>
                                 <tr>
                                     <td style="text-align: center;width:5%;">1</td>
@@ -490,7 +486,7 @@
                         Penilai : Wakil Direktur/ Kepala Divisi
                     </div>
                     <div class="form-group">
-                        <table style="border-collapse: collapse;border : 1px" border="1">
+                        <table  border="1" style="border-collapse: collapse;border-style: solid;">
                             <tbody>
                                 <tr>
                                     <td style="text-align: center;width:5%;">1</td>
@@ -529,7 +525,7 @@
                         Penilai : Kepala HRD
                     </div>
                     <div class="form-group">
-                        <table style="border-collapse: collapse;border : 1px" border="1">
+                        <table  border="1" style="border-collapse: collapse;border-style: solid;">
                             <tbody>
                                 <tr>
                                     <td style="text-align: center;width:5%;">1</td>

@@ -228,11 +228,12 @@
         <br/>
         <hr/>
         <br/>
-        <div style="margin-top: 20px;" ng-if="form.status=='Masuk'">
+        <div style="margin-top: 20px;" ng-if="form.status == 'Masuk'">
             <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
             <div class="panel-heading"><center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center></div>
             <div class="col-md-12 col-sm-12">
                 Pada tanggal {{form.tgl_masuk| date}} telah diserah diterimakan dokumen ijazah dengan data sebagai berikut.<br/>
+                <br>
                 <div class="form-group">
                     <table style="font-weight: bold;">
                         <tr>
@@ -248,9 +249,9 @@
                         <tr>
                             <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir | date}}</td>
+                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir| date}}</td>
                         </tr>
-                        
+
                         <tr>
                             <td style="text-align: left;">Sekolah</td>
                             <td style="text-align: right;">:</td>
@@ -259,10 +260,11 @@
                         <tr>
                             <td style="text-align: left;">Tgl Ijazah</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tgl_ijazah}}</td>
+                            <td>{{form.tgl_ijazah | date}}</td>
                         </tr>
                     </table>
                 </div>
+                <br>
                 <div class="form-group">
                     Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan penitipan Ijazah di PT. KARYAWA TUGAS ANDA. Berkaitan dengan diterimanya yang bersangkutan diatas sebagai Karyawan.
                     <br/>
@@ -309,14 +311,14 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 20px;" ng-if="form.status=='Keluar'">
-            <div style="text-align: right;"> Di Cetak pada {{tgl| date}}</div>
+        <div style="margin-top: 20px;" ng-if="form.status == 'Keluar'">
             <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
             <div class="panel-heading"><center><h5>SERAH TERIMA IJAZAH</h5></center></div>
             <div class="col-md-12 col-sm-12">
-                Pada tanggal {{form.tgl_masuk| date}} telah diserah terimakan dokumen Ijazah dengan data sebagai berikut.<br/>
+                Pada tanggal {{form.tgl_keluar| date}} telah diserah terimakan dokumen Ijazah dengan data sebagai berikut.<br/>
+                <br>
                 <div class="form-group">
-                    <table>
+                    <table style="font-weight: bold;">
                         <tr>
                             <td style="text-align: left;">No. Ijazah</td>
                             <td style="text-align: right;">:</td>
@@ -330,9 +332,9 @@
                         <tr>
                             <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir | date}}</td>
+                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir| date}}</td>
                         </tr>
-                        
+
                         <tr>
                             <td style="text-align: left;">Sekolah</td>
                             <td style="text-align: right;">:</td>
@@ -341,27 +343,27 @@
                         <tr>
                             <td style="text-align: left;">Tgl Ijazah</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tgl_ijazah}}</td>
+                            <td>{{form.tgl_ijazah | date}}</td>
                         </tr>
                     </table>
                 </div>
+                <br>
                 <div class="form-group">
-                    Ijazah ini diserahkan kepada PT. Karya Tugas Anda Jl. Raya Sukorejo No. 1 Pasuruan - Jawa Timur selama yang bersangkutan masih bekerja di perusahaan kami. Apabila yang bersangkutan tidak lagi bekerja pada perusahaan kami maka ijazah tersebut akan dikembalikan.
-                    <br>Demikian dan terimakasih.
+                    Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan Ijazah yang diserahkan oleh PT. Karyawa Tugasa Anda Jl. Raya Sukorejo No.01 Pasuruan - Jawa Timur kepada yang bersangkutan, karena yang bersangkutan tidak lagi bekerja pada perusahaan kami maka ijazah tersebut kami kembalikan.
                     <br>
-                    <br>
-                    Note : Untuk pengembalian ijazah asli harap memberitahukan kepada pihak perusahaan terlebih dahulu 1 (satu) minggu sebelumnya, dikarenakan ijazah tersebut kami simpan di bank.
-
+                    <br>Demikian berita acara ini, kami sampaikan terimakasih.
                 </div>
                 <br>
                 <br>
+                <br>
+                Sukorejo, {{form.tgl_keluar| date}}
                 <br>
                 <div class="form-group">
                     <table>
                         <tr>
-                            <td style="width:33%;text-align: center;">Diserahkan</td>
-                            <td style="width:33%;text-align: center;"></td>
-                            <td style="width:33%;text-align: center;">Diterima</td>
+                            <td style="width:33%;">Yang menyerahkan</td>
+                            <td style="width:33%;"></td>
+                            <td style="width:33%;">Yang menerima</td>
                         </tr>
                         <tr>
                             <td style="width:33%;text-align: center;height: 45px !important;"></td>
@@ -369,24 +371,16 @@
                             <td style="width:33%;text-align: center;"></td>
                         </tr>
                         <tr>
-                            <td style="width:33%;text-align: center;">{{form.atas_nama}}</td>
-                            <td style="width:33%;text-align: center;"></td>
-                            <td style="width:33%;text-align: center;">Binti Rofikah</td>
-                        </tr>
-                        <tr>
-                            <td style="width:33%;text-align: center;"></td>
-                            <td style="width:33%;text-align: center;">Diketahui</td>
-                            <td style="width:33%;text-align: center;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width:33%;text-align: center;height: 45px !important;"></td>
-                            <td style="width:33%;text-align: center;"></td>
-                            <td style="width:33%;text-align: center;"></td>
-                        </tr>
-                        <tr>
-                            <td style="width:33%;text-align: center;"></td>
-                            <td style="width:33%;text-align: center;">Linda Susanto</td>
-                            <td style="width:33%;text-align: center;"></td>
+                            <td style="width:33%;">
+                                Binti Rofikah<br>
+                                <hr>
+                                HRD Head
+                            </td>
+                            <td style="width:33%;"></td>
+                            <td style="width:33%;">{{form.atas_nama}}<br>
+                                <hr>
+                                Karyawan
+                            </td>
                         </tr>
                     </table>
                 </div>

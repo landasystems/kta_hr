@@ -3,14 +3,15 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblpotongan;
+use app\models\TblDtransPotongan;
+use app\models\TblHtransPotongan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class PotonganController extends Controller {
+class TranspotonganController extends Controller {
 
     public function behaviors() {
         return [
@@ -22,6 +23,7 @@ class PotonganController extends Controller {
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -56,15 +58,15 @@ class PotonganController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('tbl_htrans_potongan')
                 ->select('*')
-                ->orderBy('kode_potongan DESC')
+                ->orderBy('no_pot DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_potongan'], -3)) + 1;
-        $kode = 'POT' . substr('000' . $urut, -3);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_pot'], -10)) + 1;
+        $kode = 'TPOT' . substr('0000000000' . $urut, -10);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +76,7 @@ class PotonganController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_potongan DESC";
+        $sort = "no_pot DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +101,8 @@ class PotonganController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_potongan')
+                ->from('tbl_htrans_potongan as h')
+                ->join('LEFT JOIN', 'tbl_gaji_produksi as g','h.no_gaji=g.no_gaji')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -110,13 +113,51 @@ class PotonganController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
 
         session_start();
         $_SESSION['query'] = $query;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+        
+        foreach($models as $key => $val){
+            if(!empty($val['nik'])){
+                $pegawai = \app\models\Tblkaryawan::findOne($val['nik']);
+                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+            }
+        }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_pot DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_htrans_potongan as h')
+                ->join('LEFT JOIN', 'tbl_dtrans_potongan as d','h.no_pot=d.no')
+                ->join('LEFT JOIN', 'tbl_karyawan as k','h.nik=k.nik')
+                ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -129,18 +170,35 @@ class PotonganController extends Controller {
 
     public function actionView($id) {
 
-        $model = $this->findModel($id);
-
+//        $model = $this->findModel($id);
+        $detail = array();
+        $findDet = TblDtransPotongan::findAll(['no' => $id]);
+        if (!empty($findDet)) {
+            foreach ($findDet as $key => $val) {
+                $detail[$key] = $val->attributes;
+                $atk = \app\models\Tblpotongan::findOne($val->no_pot);
+                $detail[$key]['potongan'] = (!empty($atk)) ? $atk->attributes : [];
+//                $detail[$key]['jumlah_brng'] = $atk->jumlah_brng;
+            }
+        }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $detail), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblpotongan();
-        $model->attributes = $params;
+        $model = new TblHtransPotongan();
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+            foreach ($params['detail'] as $key => $val) {
+                $detail = new TblDtransPotongan();
+                $detail->no = $model->no_pot;
+                $detail->attributes = $val;
+                $detail->save();
+                
+            }
+
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -152,9 +210,20 @@ class PotonganController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+//            $delDet = TblDtransPotongan::deleteAll(['no_trans' => $model->no_pot]);
+            foreach ($params['detail'] as $key => $val) {
+                $detail = TblDtransPotongan::findOne($val['id']);
+                $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
+                if (empty($detail))
+                    $detail = new TblDtransPotongan();                
+                $detail->no = $model->no_pot;
+                $detail->attributes = $val;
+                $detail->save();
+                
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -177,7 +246,7 @@ class PotonganController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblpotongan::findOne($id)) !== null) {
+        if (($model = TblHtransPotongan::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -214,20 +283,22 @@ class PotonganController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('tbl_htrans_potongan')
                 ->select("*")
-                ->where(['like', 'kode_potongan', $params['nama']])
-                ->orWhere(['like', 'nm_potongan', $params['nama']]);
+                ->where(['like', 'no_pot', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
