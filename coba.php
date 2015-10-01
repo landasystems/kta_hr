@@ -1,6 +1,4 @@
 <?php
 
-$to_time = strtotime("2008-12-13 10:42:00");
-$from_time = strtotime("2008-12-13 10:21:00");
-echo round(abs($to_time - $from_time) / 60,2). " minute";
+echo date('w', strtotime('2015-9-26'));
 ?>

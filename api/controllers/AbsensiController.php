@@ -99,7 +99,13 @@ class AbsensiController extends Controller {
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $masuk = $date . ' 7:45';
-        $pulang = $date . ' 16:00';
+
+        if (date('w', strtotime($params['tanggal']))==6) { //jika sabtu, pulang jam 12
+            $pulang = $date . ' 12:00';
+        } else {
+            $pulang = $date . ' 16:00';
+        }
+        
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date);
@@ -119,7 +125,68 @@ class AbsensiController extends Controller {
                     $lemburpagi = round(abs($to_time - $from_time) / 60, 2);
                     if ($lemburpagi < 105) { //toleransi 15 menit
                         $lemburpagi = '-';
-                    }else{
+                    } else {
+                        $lemburpagi = round($lemburpagi / 60, 0, PHP_ROUND_HALF_DOWN);
+                    }
+                } else {
+                    $lemburpagi = '-';
+                }
+
+
+                //-------lembur sore
+                $from_time = strtotime($pulang);
+                $to_time = strtotime($absensi['keluar']);
+                if ($to_time > $from_time) {
+                    $lembursore = round(abs($to_time - $from_time) / 60, 2);
+                    if ($lembursore < 115) { //toleransi 5 menit
+                        $lembursore = '-';
+                    } else {
+                        $lembursore = round($lembursore / 60, 0, PHP_ROUND_HALF_DOWN);
+                    }
+                } else {
+                    $lembursore = '-';
+                }
+
+                $lemburpagi = $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
+            }
+        }
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+    }
+    
+    public function actionLembur() {
+        $params = $_REQUEST;
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $date = date('Y-m-d', strtotime($params['tanggal']));
+        $masuk = $date . ' 7:45';
+
+        if (date('w', strtotime($params['tanggal']))==6) { //jika sabtu, pulang jam 12
+            $pulang = $date . ' 12:00';
+        } else {
+            $pulang = $date . ' 16:00';
+        }
+        
+        $models = [];
+
+        $abs = AbsensiEttLog::absen($date, $date);
+        $kry = TblKaryawan::aktif($niknama);
+
+        foreach ($kry as $r) {
+            if (isset($abs[$r->nik][$date])) {
+                $absensi = $abs[$r->nik][$date];
+                if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
+                    $absensi['keluar'] = '';
+                }
+
+                //--------lembur pagi
+                $from_time = strtotime($absensi['masuk']);
+                $to_time = strtotime($masuk);
+                if ($from_time < $to_time) {
+                    $lemburpagi = round(abs($to_time - $from_time) / 60, 2);
+                    if ($lemburpagi < 105) { //toleransi 15 menit
+                        $lemburpagi = '-';
+                    } else {
                         $lemburpagi = round($lemburpagi / 60, 0, PHP_ROUND_HALF_DOWN);
                     }
                 } else {
