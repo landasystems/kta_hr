@@ -153,4 +153,8 @@ class TblKaryawan extends \yii\db\ActiveRecord
             'no_pasport' => 'No Pasport',
         ];
     }
+    
+    public static function aktif(){
+        return TblKaryawan::find()->where('status="Kerja"')->all();
+    }
 }

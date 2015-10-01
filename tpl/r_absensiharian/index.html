@@ -10,43 +10,41 @@
                 </div> 
             </div>
             <div class="panel-body">
-                <form name="landaform" class="form-horizontal form-validation">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <div class="form-horizontal">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label required">Tanggal</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required/>
+                <form name="landaform" class="form-horizontal form-validation" method="get">
+
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label required">Tanggal</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Status</label>
+                                        <div class="col-md-9">
+                                            <div class="btn-group">
+                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'hadir'">Hadir</label>
+                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'tidakhadir'">Tidak Hadir</label>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Status</label>
-                                            <div class="col-md-9">
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'hadir'">Hadir</label>
-                                                    <label class="btn btn-default" ng-model="form.status" btn-radio="'tidakhadir'">Tidak Hadir</label>
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">NIK/ Nama</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" ng-model="form.niknama">
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">NIK/ Nama</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" ng-model="form.niknama">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-3"></label>
-                                            <div class="col-md-9" style="text-align: left;">
-                                                <table>
-                                                    <tr>
-                                                        <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
-                                                        <!--                                                    <td>                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">                                                </td>-->
-                                                    </tr>
-                                                </table>
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -56,12 +54,11 @@
             </div>
         </div>
 
-        <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
-            <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+        <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
+            <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
                         <th rowspan="3" style="text-align: center;vertical-align: center;">NIK</th>
-                        <th rowspan="3" style="text-align: center;vertical-align: center;">No. Absent</th>
                         <th rowspan="3" style="text-align: center;vertical-align: center;">Nama</th>
                         <th rowspan="3" style="text-align: center;vertical-align: center;">Masuk</th>
                         <th rowspan="3" style="text-align: center;vertical-align: center;">Keluar</th>
@@ -70,14 +67,12 @@
                 <tbody ng-show="!isLoading">
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.nik}}</td>
-<!--                        <td style="text-align: center">{{row.sub_section}}</td>
-                        <td style="text-align: center">{{row.nik}}</td>
-                        <td style="text-align: center">{{row.tgl_masuk_kerja| date}}</td>
-                        <td style="text-align: center">{{row.tgl_keluar_kerja| date}}</td>
-                        <td style="text-align: center">{{row.alasan_keluar}}</td>-->
+                        <td style="text-align: left">{{row.nama}}</td>
+                        <td style="text-align: center">{{row.masuk | asDate | date:"shortTime"}}</td>
+                        <td style="text-align: center">{{row.keluar | asDate | date:"shortTime"}}</td>
                     </tr>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="50" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>
+                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>
                     </tr>
                 </tbody>
             </table>			

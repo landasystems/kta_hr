@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Tblkaryawan;
+use app\models\AbsensiEttLog;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,23 +71,29 @@ class AbsensiController extends Controller {
     }
 
     public function actionAbsensiharian() {
-        //init variable
-        $params = json_decode(file_get_contents("php://input"), true);  
+        $params = $_REQUEST;
         
-        $query = new Query;
-        $query->from('ftm.att_log AS abs')
-                ->join('INNER JOIN', 'emp', 'emp.emp_id_auto = abs.section')
-                ->join('RIGHT JOIN', 'tbl_karyawan as kry', 'kry.nik = abs.section')
-                ->select('pin, date(scan_date) AS tanggal, min(scan_date) AS masuk , max(scan_date) AS keluar')
-                ->orderBy('pin, tanggal')
-                ->groupBy('tanggal, pin')
-                ->where('pin = 8 and date(scan_date) = "2015-9-26"');
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200); 
+        $models = AbsensiEttLog::absen();
+//        $query = new Query;
+//        $query->from('ftm.att_log AS abs')
+//                ->join('RIGHT JOIN', 'ftm.emp', 'emp.emp_id_auto = abs.pin AND date(abs.scan_date)="'.date('Y-m-d',strtotime($params['tanggal'])).'"')
+//                ->join('INNER JOIN', 'tbl_karyawan as kry', 'kry.nik = emp.nik')
+//                ->select('kry.nik AS nik, kry.nama, date(abs.scan_date) AS tanggal, min(abs.scan_date) AS masuk , max(abs.scan_date) AS keluar')
+//                ->orderBy('kry.nik, tanggal')
+//                ->groupBy('tanggal, nik');
+//        
+//        $query->andWhere('kry.status="Kerja"');
+//        if (isset($params['niknama'])) {
+//            $query->andWhere('(kry.nik LIKE "%'.$params['niknama'].'%" OR kry.nama LIKE "%'.$params['niknama'].'%")');
+//        }        
+//
+//        $command = $query->createCommand();
+//        $models = $command->queryAll();
+        
+        
+        $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
-   
 
 }
 
