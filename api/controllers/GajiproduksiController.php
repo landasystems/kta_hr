@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblpotongan;
+use app\models\TblGajiProduksi;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class PotonganController extends Controller {
+class GajiproduksiController extends Controller {
 
     public function behaviors() {
         return [
@@ -23,8 +23,7 @@ class PotonganController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
-                    'jenis' => ['get'],
-                    'kode' => ['get'],
+                    'kode' => ['post'],
                     'cari' => ['get'],
                 ],
             ]
@@ -53,18 +52,30 @@ class PotonganController extends Controller {
         return true;
     }
 
+
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
+//        print_r($params);
+//        Yii::error($params);
+        ////        $query = new Query;
+//
+//        $jenisTblGajiProduksi = \app\models\JenisBrg::findOne(['kd_jenis' => $params['kd_jenis']]);
+//
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('barang')
                 ->select('*')
-                ->orderBy('kode_potongan DESC')
+                ->orderBy('no_gaji DESC')
+                ->where(['jenis' => $params['kd_jenis']['kd_jenis']])
                 ->limit(1);
 
         $command = $query->createCommand();
-        $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_potongan'], -3)) + 1;
-        $kode = 'POT' . substr('000' . $urut, -3);
+        $models = $command->query()->read();
+
+        if (empty($models)) {
+            $kode = $params['kd_jenis']['kd'] . '00001';
+        } else {
+            $kode = $models['no_gaji'] + 1;
+        }
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +85,7 @@ class PotonganController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_potongan DESC";
+        $sort = "no_gaji ASC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +110,7 @@ class PotonganController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_potongan')
+                ->from('tbl_barang')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -137,8 +148,9 @@ class PotonganController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblpotongan();
+        $model = new TblGajiProduksi();
         $model->attributes = $params;
+        
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -177,7 +189,7 @@ class PotonganController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblpotongan::findOne($id)) !== null) {
+        if (($model = TblGajiProduksi::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -224,10 +236,10 @@ class PotonganController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('tbl_gaji_produksi')
                 ->select("*")
-                ->where(['like', 'kode_potongan', $params['nama']])
-                ->orWhere(['like', 'nm_potongan', $params['nama']]);
+                ->where(['like', 'no_gaji', $params['nama']])
+                ->limit(10);
 
         $command = $query->createCommand();
         $models = $command->queryAll();

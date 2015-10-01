@@ -172,22 +172,26 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Jabatan</label>
                                 <div class="col-sm-6">
-                                    <ui-select on-select="retJabatan($select.selected,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
-                                        <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
-                                        <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
-                                            {{val.id_jabatan}}<br>
-                                            <small>{{val.jabatan}}</small>
-                                        </ui-select-choices>
-                                    </ui-select>
-                                    <span class="input-group-btn">
-                                        <button ng-click="form.Jabatan = undefined" class="btn btn-default">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </button>
-                                    </span>
+                                    <div class="input-group">
+                                        <ui-select on-select="retJabatan($select.selected,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
+                                            <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
+                                            <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
+                                                {{val.id_jabatan}}<br>
+                                                <small>{{val.jabatan}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Jabatan = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-4 col-sm-12 img-thumbnail">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Foto</div>
                             <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
                             <center><input type="file" nv-file-select="" uploader="uploader" /></center>
                         </div>
@@ -324,7 +328,7 @@
                                 <div class="col-sm-8">
                                     <!--<input type="text" class="form-control" ng-model="form.status_pernikahan" ng-disabled="is_view" required>-->
                                     <select class="form-control" ng-model="form.jk">
-                                        <option value="Laki-laki"> Laki - Laki</option>
+                                        <option value="Laki - laki"> Laki - Laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
                                 </div>
@@ -414,6 +418,7 @@
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-12">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tunjangan Kehadiran</label>
                                 <div class="col-sm-8">
@@ -440,6 +445,7 @@
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-12">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tunjangan Masa Kerja</label>
                                 <div class="col-sm-8">

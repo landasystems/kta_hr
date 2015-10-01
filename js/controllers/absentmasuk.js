@@ -1,17 +1,4 @@
-app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader) {
-    var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
-    var uploader = $scope.uploader = new FileUploader({
-        url: 'img/upload.php?folder=barang&kode=' + kode_unik,
-        queueLimit: 1,
-        removeAfterUpload: true,
-    });
-    uploader.filters.push({
-        name: 'imageFilter',
-        fn: function (item) {
-            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        }
-    });
+app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -32,67 +19,105 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader)
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('lamarankerja', param).then(function (data) {
+        Data.get('absent', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
+    };
+    $scope.tgl = new Date();
+
+    //begin jam
+
+//    $scope.mytime = new Date();
+
+    $scope.hstep = 1;
+    $scope.mstep = 1;
+
+    $scope.options = {
+        hstep: [1, 2, 3],
+        mstep: [1, 5, 10, 15, 25, 30]
+    };
+
+    $scope.ismeridian = true;
+    $scope.toggleMode = function () {
+        $scope.ismeridian = !$scope.ismeridian;
+    };
+    $scope.clear = function () {
+        $scope.form.jmasuk = null;
+    };
+
+    //end jam
+
+
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
     };
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
     };
-    $scope.open1 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened1 = true;
+    $scope.cari = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.listKaryawan = data.data;
+            });
+        }
+    };
+    $scope.retKaryawan = function (item, form) {
+        form.nik = item.nik;
+        form.nama = item.nama;
     };
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah APD";
+        $scope.formtitle = "Form Absen Tidak Masuk";
         $scope.form = {};
-        $scope.form.tgl = new Date();
-        $scope.form.tanggal_lahir = new Date();
-        Data.get('lamarankerja/kode', form).then(function (data) {
-            $scope.form.no_lamaran = data.kode;
+        $scope.form.tanggal = new Date();
+//        $scope.form.jmasuk = new Date();
+//        $scope.form.jkeluar = new Date();
+        Data.get('absent/kode').then(function (data) {
+            $scope.form.no_absent = data.kode;
         });
+
     };
+    
     $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.form.tgl = new Date(form.tgl);
-        $scope.form.tanggal_lahir = new Date(form.tanggal_lahir);
-        $scope.formtitle = "Edit Data : " + form.no_lamaran;
+        $scope.form.tanggal = new Date(form.tanggal);
+//        $scope.form.jmasuk = new Date(form.jmasuk);
+//        $scope.form.jkeluar = new Date(form.jkeluar);
+        $scope.formtitle = "Edit Data : " + form.no_absent;
     };
+    
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        $scope.formtitle = "Lihat Data : " + form.no_lamaran;
+        $scope.formtitle = "Lihat Data : " + form.no_absent;
     };
+    
     $scope.save = function (form) {
-        if ($scope.uploader.queue.length > 0) {
-            $scope.uploader.uploadAll();
-            form.foto = kode_unik + "-" + $scope.uploader.queue[0].file.name;
-        } else {
-            form.foto = '';
-        }
-
-        
-        var url = ($scope.is_create == true) ? 'lamarankerja/create/' : 'lamarankerja/update/' + form.no_lamaran;
+        console.log(form);
+        var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.no_absent;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
                 $scope.is_edit = false;
-                $scope.callServer(tableStateRef); //reload grid ulang
+                $scope.is_view = true;
+                $scope.view(form);
                 toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
+                $scope.callServer(tableStateRef); //reload grid ulang
             }
         });
     };
@@ -105,9 +130,10 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader)
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('lamarankerja/delete/' + row.no_lamaran).then(function (result) {
+            Data.delete('absent/delete/' + row.no_absent).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
     };
+
 });

@@ -3,14 +3,14 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblpotongan;
+use app\models\TblAbsent;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class PotonganController extends Controller {
+class AbsentController extends Controller {
 
     public function behaviors() {
         return [
@@ -56,15 +56,15 @@ class PotonganController extends Controller {
     public function actionKode() {
         $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('tbl_absent')
                 ->select('*')
-                ->orderBy('kode_potongan DESC')
+                ->orderBy('no_absent DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['kode_potongan'], -3)) + 1;
-        $kode = 'POT' . substr('000' . $urut, -3);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_absent'], -10)) + 1;
+        $kode = 'ABS' . substr('0000000000' . $urut, -10);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -74,7 +74,7 @@ class PotonganController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_potongan DESC";
+        $sort = "no_absent DESC";
         $offset = 0;
         $limit = 10;
 
@@ -99,7 +99,7 @@ class PotonganController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_potongan')
+                ->from('tbl_absent')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -122,6 +122,13 @@ class PotonganController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $pegawai = \app\models\TblKaryawan::findOne($val['nik']);
+                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : [];
+            }
+        }
+        
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
@@ -137,7 +144,7 @@ class PotonganController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Tblpotongan();
+        $model = new TblAbsent();
         $model->attributes = $params;
 
         if ($model->save()) {
@@ -177,7 +184,7 @@ class PotonganController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Tblpotongan::findOne($id)) !== null) {
+        if (($model = TblAbsent::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -224,10 +231,9 @@ class PotonganController extends Controller {
     public function actionCari() {
         $params = $_REQUEST;
         $query = new Query;
-        $query->from('tbl_potongan')
+        $query->from('tbl_absent')
                 ->select("*")
-                ->where(['like', 'kode_potongan', $params['nama']])
-                ->orWhere(['like', 'nm_potongan', $params['nama']]);
+                ->where(['like', 'no_absent', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();

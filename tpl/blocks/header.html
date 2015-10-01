@@ -144,6 +144,9 @@
                                     <li ng-show="user.akses.pegawai_prakerin">
                                         <a ui-sref="pegawai.prakerin"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Prakerin</a>
                                     </li>
+                                    <li ng-show="user.akses.pegawai_absentmasuk">
+                                        <a ui-sref="pegawai.absentmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Absen Tidak Masuk</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -164,6 +167,9 @@
                                     </li>
                                     <li ng-show="user.akses.transaksi_karyawankeluar">
                                         <a ui-sref='transaksi.karyawankeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
+                                    </li>
+                                    <li ng-show="user.akses.transaksi_potongan">
+                                        <a ui-sref='transaksi.potongan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Potongan</a>
                                     </li>
                                 </ul>
                             </div>

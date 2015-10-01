@@ -490,6 +490,21 @@ angular.module('app')
                                             }]
                                     }
                                 })
+                                .state('pegawai.absentmasuk', {
+                                    url: '/absentmasuk',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/p_absentmasuk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/absentmasuk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
                                 // Jadwal
                                 .state('jadwal', {
                                     url: '/jadwal',
@@ -797,6 +812,21 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/kecelakaankerja.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state('transaksi.potongan', {
+                                    url: '/potongan',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_potongan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/t_potongan.js');
                                                         }
                                                 );
                                             }]
