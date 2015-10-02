@@ -4,6 +4,7 @@ app.controller('lemburCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.form.status = 'tidakhadir';
     $scope.form.tanggal = new Date();
+    $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
 
@@ -33,7 +34,7 @@ app.controller('lemburCtrl', function ($scope, Data, toaster) {
             $scope.show_detail = true;
             $scope.show_form = form;
             
-            Data.get('absensi/lemburharian', form).then(function (data) {
+            Data.get('absensi/lembur', form).then(function (data) {
                 $scope.listSrc = [];
                 angular.forEach(data.data, function ($value, $key) {
                     $scope.listSrc.push($value);

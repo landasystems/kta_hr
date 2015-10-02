@@ -17,6 +17,7 @@ class AbsensiController extends Controller {
                 'actions' => [
                     'absensiharian' => ['get'],
                     'lemburharian' => ['get'],
+                    'lembur' => ['get'],
                 ],
             ]
         ];
@@ -105,13 +106,14 @@ class AbsensiController extends Controller {
         } else {
             $pulang = $date . ' 16:00';
         }
-        
+
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date);
         $kry = TblKaryawan::aktif($niknama);
 
         foreach ($kry as $r) {
+            $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => '', 'lemburpagi' => '-', 'keluar' => '', 'lembursore' => '-'];
             if (isset($abs[$r->nik][$date])) {
                 $absensi = $abs[$r->nik][$date];
                 if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
@@ -147,69 +149,92 @@ class AbsensiController extends Controller {
                     $lembursore = '-';
                 }
 
-                $lemburpagi = $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
+                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
             }
         }
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
-    
+
     public function actionLembur() {
         $params = $_REQUEST;
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
-        $masuk = $date . ' 7:45';
+        $date_sampai = date('Y-m-d', strtotime($params['tanggal_sampai']));
 
-        if (date('w', strtotime($params['tanggal']))==6) { //jika sabtu, pulang jam 12
-            $pulang = $date . ' 12:00';
-        } else {
-            $pulang = $date . ' 16:00';
-        }
-        
+        //---init perulangan tanggal
+        $begin = new \DateTime($date);
+        $end = new \DateTime($date_sampai);
+        $interval = \DateInterval::createFromDateString('1 day');
+        $period = new \DatePeriod($begin, $interval, $end);
+        //--------
+
         $models = [];
 
-        $abs = AbsensiEttLog::absen($date, $date);
+        $abs = AbsensiEttLog::absen($date, $date_sampai);
         $kry = TblKaryawan::aktif($niknama);
 
+        //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
-            if (isset($abs[$r->nik][$date])) {
-                $absensi = $abs[$r->nik][$date];
-                if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
-                    $absensi['keluar'] = '';
-                }
+            $lembur[$r->nik] = 0;
 
-                //--------lembur pagi
-                $from_time = strtotime($absensi['masuk']);
-                $to_time = strtotime($masuk);
-                if ($from_time < $to_time) {
-                    $lemburpagi = round(abs($to_time - $from_time) / 60, 2);
-                    if ($lemburpagi < 105) { //toleransi 15 menit
-                        $lemburpagi = '-';
-                    } else {
-                        $lemburpagi = round($lemburpagi / 60, 0, PHP_ROUND_HALF_DOWN);
-                    }
+            foreach ($period as $dt) {
+                $masuk = $dt->format("Y-m-d") . ' 7:45';
+                if (date('w', strtotime($dt->format("Y-m-d"))) == 6) { //jika sabtu, pulang jam 12
+                    $pulang = $dt->format("Y-m-d") . ' 12:00';
                 } else {
-                    $lemburpagi = '-';
+                    $pulang = $dt->format("Y-m-d") . ' 16:00';
                 }
 
-
-                //-------lembur sore
-                $from_time = strtotime($pulang);
-                $to_time = strtotime($absensi['keluar']);
-                if ($to_time > $from_time) {
-                    $lembursore = round(abs($to_time - $from_time) / 60, 2);
-                    if ($lembursore < 115) { //toleransi 5 menit
-                        $lembursore = '-';
-                    } else {
-                        $lembursore = round($lembursore / 60, 0, PHP_ROUND_HALF_DOWN);
+                if (isset($abs[$r->nik][$dt->format("Y-m-d")])) {
+                    $absensi = $abs[$r->nik][$dt->format("Y-m-d")];
+                    if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
+                        $absensi['keluar'] = '';
                     }
-                } else {
-                    $lembursore = '-';
-                }
 
-                $lemburpagi = $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
+                    //--------lembur pagi
+                    $lemburpagi = 0;
+                    $from_time = strtotime($absensi['masuk']);
+                    $to_time = strtotime($masuk);
+                    if ($from_time < $to_time) {
+                        $lemburpagi = round(abs($to_time - $from_time) / 60, 2);
+                        if ($lemburpagi < 105) { //toleransi 15 menit
+                            $lemburpagi = 0;
+                        } else {
+                            $lemburpagi = round($lemburpagi / 60, 0, PHP_ROUND_HALF_DOWN);
+                        }
+                    } else {
+                        $lemburpagi = 0;
+                    }
+
+
+                    //-------lembur sore
+                    $lemburpagi = 0;
+                    $from_time = strtotime($pulang);
+                    $to_time = strtotime($absensi['keluar']);
+                    if ($to_time > $from_time) {
+                        $lembursore = round(abs($to_time - $from_time) / 60, 2);
+                        if ($lembursore < 115) { //toleransi 5 menit
+                            $lembursore = 0;
+                        } else {
+                            $lembursore = round($lembursore / 60, 0, PHP_ROUND_HALF_DOWN);
+//                            echo date('Y-m-d, H:i', $to_time) . '-' . date('Y-m-d, H:i', $from_time);
+                        }
+                    } else {
+                        $lembursore = 0;
+                    }
+
+                    //cek lembur,jika sudah ada
+                    $lembur[$r->nik] += $lemburpagi + $lembursore;
+                }
             }
+//            echo '<br/>';
+        }
+
+        //=========PROSES MASUKKAN DATA
+        foreach ($kry as $r) {
+            $models[$r->nik] = ['nik' => $r->nik, 'nama' => $r->nama, 'lembur' => $lembur[$r->nik]];
         }
 
         $this->setHeader(200);
