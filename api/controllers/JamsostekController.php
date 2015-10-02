@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Tbljamsostek;
-use app\models\Tblkaryawan;
 use app\models\TblJamsostekDet;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -12,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class TbljamsostekController extends Controller {
+class JamsostekController extends Controller {
 
     public function behaviors() {
         return [
@@ -23,10 +22,12 @@ class TbljamsostekController extends Controller {
                     'view' => ['get'],
                     'excel' => ['get'],
                     'create' => ['post'],
-                    'rekap' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
+                    'jenis' => ['get'],
                     'kode' => ['get'],
+                    'cari' => ['get'],
                 ],
             ]
         ];
@@ -36,14 +37,13 @@ class TbljamsostekController extends Controller {
         $action = $event->id;
         if (isset($this->actions[$action])) {
             $verbs = $this->actions[$action];
-        } elseif (excel(isset($this->actions['*']))) {
+        } else if (excel(isset($this->actions['*']))) {
             $verbs = $this->actions['*'];
         } else {
             return $event->isValid;
         }
         $verb = Yii::$app->getRequest()->getMethod();
         $allowed = array_map('strtoupper', $verbs);
-//        Yii::error($allowed);
 
         if (!in_array($verb, $allowed)) {
 
@@ -55,14 +55,31 @@ class TbljamsostekController extends Controller {
         return true;
     }
 
+    public function actionKode() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('tbl_jamsostek')
+                ->select('*')
+                ->orderBy('no_transaksi DESC')
+                ->limit(1);
+
+        $command = $query->createCommand();
+        $models = $command->queryOne();
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_transaksi'], -5)) + 1;
+        $kode = 'MATK' . substr('00000' . $urut, -5);
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'kode' => $kode));
+    }
+
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "jam.p_kepesertaan DESC";
+        $sort = "no_transaksi DESC";
         $offset = 0;
         $limit = 10;
-        //        Yii::error($params);
+
         //limit & offset pagination
         if (isset($params['limit']))
             $limit = $params['limit'];
@@ -84,8 +101,8 @@ class TbljamsostekController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_jamsostek as jam')
-                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'jam.nik = kar.nik')
+                ->from('tbl_jamsostek as atk')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -93,7 +110,11 @@ class TbljamsostekController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
+//                if ($key == "kat") {
+//                    $query->andFilterWhere(['=', $key, $val]);
+//                } else {
                 $query->andFilterWhere(['like', $key, $val]);
+//                }
             }
         }
 
@@ -103,11 +124,11 @@ class TbljamsostekController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-
-        if(!empty($models)) {
-            foreach($models as $key => $val){
-                $karyawan = \app\models\TblKaryawan::findOne($val['nik']);
-                $models[$key]['karyawan'] = (!empty($karyawan)) ? $karyawan->attributes : [];
+        
+        foreach($models as $key => $val){
+            if(!empty($val['kd_karyawan'])){
+                $pegawai = \app\models\Tblkaryawan::findOne($val['kd_karyawan']);
+                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }
 
@@ -115,12 +136,12 @@ class TbljamsostekController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-
+    
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $filter = array();
-        $sort = "jam.p_kepesertaan DESC";
+        $sort = "no_transaksi DESC";
         $offset = 0;
         $limit = 10;
 
@@ -128,8 +149,10 @@ class TbljamsostekController extends Controller {
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)
-                ->from('tbl_jamsostek as jam')
-                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'jam.nik = kar.nik')
+                ->from('tbl_dtrans_atk as det')
+                ->JOIN('LEFT JOIN','tbl_jamsostek as atk' ,'det.no_trans = atk.no_transaksi')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
+                ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -150,10 +173,13 @@ class TbljamsostekController extends Controller {
 
 //        $model = $this->findModel($id);
         $detail = array();
-        $findDet = TblJamsostekDet::findAll(['jamsostek_id' => $id]);
+        $findDet = TblJamsostekDet::findAll(['no_trans' => $id]);
         if (!empty($findDet)) {
             foreach ($findDet as $key => $val) {
                 $detail[$key] = $val->attributes;
+                $atk = \app\models\Tblstockatk::findOne($val->kd_brng);
+                $detail[$key]['barang'] = $atk->attributes;
+                $detail[$key]['jumlah_brng'] = $atk->jumlah_brng;
             }
         }
         $this->setHeader(200);
@@ -168,9 +194,15 @@ class TbljamsostekController extends Controller {
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
                 $detail = new TblJamsostekDet();
-                $detail->jamsostek_id = $model->id;
+                $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
+                
+                $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
+                if(!empty($stock)){
+                    $stock->jumlah_brng = ($stock->jumlah_brng + $detail->jmlh_brng);
+                    $stock->save();
+                }
             }
 
             $this->setHeader(200);
@@ -187,14 +219,21 @@ class TbljamsostekController extends Controller {
         $model->attributes = $params['form'];
 
         if ($model->save()) {
-//            $delDet = TblDtransAtk::deleteAll(['no_trans' => $model->no_transaksi]);
+//            $delDet = TblJamsostekDet::deleteAll(['no_trans' => $model->no_transaksi]);
             foreach ($params['detail'] as $key => $val) {
                 $detail = TblJamsostekDet::findOne($val['id']);
+                $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransAtk();
-                $detail->jamsostek_id = $model->id;
+                    $detail = new TblJamsostekDet();                
+                $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
+                
+                $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
+                if(!empty($stock)){
+                    $stock->jumlah_brng = $stock->jumlah_brng - $jmlLama + $detail->jmlh_brng;
+                    $stock->save();
+                }
             }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -262,7 +301,20 @@ class TbljamsostekController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/jamsostek", ['models' => $models, 'start' => $start, 'end' => $end]);
+        return $this->render("/exprekap/atkmasuk", ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+    
+    public function actionCari() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_jamsostek')
+                ->select("*")
+                ->where(['like', 'no_transaksi', $params['nama']]);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
 }
