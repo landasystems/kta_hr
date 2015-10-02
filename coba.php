@@ -1,4 +1,12 @@
 <?php
 
-echo strtotime("2015-09-26T03:55:20.469Z");
+$begin = new DateTime( '2010-05-01' );
+$end = new DateTime( '2010-05-10' );
+
+$interval = DateInterval::createFromDateString('1 day');
+$period = new DatePeriod($begin, $interval, $end);
+
+foreach ( $period as $dt ){
+  echo $dt->format( "Y-m-d" );
+}
 ?>

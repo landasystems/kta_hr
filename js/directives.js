@@ -33,7 +33,7 @@ angular.module('app')
 angular.module('app')
         .filter("asDate", function() {
     return function(input) {
-        if (input == null) {
+        if (input == "" || input == null) {
             return "";
         } else {
             return new Date(input);

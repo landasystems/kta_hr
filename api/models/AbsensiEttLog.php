@@ -3,7 +3,8 @@
 namespace app\models;
 
 use Yii;
-use app\models\TblKaryawan;
+use yii\db\Query;
+
 /**
  * This is the model class for table "att_log".
  *
@@ -70,31 +71,22 @@ class AbsensiEttLog extends \yii\db\ActiveRecord {
     public function getKaryawan() {
         return $this->hasOne(AbsensiEmp::className(), ['pin' => 'pin']);
     }
-    
-    public function absen($date_start='', $date_end='', $niknama=''){
-//        $query = new Query;
-//        $query->from('ftm.att_log AS abs')
-//                ->join('RIGHT JOIN', 'ftm.emp', 'emp.emp_id_auto = abs.pin AND date(abs.scan_date)="'.date('Y-m-d',strtotime($params['tanggal'])).'"')
-//                ->select('emp.nik, date(abs.scan_date) AS tanggal, min(abs.scan_date) AS masuk, max(abs.scan_date) AS keluar')
-//                ->groupBy('tanggal, nik');
-//        
-//        $query->andWhere('date(abs.scan_date)>="2015-07-26" AND date(abs.scan_date)<="2015-09-26"');
-//        if (isset($params['niknama'])) {
-//            $query->andWhere('(kry.nik LIKE "%'.$params['niknama'].'%" OR kry.nama LIKE "%'.$params['niknama'].'%")');
-//        }        
-//        
-        
-//        SELECT emp.nik, date(abs.scan_date) AS tanggal, min(abs.scan_date) AS masuk, max(abs.scan_date) AS keluar 
-//FROM `ftm`.`att_log` `abs` RIGHT JOIN `ftm`.`emp` ON emp.emp_id_auto = abs.pin  
-//WHERE date(abs.scan_date)>="2015-07-26" AND date(abs.scan_date)<="2015-09-26"
 
-        $kry = Tblkaryawan::aktif();
+    public static function absen($date_start = '', $date_end = '') {
+        $query = new Query;
+        $query->from('ftm.att_log AS abs')
+                ->select('emp.nik, date(abs.scan_date) AS tanggal, min(abs.scan_date) AS masuk, max(abs.scan_date) AS keluar')
+                ->join('INNER JOIN', 'ftm.emp', 'emp.emp_id_auto = abs.pin')
+                ->where('date(abs.scan_date)>="'.$date_start.'" AND date(abs.scan_date)<="'.$date_end.'"')
+                ->groupBy('tanggal, nik');
+        
+        $command = $query->createCommand();
+        $models = $command->queryAll();
         $result = [];
-        foreach($kry as $r){
-            $result[] = ['nik'=>$r->nik,'nama'=>$r->nama];
+        foreach ($models as $r) {
+            $result[$r['nik']][$r['tanggal']] = ['masuk' => $r['masuk'], 'keluar' => $r['keluar']];
         }
         return $result;
-        
     }
 
 }
