@@ -40,17 +40,17 @@
                             <label class="col-sm-3 control-label">Keterangan</label>
                             <div class="col-sm-9">
                                 <select class="form-control" st-search="ket">
-                                        <option value="Hadir">Hadir</option>
-                                        <option value="Cuti">Cuti</option>
-                                        <option value="Surat Dokter">Surat Dokter</option>
-                                        <option value="Izin">Izin</option>
-                                        <option value="Absent">Absent</option>
-                                        <option value="Sakit">Sakit</option>
-                                        <option value="Libur">Libur</option>
-                                        <option value="Dinas Luar">Dinas Luar</option>
-                                        <option value="Minggu">Minggu</option>
-                                        <option value="Setengah Hari">Setengah Hari</option>
-                                    </select>
+                                    <option value=""></option>
+                                    <option value="Cuti">Cuti</option>
+                                    <option value="Surat Dokter">Surat Dokter</option>
+                                    <option value="Izin">Izin</option>
+                                    <option value="Absent">Absent</option>
+                                    <option value="Sakit">Sakit</option>
+                                    <option value="Libur">Libur</option>
+                                    <option value="Dinas Luar">Dinas Luar</option>
+                                    <option value="Minggu">Minggu</option>
+                                    <option value="Setengah Hari">Setengah Hari</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,10 @@
     <div class="wrapper-md" ng-show="is_edit">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{formtitle}} 
+                {{formtitle}}
+                <div class="btn-group pull-right" role="group" style="margin-top: -3px;" ng-show="is_view">
+                    <button type="button" class="btn btn-primary fa fa-print" ng-print print-element-id="printArea" ng-show="is_view">&nbsp;Cetak Laporan</button>
+                </div> 
             </div>
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation">
@@ -141,7 +144,7 @@
                                 <label class="col-sm-3 control-label pull-left">Tanggal</label>
                                 <div class="col-sm-7">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)"/>
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)" ng-disabled="is_view"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar-o"></i>
                                         </span>
@@ -164,7 +167,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Keterangan</label>
                                 <div class="col-sm-7">
-                                    <select class="form-control" ng-model="form.ket">
+                                    <select class="form-control" ng-model="form.ket" ng-disabled="is_view">
                                         <option value="Hadir">Hadir</option>
                                         <option value="Cuti">Cuti</option>
                                         <option value="Surat Dokter">Surat Dokter</option>
@@ -188,6 +191,62 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div id="printArea" ng-show="is_view">
+            <center style="font-weight: bold;font-size: 16px"><u>SURAT IJIN</u></center>
+            <br>
+            <br>
+            Yang bertandatangan di bawah ini:<br/>
+            <table>
+                <tr>
+                    <td>Nama</td>
+                    <td>:</td>
+                    <td><u>{{form.nama}}</u></td>
+                </tr>
+                <tr>
+                    <td>Bagian</td>
+                    <td>:</td>
+                    <td><u>{{form.sub_section}}</u></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Mengajukan permohonan ijin pada:</td>
+                </tr>
+                <tr>
+                    <td>Waktu</td>
+                    <td>:</td>
+                    <td><u>{{form.jmasuk}}</u> s/d <u>{{form.jkeluar}}</u></td>
+                </tr>
+                <tr>
+                    <td>Keperluan</td>
+                    <td>:</td>
+                    <td>
+                        a. Pribadi : <u></u>
+                </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>b. Dinas : <u>{{form.nama}}</u></td>
+                </tr>
+
+            </table>
+            <table style="border-style: solid;border-collapse: collapse;">
+                <tr>
+                    <td style="vertical-align: top;height: 100px;">Keterangan</td>
+                    <td style="vertical-align: top;height: 100px;">:</td>
+                    <td style="vertical-align: top;height: 100px;"></td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <span style="text-align: right;">Dibuat di &nbsp;&nbsp;</span>
+            <table style="border-style: solid;border-collapse: collapse;">
+                <tr>
+                    <td style="height: 100px;vertical-align: bottom;">HRD</td>
+                    <td style="height: 100px;vertical-align: bottom;">Pimpinan</td>
+                    <td style="height: 100px;vertical-align: bottom;">PEMOHON</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

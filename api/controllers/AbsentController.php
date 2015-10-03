@@ -100,6 +100,7 @@ class AbsentController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_absent')
+                ->where('ket <> "Hadir"')
                 ->orderBy($sort)
                 ->select("*");
 

@@ -5,9 +5,9 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.show_detail = false;
 
-    $scope.print = function(form) {
+    $scope.print = function (form) {
         if ('karyawan' in form && form.karyawan != undefined) {
-            Data.post('penilaiankontrak/rekap', form).then(function(data) {
+            Data.post('penilaiankontrak/rekap', form).then(function (data) {
                 window.open('api/web/penilaiankontrak/excel?print=true', "", "width=500");
             });
         } else {
@@ -15,9 +15,9 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         }
     }
 
-    $scope.excel = function(form) {
+    $scope.excel = function (form) {
         if ('karyawan' in form && form.karyawan != undefined) {
-            Data.post('penilaiankontrak/rekap', form).then(function(data) {
+            Data.post('penilaiankontrak/rekap', form).then(function (data) {
                 window.location = 'api/web/penilaiankontrak/excel';
             });
         } else {
@@ -27,7 +27,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
 
     $scope.cariKaryawan = function (nama) {
         if (nama.length > 2) {
-            Data.get('karyawankontrak/cari', {nama: nama}).then(function (data) {
+            Data.get('karyawan/cari', {nama: nama}).then(function (data) {
                 $scope.listKaryawan = data.data;
             });
         }
@@ -35,12 +35,12 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
 
     $scope.listSrc = [];
     $scope.list = [];
-    $scope.view = function(form) {
+    $scope.view = function (form) {
         if ('karyawan' in form && form.karyawan != undefined) {
             $scope.show_detail = true;
-            Data.post('penilaiankontrak/rekap', form).then(function(data) {
+            Data.post('penilaiankontrak/rekap', form).then(function (data) {
                 $scope.listSrc = [];
-                angular.forEach(data.data, function($value, $key) {
+                angular.forEach(data.data, function ($value, $key) {
                     $scope.listSrc.push($value);
                 });
             });
@@ -48,9 +48,23 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
             toaster.pop('error', "Terjadi Kesalahan", "Pilih karyawan terlebih dahulu!");
         }
     };
-    $scope.blank = function(){
+    $scope.blank = function () {
         $scope.karyawan = undefined;
         $scope.show_detail = false;
+    };
+
+    $scope.convAngka = function (item) {
+        var hasil = '';
+        if (item == 4) {
+            hasil = 'A';
+        } else if (item == 3) {
+            hasil = 'B';
+        } else if (item == 2) {
+            hasil = 'C';
+        } else {
+            hasil = 'D';
+        }
+        return hasil;
     };
 
 });

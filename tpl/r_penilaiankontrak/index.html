@@ -20,9 +20,9 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <ui-select ng-model="form.karyawan" theme="bootstrap" style="width: 100%">
-                                                    <ui-select-match>{{$select.selected.no_kontrak}} - {{$select.selected.nama}}</ui-select-match>
+                                                    <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
                                                     <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in listKaryawan">
-                                                        {{val.no_kontrak}}<br>
+                                                        {{val.nik}}<br>
                                                         <small>{{val.nama}}</small>
                                                     </ui-select-choices>
                                                 </ui-select>
@@ -66,8 +66,19 @@
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>Kontrak</th>
-                            <th>Penilaian Ke</th>
+                            <th>Mutu Kerja</th>
+                            <th>Pengetahuan Teknis</th>
+                            <th>Tg Jawab Pekerjaan</th>
+                            <th>Kerjasama / Komunikasi</th>
+                            <th>Sikap Kerja</th>
+                            <th>Inisiatif</th>
+                            <th>Rs Turut Memiliki</th>
+                            <th>Disiplinitas</th>
+                            <th>Kepemimpinan</th>
+                            <th>Pelaksanaan Managerial</th>
+                            <th>Problem Solving</th>
+                            <th>Kehadiran</th>
+                            <th>Administratif</th>
                             <th>Keterangan</th>
                         </tr>
                     </thead>
@@ -75,12 +86,24 @@
                         <tr ng-repeat="row in list">
                             <td>{{$index + 1}}</td>
                             <td>{{row.tgl | date}}</td>
-                            <td>{{row.nm_kontrak}}</td>
-                            <td>{{row.penilaian}}</td>
+                            <!--<td>{{row.nm_kontrak}}</td>-->
+                            <td style="text-align: center">{{convAngka(row.mutu_kerja)}}</td>
+                            <td style="text-align: center">{{convAngka(row.pengetahuan_teknis)}}</td>
+                            <td style="text-align: center">{{convAngka(row.tgjawab_pekerjaan)}}</td>
+                            <td style="text-align: center">{{convAngka(row.kerjasama_komunikasi)}}</td>
+                            <td style="text-align: center">{{convAngka(row.sikap_kerja)}}</td>
+                            <td style="text-align: center">{{convAngka(row.inisiatif)}}</td>
+                            <td style="text-align: center">{{convAngka(row.rasa_turut_memiliki)}}</td>
+                            <td style="text-align: center">{{convAngka(row.disiplinitas)}}</td>
+                            <td style="text-align: center">{{convAngka(row.kepemimpinan)}}</td>
+                            <td style="text-align: center">{{convAngka(row.pelaksanaan_managerial)}}</td>
+                            <td style="text-align: center">{{convAngka(row.problem_solving)}}</td>
+                            <td style="text-align: center">{{convAngka(row.kehadiran)}}</td>
+                            <td style="text-align: center">{{convAngka(row.administratif)}}</td>
                             <td>{{row.keterangan}}</td>
                         </tr>
                         <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="9"></td>
+                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="16"></td>
                         </tr>
                     </tbody>
                 </table>			
