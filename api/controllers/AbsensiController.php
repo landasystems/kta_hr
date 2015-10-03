@@ -113,7 +113,7 @@ class AbsensiController extends Controller {
         $kry = TblKaryawan::aktif($niknama);
 
         foreach ($kry as $r) {
-            $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => '', 'lemburpagi' => '-', 'keluar' => '', 'lembursore' => '-'];
+            $models[$r->nik] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => '', 'lemburpagi' => '-', 'keluar' => '', 'lembursore' => '-'];
             if (isset($abs[$r->nik][$date])) {
                 $absensi = $abs[$r->nik][$date];
                 if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
@@ -149,7 +149,7 @@ class AbsensiController extends Controller {
                     $lembursore = '-';
                 }
 
-                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
+                $models[$r->nik] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'lemburpagi' => $lemburpagi, 'keluar' => $absensi['keluar'], 'lembursore' => $lembursore];
             }
         }
 

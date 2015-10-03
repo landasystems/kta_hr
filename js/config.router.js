@@ -1285,65 +1285,65 @@ angular.module('app')
                                     }})
                                 .state('rekap.lemburharian', {
                                     url: '/lemburharian',
-                                    templateUrl: 'tpl/r_lemburharian/index.html',
+                                    templateUrl: 'tpl/r_absensilemburharian/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_lemburharian.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_absensilemburharian.js');
                                                         }
                                                 );
                                             }]
                                     }})
                                 .state('rekap.penggajianproduksi', {
                                     url: '/penggajianproduksi',
-                                    templateUrl: 'tpl/r_penggajianproduksi/index.html',
+                                    templateUrl: 'tpl/r_absensipenggajianproduksi/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_penggajianproduksi.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_absensipenggajianproduksi.js');
                                                         }
                                                 );
                                             }]
                                     }})
                                 .state('rekap.laporanabsensiproduksi', {
                                     url: '/laporanabsensiproduksi',
-                                    templateUrl: 'tpl/r_laporanabsensiproduksi/index.html',
+                                    templateUrl: 'tpl/r_absensilaporanproduksi/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_laporanabsensiproduksi.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_absensilaporanproduksi.js');
                                                         }
                                                 );
                                             }]
                                     }})
                                 .state('rekap.absensi', {
                                     url: '/absensi',
-                                    templateUrl: 'tpl/r_absensi/index.html',
+                                    templateUrl: 'tpl/r_absensikaryawan/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_absensi.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_absensikaryawan.js');
                                                         }
                                                 );
                                             }]
                                     }})
                                 .state('rekap.lembur', {
                                     url: '/lembur',
-                                    templateUrl: 'tpl/r_lembur/index.html',
+                                    templateUrl: 'tpl/r_absensilembur/index.html',
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
-                                                            return $ocLazyLoad.load('js/controllers/r_lembur.js');
+                                                            return $ocLazyLoad.load('js/controllers/r_absensilembur.js');
                                                         }
                                                 );
                                             }]
