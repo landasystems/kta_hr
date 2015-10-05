@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">NIK - Nama</label>
                                 <div class="col-sm-8">
-                                    <ui-select on-select="getPegawai(form,$item)" ng-model="form.karyawan" theme="bootstrap">
+                                    <ui-select on-select="getPegawai(form,$item)" ng-model="form.karyawan" theme="bootstrap" required>
                                         <ui-select-match placeholder="Cari Pegawai">{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
                                         <ui-select-choices refresh="cariPegawai($select.search)" repeat="det in detPegawai">
                                             <div>
@@ -100,7 +100,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Upah TK</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.upah_tetap" ng-disabled="is_view">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.upah_tetap" required ng-disabled="is_view">
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,6 @@
                                         <th style="text-align: center;">NN / BU</th>
                                         <th style="text-align: center;">KPJ / No Kartu</th>
                                         <th style="text-align: center;">Periode Kepesertaan</th>
-                                        <th style="text-align: center;">Upah TK</th>
                                         <th style="text-align: center;">JHT</th>
                                         <th style="text-align: center;">JKM</th>
                                         <th style="text-align: center;">JKK</th>
@@ -128,7 +127,7 @@
                                 <tbody>
                                     <tr ng-repeat="det in detJamsostek">
                                         <td>
-                                            <select ng-model="det.nn" class="form-control">
+                                            <select ng-change="setType(det,form.upah_tetap)" ng-model="det.nn" class="form-control">
                                                 <option value="NN040454">NN040454</option>
                                                 <option value="NN040356">NN040356</option>
                                                 <option value="02140106">02140106</option>
@@ -136,9 +135,9 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-model="det.kpj" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.kpj" ng-disabled="is_view">
                                         </td>
-                                        <td style="text-align: center;width:20%">
+                                        <td style="text-align: center;width:15%">
                                             <div class="input-group" style="padding:0px;margin:0px">
                                             <input required type="text" ng-disabled="is_view" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="det.periode_kepesertaan" is-open="openedDet == $index" ng-change="setStatus()" ng-click="openDet($event, $index)"/>
                                             <span class="input-group-addon">
@@ -146,29 +145,26 @@
                                             </span>
                                         </div>
                                         </td>
-                                        <td style="text-align: center !important;">
-                                            {{det.upah_tk}}
+                                        <td style="alignment-adjust: middle!important;">
+                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jht" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jht" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jkm" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jkm" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jkk" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jkk" ng-disabled="is_view">
-                                        </td>
-                                        <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.penisiun" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.pensiun" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
                                             <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.iuran" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.hub_keluarga" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.hub_keluarga" ng-readonly="is_nn" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.keterangan" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.keterangan" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="text-align: center;">
                                             <button type="button" ng-disabled="is_view" class="btn btn-info fa fa-plus" ng-click="addrow()" ng-show="$index == 0" style="width:100%; height:34px;"></button>

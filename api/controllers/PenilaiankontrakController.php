@@ -241,7 +241,7 @@ class PenilaiankontrakController extends Controller {
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'pen.nik = kar.nik')
-                ->where('nik="' . $params['karyawan']['nik'] . '"')
+                ->where('pen.nik="' . $params['karyawan']['nik'] . '"')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -251,10 +251,10 @@ class PenilaiankontrakController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach ($models as $key => $val) {
-            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
-            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
-        }
+//        foreach ($models as $key => $val) {
+//            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
+//            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
+//        }
         $totalItems = $query->count();
 
         $this->setHeader(200);

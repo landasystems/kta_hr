@@ -1,10 +1,11 @@
-app.controller('jamsostekCtrl', function($scope, Data, toaster) {
+app.controller('jamsostekCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
+    $scope.is_nn = true;
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -19,25 +20,25 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('tbljamsostek', param).then(function(data) {
+        Data.get('tbljamsostek', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
     };
-    
+
     $scope.openedDet = -1;
 
-    $scope.openDet = function($event, $index) {
+    $scope.openDet = function ($event, $index) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedDet = $index;
     };
-    $scope.setStatus = function() {
+    $scope.setStatus = function () {
         $scope.openedDet = -1;
     };
-    
-    $scope.create = function(form) {
+
+    $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
@@ -45,7 +46,7 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
         $scope.form = {};
         $scope.detJamsostek = [{}];
     };
-    $scope.update = function(form) {
+    $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
@@ -53,16 +54,16 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
         $scope.formtitle = "Edit Data : " + form.nik;
         $scope.retDetail(form);
     };
-    $scope.view = function(form) {
+    $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.nik;
     };
-    $scope.save = function(form) {
+    $scope.save = function (form) {
         var url = ($scope.is_create == true) ? 'barang/create/' : 'barang/update/' + form.id;
-        Data.post(url, form).then(function(result) {
+        Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
@@ -72,16 +73,16 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
             }
         });
     };
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $scope.is_edit = false;
         $scope.is_view = false;
         if (!$scope.is_view) { //hanya waktu edit cancel, di load table lagi
             $scope.callServer(tableStateRef);
         }
     };
-    $scope.delete = function(row) {
+    $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('barang/delete/' + row.id).then(function(result) {
+            Data.delete('barang/delete/' + row.id).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
             });
         }
@@ -108,7 +109,7 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
             alert("Something gone wrong");
         }
     };
-    
+
     $scope.cariPegawai = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
@@ -118,10 +119,25 @@ app.controller('jamsostekCtrl', function($scope, Data, toaster) {
         }
     };
 
-    $scope.getPegawai= function (form, item) {
+    $scope.getPegawai = function (form, item) {
         form.nik = item.nik;
         form.status_pernikahan = item.status_pernikahan;
         form.upah_tetap = item.upah_tetap;
     };
-    
+
+    $scope.setType = function (det, gaji) {
+        if (det.nn === 'NN040454' || det.nn === 'NN040356') {
+            $scope.is_nn = true;
+            var gajiTk = parseInt(gaji);
+            det.jht = (gajiTk * 5.7) / 100;
+            det.jkm = (gajiTk * 0.3) / 100;
+            det.jkk = (gajiTk * 1.27) / 100;
+            det.pensiun = (gajiTk * 3) / 100;
+            det.iuran = det.jht + det.jkm + det.jkk + det.pensiun;
+        } else {
+            $scope.is_nn = false;
+        }
+
+    };
+
 });
