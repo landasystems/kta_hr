@@ -1,4 +1,4 @@
-app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster) {
+app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster, $http) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
@@ -17,30 +17,39 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster)
         }
     };
 
-    $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelkeluar';
+    $scope.excelslip = function () {
+        $http({
+            url: 'api/web/absensi/penggajianexcel',
+            method: "POST",
+            data: $scope.listSrc, //this is your json data string
+            headers: {
+                'Content-type': 'application/json'
+            },
+            responseType: 'arraybuffer'
+        }).success(function (data, status, headers, config) {
+            var blob = new Blob([data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
+            saveAs(blob, 'aa.xlsx');
+        }).error(function (data, status, headers, config) {
+
+        });
     };
 
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            Data.get('absensi/penggajian', form).then(function (data) {
-                $scope.listSrc = [];
-                angular.forEach(data.data, function ($value, $key) {
-                    $scope.listSrc.push($value);
-                });
+        $scope.show_detail = true;
+        $scope.show_form = form;
+
+        Data.get('absensi/penggajian', form).then(function (data) {
+            $scope.listSrc = [];
+            angular.forEach(data.data, function ($value, $key) {
+                $scope.listSrc.push($value);
             });
-        
+        });
+
     };
-    
-    
+
+
 });

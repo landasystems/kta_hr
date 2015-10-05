@@ -1,8 +1,8 @@
 <?php
+header('Content-disposition: attachment; filename=test.xls');
+header('Content-Transfer-Encoding: binary');
+header('Cache-Control: must-revalidate');
+header('Pragma: public');
+print_r($models);
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+?>
