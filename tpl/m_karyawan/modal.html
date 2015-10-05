@@ -1,0 +1,81 @@
+<div class="modal-header">
+    <h3 class="modal-title">Form Karyawan Keluar</h3>
+</div>
+<div class="modal-body">
+    <form name="modalform" class="form-horizontal form-validation">
+        <div class="panel panel-default">
+
+            <!--<div class="form-group ">-->
+            <div class="col-sm-12 panel-heading">
+                <b>Informasi:</b> Berikut adalah data diri karyawan yang akan dikeluarkan.
+            </div>
+            <!--</div>-->
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">NIK </label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.nik" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Nama Karyawan</label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.nama" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Status Karyawan</label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.status_karyawan" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Bagian</label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.kerja" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Jabatan</label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.jabatan" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Lokasi Kantor</label>
+                    <div class="col-sm-9">
+                        <input type="text" ng-model="formmodal.lokasi_kntr" class="form-control" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Tanggal Keluar</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="formmodal.tgl_keluar_kerja" is-open="opened4" ng-click="open4($event)" required/>
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar-o"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Alasan Keluar</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" ng-model="formmodal.alasan_keluar" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="form-group">
+        <div class="col-sm-8 text-danger alert-danger">
+            <h5 style="text-align: left">Anda yakin ingin <b>MENGELUARKAN</b> karyawan ini?</h5>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-primary" ng-click="cancel()">Cancle</button>
+            <button class="btn btn-danger" ng-disabled="modalform.$invalid" ng-click="confirmAction(formmodal)">Ya</button>
+        </div>
+    </div>
+</div>

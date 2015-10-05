@@ -30,6 +30,7 @@ class KaryawanController extends Controller {
                     'cari' => ['get'],
                     'carikontrak' => ['get'],
                     'kode' => ['get'],
+                    'keluar' => ['post'],
                 ],
             ]
         ];
@@ -103,7 +104,11 @@ class KaryawanController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('tbl_karyawan')
+                ->from('tbl_karyawan k')
+                ->join('LEFT JOIN', 'pekerjaan as ss', 'ss.kd_kerja = k.sub_section')
+                ->join('LEFT JOIN', 'tbl_section as s', 's.id_section = k.section')
+                ->join('LEFT JOIN', 'tbl_department as d', 'd.id_department= k.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as j', 'j.id_jabatan = k.jabatan')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -111,11 +116,7 @@ class KaryawanController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
                 $query->andFilterWhere(['like', $key, $val]);
-//                }
             }
         }
 
@@ -125,6 +126,12 @@ class KaryawanController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
+        
+        if(!empty($model)){
+            foreach($models as $key => $val){
+                
+            }
+        }
 
         $this->setHeader(200);
 
@@ -194,15 +201,38 @@ class KaryawanController extends Controller {
     public function actionView($id) {
 
         $model = $this->findModel($id);
-
+        $department = [];
+        $section = [];
+        $subSection = [];
+        $jabatan = [];
+        
+        if(!empty($model)){
+            
+            $dep = \app\models\Department::findOne($model->department);
+            $department = (empty($dep))? [] : $dep->attributes;
+            $sec = \app\models\Section::findOne($model->section);
+            $section = (empty($sec)) ? [] : $sec->attributes;
+            $sub= \app\models\SubSection::findOne($model->sub_section);
+            $subSection = (empty($sub)) ? [] : $sub->attributes;
+            $jab= \app\models\Jabatan::findOne($model->jabatan);
+            $jabatan= (empty($jab)) ? [] : $jab->attributes;
+           
+        }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'department' => $department,'section'=> $section,'subSection'=> $subSection,'jabatan'=> $jabatan), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblkaryawan();
         $model->attributes = $params;
+        $model->department = $params['Department']['id_department'];
+        $model->section = $params['Section']['id_section'];
+        $model->sub_section = $params['SubSection']['kd_kerja'];
+        $model->jabatan = $params['Jabatan']['id_jabatan'];
+        $model->tgl_keluar_kerja = null;
+        $model->alasan_keluar = null;
+        $model->status = "Kerja";
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -217,6 +247,26 @@ class KaryawanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        $model->department = $params['Department']['id_department'];
+        $model->section = $params['Section']['id_section'];
+        $model->sub_section = $params['SubSection']['kd_kerja'];
+        $model->jabatan = $params['Jabatan']['id_jabatan'];
+
+        if ($model->save()) {
+            $this->setHeader(200);
+            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        } else {
+            $this->setHeader(400);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
+        }
+    }
+
+    public function actionKeluar($id) {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $model = $this->findModel($id);
+        $model->status = 'Keluar';
+        $model->tgl_keluar_kerja = date('Y-m-d', strtotime($params['form']['tgl_keluar_kerja']));
+        $model->alasan_keluar = $params['form']['alasan_keluar'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -282,7 +332,7 @@ class KaryawanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/expmaster/karyawan", ['models' => $models]);
     }
 
     public function actionExcelmasuk() {
