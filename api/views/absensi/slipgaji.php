@@ -1,4 +1,4 @@
-<table>
+<table >
     <thead>
         <tr>
             <th rowspan="2" style="text-align: center;vertical-align: middle;width: 30px">NO</th>

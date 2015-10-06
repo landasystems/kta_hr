@@ -61,21 +61,7 @@ class SiteController extends Controller {
     }
 
     public function actionCoba() {
-        $absen = AbsensiEttLog::find()
-                ->joinWith('karyawan')
-                ->select("emp.first_name, emp.pin, date(scan_date) as scan_date")
-//                ->where('date(scan_date) = "' . date("Y-m-d") . '"')
-                ->limit(100)
-                ->all();
-
-        foreach ($absen as $key => $val) {
-//            print_r($val) . '<br>';
-            echo isset($val['karyawan']['first_name']) ? $val['karyawan']['first_name'] : '-' . '<br>';
-        }
-
-//        echo json_encode($absen->pin);
-//        $aa = AbsensiEmp::find()->limit(10)->all();
-//        print_r($absen);
+        Yii::$app->response->sendContentAsFile('bbb','aa.xls');
     }
 
     public function actionLogin() {

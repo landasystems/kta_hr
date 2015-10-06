@@ -21,6 +21,7 @@ class AbsensiController extends Controller {
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
                     'penggajian' => ['get'],
+                    'penggajianexcel' => ['post'],
                 ],
             ]
         ];
@@ -389,8 +390,12 @@ class AbsensiController extends Controller {
     }
     
     public function actionPenggajianexcel() {
-        
-        return $this->render("/absensi/penggajian", ['models' => $models]);
+        $params = json_decode(file_get_contents("php://input"), true);
+        return $this->render("/absensi/penggajian", ['models' => $params]);
+    }
+    public function actionSlipgajiexcel() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        return $this->render("/absensi/slipgaji", ['models' => $params]);
     }
 
 }

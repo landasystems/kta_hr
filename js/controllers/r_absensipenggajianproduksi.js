@@ -1,4 +1,4 @@
-app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster) {
+app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster, $http) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
@@ -17,30 +17,31 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster)
         }
     };
 
-    $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelkeluar';
-            });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
+    $scope.excel = function () {
+        Data.post('absensi/penggajianexcel', $scope.listSrc).then(function (data) {
+            saveExcel(data, 'gaji.xls');
+        });
+    };
+    $scope.excelslip = function () {
+        Data.post('absensi/slipgajiexcel', $scope.listSrc).then(function (data) {
+            saveExcel(data, 'slipgaji.xls');
+        });
     };
 
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            Data.get('absensi/penggajian', form).then(function (data) {
-                $scope.listSrc = [];
-                angular.forEach(data.data, function ($value, $key) {
-                    $scope.listSrc.push($value);
-                });
+        $scope.show_detail = true;
+        $scope.show_form = form;
+
+        Data.get('absensi/penggajian', form).then(function (data) {
+            $scope.listSrc = [];
+            angular.forEach(data.data, function ($value, $key) {
+                $scope.listSrc.push($value);
             });
-        
+        });
+
     };
-    
-    
+
+
 });
