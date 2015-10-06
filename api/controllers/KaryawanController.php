@@ -400,5 +400,4 @@ class KaryawanController extends Controller {
     }
 
 }
-
 ?>
