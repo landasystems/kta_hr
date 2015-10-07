@@ -929,6 +929,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.karyawaniso', {
+                                    url: '/karyawaniso',
+                                    templateUrl: 'tpl/r_karyawaniso/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawaniso.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.karyawanmasukpertunjangan', {
                                     url: '/karyawanmasukpertunjangan',
                                     templateUrl: 'tpl/r_karyawanmasukpertunjangan/index.html',
