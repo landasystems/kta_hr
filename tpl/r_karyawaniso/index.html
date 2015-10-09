@@ -107,7 +107,7 @@
                             <td align="center">{{row.status_pernikahan}}</td>
                             <td align="center">{{row.tgl_masuk_kerja| date}}</td>
                             <td align="center">{{row.lama_kerja_thn}}</td>
-                            <td align="center">{{row.lama_kerja_bln}}</td>
+                            <td align="center">{{row.lama_kerja_bln % 12}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

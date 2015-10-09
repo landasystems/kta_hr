@@ -206,6 +206,7 @@ class KaryawanController extends Controller {
         $offset = 0;
         $limit = 10;
         $adWhere = (!empty($params['Section']['id_section'])) ? ' AND v.id_section="'.$params['Section']['id_section'].'"' : '';
+//        $adWhere = (!empty($params['Section']['id_section'])) ? 'v.id_section="'.$params['Section']['id_section'].'"' : '';
 
         //create query
         $query = new Query;
@@ -213,7 +214,8 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('v_karyawan_masuk as v')
                 ->join('LEFT JOIN','tbl_karyawan as k','k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")'.$adWhere)
+                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) .'")'.$adWhere)
+//                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
 
