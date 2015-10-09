@@ -31,6 +31,11 @@ app.controller('karyawanIsoCtrl', function ($scope, Data, toaster) {
             });
         }
     };
+    
+    $scope.setDate = function(form,tanggal){
+        form.tgl_start = new Date(tanggal.startDate);
+        form.tgl_end = new Date(tanggal.endDate);
+    };
 
     $scope.listSrc = [];
     $scope.list = [];

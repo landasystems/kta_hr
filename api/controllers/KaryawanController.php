@@ -201,7 +201,6 @@ class KaryawanController extends Controller {
     public function actionRekapiso() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
         $sort = "v.nik DESC";
         $offset = 0;
         $limit = 10;
@@ -214,7 +213,7 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('v_karyawan_masuk as v')
                 ->join('LEFT JOIN','tbl_karyawan as k','k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) .'")'.$adWhere)
+                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_start'])) .'")'.$adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
