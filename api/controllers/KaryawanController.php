@@ -25,6 +25,7 @@ class KaryawanController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekapkeluar' => ['post'],
+                    'rekapiso' => ['post'],
                     'rekapmasuk' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
@@ -197,6 +198,37 @@ class KaryawanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    public function actionRekapiso() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "v.nik DESC";
+        $offset = 0;
+        $limit = 10;
+        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND v.id_section="'.$params['Section']['id_section'].'"' : '';
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('v_karyawan_masuk as v')
+                ->join('LEFT JOIN','tbl_karyawan as k','k.nik = v.nik')
+                ->where('(v.tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")'.$adWhere)
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function actionView($id) {
 
@@ -334,19 +366,20 @@ class KaryawanController extends Controller {
         $models = $command->queryAll();
         return $this->render("/expmaster/karyawan", ['models' => $models]);
     }
-
+    
     public function actionExcelmasuk() {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
         $start = $params['tanggal']['startDate'];
         $end = $params['tanggal']['endDate'];
+        $section = (!empty($params['Section']['section'])) ? $params['Section']['section'] : '';
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
-        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end]);
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end,'section' => $section]);
     }
 
     public function actionExcelkeluar() {

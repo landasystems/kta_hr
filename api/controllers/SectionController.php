@@ -25,6 +25,7 @@ class SectionController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
+                    'cari' => ['get'],
                 ],
             ]
         ];
@@ -36,7 +37,8 @@ class SectionController extends Controller {
         $query = new Query;
         $query->from('tbl_section')
                 ->select("id_section,section")
-                ->andWhere(['like', 'section', $params['nama']]);
+                ->where(['like', 'section', $params['nama']])
+                ->orWhere(['like', 'id_section', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();

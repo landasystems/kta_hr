@@ -114,9 +114,9 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <ul class="list-unstyled l-h-4">
-                                    <li ng-show="user.akses.pegawaii_karyawanmasuk">
+<!--                                    <li ng-show="user.akses.pegawai_karyawanmasuk">
                                         <a ui-sref="pegawai.karyawanmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
-                                    </li>
+                                    </li>-->
                                     <li ng-show="user.akses.pegawai_karyawankeluar">
                                         <a ui-sref="pegawai.karyawankeluar"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
                                     </li>
@@ -126,9 +126,9 @@
                                     <li ng-show="user.akses.pegawai_lamarankerja">
                                         <a ui-sref="pegawai.lamarankerja"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lamaran Kerja</a>
                                     </li>
-                                    <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
+<!--                                    <li ng-show="user.akses.pegawai_pendaftaranjamsostek">
                                         <a ui-sref="pegawai.pendaftaranjamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Pendaftaran Jamsostek</a>
-                                    </li>
+                                    </li>-->
                                 </ul>
                             </div>
                         </div>
@@ -165,9 +165,9 @@
                                     <li ng-show="user.akses.transaksi_karyawanspd">
                                         <a ui-sref='transaksi.karyawanspd'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan SPD</a>
                                     </li>
-                                    <li ng-show="user.akses.transaksi_karyawankeluar">
+<!--                                    <li ng-show="user.akses.transaksi_karyawankeluar">
                                         <a ui-sref='transaksi.karyawankeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Keluar</a>
-                                    </li>
+                                    </li>-->
                                     <li ng-show="user.akses.transaksi_potongan">
                                         <a ui-sref='transaksi.potongan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Potongan</a>
                                     </li>
@@ -277,6 +277,9 @@
 
                                 <li ng-show="user.akses.rekap_jamsostek">
                                     <a ui-sref='rekap.jamsostek'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jamsostek</a>
+                                </li>
+                                <li ng-show="user.akses.rekap_karyawaniso">
+                                    <a ui-sref='rekap.karyawaniso'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Iso</a>
                                 </li>
 
                             </ul>
@@ -391,7 +394,7 @@
 
                         </div>
                         <div class="col-xs-3 b-l b-light">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Uncategorized</div>
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Rekap Lain-Lain</div>
                             <ul class="list-unstyled l-h-2x">
                                 <li ng-show="user.akses.rekap_rpenilaiankontrak">
                                     <a ui-sref='rekap.rpenilaiankontrak'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Rekap Penilaian Kontrak</a>
