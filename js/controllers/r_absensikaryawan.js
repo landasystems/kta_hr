@@ -2,9 +2,8 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
-    $scope.form.status = 'tidakhadir';
-    $scope.form.tanggal = new Date();
     $scope.show_detail = false;
+
     $scope.show_form = [];
 
     $scope.print = function (form) {
@@ -30,17 +29,20 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            Data.get('absensi/lemburharian', form).then(function (data) {
-                $scope.listSrc = [];
-                angular.forEach(data.data, function ($value, $key) {
-                    $scope.listSrc.push($value);
-                });
+        $scope.show_detail = true;
+        $scope.show_form = form;
+
+        Data.get('absensi/rekap', form).then(function (data) {
+            $scope.listSrc = [];
+            $scope.show_form.tanggal_startDate = new Date(data.start);
+            $scope.show_form.tanggal_endDate = new Date(data.end);
+            angular.forEach(data.data, function ($value, $key) {
+                $scope.listSrc.push($value);
+
             });
-        
+        });
+
+
     };
-    
-    
+
 });

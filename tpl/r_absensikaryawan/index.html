@@ -1,10 +1,10 @@
 <div ng-app="app" ng-controller="absensikaryawanCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Cek Absensi Harian</h1>
+        <h1 class="m-n font-thin h3">Rekap Absensi</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Cek Absent Hari Ini
+            <div class="panel-heading">.:: Rekap Absensi
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
@@ -19,20 +19,11 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label required">Tanggal</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required/>
+                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control"  type="text"  ng-model="form.tanggal">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">Status</label>
-                                        <div class="col-md-9">
-                                            <div class="btn-group">
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'hadir'">Hadir</label>
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'tidakhadir'">Tidak Hadir</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">NIK/ Nama</label>
+                                        <label class="col-md-3 control-label">Nama</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" ng-model="form.niknama">
                                         </div>
@@ -57,27 +48,35 @@
         <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN {{show_form.labelstatus}}
-                <br/> TANGGAL : {{show_form.tanggal | date}}
-                <br/> JUMLAH : {{show_form.total}}
+                <br/> TANGGAL : {{show_form.tanggal_startDate | date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate | date:'dd-MM-yyyy'}}
+                <!--<br/> JUMLAH : {{show_form.total}}-->
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
                         <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
                         <th style="text-align: center;vertical-align: center;">Nama</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Masuk</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Pulang</th>
+                        <th style="text-align: center;vertical-align: center;">A</th>
+                        <th style="text-align: center;vertical-align: center;">I</th>
+                        <th style="text-align: center;vertical-align: center;">SD</th>
+                        <th style="text-align: center;vertical-align: center;">C</th>
+                        <th style="text-align: center;vertical-align: center;">S</th>
+                        <th style="text-align: center;vertical-align: center;">JMLH HADIR</th>
                     </tr>
                 </thead>
                 <tbody ng-show="!isLoading">
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.nik}}</td>
                         <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk| asDate | date:"shortTime"}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
-                    </tr>
+                        <td style="text-align: center">{{row.Absen}}</td>
+                        <td style="text-align: center">{{row.Izin}}</td>
+                        <td style="text-align: center">{{row.Surat_Dokter}}</td>
+                        <td style="text-align: center">{{row.Cuti}}</td>
+                        <td style="text-align: center">{{row.Sakit}}</td>
+                        <td style="text-align: center">{{row.Hadir}}</td>
+                        </tr>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>
+                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="12"></td>
                     </tr>
                 </tbody>
             </table>			

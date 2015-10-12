@@ -9,6 +9,7 @@ use app\models\TblAbsent;
 use app\models\TblHtransPotongan;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 class AbsensiController extends Controller {
 
@@ -21,6 +22,7 @@ class AbsensiController extends Controller {
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
                     'penggajian' => ['get'],
+                    'rekap' => ['get'],
                     'penggajianexcel' => ['post'],
                 ],
             ]
@@ -73,6 +75,151 @@ class AbsensiController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
+    public function actionRekap() {
+        $params = $_REQUEST;
+//        $params = json_decode(file_get_contents("php://input"), true);
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $kry = TblKaryawan::aktif($niknama);
+        Yii::error($niknama);
+        $sort = "ta.nik ASC";
+        $offset = 0;
+        $limit = 10;
+
+        $query = new Query;
+        $query->offset(null)
+//                ->limit(10)
+                ->from('tbl_absent as ta')
+//                ->orderBy($sort)
+                ->groupBy(['ta.nik', 'ta.ket'])
+                ->select("ta.*,count(ta.ket) as countKet");
+        if (isset($params['tanggal'])) {
+            $test = json_decode($params['tanggal'], true);
+            $start = date("Y-m-d", strtotime($test['startDate']));
+            $end = date("Y-m-d", strtotime($test['endDate']));
+
+            $query->andFilterWhere(['between', 'ta.tanggal', $start, $end]);
+        }
+        
+        
+//        Yii::error($params['nama']);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $data = [];
+        foreach ($models as $key => $val) {
+            $data[$val['nik']]['nik'] = $val['nik'];
+            $data[$val['nik']]['nama'] = $val['nama'];
+            $data[$val['nik']][str_replace(" ", "_", $val['ket'])] = $val['countKet'];
+        }
+
+        
+        $jml_hr = $this->Hitunghr($start, $end);
+
+        foreach ($data as $key => $val) {
+            $data[$key]['nik'] = $val['nik'];
+            $data[$key]['nama'] = $val['nama'];
+            $data[$key]['Absent'] = (!empty($val['Absent'])) ? $val['Absent'] : '0';
+            $data[$key]['Izin'] = (!empty($data[$key]['Izin'])) ? $val['Izin'] : '0';
+            $data[$key]['Surat_Dokter'] = (!empty($data[$key]['Surat_Dokter'])) ? $val['Surat_Dokter'] : '0';
+            $data[$key]['Sakit'] = (!empty($val['Sakit'])) ? $val['Sakit'] : '0';
+            $data[$key]['Cuti'] = (!empty($val['Cuti'])) ? $val['Cuti'] : '0';
+            $data[$key]['Hadir'] = ($jml_hr - $data[$key]['Absent'] - $data[$key]['Izin'] - $data[$key]['Surat_Dokter'] - $data[$key]['Sakit'] - $data[$key]['Cuti']);
+        }
+
+        $datas = [];
+
+        foreach ($kry as $ky) {
+            if (isset($data[$ky->nik])) {
+                $datas[] = [
+                    'nik' => $ky->nik,
+                    'nama' => $ky->nama,
+                    'Absen' => $data[$ky->nik]['Absent'],
+                    'Izin' => $data[$ky->nik]['Izin'],
+                    'Surat_Dokter' => $data[$ky->nik]['Surat_Dokter'],
+                    'Sakit' => $data[$ky->nik]['Sakit'],
+                    'Cuti' => $data[$ky->nik]['Cuti'],
+                    'Hadir' => $data[$ky->nik]['Hadir']
+                ];
+            } else {
+                $datas[] = [
+                    'nik' => $ky->nik,
+                    'nama' => $ky->nama,
+                    'Absen' => '0',
+                    'Izin' => '0',
+                    'Surat_Dokter' => '0',
+                    'Sakit' => '0',
+                    'Cuti' => '0',
+                    'Hadir' => $jml_hr
+                ];
+            }
+        }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $datas,'start'=>  $start,'end'=> $end, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function Hitunghr($day1, $day2) {
+
+        $libur = \app\models\TblKalender::find()
+                ->where(['between', 'tgl', $day1, $day2])
+                ->all();
+        $tglibur = [];
+        foreach ($libur as $as) {
+            $tglibur[] = $as['tgl'];
+        }
+
+        // memecah string tanggal awal untuk mendapatkan
+        // tanggal, bulan, tahun
+        $pecah1 = explode("-", $day1);
+        $date1 = $pecah1[2];
+        $month1 = $pecah1[1];
+        $year1 = $pecah1[0];
+
+        // memecah string tanggal akhir untuk mendapatkan
+        // tanggal, bulan, tahun
+        $pecah2 = explode("-", $day2);
+        $date2 = $pecah2[2];
+        $month2 = $pecah2[1];
+        $year2 = $pecah2[0];
+
+        // mencari total selisih hari dari tanggal awal dan akhir
+        $jd1 = GregorianToJD($month1, $date1, $year1);
+        $jd2 = GregorianToJD($month2, $date2, $year2);
+
+        $selisih = $jd2 - $jd1;
+
+        $libur1 = '';
+        $libur2 = '';
+        // proses menghitung tanggal merah dan hari minggu
+        // di antara tanggal awal dan akhir
+        for ($i = 1; $i <= $selisih; $i++) {
+
+            // menentukan tanggal pada hari ke-i dari tanggal awal
+            $tanggal = mktime(0, 0, 0, $month1, $date1 + $i, $year1);
+            $tglstr = date("Y-m-d", $tanggal);
+
+            // menghitung jumlah tanggal pada hari ke-i
+            // yang masuk dalam daftar tanggal merah selain minggu
+            if (!empty($tglLibur)) {
+                if (in_array($tglstr, $tglLibur)) {
+                    $libur1++;
+                }
+            }
+
+            // menghitung jumlah tanggal pada hari ke-i
+            // yang merupakan hari minggu
+            if ((date("w", $tanggal) == 0)) {
+                $libur2++;
+            }
+        }
+
+        // menghitung selisih hari yang bukan tanggal merah dan hari minggu
+        return $selisih - $libur1 - $libur2;
+    }
+
     public function actionAbsensiharian() {
         $params = $_REQUEST;
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
@@ -113,8 +260,8 @@ class AbsensiController extends Controller {
 
         $models = [];
 
-        $abs = AbsensiEttLog::absen($date, $date);
-        $kry = TblKaryawan::aktif($niknama);
+        $abs = AbsensiEttLog::absen($date, $date); // ?
+        $kry = TblKaryawan::aktif($niknama); // mengambil semua data karyawan
 
         foreach ($kry as $r) {
             $models[$r->nik] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => '', 'lemburpagi' => '-', 'keluar' => '', 'lembursore' => '-'];
@@ -359,7 +506,7 @@ class AbsensiController extends Controller {
             } else {
                 $ijin = 0;
             }
-            
+
             if (isset($potongan_pinjaman[$r->nik])) { //cari potongan pinjaman, dari proses di atas
                 $potongan_pinjaman_rp = $potongan_pinjaman[$r->nik];
             } else {
@@ -375,24 +522,25 @@ class AbsensiController extends Controller {
             } else {
                 $potongan_oksigen_rp = 0;
             }
-            
+
             $ijin_rp = ($r->gaji_pokok / 25) * $ijin;
             $kotor = $r->gaji_pokok - $bpjs - $ijin_rp;
             $bersih = $kotor - $potongan_pinjaman_rp - $potongan_sepatu_rp - $potongan_oksigen_rp;
 
-            $models[$r->nik] = ['no' => $no, 'nik' => $r->nik, 'nama' => $r->nama, 'gaji_pokok' => $r->gaji_pokok, 'ijin' => $ijin, 'ijin_rp' => $ijin_rp, 'bpjs' => $bpjs, 
-                'kotor' => $kotor,'potongan_pinjaman_rp'=>$potongan_pinjaman_rp,'potongan_sepatu_rp'=>$potongan_sepatu_rp,'potongan_oksigen_rp'=>$potongan_oksigen_rp,'bersih'=>$bersih, 'lembur' => $lembur[$r->nik]];
+            $models[$r->nik] = ['no' => $no, 'nik' => $r->nik, 'nama' => $r->nama, 'gaji_pokok' => $r->gaji_pokok, 'ijin' => $ijin, 'ijin_rp' => $ijin_rp, 'bpjs' => $bpjs,
+                'kotor' => $kotor, 'potongan_pinjaman_rp' => $potongan_pinjaman_rp, 'potongan_sepatu_rp' => $potongan_sepatu_rp, 'potongan_oksigen_rp' => $potongan_oksigen_rp, 'bersih' => $bersih, 'lembur' => $lembur[$r->nik]];
             $no++;
         }
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
-    
+
     public function actionPenggajianexcel() {
         $params = json_decode(file_get_contents("php://input"), true);
         return $this->render("/absensi/penggajian", ['models' => $params]);
     }
+
     public function actionSlipgajiexcel() {
         $params = json_decode(file_get_contents("php://input"), true);
         return $this->render("/absensi/slipgaji", ['models' => $params]);
