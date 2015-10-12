@@ -61,7 +61,13 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Alasan Keluar</label>
                     <div class="col-sm-9">
-                        <textarea class="form-control" ng-model="formmodal.alasan_keluar" required></textarea>
+                        <select class="form-control" ng-model="formmodal.alasan_keluar" ng-disabled="is_view" required>
+                            <option value="PHK">PHK (PEMUTUSAN HUBUNGAN KERJA)</option>
+                            <option value="KONTRAK HABIS">KONTRAK HABIS</option>
+                            <option value="MENINGGAL">MENINGGAL</option>
+                            <option value="MENGUNDURKAN DIRI">MENGUNDURKAN DIRI</option>
+                            <option value="SAKIT KRONIS">SAKIT KRONIS</option>
+                        </select>
                     </div>
                 </div>
             </div>

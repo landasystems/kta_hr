@@ -77,7 +77,7 @@
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <!--<input type="text" ng-model="row.nama" ng-change="testDoank();">-->
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row);"></button>
-                                    <button type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modal(row,calls)"></button>
+                                    <button type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modal(row, calls)"></button>
                                     <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
@@ -152,7 +152,7 @@
                                     <div class="input-group">
                                         <ui-select on-select="retSection($item,form)" ng-disabled="is_view" ng-model="form.Section" theme="bootstrap">
                                             <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
-                                            <ui-select-choices refresh="cariBagian($select.search)" repeat="val in listSection">
+                                            <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
                                                 {{val.id_section}}<br>
                                                 <small>{{val.section}}</small>
                                             </ui-select-choices>
@@ -171,7 +171,7 @@
                                     <div class="input-group">
                                         <ui-select on-select="retSubSection($item,form)" ng-disabled="is_view" ng-model="form.SubSection" theme="bootstrap">
                                             <ui-select-match>{{$select.selected.kd_kerja}} - {{$select.selected.kerja}}</ui-select-match>
-                                            <ui-select-choices refresh="cariBagian($select.search)" repeat="val in listSubSection">
+                                            <ui-select-choices refresh="cariSubSection($select.search)" repeat="val in listSubSection">
                                                 {{val.kd_kerja}}<br>
                                                 <small>{{val.kerja}}</small>
                                             </ui-select-choices>
@@ -204,7 +204,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4 col-sm-12 img-thumbnail">
                             <div class="m-l-xs m-t-xs m-b-xs font-bold">Foto</div>
                             <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
@@ -226,11 +226,22 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Status Kepemilikan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.status_kepemilikan" ng-disabled="is_view" >
+                                    <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Karyawan'">Karyawan</label>
+                                    <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Owner'">Owner</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Ket. Karyawan</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" ng-model="form.ket">
+                                        <option value="1">Staff</option>
+                                        <option value="2">Produksi</option>
+                                        <option value="3">Borongan</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12">`
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
                                 <div class="col-sm-8">
@@ -304,11 +315,6 @@
                                     <input type="text" class="form-control" ng-model="form.desa" ng-disabled="is_view" >
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                            </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Kecamatan</label>
                                 <div class="col-sm-8">
@@ -320,6 +326,12 @@
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" ng-model="form.kabupaten" ng-disabled="is_view" >
                                 </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Kode Pos</label>
@@ -336,34 +348,26 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Status Perkawinan</label>
                                 <div class="col-sm-8">
-                                    <!--<input type="text" class="form-control" ng-model="form.status_pernikahan" ng-disabled="is_view" required>-->
-                                    <select class="form-control" ng-model="form.status_pernikahan">
-                                        <option value="Kawin"> Kawin</option>
-                                        <option value="Belum kawin">Belum Kawin</option>
-                                    </select>
+                                    <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Kawin'">Kawin</label>
+                                    <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Belum kawin'">Belum Kawin</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Jenis Kelamin</label>
                                 <div class="col-sm-8">
-                                    <!--<input type="text" class="form-control" ng-model="form.status_pernikahan" ng-disabled="is_view" required>-->
-                                    <select class="form-control" ng-model="form.jk">
-                                        <option value="Laki - laki"> Laki - Laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
+                                    <label class="btn btn-default" ng-model="form.jk" btn-radio="'Laki - laki'">Laki - laki</label>
+                                    <label class="btn btn-default" ng-model="form.jk" btn-radio="'Perempuan'">Perempuan</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Kewarganegaraan</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" ng-model="form.kewarganegaraan">
-                                        <option value="WNI"> WNI</option>
-                                        <option value="WNA">WNA</option>
-                                    </select>
+                                    <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNI'">WNI</label>
+                                    <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNA'">WNA</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
+                            <!--                        </div>
+                                                    <div class="col-md-6 col-sm-12">-->
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">NO. NPWP</label>
                                 <div class="col-sm-8">
@@ -395,6 +399,9 @@
                                     <input type="text" class="form-control" ng-model="form.sekolah" ng-disabled="is_view" >
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Jurusan</label>
                                 <div class="col-sm-8">
@@ -427,7 +434,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Gaji Pokok</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.gaji_pokok" ng-disabled="is_view" required>
+                                    <input type="text" class="form-control" ng-model="form.gaji_pokok" ng-disabled="is_view">
                                 </div>
                             </div>
                             <div class="form-group">

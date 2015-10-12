@@ -25,6 +25,7 @@ class DepartementController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
+                    'cari' => ['get'],
                 ],
             ]
         ];
@@ -43,7 +44,7 @@ class DepartementController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models));
     }
-    
+
     public function beforeAction($event) {
         $action = $event->id;
         if (isset($this->actions[$action])) {
@@ -120,9 +121,8 @@ class DepartementController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-                
-                $query->andFilterWhere(['like', 'tbl_department.'.$key, $val]);
-               
+
+                $query->andFilterWhere(['like', 'tbl_department.' . $key, $val]);
             }
         }
 
@@ -138,6 +138,23 @@ class DepartementController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
+    public function actionCari() {
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_department')
+                ->select("*")
+                ->where(['like', 'id_department', $params['nama']])
+                ->orWhere(['like', 'department', $params['nama']]);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
     public function actionView($id) {
 
         $model = $this->findModel($id);
@@ -150,7 +167,7 @@ class DepartementController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Department();
         $model->attributes = $params;
-        
+
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -223,14 +240,14 @@ class DepartementController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-    
-     public function actionExcel() {
+    public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/departement", ['models'=>$models]);
+        return $this->render("/expmaster/departement", ['models' => $models]);
     }
+
 }
 
 ?>

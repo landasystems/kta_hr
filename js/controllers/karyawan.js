@@ -107,29 +107,53 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.Jabatan = data.jabatan;
         });
     };
-
-
-    $scope.cariBagian = function (nama) {
+    
+    $scope.cariDepartment = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('bagian/cari', data).then(function (data) {
-                $scope.listBagian = data.data;
+            Data.get('departement/cari', data).then(function (data) {
+                $scope.listDepartment = data.data;
             });
         }
     };
-//    $scope.retDepartment = function (item, form) {
-//        form.department = item.id_department;
-//    };
-//    $scope.retSection = function (item, form) {
-//        form.section = item.id_section;
-//    };
-//    $scope.retSubSection = function (item, form) {
-//        form.sub_section = item.id_kerja;
-//    };
-//    $scope.retJabatan = function (item, form) {
-//        console.log(item);
-//        form.jabatan = item.id_jabatan;
-//    };
+    
+    $scope.cariSection= function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('section/cari', data).then(function (data) {
+                $scope.listSection= data.data;
+            });
+        }
+    };
+    $scope.cariSubSection= function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('subsection/cari', data).then(function (data) {
+                $scope.listSubSection = data.data;
+            });
+        }
+    };
+    
+    $scope.cariJabatan= function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('jabatan/cari', data).then(function (data) {
+                $scope.listJabatan = data.data;
+            });
+        }
+    };
+    $scope.retDepartment = function (item, form) {
+        form.department = item.id_department;
+    };
+    $scope.retSection = function (item, form) {
+        form.section = item.id_section;
+    };
+    $scope.retSubSection = function (item, form) {
+        form.sub_section = item.id_kerja;
+    };
+    $scope.retJabatan = function (item, form) {
+        form.jabatan = item.id_jabatan;
+    };
     $scope.save = function (form) {
         if ($scope.uploader.queue.length > 0) {
             $scope.uploader.uploadAll();

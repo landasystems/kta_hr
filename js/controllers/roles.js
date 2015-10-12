@@ -162,6 +162,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_penilaiankontrak": false,
             "rekap_jamsostek": false,
             "rekap_karyawankeluar": false,
+            "rekap_karyawaniso": false,
             "rekap_karyawanmasukpertunjangan": false,
             "rekap_karyawanmasukpergaji": false,
             "rekap_karyawanmasukperdata": false,
