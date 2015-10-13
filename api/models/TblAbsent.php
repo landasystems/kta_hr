@@ -35,7 +35,8 @@ class TblAbsent extends \yii\db\ActiveRecord
             [['tanggal'], 'safe'],
             [['no_absent', 'nik', 'jmasuk', 'jkeluar'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 50],
-            [['ket'], 'string', 'max' => 30]
+            [['ket'], 'string', 'max' => 30],
+            [['ket_uraian'], 'string', 'max' => 600]
         ];
     }
 
