@@ -280,7 +280,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         }
     };
 
-    $scope.modal = function (form) {
+    $scope.modalKeluar = function (form) {
         var modalInstance = $modal.open({//on modal open event;
             templateUrl: 'tpl/m_karyawan/modal.html',
             controller: 'modalCtrl',
@@ -294,6 +294,71 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.callServer(tableStateRef);
         });
     };
+    //============================GAMBAR===========================//
+    var uploader = $scope.uploader = new FileUploader({
+        url: Data.base + 'karyawan/upload/?folder=barang',
+        formData: [],
+        removeAfterUpload: true,
+    });
+
+    $scope.uploadGambar = function (form) {
+        $scope.uploader.uploadAll();
+    };
+
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function (item) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            var x = '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            if (!x) {
+                toaster.pop('error', "Jenis gambar tidak sesuai");
+            }
+            return x;
+        }
+    });
+
+    uploader.filters.push({
+        name: 'sizeFilter',
+        fn: function (item) {
+            var xz = item.size < 2097152;
+            if (!xz) {
+                toaster.pop('error', "Ukuran gambar tidak boleh lebih dari 2 MB");
+            }
+            return xz;
+        }
+    });
+
+    $scope.gambar = [];
+
+    uploader.onSuccessItem = function (fileItem, response) {
+        if (response.answer == 'File transfer completed') {
+            $scope.gambar.unshift({name: response.name});
+            $scope.form.foto = $scope.gambar;
+        }
+    };
+
+    uploader.onBeforeUploadItem = function (item) {
+        item.formData.push({
+            nik: $scope.form.nik,
+        });
+    };
+
+    $scope.removeFoto = function (paramindex, namaFoto) {
+        var comArr = eval($scope.gambar);
+        Data.post('karyawan/removegambar', {nik: $scope.form.nik, nama: namaFoto}).then(function (data) {
+            $scope.gambar.splice(paramindex, 1);
+        });
+
+        $scope.form.foto = $scope.gambar;
+    };
+
+    $scope.modal = function (kd_barang, img) {
+        var modalInstance = $modal.open({
+            template: '<img src="img/barang/' + kd_barang + '-350x350-' + img + '" class="img-full" >',
+            size: 'md',
+        });
+    };
+    /* sampe di sini*/
 
 });
 

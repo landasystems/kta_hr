@@ -33,6 +33,8 @@ class KaryawanController extends Controller {
                     'carikontrak' => ['get'],
                     'kode' => ['get'],
                     'keluar' => ['post'],
+                    'upload' => ['post'],
+                    'removegambar' => ['post'],
                 ],
             ]
         ];
@@ -254,6 +256,47 @@ class KaryawanController extends Controller {
         }
         $this->setHeader(200);
         echo json_encode(array('status' => 1,'ijazah' => $ijazah ,'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
+    }
+    
+    public function actionUpload() {
+        if (!empty($_FILES)) {
+            $tempPath = $_FILES['file']['tmp_name'];
+            $newName = \Yii::$app->landa->urlParsing($_FILES['file']['name']);
+
+            $uploadPath = \Yii::$app->params['pathImg'] . $_GET['folder'] . DIRECTORY_SEPARATOR . $newName;
+
+            move_uploaded_file($tempPath, $uploadPath);
+            $a = \Yii::$app->landa->createImg($_GET['folder'] . '/', $newName, $_POST['nik']);
+
+            $answer = array('answer' => 'File transfer completed', 'name' => $newName);
+            if ($answer['answer'] == "File transfer completed") {
+                $karyawan = Tblkaryawan::findOne($_POST['nik']);
+                $foto = json_decode($karyawan->foto, true);
+                $foto[] = array('name' => $newName);
+                $karyawan->foto = json_encode($foto);
+                $karyawan->save();
+            }
+
+            echo json_encode($answer);
+        } else {
+            echo 'No files';
+        }
+    }
+    
+    public function actionRemovegambar() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $barang = Tblkaryawan::findOne($params['nik']);
+        $foto = json_decode($barang->foto, true);
+        foreach ($foto as $key => $val) {
+            if ($val['name'] == $params['nama']) {
+                unset($foto[$key]);
+                \Yii::$app->landa->deleteImg('barang/', $params['nik'], $params['nama']);
+            }
+        }
+        $barang->foto = json_encode($foto);
+        $barang->save();
+
+        echo json_encode($foto);
     }
 
     public function actionCreate() {
