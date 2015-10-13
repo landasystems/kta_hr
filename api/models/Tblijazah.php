@@ -31,8 +31,8 @@ class Tblijazah extends \yii\db\ActiveRecord {
         return [
             [['no', 'nik'], 'required'],
             [['tgl_masuk', 'tgl_keluar', 'tgl_lahir', 'tempat_lahir', 'tgl_ijazah'], 'safe'],
-            [['no', 'nik', 'no_ijazah', 'status', 'tempat_lahir'], 'string', 'max' => 20],
-            [['atas_nama', 'nama_sekolah'], 'string', 'max' => 50]
+            [['no', 'nik', 'status', 'tempat_lahir'], 'string', 'max' => 20],
+            [['atas_nama','no_ijazah', 'nama_sekolah'], 'string', 'max' => 50]
         ];
     }
 

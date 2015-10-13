@@ -209,6 +209,8 @@ class IjazahController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblijazah();
         $model->attributes = $params;
+        if ($params['status']=='Masuk')
+            $model->tgl_keluar=null;
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -223,6 +225,8 @@ class IjazahController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        if ($params['status']=='Masuk')
+            $model->tgl_keluar=null;
 
         if ($model->save()) {
             $this->setHeader(200);
