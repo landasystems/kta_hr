@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Tblkaryawan;
+use app\models\Tblijazah;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -69,8 +70,8 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['nik'], -5)) + 1;
-        $kode = substr('00000' . $urut, -5);
+        $urut = (empty($models)) ? 1 : ((int) substr($models['nik'], -4)) + 1;
+        $kode = substr('0000' . $urut, -4);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
@@ -127,9 +128,9 @@ class KaryawanController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        if(!empty($model)){
-            foreach($models as $key => $val){
+
+        if (!empty($model)) {
+            foreach ($models as $key => $val) {
                 
             }
         }
@@ -198,22 +199,20 @@ class KaryawanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekapiso() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $sort = "v.nik DESC";
         $offset = 0;
         $limit = 10;
-        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND v.id_section="'.$params['Section']['id_section'].'"' : '';
-//        $adWhere = (!empty($params['Section']['id_section'])) ? 'v.id_section="'.$params['Section']['id_section'].'"' : '';
-
-        //create query
+        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND v.id_section="' . $params['Section']['id_section'] . '"' : '';
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('v_karyawan_masuk as v')
-                ->join('LEFT JOIN','tbl_karyawan as k','k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_start'])) .'")'.$adWhere)
+                ->join('LEFT JOIN', 'tbl_karyawan as k', 'k.nik = v.nik')
+                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_start'])) . '")' . $adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
@@ -238,21 +237,23 @@ class KaryawanController extends Controller {
         $section = [];
         $subSection = [];
         $jabatan = [];
-        
-        if(!empty($model)){
-            
+        $ijazah = [];
+
+        if (!empty($model)) {
+
             $dep = \app\models\Department::findOne($model->department);
-            $department = (empty($dep))? [] : $dep->attributes;
+            $department = (empty($dep)) ? [] : $dep->attributes;
             $sec = \app\models\Section::findOne($model->section);
             $section = (empty($sec)) ? [] : $sec->attributes;
-            $sub= \app\models\SubSection::findOne($model->sub_section);
+            $sub = \app\models\SubSection::findOne($model->sub_section);
             $subSection = (empty($sub)) ? [] : $sub->attributes;
-            $jab= \app\models\Jabatan::findOne($model->jabatan);
-            $jabatan= (empty($jab)) ? [] : $jab->attributes;
-           
+            $jab = \app\models\Jabatan::findOne($model->jabatan);
+            $jabatan = (empty($jab)) ? [] : $jab->attributes;
+            $ijz = Tblijazah::find()->where(['nik'=>$id])->one();
+            $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
         }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'department' => $department,'section'=> $section,'subSection'=> $subSection,'jabatan'=> $jabatan), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1,'ijazah' => $ijazah ,'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
@@ -268,8 +269,17 @@ class KaryawanController extends Controller {
         $model->status = "Kerja";
 
         if ($model->save()) {
-            $this->setHeader(200);
-            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+            $ijazah = new Tblijazah();
+            $ijazah->attributes = $params;
+            $ijazah->atas_nama = $params['nama'];
+            $ijazah->nama_sekolah = $params['sekolah'];
+            $ijazah->status = 'Masuk';
+            $ijazah->tempat_lahir = $params['tmpt_lahir'];
+
+            if ($ijazah->save()) {
+                $this->setHeader(200);
+                echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+            }
         } else {
             $this->setHeader(400);
             echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
@@ -286,8 +296,17 @@ class KaryawanController extends Controller {
         $model->jabatan = $params['Jabatan']['id_jabatan'];
 
         if ($model->save()) {
-            $this->setHeader(200);
-            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+            $ijazah = Tblijazah::findOne($params['no']);
+            $ijazah->attributes = $params;
+            $ijazah->atas_nama = $params['nama'];
+            $ijazah->nama_sekolah = $params['sekolah'];
+            $ijazah->status = 'Masuk';
+            $ijazah->tempat_lahir = $params['tmpt_lahir'];
+
+            if ($ijazah->save()) {
+                $this->setHeader(200);
+                echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+            }
         } else {
             $this->setHeader(400);
             echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
@@ -367,7 +386,7 @@ class KaryawanController extends Controller {
         $models = $command->queryAll();
         return $this->render("/expmaster/karyawan", ['models' => $models]);
     }
-    
+
     public function actionExcelmasuk() {
         session_start();
         $query = $_SESSION['query'];
@@ -380,7 +399,7 @@ class KaryawanController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
-        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end,'section' => $section]);
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end, 'section' => $section]);
     }
 
     public function actionExcelkeluar() {
@@ -434,4 +453,5 @@ class KaryawanController extends Controller {
     }
 
 }
+
 ?>

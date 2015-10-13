@@ -14,7 +14,7 @@ app.controller('karyawanIsoCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.excelkeluar = function (form) {
+    $scope.excel= function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             Data.post('karyawan/rekapiso', form).then(function (data) {
                 window.location = 'api/web/karyawan/excelmasuk?rekap=karyawaniso';
