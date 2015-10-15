@@ -33,7 +33,18 @@
                                         <div class="col-md-9" style="text-align: left;">
                                             <table>
                                                 <tr>
-                                                    <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                    <td>
+                                                        <input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid">
+                                                    </td>
+                                                    <td>
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Print</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -47,8 +58,8 @@
 
         <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
-                LAPORAN {{show_form.labelstatus}}
-                <br/> TANGGAL : {{show_form.tanggal_startDate | date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate | date:'dd-MM-yyyy'}}
+                LAPORAN REKAP ABSENSI
+                <br/> TANGGAL : {{show_form.tanggal_startDate| date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate| date:'dd-MM-yyyy'}}
                 <!--<br/> JUMLAH : {{show_form.total}}-->
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
@@ -74,7 +85,7 @@
                         <td style="text-align: center">{{row.Cuti}}</td>
                         <td style="text-align: center">{{row.Sakit}}</td>
                         <td style="text-align: center">{{row.Hadir}}</td>
-                        </tr>
+                    </tr>
                     <tr>
                         <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="12"></td>
                     </tr>

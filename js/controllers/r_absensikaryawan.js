@@ -6,25 +6,7 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
 
     $scope.show_form = [];
 
-    $scope.print = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.open('api/web/karyawan/excelkeluar?print=true', "", "width=500");
-            });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
-    };
-
-    $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelkeluar';
-            });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
-    };
+    
 
     $scope.listSrc = [];
     $scope.list = [];
@@ -43,6 +25,27 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
         });
 
 
+    };
+    
+    $scope.print = function (form) {
+//        console.log(form);
+        if ('tanggal' in form && form.tanggal_startDate != null) {
+            Data.post('absensi/karyawanexcel', $scope.listSrc).then(function (data) {
+                window.open('api/web/absensi/karyawanexcel?print=true', "", "width=500");
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+
+    $scope.excel = function (form) {
+        if ('tanggal' in form && form.tanggal_startDate != null) {
+            Data.post('absensi/karyawanexcel', $scope.listSrc).then(function (data) {
+                saveExcel(data, 'absenkaryawan.xls');
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
     };
 
 });

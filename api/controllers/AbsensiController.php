@@ -19,11 +19,13 @@ class AbsensiController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'absensiharian' => ['get'],
+                    'absensiproduksi' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
                     'penggajian' => ['get'],
                     'rekap' => ['get'],
                     'penggajianexcel' => ['post'],
+                    'karyawanexcel' => ['post'],
                 ],
             ]
         ];
@@ -99,8 +101,8 @@ class AbsensiController extends Controller {
 
             $query->andFilterWhere(['between', 'ta.tanggal', $start, $end]);
         }
-        
-        
+
+
 //        Yii::error($params['nama']);
 
         $command = $query->createCommand();
@@ -114,7 +116,7 @@ class AbsensiController extends Controller {
             $data[$val['nik']][str_replace(" ", "_", $val['ket'])] = $val['countKet'];
         }
 
-        
+
         $jml_hr = $this->Hitunghr($start, $end);
 
         foreach ($data as $key => $val) {
@@ -155,10 +157,13 @@ class AbsensiController extends Controller {
                 ];
             }
         }
+        session_start();
+        $_SESSION['tglStart'] = $start;
+        $_SESSION['tglEnd'] = $end;
 
         $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'data' => $datas,'start'=>  $start,'end'=> $end, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $datas, 'start' => $start, 'end' => $end, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
     public function Hitunghr($day1, $day2) {
@@ -218,6 +223,70 @@ class AbsensiController extends Controller {
 
         // menghitung selisih hari yang bukan tanggal merah dan hari minggu
         return $selisih - $libur1 - $libur2;
+    }
+
+    public function Htg_hr($m, $y) {
+
+        $hasil = cal_days_in_month(CAL_GREGORIAN, $m, $y);
+
+        return $hasil;
+    }
+
+    public function actionAbsensiproduksi() {
+//        $params = $_REQUEST;
+        $params['tanggal']='{"startDate":"2015-09-30T17:00:00.000Z","endDate":"2015-10-07T16:59:59.999Z"}';
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+//        $date = date('Y-m-d', strtotime($params['tanggal']));
+        // $hitungHr = $this->Htg_hr($m, $y);
+
+        if (isset($params['tanggal'])) {
+            $test = json_decode($params['tanggal'], true);
+            $start = date("Y-m-d", strtotime($test['startDate']));
+            $endate = date("Y-m-d", strtotime($test['endDate']));
+        }
+        //==========================[tanggal]=======================
+        $begin = new \DateTime($start);
+        $end = new \DateTime($endate);
+        $interval = \DateInterval::createFromDateString('1 day');
+        
+        //array periode
+        $period = new \DatePeriod($begin, $interval, $end);
+        //array tanggal
+        $tanggal = ['1' => '-','2' => '-','3' => '-','4' => '-','5' => '-','6' => '-','7' => '-','8' => '-','9' => '-','10' => '-','11' => '-','12' => '-','13' => '-','14' => '-','15' => '-','16' => '-','17' => '-','18' => '-','19' => '-','20' => '-','21' => '-','22' => '-','23' => '-','24' => '-','25' => '-','26' => '-','27' => '-','28' => '-','29' => '-','30' => '-','31' => '-'];
+        //==========================[absensi]=======================
+     
+        $abs = AbsensiEttLog::absen($start, $endate);
+        
+        //==========================[karyawan]=======================
+        $kry = TblKaryawan::aktif($niknama);
+        
+        $models = [];
+        $data = [];
+        foreach ($period as $prd) {
+
+            foreach ($kry as $r) {
+                if (isset($abs[$r->nik][$prd])) {
+                    foreach($tanggal as  $val){
+                        $dt = date('d',  strtotime($prd));
+                        $tanggal[$dt] = 'v';
+                    }
+                    
+                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
+                     $models[]= array_merge($data,$tanggal); 
+                    
+//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
+//                    $models= array_merge($data,$tanggal); 
+                }else{
+                    
+                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
+                     $models[]= array_merge($data,$tanggal); 
+//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
+//                    $models= array_merge($data,$tanggal);
+                }
+            }
+        }
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
 
     public function actionAbsensiharian() {
@@ -544,6 +613,15 @@ class AbsensiController extends Controller {
     public function actionSlipgajiexcel() {
         $params = json_decode(file_get_contents("php://input"), true);
         return $this->render("/absensi/slipgaji", ['models' => $params]);
+    }
+
+    public function actionKaryawanexcel() {
+        $start = $_SESSION['tglStart'];
+        $end = $_SESSION['tglEnd'];
+
+        $params = json_decode(file_get_contents("php://input"), true);
+//        Yii::error($params);
+        return $this->render("/absensi/karyawan", ['models' => $params, 'start' => $start, 'end' => $end]);
     }
 
 }
