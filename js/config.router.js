@@ -942,6 +942,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.karyawankontrak', {
+                                    url: '/karyawankontrak',
+                                    templateUrl: 'tpl/r_karyawankontrak/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawankontrak.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.karyawanmasukpertunjangan', {
                                     url: '/karyawanmasukpertunjangan',
                                     templateUrl: 'tpl/r_karyawanmasukpertunjangan/index.html',

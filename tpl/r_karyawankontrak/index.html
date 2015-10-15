@@ -1,0 +1,108 @@
+<div ng-app="app" ng-controller="karyawanKontrakCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Rekap - Kontrak Kerja</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Kontrak Kerja
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-info" style="text-align: center">
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3">Section</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in results">
+                                                        {{val.id_section}}<br>
+                                                        <small>{{val.section}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3">Periode</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)"/>
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+                                                    <td
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Kontrak<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
+                <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th  style="text-align: center;vertical-align: center;">No</th>
+                            <th  style="text-align: center;vertical-align: center;">NIK</th>
+                            <th  style="text-align: center;vertical-align: center;">NAMA</th>
+                            <th  style="text-align: center;vertical-align: center;">BAGIAN</th>
+                            <th  style="text-align: center;vertical-align: center;">KONTRAK 1</th>
+                            <th  style="text-align: center;vertical-align: center;">KONTRAK 11</th>
+                            <th  style="text-align: center;vertical-align: center;">KONTRAK 2</th>
+                            <th  style="text-align: center;vertical-align: center;">KONTRAK 21</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!isLoading">
+                        <tr ng-repeat="row in list">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.nik}}</td>
+                            <td align="center">{{row.nama}}</td>
+                            <td align="center">{{row.kerja}}</td>
+                            <td align="center">{{row.Kontrak_1| date}}</td>
+                            <td align="center">{{row.Kontrak_11| date}}</td>
+                            <td align="center">{{row.Kontrak_2| date}}</td>
+                            <td align="center">{{row.Kontrak_21| date}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
+                        </tr>
+                    </tbody>
+                </table>			
+            </div>
+        </div>
+    </div>
+    <!--FORM-->
+</div>

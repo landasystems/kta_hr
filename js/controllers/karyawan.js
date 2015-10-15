@@ -47,21 +47,25 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $event.stopPropagation();
         $scope.opened1 = true;
     };
+    
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
     };
+    
     $scope.open3 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened3 = true;
     };
+    
     $scope.openkntrk1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedkntrk1 = true;
     };
+    
     $scope.openkntrk11 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
