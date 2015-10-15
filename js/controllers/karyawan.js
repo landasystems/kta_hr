@@ -47,15 +47,49 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $event.stopPropagation();
         $scope.opened1 = true;
     };
+    
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
     };
+    
     $scope.open3 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened3 = true;
+    };
+    
+    $scope.openkntrk1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk1 = true;
+    };
+    
+    $scope.openkntrk11 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk11 = true;
+    };
+    $scope.openkntrk2 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk2 = true;
+    };
+    $scope.openkntrk21 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk21 = true;
+    };
+    $scope.openTglIjz= function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedijz= true;
+    };
+    $scope.openTglMasuk= function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedtglmasuk= true;
     };
     $scope.openkntrk1 = function ($event) {
         $event.preventDefault();

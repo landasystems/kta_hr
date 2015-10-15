@@ -23,11 +23,13 @@ class KaryawanController extends Controller {
                     'excel' => ['get'],
                     'excelkeluar' => ['get'],
                     'excelmasuk' => ['get'],
+                    'excelkontrak' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekapkeluar' => ['post'],
                     'rekapiso' => ['post'],
                     'rekapmasuk' => ['post'],
+                    'rekapkontrak' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'carikontrak' => ['get'],
@@ -231,6 +233,36 @@ class KaryawanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+    public function actionRekapkontrak() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $sort = "nik DESC";
+        $offset = 0;
+        $limit = 10;
+        Yii::error($params);
+        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_karyawan')
+                ->join('LEFT JOIN','pekerjaan','tbl_karyawan.sub_section = pekerjaan.kd_kerja')
+                ->where('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="'.date('m',  strtotime($params['tanggal'])).'")' . $adWhere)
+//                ->where($adWhere)
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
 
     public function actionView($id) {
 
@@ -251,13 +283,13 @@ class KaryawanController extends Controller {
             $subSection = (empty($sub)) ? [] : $sub->attributes;
             $jab = \app\models\Jabatan::findOne($model->jabatan);
             $jabatan = (empty($jab)) ? [] : $jab->attributes;
-            $ijz = Tblijazah::find()->where(['nik'=>$id])->one();
+            $ijz = Tblijazah::find()->where(['nik' => $id])->one();
             $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
         }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1,'ijazah' => $ijazah ,'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'ijazah' => $ijazah, 'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
     }
-    
+
     public function actionUpload() {
         if (!empty($_FILES)) {
             $tempPath = $_FILES['file']['tmp_name'];
@@ -282,7 +314,7 @@ class KaryawanController extends Controller {
             echo 'No files';
         }
     }
-    
+
     public function actionRemovegambar() {
         $params = json_decode(file_get_contents("php://input"), true);
         $barang = Tblkaryawan::findOne($params['nik']);
@@ -339,17 +371,18 @@ class KaryawanController extends Controller {
         $model->jabatan = $params['Jabatan']['id_jabatan'];
 
         if ($model->save()) {
-            $ijazah = Tblijazah::findOne($params['no']);
-            $ijazah->attributes = $params;
-            $ijazah->atas_nama = $params['nama'];
-            $ijazah->nama_sekolah = $params['sekolah'];
-            $ijazah->status = 'Masuk';
-            $ijazah->tempat_lahir = $params['tmpt_lahir'];
+            if (!empty($params['no'])) {
+                $ijazah = Tblijazah::findOne($params['no']);
+                $ijazah->attributes = $params;
+                $ijazah->atas_nama = $params['nama'];
+                $ijazah->nama_sekolah = $params['sekolah'];
+                $ijazah->status = 'Masuk';
+                $ijazah->tempat_lahir = $params['tmpt_lahir'];
 
-            if ($ijazah->save()) {
-                $this->setHeader(200);
-                echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+                $ijazah->save();
             }
+            $this->setHeader(200);
+            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
             $this->setHeader(400);
             echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
@@ -443,6 +476,19 @@ class KaryawanController extends Controller {
         $models = $command->queryAll();
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
         return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end, 'section' => $section]);
+    }
+    public function actionExcelkontrak() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $tanggal = $params['tanggal'];
+        $section = (!empty($params['Section']['section'])) ? $params['Section']['section'] : '';
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'tanggal' => $tanggal, 'section' => $section]);
     }
 
     public function actionExcelkeluar() {
