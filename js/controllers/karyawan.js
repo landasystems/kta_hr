@@ -57,6 +57,36 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $event.stopPropagation();
         $scope.opened3 = true;
     };
+    $scope.openkntrk1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk1 = true;
+    };
+    $scope.openkntrk11 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk11 = true;
+    };
+    $scope.openkntrk2 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk2 = true;
+    };
+    $scope.openkntrk21 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedkntrk21 = true;
+    };
+    $scope.openTglIjz= function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedijz= true;
+    };
+    $scope.openTglMasuk= function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedtglmasuk= true;
+    };
 
     $scope.excel = function () {
         Data.get('karyawan', paramRef).then(function (data) {
@@ -73,8 +103,18 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.form.tgl_masuk_kerja = new Date();
         $scope.form.tgl_selesai = new Date();
         $scope.form.tgl_lahir = new Date();
+        $scope.form.Kontrak_1 = new Date();
+        $scope.form.Kontrak_11 = new Date();
+        $scope.form.Kontrak_2 = new Date();
+        $scope.form.Kontrak_21 = new Date();
+        $scope.form.nik = '';
+        $scope.setCode($scope.form);
+        Data.get('ijazah/kode',form).then(function(data){
+            $scope.form.no = data.kode;
+        });
 
     };
+
     $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
@@ -83,10 +123,14 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.is_newcopy = true;
         $scope.form.tgl_lahir = new Date(form.tgl_lahir);
         $scope.form.tgl_masuk_kerja = new Date(form.tgl_masuk_kerja);
+        $scope.form.Kontrak_1 = new Date(form.Kontrak_1);
+        $scope.form.Kontrak_11 = new Date(form.Kontrak_11);
+        $scope.form.Kontrak_2 = new Date(form.Kontrak_2);
+        $scope.form.Kontrak_21 = new Date(form.Kontrak_21);
         $scope.formtitle = "Edit Data : " + form.nik;
         $scope.loadDetail(form.nik);
         $scope.nikSkarang = form.nik;
-        
+
     };
 
     $scope.view = function (form) {
@@ -96,7 +140,26 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.is_view = true;
         $scope.is_newcopy = false;
         $scope.formtitle = "Lihat Data : " + form.nik;
+        $scope.form.Kontrak_1 = new Date(form.Kontrak_1);
+        $scope.form.Kontrak_11 = new Date(form.Kontrak_11);
+        $scope.form.Kontrak_2 = new Date(form.Kontrak_2);
+        $scope.form.Kontrak_21 = new Date(form.Kontrak_21);
         $scope.loadDetail(form.nik);
+    };
+
+    $scope.setCode = function (form) {
+        var nik = '';
+        Data.get('karyawan/kode').then(function (data) {
+            nik = data.kode;
+            if ($scope.is_create == true) {
+                if (form.status_karyawan == 'Borongan') {
+                    form.nik = 'B' + nik;
+                } else {
+                    form.nik = '0' + nik;
+                }
+            }
+        });
+
     };
 
     $scope.loadDetail = function (nik) {
@@ -105,9 +168,13 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.Section = data.section;
             $scope.form.SubSection = data.subSection;
             $scope.form.Jabatan = data.jabatan;
+            $scope.form.no = data.ijazah.no;
+            $scope.form.tgl_ijazah = new Date(data.ijazah.tgl_ijazah);
+            $scope.form.tgl_masuk = new Date(data.ijazah.tgl_masuk);
+            
         });
     };
-    
+
     $scope.cariDepartment = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
@@ -116,16 +183,16 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             });
         }
     };
-    
-    $scope.cariSection= function (nama) {
+
+    $scope.cariSection = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('section/cari', data).then(function (data) {
-                $scope.listSection= data.data;
+                $scope.listSection = data.data;
             });
         }
     };
-    $scope.cariSubSection= function (nama) {
+    $scope.cariSubSection = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('subsection/cari', data).then(function (data) {
@@ -133,8 +200,8 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             });
         }
     };
-    
-    $scope.cariJabatan= function (nama) {
+
+    $scope.cariJabatan = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('jabatan/cari', data).then(function (data) {
@@ -196,7 +263,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             });
         }
     };
-    
+
     $scope.cancel = function () {
         $scope.is_edit = false;
         $scope.is_view = false;
@@ -204,7 +271,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.callServer(tableStateRef);
         }
     };
-    
+
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('karyawan/delete/' + row.nik).then(function (result) {
@@ -213,7 +280,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         }
     };
 
-    $scope.modal = function (form) {
+    $scope.modalKeluar = function (form) {
         var modalInstance = $modal.open({//on modal open event;
             templateUrl: 'tpl/m_karyawan/modal.html',
             controller: 'modalCtrl',
@@ -227,6 +294,71 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.callServer(tableStateRef);
         });
     };
+    //============================GAMBAR===========================//
+    var uploader = $scope.uploader = new FileUploader({
+        url: Data.base + 'karyawan/upload/?folder=barang',
+        formData: [],
+        removeAfterUpload: true,
+    });
+
+    $scope.uploadGambar = function (form) {
+        $scope.uploader.uploadAll();
+    };
+
+    uploader.filters.push({
+        name: 'imageFilter',
+        fn: function (item) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            var x = '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            if (!x) {
+                toaster.pop('error', "Jenis gambar tidak sesuai");
+            }
+            return x;
+        }
+    });
+
+    uploader.filters.push({
+        name: 'sizeFilter',
+        fn: function (item) {
+            var xz = item.size < 2097152;
+            if (!xz) {
+                toaster.pop('error', "Ukuran gambar tidak boleh lebih dari 2 MB");
+            }
+            return xz;
+        }
+    });
+
+    $scope.gambar = [];
+
+    uploader.onSuccessItem = function (fileItem, response) {
+        if (response.answer == 'File transfer completed') {
+            $scope.gambar.unshift({name: response.name});
+            $scope.form.foto = $scope.gambar;
+        }
+    };
+
+    uploader.onBeforeUploadItem = function (item) {
+        item.formData.push({
+            nik: $scope.form.nik,
+        });
+    };
+
+    $scope.removeFoto = function (paramindex, namaFoto) {
+        var comArr = eval($scope.gambar);
+        Data.post('karyawan/removegambar', {nik: $scope.form.nik, nama: namaFoto}).then(function (data) {
+            $scope.gambar.splice(paramindex, 1);
+        });
+
+        $scope.form.foto = $scope.gambar;
+    };
+
+    $scope.modal = function (kd_barang, img) {
+        var modalInstance = $modal.open({
+            template: '<img src="img/barang/' + kd_barang + '-350x350-' + img + '" class="img-full" >',
+            size: 'md',
+        });
+    };
+    /* sampe di sini*/
 
 });
 

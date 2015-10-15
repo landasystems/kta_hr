@@ -14,7 +14,7 @@ angular.module('app')
                 $scope.app = {
                     name: 'KTA HRD',
                     version: '1.1',
-                }
+                };
 
                 //cek warna di session
                 Data.get('site/session').then(function(data) {
@@ -44,17 +44,17 @@ angular.module('app')
                             $scope.results = data.data;
                         });
                     }
-                }
+                };
 
                 $scope.pencarianDet = function($query) {
                     $state.go('transaksi.bom', {form: $query});
-                }
+                };
 
                 $scope.logout = function() {
                     Data.get('site/logout').then(function(results) {
                         $state.go('access.signin');
                     });
-                }
+                };
 
             }]);
         
@@ -71,6 +71,3 @@ $(document).ready(function () {
         13 == s.keyCode && s.preventDefault()
     })
 });
-
-
-        

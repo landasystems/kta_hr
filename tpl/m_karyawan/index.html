@@ -77,7 +77,7 @@
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <!--<input type="text" ng-model="row.nama" ng-change="testDoank();">-->
                                     <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row);"></button>
-                                    <button type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modal(row, calls)"></button>
+                                    <button type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modalKeluar(row, calls)"></button>
                                     <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
@@ -106,407 +106,655 @@
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation">
                     <div class="row">
+                        <tabset class="tab-container">
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-user"></i> Kepegawaian
+                                </tab-heading>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Kepegawaian</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">NIK</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" ng-model="form.nik" ng-change="test();" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Nama Lengkap</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Inisial</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" ng-model="form.initial" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Departement</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <ui-select on-select="retDepartment($item,form)" ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
+                                                        <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                        <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                            {{val.id_department}}<br>
+                                                            <small>{{val.department}}</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Section</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <ui-select on-select="retSection($item,form)" ng-disabled="is_view" ng-model="form.Section" theme="bootstrap">
+                                                        <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                        <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                            {{val.id_section}}<br>
+                                                            <small>{{val.section}}</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Sub Section</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <ui-select on-select="retSubSection($item,form)" ng-disabled="is_view" ng-model="form.SubSection" theme="bootstrap">
+                                                        <ui-select-match>{{$select.selected.kd_kerja}} - {{$select.selected.kerja}}</ui-select-match>
+                                                        <ui-select-choices refresh="cariSubSection($select.search)" repeat="val in listSubSection">
+                                                            {{val.kd_kerja}}<br>
+                                                            <small>{{val.kerja}}</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button ng-click="form.SubSection = undefined" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Jabatan</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <ui-select on-select="retJabatan($item,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
+                                                        <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
+                                                        <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
+                                                            {{val.id_jabatan}}<br>
+                                                            <small>{{val.jabatan}}</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button ng-click="form.Jabatan = undefined" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <div class="col-md-8 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Kepegawaian</div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">NIK</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" ng-model="form.nik" ng-change="test();" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Nama Lengkap</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Inisial</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" ng-model="form.initial" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Departement</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <ui-select on-select="retDepartment($item,form)" ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
-                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
-                                                {{val.id_department}}<br>
-                                                <small>{{val.department}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.Department = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
+                                    <!--                                    <div class="col-md-4 col-sm-12 img-thumbnail">
+                                                                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Foto</div>
+                                                                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
+                                                                            <center><input type="file" nv-file-select="" uploader="uploader" /></center>
+                                                                        </div>-->
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Lokasi Kantor</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
+                                                    <option value="SUKOREJO">Sukorejo</option>
+                                                    <option value="SURABAYA">Surabaya</option>
+                                                    <option value="JAKARTA">Jakarta</option>
+                                                    <option value="MEDAN">Medan</option>
+                                                    <option value="BANDUNG">Bandung</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Status Kepemilikan</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Karyawan'">Karyawan</label>
+                                                <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Owner'">Owner</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Ket. Karyawan</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" ng-model="form.ket">
+                                                    <option value="1">Staff</option>
+                                                    <option value="2">Produksi</option>
+                                                    <option value="3">Borongan</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Section</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <ui-select on-select="retSection($item,form)" ng-disabled="is_view" ng-model="form.Section" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
-                                            <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
-                                                {{val.id_section}}<br>
-                                                <small>{{val.section}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.Section = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened2" ng-click="open2($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Status Karyawan</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" ng-change="setCode(form)" ng-model="form.status_karyawan">
+                                                    <option value="Tetap">Tetap</option>
+                                                    <option value="Kontrak">Kontrak</option>
+                                                    <option value="Harian">Harian</option>
+                                                    <option value="Borongan">Borongan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kontrak 1</label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="openedkntrk1" ng-click="openkntrk1($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="openedkntrk11" ng-click="openkntrk11($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kontrak 2</label>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="openedkntrk2" ng-click="openkntrk2($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="openedkntrk21" ng-click="openkntrk21($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <br>
+                                    <div class="line line-dashed b-b line-lg pull-in"></div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Sub Section</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <ui-select on-select="retSubSection($item,form)" ng-disabled="is_view" ng-model="form.SubSection" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.kd_kerja}} - {{$select.selected.kerja}}</ui-select-match>
-                                            <ui-select-choices refresh="cariSubSection($select.search)" repeat="val in listSubSection">
-                                                {{val.kd_kerja}}<br>
-                                                <small>{{val.kerja}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.SubSection = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Jabatan</label>
-                                <div class="col-sm-6">
-                                    <div class="input-group">
-                                        <ui-select on-select="retJabatan($item,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
-                                            <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
-                                                {{val.id_jabatan}}<br>
-                                                <small>{{val.jabatan}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.Jabatan = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-list-alt"></i> Data Diri
+                                </tab-heading>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">Data Diri</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">No. KTP</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.no_ktp" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tempat Lahir</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.tmpt_lahir" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tanggal Lahir</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened1" ng-click="open1($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Alamat Jalan</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.alamat_jln" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">RT / RW</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="form.rt" ng-disabled="is_view" >
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" ng-model="form.rw" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Desa</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.desa" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kecamatan</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.kecamatan" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kabupaten / Kota</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.kabupaten" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
 
-                        <div class="col-md-4 col-sm-12 img-thumbnail">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Foto</div>
-                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
-                            <center><input type="file" nv-file-select="" uploader="uploader" /></center>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Lokasi Kantor</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
-                                        <option value="SUKOREJO">Sukorejo</option>
-                                        <option value="SURABAYA">Surabaya</option>
-                                        <option value="JAKARTA">Jakarta</option>
-                                        <option value="MEDAN">Medan</option>
-                                        <option value="BANDUNG">Bandung</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Status Kepemilikan</label>
-                                <div class="col-sm-8">
-                                    <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Karyawan'">Karyawan</label>
-                                    <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Owner'">Owner</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Ket. Karyawan</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" ng-model="form.ket">
-                                        <option value="1">Staff</option>
-                                        <option value="2">Produksi</option>
-                                        <option value="3">Borongan</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">`
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened2" ng-click="open2($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kode Pos</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.kode_pos" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Agama</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.agama" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Status Perkawinan</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Kawin'">Kawin</label>
+                                                <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Belum kawin'">Belum Kawin</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Jenis Kelamin</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.jk" btn-radio="'Laki - laki'">Laki - laki</label>
+                                                <label class="btn btn-default" ng-model="form.jk" btn-radio="'Perempuan'">Perempuan</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kewarganegaraan</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNI'">WNI</label>
+                                                <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNA'">WNA</label>
+                                            </div>
+                                        </div>
+                                        <!--                        </div>
+                                                                <div class="col-md-6 col-sm-12">-->
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">NO. NPWP</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.no_npwp" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">NO. Passport</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.no_pasport" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Status Karyawan</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" ng-model="form.status_karyawan">
-                                        <option value="Tetap">Tetap</option>
-                                        <option value="Kontrak">Kontrak</option>
-                                        <option value="Harian">Harian</option>
-                                        <option value="Borongan">Borongan</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">Data Diri</div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">No. KTP</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_ktp" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tempat Lahir</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.tmpt_lahir" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Lahir</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened1" ng-click="open1($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-usd"></i> Gaji & Asuransi
+                                </tab-heading>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Gaji</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Kode Bank</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.kode_bank" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Nama Bank</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.nama_bank" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Gaji Pokok</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.gaji_pokok" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tunjangan Fungsional</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.t_fungsional" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tunjangan Kehadiran</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.t_kehadiran" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">THP</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.thp" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Upah Tetap</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.upah_tetap" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Pesangon</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.pesangon" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tunjangan Masa Kerja</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.t_masa_kerja" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Penggantian Hak</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.penggantian_hak" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Normatif</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.normatif" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-12">
+                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Asuransi</div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">No. Polis</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.no_polis" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Nama Asuransi</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.nm_asuransi" ng-disabled="is_view">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Alamat Jalan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.alamat_jln" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">RT / RW</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="form.rt" ng-disabled="is_view" >
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="form.rw" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Desa</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.desa" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kecamatan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.kecamatan" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kabupaten / Kota</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.kabupaten" ng-disabled="is_view" >
-                                </div>
-                            </div>
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-list-alt"></i> Pendidikan & Ijazah
+                                </tab-heading>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">NO</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-readonly="true" ng-model="form.no" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">NO Ijazah</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.no_ijazah" ng-disabled="is_view">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tgl Ijazah</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="openedijz" ng-click="openTglIjz($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tanggal Masuk</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="openedtglmasuk" ng-click="openTglMasuk($event)"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--                                        <div class="form-group">
+                                                                                    <label class="col-sm-4 control-label">ATAS NAMA </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="input-group">
+                                                                                            <ui-select on-select="getPegawai($item,form)" ng-disabled="is_view" ng-model="form.pegawai" theme="bootstrap">
+                                                                                                <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                                                                <ui-select-choices refresh="cariPegawai($select.search)" repeat="val in detPegawai">
+                                                                                                    {{val.nik}}<br>
+                                                                                                    <small>{{val.nama}}</small>
+                                                                                                </ui-select-choices>
+                                                                                            </ui-select>
+                                                                                            <span class="input-group-btn">
+                                                                                                <button ng-click="form.pegawai = undefined" class="btn btn-default">
+                                                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                                                </button>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>-->
 
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <div class="col-sm-4 m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kode Pos</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.kode_pos" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Agama</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.agama" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Status Perkawinan</label>
-                                <div class="col-sm-8">
-                                    <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Kawin'">Kawin</label>
-                                    <label class="btn btn-default" ng-model="form.status_pernikahan" btn-radio="'Belum kawin'">Belum Kawin</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Jenis Kelamin</label>
-                                <div class="col-sm-8">
-                                    <label class="btn btn-default" ng-model="form.jk" btn-radio="'Laki - laki'">Laki - laki</label>
-                                    <label class="btn btn-default" ng-model="form.jk" btn-radio="'Perempuan'">Perempuan</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kewarganegaraan</label>
-                                <div class="col-sm-8">
-                                    <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNI'">WNI</label>
-                                    <label class="btn btn-default" ng-model="form.kewarganegaraan" btn-radio="'WNA'">WNA</label>
-                                </div>
-                            </div>
-                            <!--                        </div>
-                                                    <div class="col-md-6 col-sm-12">-->
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">NO. NPWP</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_npwp" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">NO. Passport</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_pasport" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <!--<div class="form-group">-->
+                                        <!--<label class="col-sm-4 control-label">Tempat, Tanggal Lahir</label>-->
+                                        <!--                                            <div class="col-sm-3">
+                                                                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.tempat_lahir">
+                                                                                    </div>-->
+                                        <!--                                            <div class="col-sm-5">
+                                                                                        <div class="input-group">
+                                                                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened3" ng-click="open3($event)"/>
+                                                                                            <span class="input-group-addon">
+                                                                                                <i class="fa fa-calendar-o"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>-->
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Pendidikan</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.pendidikan" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Nama Sekolah</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.sekolah">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Jurusan</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control" ng-model="form.jurusan" ng-disabled="is_view" >
+                                            </div>
+                                        </div>
+                                        <!--                                        <div class="form-group">
+                                                                                    <label class="col-sm-4 control-label">Status</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <label class="btn btn-default" ng-model="form.status" btn-radio="'Masuk'">Masuk</label>
+                                                                                        <label class="btn btn-default" ng-model="form.status" btn-radio="'Keluar'">Keluar</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group" ng-show="form.status == 'Keluar'">
+                                                                                    <label class="col-sm-4 control-label">Tanggal Keluar</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="input-group">
+                                                                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_keluar" is-open="opened4" ng-click="open4($event)"/>
+                                                                                            <span class="input-group-addon">
+                                                                                                <i class="fa fa-calendar-o"></i>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>-->
 
+                                        <!--                                    </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="m-l-xs m-t-xs m-b-xs font-bold">Riwayat Pendidikan</div>-->
 
-                        <br>
-                        <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Riwayat Pendidikan</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Pendidikan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.pendidikan" ng-disabled="is_view" >
+                                        <!--<div class="form-group">-->
+                                        <!--<label class="col-sm-4 control-label">Sekolah Asal</label>-->
+                                        <!--                                            <div class="col-sm-8">
+                                                                                        <input type="text" class="form-control" ng-model="form.sekolah" ng-disabled="is_view" >
+                                                                                    </div>-->
+                                        <!--</div>-->
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Sekolah Asal</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.sekolah" ng-disabled="is_view" >
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-upload"></i> Berkas - Berkas
+                                </tab-heading>
+                                <div class="hbox hbox-auto-xs hbox-auto-sm"nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+                                    <div class="row" >
+                                        <div class="col-md-4">
+                                            <div class="wrapper-md dker b-b">
+                                                <h3 class="m-n font-thin">Select files</h3>
+                                            </div>
+                                            <div class="wrapper-md">      
+                                                <div ng-show="uploader.isHTML5" class="m-b-md">
+                                                    <div class="b-a b-2x b-dashed wrapper-lg bg-white text-center m-b" nv-file-over="" over-class="b-info" uploader="uploader">
+                                                        Drop Gambar
+                                                    </div>
+                                                </div>
+
+                                                <p>Pilih Gambar</p>
+                                                <input type="file" nv-file-select="" uploader="uploader" multiple  />
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="wrapper-md">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="50%">Name</th>
+                                                            <th ng-show="uploader.isHTML5">Size</th>
+                                                            <th ng-show="uploader.isHTML5">Progress</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in uploader.queue">
+                                                            <td><strong>{{ item.file.name}}</strong></td>
+                                                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size / 1024 / 1024|number:2 }} MB</td>
+                                                            <td ng-show="uploader.isHTML5">
+                                                                <div class="progress progress-sm m-b-none m-t-xs">
+                                                                    <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                                                            </td>
+                                                            <td nowrap>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                    Upload
+                                                                </button>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                    Cancel
+                                                                </button>
+                                                                <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                                                                    Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div>
+                                                    <div>
+                                                        <p>Proses Upload:</p>
+                                                        <div class="progress bg-light dker" style="">
+                                                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-addon btn-success" ng-click="uploadGambar(form.nik)" ng-disabled="!uploader.getNotUploadedItems().length">
+                                                        <i class="fa fa-arrow-circle-o-up"></i> Upload all
+                                                    </button>
+                                                    <button type="button" class="btn btn-addon btn-warning" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                                                        <i class="fa fa-ban"></i> Cancel all
+                                                    </button>
+                                                    <button type="button" class="btn btn-addon btn-danger" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                                        <i class="fa fa-trash-o"></i> Remove all
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="wrapper-md dker b-b" style="margin-bottom: 25px;">
+                                                <h3 class="m-n font-thin">Detail Foto</h3>
+                                            </div>
+                                            <div ng-repeat="slide in gambar" class="col-md-2 m-b repeat-animation hide-fade">
+                                                <a href="" ng-click="modal(form.nik, slide.name)"><img ng-src="img/barang/{{form.nik}}-150x150-{{slide.name}}" class="img-thumbnail"></a>
+                                                <p align="center" style="padding:10px;" ng-show="!is_view">
+                                                    <a href="" ng-click="removeFoto($index, slide.name)"><i class="btn btn-danger fa fa-trash" title="Hapus"></i></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Jurusan</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.jurusan" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">No Ijazah</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_ijazah" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Gaji</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kode Bank</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.kode_bank" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Bank</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nama_bank" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Gaji Pokok</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.gaji_pokok" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tunjangan Fungsional</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.t_fungsional" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tunjangan Kehadiran</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.t_kehadiran" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">THP</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.thp" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Upah Tetap</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.upah_tetap" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Pesangon</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.pesangon" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Tunjangan Masa Kerja</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.t_masa_kerja" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Penggantian Hak</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.penggantian_hak" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Normatif</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.normatif" ng-disabled="is_view" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Asuransi</div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">No. Polis</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.no_polis" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Asuransi</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nm_asuransi" ng-disabled="is_view">
-                                </div>
-                            </div>
-                        </div>
+                            </tab>
+                        </tabset>
                     </div>
                     <br>
                     <div class="line line-dashed b-b line-lg pull-in"></div>
