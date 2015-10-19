@@ -1,7 +1,7 @@
 <div ng-controller="absenMasukCtrl">
 
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Pegawai - Absen Tidak Masuk</h1>
+        <h1 class="m-n font-thin h3">Pegawai - Surat Ijin</h1>
     </div>
 
     <div class="wrapper-md" ng-show="!is_edit">
@@ -107,7 +107,7 @@
             <div class="panel-heading">
                 {{formtitle}}
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;" ng-show="is_view">
-                    <button type="button" class="btn btn-primary fa fa-print" ng-print print-element-id="printArea" ng-show="is_view">&nbsp;Cetak</button>
+                    <button type="button" class="btn btn-primary fa fa-print" ng-click="print(form)" ng-show="is_view">&nbsp;Cetak</button>
                 </div> 
             </div>
             <div class="panel-body">
@@ -178,7 +178,6 @@
                                     <input type="text" class="form-control col-sm-2" ng-model="form.jkeluar" ng-pattern="/^[0-9:]+$/" placeholder="00:00" ng-disabled="is_view" style="width: 80px">
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <br>
@@ -236,6 +235,7 @@
                 </tr>
             </table>
             <br/>
+            <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
             <br/>
             <span style="text-align: right;">Dibuat di &nbsp;&nbsp;</span>
             <table style="border-style: solid;border-collapse: collapse;">

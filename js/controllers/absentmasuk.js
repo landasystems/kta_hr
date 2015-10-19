@@ -86,7 +86,7 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         });
 
     };
-    
+
     $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
@@ -97,17 +97,24 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
 //        $scope.form.jkeluar = new Date(form.jkeluar);
         $scope.formtitle = "Edit Data : " + form.no_absent;
     };
-    
+
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        Data.get('absent/view/' + form.no_absent).then(function (data) {
+        });
         $scope.formtitle = "Lihat Data : " + form.no_absent;
     };
-    
+
+    $scope.print = function (form) {
+        Data.get('absent/view/'+form.no_absent).then(function (data) {
+            window.open('api/web/absent/print?print=true', "", "width=500");
+        });
+    };
+
     $scope.save = function (form) {
-        console.log(form);
         var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.no_absent;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {

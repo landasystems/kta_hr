@@ -26,6 +26,7 @@ class AbsentController extends Controller {
                     'jenis' => ['get'],
                     'kode' => ['get'],
                     'cari' => ['get'],
+                    'print' => ['get'],
                 ],
             ]
         ];
@@ -108,11 +109,7 @@ class AbsentController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
-//                }
+                $query->andFilterWhere(['like', $key, $val]);
             }
         }
 
@@ -123,30 +120,39 @@ class AbsentController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-        if(!empty($models)){
-            foreach($models as $key => $val){
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $pegawai = \app\models\TblKaryawan::findOne($val['nik']);
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : [];
             }
         }
-        
+
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
     public function actionView($id) {
-
-        $model = $this->findModel($id);
+        $query = new Query;
+        $query->from('tbl_absent as abs')
+                ->join('LEFT JOIN','tbl_karyawan as kar','abs.nik=kar.nik')
+                ->join('LEFT JOIN','pekerjaan as pek','kar.sub_section=pek.kd_kerja')
+                ->where('no_absent="'.$id.'"')
+                ->select("*,abs.ket as ket_absen");
+        $command = $query->createCommand();
+        $models = $command->queryOne();
+        session_start();
+        $_SESSION['models'] = $models;
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new TblAbsent();
         $model->attributes = $params;
+        $model->tgl_pembuatan = date('Y-m-d');
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -161,6 +167,9 @@ class AbsentController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        if(empty($model->tgl_pembuatan)){
+            $model->tgl_pembuatan = date('Y-m-d');
+        }
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -194,6 +203,13 @@ class AbsentController extends Controller {
             exit;
         }
     }
+    
+    public function actionPrint(){
+        
+        session_start();
+        $models = $_SESSION['models'];
+        return $this->render("/expmaster/absenkeluar", ['models' => $models]);
+    }
 
     private function setHeader($status) {
 
@@ -226,7 +242,7 @@ class AbsentController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/expmaster/absenkeluar", ['models' => $models]);
     }
 
     public function actionCari() {

@@ -241,7 +241,7 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('v_karyawan_masuk as v')
                 ->join('LEFT JOIN', 'tbl_karyawan as k', 'k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_start'])) . '")' . $adWhere)
+                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_end'])) . '")' . $adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
@@ -366,14 +366,22 @@ class KaryawanController extends Controller {
         $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
         $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
         $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
+        $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
+        $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
+        $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
+        $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
         $model->tgl_keluar_kerja = null;
         $model->alasan_keluar = null;
-        
+
 
         if ($model->save()) {
             $ijazah = new Tblijazah();
             $ijazah->attributes = $params;
             $ijazah->atas_nama = $params['nama'];
+            $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
+            $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
             $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
             $ijazah->status = 'Masuk';
             $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
@@ -396,12 +404,20 @@ class KaryawanController extends Controller {
         $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
         $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
         $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
+        $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
+        $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
+        $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
+        $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
 
         if ($model->save()) {
             if (!empty($params['no'])) {
                 $ijazah = Tblijazah::findOne($params['no']);
                 $ijazah->attributes = $params;
-                $ijazah->atas_nama = $params['nama'];
+                $ijazah->atas_nama = (!empty($params['nama'])) ? $params['nama'] : null;
+                $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
+                $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
                 $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
                 $ijazah->status = 'Masuk';
                 $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
