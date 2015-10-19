@@ -143,6 +143,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "jadwal_auditsemester": false,
             "jadwal_penilaian": false,
             "jadwal_hsetalk": false,
+            "jadwal_workplan": false,
             "monitoring_filelegalitas": false,
             "monitoring_asuransikendaraan": false,
             "monitoring_servicekendaraan": false,

@@ -563,6 +563,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('jadwal.workplan', {
+                                    url: '/workplan',
+                                    templateUrl: 'tpl/j_workplan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/workplan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('monitoring', {
                                     url: '/monitoring',
                                     templateUrl: 'tpl/app.html'

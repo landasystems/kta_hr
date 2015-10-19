@@ -42,54 +42,59 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         });
         $scope.isLoading = false;
     };
+
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened1 = true;
     };
-    
+
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
     };
-    
+
     $scope.open3 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened3 = true;
     };
-    
+
     $scope.openkntrk1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedkntrk1 = true;
     };
-    
+
     $scope.openkntrk11 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedkntrk11 = true;
     };
+
     $scope.openkntrk2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedkntrk2 = true;
     };
+
     $scope.openkntrk21 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedkntrk21 = true;
     };
-    $scope.openTglIjz= function ($event) {
+
+    $scope.openTglIjz = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedijz= true;
+        $scope.openedijz = true;
     };
-    $scope.openTglMasuk= function ($event) {
+
+    $scope.openTglMasuk = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedtglmasuk= true;
+        $scope.openedtglmasuk = true;
     };
 
     $scope.excel = function () {
@@ -97,11 +102,13 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             window.location = 'api/web/karyawan/excel';
         });
     };
+    
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.is_newcopy = false;
+        $scope.cariDepartment();
         $scope.formtitle = "Form Tambah Data Karyawan";
         $scope.form = {};
         $scope.form.tgl_masuk_kerja = new Date();
@@ -113,7 +120,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.form.Kontrak_21 = new Date();
         $scope.form.nik = '';
         $scope.setCode($scope.form);
-        Data.get('ijazah/kode',form).then(function(data){
+        Data.get('ijazah/kode', form).then(function (data) {
             $scope.form.no = data.kode;
         });
 
@@ -125,6 +132,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.is_newcopy = true;
+        $scope.cariDepartment();
         $scope.form.tgl_lahir = new Date(form.tgl_lahir);
         $scope.form.tgl_masuk_kerja = new Date(form.tgl_masuk_kerja);
         $scope.form.Kontrak_1 = new Date(form.Kontrak_1);
@@ -152,18 +160,12 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
     };
 
     $scope.setCode = function (form) {
-        var nik = '';
-        Data.get('karyawan/kode').then(function (data) {
-            nik = data.kode;
-            if ($scope.is_create == true) {
-                if (form.status_karyawan == 'Borongan') {
-                    form.nik = 'B' + nik;
-                } else {
-                    form.nik = '0' + nik;
-                }
-            }
-        });
-
+        if (form.status_karyawan !== undefined) {
+            var data = {status: form.status_karyawan};
+            Data.get('karyawan/kode', {status: form.status_karyawan}).then(function (data) {
+                form.nik = data.kode;
+            });
+        }
     };
 
     $scope.loadDetail = function (nik) {
@@ -173,54 +175,48 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.SubSection = data.subSection;
             $scope.form.Jabatan = data.jabatan;
             $scope.form.no = data.ijazah.no;
-            $scope.form.tgl_ijazah = new Date(data.ijazah.tgl_ijazah);
-            $scope.form.tgl_masuk = new Date(data.ijazah.tgl_masuk);
-            
+            $scope.form.tgl_ijazah = (data.ijazah.tgl_ijazah !== undefined) ? new Date(data.ijazah.tgl_ijazah) : null;
+            $scope.form.tgl_masuk = (data.ijazah.tgl_masuk !== undefined) ? new Date(data.ijazah.tgl_masuk) : null;
         });
     };
 
-    $scope.cariDepartment = function (nama) {
-        if (nama.length > 2) {
-            var data = {nama: nama};
-            Data.get('departement/cari', data).then(function (data) {
-                $scope.listDepartment = data.data;
-            });
-        }
+    $scope.cariDepartment = function () {
+        Data.get('departement/listdepartment').then(function (data) {
+            $scope.listDepartment = data.data;
+        });
     };
 
     $scope.cariSection = function (nama) {
-        if (nama.length > 2) {
-            var data = {nama: nama};
-            Data.get('section/cari', data).then(function (data) {
-                $scope.listSection = data.data;
-            });
-        }
+        Data.get('section/list', {nama: nama}).then(function (data) {
+            $scope.listSection = data.data;
+        });
     };
+    
     $scope.cariSubSection = function (nama) {
-        if (nama.length > 2) {
-            var data = {nama: nama};
-            Data.get('subsection/cari', data).then(function (data) {
-                $scope.listSubSection = data.data;
-            });
-        }
+        var data = {nama: nama};
+        Data.get('subsection/list', data).then(function (data) {
+            $scope.listSubSection = data.data;
+        });
     };
 
     $scope.cariJabatan = function (nama) {
-        if (nama.length > 2) {
-            var data = {nama: nama};
-            Data.get('jabatan/cari', data).then(function (data) {
-                $scope.listJabatan = data.data;
-            });
-        }
+        var data = {nama: nama};
+        Data.get('jabatan/list', data).then(function (data) {
+            $scope.listJabatan = data.data;
+        });
     };
     $scope.retDepartment = function (item, form) {
         form.department = item.id_department;
+        $scope.cariSection(item.id_department);
     };
     $scope.retSection = function (item, form) {
         form.section = item.id_section;
+        $scope.cariSubSection(item.id_section);
     };
     $scope.retSubSection = function (item, form) {
-        form.sub_section = item.id_kerja;
+
+        form.sub_section = item.kd_kerja;
+        $scope.cariJabatan(item.kd_kerja);
     };
     $scope.retJabatan = function (item, form) {
         form.jabatan = item.id_jabatan;
@@ -292,7 +288,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             resolve: {
                 form: function () {
                     return form;
-                },
+                }
             }
         }).result.finally(function () {  //after modal closed event;
             $scope.callServer(tableStateRef);
