@@ -33,6 +33,10 @@ class KaryawanController extends Controller {
                     'delete' => ['delete'],
                     'cari' => ['get'],
                     'carikontrak' => ['get'],
+                    'department' => ['get'],
+                    'section' => ['get'],
+                    'subsection' => ['get'],
+                    'jabatan' => ['get'],
                     'kode' => ['get'],
                     'keluar' => ['post'],
                     'upload' => ['post'],
@@ -65,18 +69,32 @@ class KaryawanController extends Controller {
     }
 
     public function actionKode() {
-        $params = json_decode(file_get_contents("php://input"), true);
+        $params = $_REQUEST;
         $query = new Query;
+
         $query->from('tbl_karyawan')
                 ->select('*')
+//                ->where('nik like')
                 ->orderBy('nik DESC')
                 ->limit(1);
+        if (!empty($params['status'] && $params['status'] == 'Borongan')) {
+            $query->andWhere('status_karyawan = "Borongan"');
+        } else {
+            $query->andWhere('status_karyawan <> "Borongan"');
+        }
 
         $command = $query->createCommand();
         $models = $command->queryOne();
-        $urut = (empty($models)) ? 1 : ((int) substr($models['nik'], -4)) + 1;
-        $kode = substr('0000' . $urut, -4);
-
+        $urut = 0;
+        $kode = '';
+        if (!empty($models)) {
+            $urut = ((int) substr($models['nik'], -4)) + 1;
+            if ($models['status_karyawan'] == "Borongan") {
+                $kode = 'B' . substr('0000' . $urut, -4);
+            } else {
+                $kode = '0' . substr('0000' . $urut, -4);
+            }
+        }
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
     }
@@ -133,11 +151,18 @@ class KaryawanController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-        if (!empty($model)) {
-            foreach ($models as $key => $val) {
-                
-            }
-        }
+//        if (!empty($models)) {
+//            $ijazah = [];
+//            foreach ($models as $key => $val) {
+//                $ijz = Tblijazah::find()->where(['nik' => $val['nik']])->one();
+//                $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
+//                if (!empty($ijazah)) {
+//                    foreach ($ijazah as $k => $v) {
+//                        $models[$key][$k] = $v;
+//                    }
+//                }
+//            }
+//        }
 
         $this->setHeader(200);
 
@@ -216,7 +241,7 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('v_karyawan_masuk as v')
                 ->join('LEFT JOIN', 'tbl_karyawan as k', 'k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_start'])) . '")' . $adWhere)
+                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_end'])) . '")' . $adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
@@ -233,6 +258,7 @@ class KaryawanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekapkontrak() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -245,8 +271,8 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->join('LEFT JOIN','pekerjaan','tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="'.date('m',  strtotime($params['tanggal'])).'")' . $adWhere)
+                ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
+                ->where('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="' . date('m', strtotime($params['tanggal'])) . '")' . $adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
@@ -283,7 +309,7 @@ class KaryawanController extends Controller {
             $subSection = (empty($sub)) ? [] : $sub->attributes;
             $jab = \app\models\Jabatan::findOne($model->jabatan);
             $jabatan = (empty($jab)) ? [] : $jab->attributes;
-            $ijz = Tblijazah::find()->where(['nik' => $id])->one();
+            $ijz = Tblijazah::find()->where(['nik' => $model->nik])->one();
             $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
         }
         $this->setHeader(200);
@@ -335,21 +361,30 @@ class KaryawanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblkaryawan();
         $model->attributes = $params;
-        $model->department = $params['Department']['id_department'];
-        $model->section = $params['Section']['id_section'];
-        $model->sub_section = $params['SubSection']['kd_kerja'];
-        $model->jabatan = $params['Jabatan']['id_jabatan'];
+        $model->status = "Kerja";
+        $model->department = (!empty($params['Department']['id_department'])) ? $params['Department']['id_department'] : null;
+        $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
+        $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
+        $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
+        $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
+        $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
+        $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
+        $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
         $model->tgl_keluar_kerja = null;
         $model->alasan_keluar = null;
-        $model->status = "Kerja";
+
 
         if ($model->save()) {
             $ijazah = new Tblijazah();
             $ijazah->attributes = $params;
             $ijazah->atas_nama = $params['nama'];
-            $ijazah->nama_sekolah = $params['sekolah'];
+            $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
+            $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
+            $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
             $ijazah->status = 'Masuk';
-            $ijazah->tempat_lahir = $params['tmpt_lahir'];
+            $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
 
             if ($ijazah->save()) {
                 $this->setHeader(200);
@@ -365,19 +400,27 @@ class KaryawanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-        $model->department = $params['Department']['id_department'];
-        $model->section = $params['Section']['id_section'];
-        $model->sub_section = $params['SubSection']['kd_kerja'];
-        $model->jabatan = $params['Jabatan']['id_jabatan'];
+        $model->department = (!empty($params['Department']['id_department'])) ? $params['Department']['id_department'] : null;
+        $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
+        $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
+        $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
+        $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
+        $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
+        $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
+        $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
 
         if ($model->save()) {
             if (!empty($params['no'])) {
                 $ijazah = Tblijazah::findOne($params['no']);
                 $ijazah->attributes = $params;
-                $ijazah->atas_nama = $params['nama'];
-                $ijazah->nama_sekolah = $params['sekolah'];
+                $ijazah->atas_nama = (!empty($params['nama'])) ? $params['nama'] : null;
+                $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
+                $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
+                $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
                 $ijazah->status = 'Masuk';
-                $ijazah->tempat_lahir = $params['tmpt_lahir'];
+                $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
 
                 $ijazah->save();
             }
@@ -397,6 +440,13 @@ class KaryawanController extends Controller {
         $model->alasan_keluar = $params['form']['alasan_keluar'];
 
         if ($model->save()) {
+            if (!empty($params['no'])) {
+                $ijazah = Tblijazah::findOne($params['no']);
+                $ijazah->tgl_keluar = date('Y-m-d', strtotime($model->tgl_keluar_kerja));
+                $ijazah->status = 'Keluar';
+
+                $ijazah->save();
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -477,6 +527,7 @@ class KaryawanController extends Controller {
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
         return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end, 'section' => $section]);
     }
+
     public function actionExcelkontrak() {
         session_start();
         $query = $_SESSION['query'];

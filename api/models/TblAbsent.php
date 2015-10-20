@@ -32,7 +32,7 @@ class TblAbsent extends \yii\db\ActiveRecord
     {
         return [
             [['no_absent'], 'required'],
-            [['tanggal'], 'safe'],
+            [['tanggal','tgl_pembuatan'], 'safe'],
             [['no_absent', 'nik', 'jmasuk', 'jkeluar'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 50],
             [['ket'], 'string', 'max' => 30],
@@ -53,6 +53,7 @@ class TblAbsent extends \yii\db\ActiveRecord
             'jmasuk' => 'Jmasuk',
             'jkeluar' => 'Jkeluar',
             'ket' => 'Ket',
+            'tgl_pembuatan' => 'Tanggal Pembuatan',
         ];
     }
 }

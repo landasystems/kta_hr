@@ -3,14 +3,15 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\SubSection;
+use app\models\TblWorkPlan;
+use app\models\TblWorkPlanDet;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class SubsectionController extends Controller {
+class WorkplanController extends Controller {
 
     public function behaviors() {
         return [
@@ -20,64 +21,29 @@ class SubsectionController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
-                    'listsection' => ['get'],
-                    'list' => ['get'],
-                    'cari' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'rekap' => ['post'],
                     'delete' => ['delete'],
+                    'jenis' => ['get'],
                     'kode' => ['get'],
+                    'cari' => ['get'],
                 ],
             ]
         ];
-    }
-
-    public function actionCari() {
-
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('pekerjaan')
-                ->select("kd_kerja,kerja")
-                ->andWhere(['like', 'kerja', $params['nama']]);
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models));
-    }
-    
-    public function actionList() {
-        $params = $_REQUEST;
-        $query = new Query;
-        $query->from('pekerjaan')
-                ->select("*")
-                ->orderBy('kd_kerja ASC');
-        
-        if(!empty($params['nama'])){
-            $query->andWhere(['id_section'=> $params['nama']]);
-        }
-
-        $command = $query->createCommand();
-        $models = $command->queryAll();
-        $this->setHeader(200);
-
-        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
     public function beforeAction($event) {
         $action = $event->id;
         if (isset($this->actions[$action])) {
             $verbs = $this->actions[$action];
-        } elseif (excel(isset($this->actions['*']))) {
+        } else if (excel(isset($this->actions['*']))) {
             $verbs = $this->actions['*'];
         } else {
             return $event->isValid;
         }
         $verb = Yii::$app->getRequest()->getMethod();
         $allowed = array_map('strtoupper', $verbs);
-//        Yii::error($allowed);
 
         if (!in_array($verb, $allowed)) {
 
@@ -90,29 +56,30 @@ class SubsectionController extends Controller {
     }
 
     public function actionKode() {
+        $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
-        $query->from('pekerjaan')
+        $query->from('tbl_work_plan')
                 ->select('*')
-                ->orderBy('kd_kerja DESC')
+                ->orderBy('no_transaksi DESC')
                 ->limit(1);
 
         $command = $query->createCommand();
-        $models = $command->query()->read();
-        $kode_mdl = (substr($models['kd_kerja'], -5) + 1);
-        $kode = substr('00000' . $kode_mdl, strlen($kode_mdl));
-        $this->setHeader(200);
+        $models = $command->queryOne();
+        $urut = (empty($models)) ? 1 : ((int) substr($models['no_transaksi'], -5)) + 1;
+        $kode = 'KATK' . substr('00000' . $urut, -5);
 
-        echo json_encode(array('status' => 1, 'kode' => 'KR' . $kode));
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'kode' => $kode));
     }
 
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "pekerjaan.kd_kerja ASC";
+        $sort = "no_transaksi DESC";
         $offset = 0;
         $limit = 10;
-        //        Yii::error($params);
+
         //limit & offset pagination
         if (isset($params['limit']))
             $limit = $params['limit'];
@@ -134,25 +101,63 @@ class SubsectionController extends Controller {
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
-                ->from('pekerjaan')
-                ->join('JOIN', 'tbl_section', 'pekerjaan.id_section = tbl_section.id_section')
+                ->from('tbl_work_plan as wp')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg','wp.kd_karyawan=peg.nik')
                 ->orderBy($sort)
-                ->select("pekerjaan.*,tbl_section.section");
+                ->select("*");
 
         //filter
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-                if ($key == 'id_sections') {
-                    $query->andFilterWhere(['like', 'pekerjaan.id_section', $val]);
-                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
-                }
+//                if ($key == "kat") {
+//                    $query->andFilterWhere(['=', $key, $val]);
+//                } else {
+                $query->andFilterWhere(['like', $key, $val]);
+//                }
             }
         }
 
         session_start();
         $_SESSION['query'] = $query;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+        
+        foreach($models as $key => $val){
+            if(!empty($val['kd_karyawan'])){
+                $pegawai = \app\models\Tblkaryawan::findOne($val['kd_karyawan']);
+                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+            }
+        }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekap() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $filter = array();
+        $sort = "no_transaksi DESC";
+        $offset = 0;
+        $limit = 10;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+                ->limit($limit)
+                ->from('tbl_dtrans_wp_keluar as det')
+                ->JOIN('LEFT JOIN','tbl_work_plan as wp' ,'det.no_trans = wp.no_transaksi')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg','wp.kd_karyawan=peg.nik')
+                ->where('(wp.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND wp.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -165,27 +170,41 @@ class SubsectionController extends Controller {
 
     public function actionView($id) {
 
-        $model = $this->findModel($id);
-        $data = $model->attributes;
-        $sec = \app\models\Section::find()
-                ->where(['id_section' => $model['id_section']])
-                ->One();
-        $id_section = (isset($sec->id_section)) ? $sec->id_section : '';
-        $section = (isset($sec->section)) ? $sec->section : '';
-        $data['Sections'] = ['id_section' => $id_section, 'section' => $section];
+//        $model = $this->findModel($id);
+        $detail = array();
+        $findDet = TblWorkPlanDet::findAll(['no_trans' => $id]);
+        if (!empty($findDet)) {
+            foreach ($findDet as $key => $val) {
+                $detail[$key] = $val->attributes;
+                $wp = \app\models\Tblstockwp::findOne($val->kd_brng);
+                $detail[$key]['barang'] = $wp->attributes;
+                $detail[$key]['jumlah_brng'] = $wp->jumlah_brng;
+            }
+        }
         
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $detail), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new SubSection();
-        $model->attributes = $params;
-        $model->id_section = $params['Sections']['kd_kerja'];
-
+        $model = new TblWorkPlan();
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+            foreach ($params['detail'] as $key => $val) {
+                $detail = new TblWorkPlanDet();
+                $detail->no_trans = $model->no_transaksi;
+                $detail->attributes = $val;
+                $detail->save();
+                
+                $stock = \app\models\Tblstockwp::findOne($detail->kd_brng);
+                if(!empty($stock)){
+                    $stock->jumlah_brng = ($stock->jumlah_brng - $detail->jmlh_brng);
+                    $stock->save();
+                }
+            }
+
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -197,10 +216,25 @@ class SubsectionController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
-        $model->id_section = $params['Sections']['id_section'];
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+//            $delDet = TblWorkPlanDet::deleteAll(['no_trans' => $model->no_transaksi]);
+            foreach ($params['detail'] as $key => $val) {
+                $detail = TblWorkPlanDet::findOne($val['id']);
+                $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
+                if (empty($detail))
+                    $detail = new TblWorkPlanDet();                
+                $detail->no_trans = $model->no_transaksi;
+                $detail->attributes = $val;
+                $detail->save();
+                
+                $stock = \app\models\Tblstockwp::findOne($detail->kd_brng);
+                if(!empty($stock)){
+                    $stock->jumlah_brng = $stock->jumlah_brng + $jmlLama - $detail->jmlh_brng;
+                    $stock->save();
+                }
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -223,7 +257,7 @@ class SubsectionController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = SubSection::findOne($id)) !== null) {
+        if (($model = TblWorkPlan::findOne($id)) !== null) {
             return $model;
         } else {
 
@@ -260,11 +294,27 @@ class SubsectionController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/subsection", ['models' => $models]);
+        return $this->render("/exprekap/wpkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+
+    public function actionCari() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_work_plan')
+                ->select("*")
+                ->where(['like', 'no_transaksi', $params['nama']]);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
 }

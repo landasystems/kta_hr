@@ -47,8 +47,8 @@ class Tbllamarankaryawan extends \yii\db\ActiveRecord
     {
         return [
             [['no_lamaran'], 'required'],
-            [['tgl', 'tanggal_lahir'], 'safe'],
-            [['no_lamaran', 'rt', 'rw'], 'string', 'max' => 20],
+            [['tgl', 'tanggal_lahir','telp'], 'safe'],
+            [['no_lamaran', 'rt', 'rw','telp'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 50],
             [['posisi', 'jurusan', 'informal', 'pk_perusahaan1', 'pk_bagian1', 'pk_perusahaan2', 'pk_bagian2', 'pk_perusahaan3', 'pk_bagian3'], 'string', 'max' => 200],
             [['alamat_jln'], 'string', 'max' => 250],
@@ -69,6 +69,7 @@ class Tbllamarankaryawan extends \yii\db\ActiveRecord
             'posisi' => 'Posisi',
             'alamat_jln' => 'Alamat Jln',
             'rt' => 'Rt',
+            'telp' => 'No. Telp',
             'rw' => 'Rw',
             'kelurahan' => 'Kelurahan',
             'kecamatan' => 'Kecamatan',

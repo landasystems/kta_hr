@@ -94,7 +94,7 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['desa'] . '</td>';
                 echo '<td align="center">' . $val['kecamatan'] . '</td>';
                 echo '<td align="center">' . $val['kabupaten'] . '</td>';
-                echo '<td align="center">' . $val['no_ktp'] . '</td>';
+                echo '<td align="center">&nbsp;' . $val['no_ktp'] . '</td>';
                 echo '<td align="center">' . $val['agama'] . '</td>';
                 echo '<td align="center">' . $val['status_pernikahan'] . '</td>';
                 echo '<td align="center">' . $val['tgl_masuk_kerja'] . '</td>';

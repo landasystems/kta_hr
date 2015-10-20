@@ -17,15 +17,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label required">Tanggal</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required style="width: 100px;float: left"/> <div style="float: left;padding: 7px;">s/d</div> <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal_sampai" is-open="opened2" ng-click="opened2 = true" required style="width: 100px;float: left"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">NIK/ Nama</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" ng-model="form.niknama">
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan</label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -47,26 +51,37 @@
 
         <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
-                LAPORAN LEMBUR
-                <br/> TANGGAL : {{show_form.tanggal | date}} - {{show_form.tanggal_sampai | date}}
+                LAPORAN ABSENSI OPERATOR
+                <br/> Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}
             </div>
-            <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
+            <table style="font-size: 13px;" st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
-                        <th style="text-align: center;vertical-align: center;">Nama</th>
-                        <th style="text-align: center;vertical-align: center;">Total Lembur</th>
-                    </tr>
-                </thead>
-                <tbody ng-show="!isLoading">
-                    <tr ng-repeat="row in list">
-                        <td style="text-align: center">{{row.nik}}</td>
-                        <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center" >{{row.lembur}}</td>
+                        <th rowspan="2" style="text-align: center;vertical-align: center;">NO</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: center;">ITEM</th>
+                        <th colspan="{{colsp - 1}}" style="text-align: center;vertical-align: center;">REKAP ABSENSI OPERATOR</th>
                     </tr>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="3"></td>
+                        <th style="text-align: center;width:7px;" ng-repeat="bln in listbn">{{bln}}</th>
                     </tr>
+                </thead>
+                <tbody ng-show="!isLoading" ng-repeat="row in list">
+                    <tr >
+                        <td style="text-align: center;"><b>{{$index + 1}}</b></td>
+                        <td><b>{{row.title}}</b></td>
+                        <td ng-repeat="hr in row.listjumlah">{{hr}}</td>
+                    </tr>
+                    <tr>
+                        <td ></td>
+                        <td >&nbsp;Hadir</td>
+                        <td ng-repeat="jml in row.hadir">{{jml}}</td>
+                    </tr>
+                    <tr>
+                        <td ></td>
+                        <td >&nbsp;Tidak Hadir</td>
+                        <td ng-repeat="jmlth in row.tdkhadir">{{jmlth}}</td>
+                    </tr>
+
                 </tbody>
             </table>			
         </div>

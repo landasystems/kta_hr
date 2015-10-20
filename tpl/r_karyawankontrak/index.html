@@ -13,37 +13,55 @@
                 <div class="panel panel-info" style="text-align: center">
                     <div class="panel-heading">
                         <div class="form-horizontal">
+
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-md-3">Section</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <ui-select ng-model="form.Section" theme="bootstrap" required>
-                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in results">
-                                                        {{val.id_section}}<br>
-                                                        <small>{{val.section}}</small>
-                                                    </ui-select-choices>
-                                                </ui-select>
-                                                <span class="input-group-btn">
-                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
-                                                        <span class="glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3">Periode</label>
-                                        <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)"/>
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-calendar-o"></i>
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div class="col-sm-12 ">
+                                        <tabset class="tab-container">
+                                            <tab>
+                                                <tab-heading>
+                                                    <i class="glyphicon glyphicon-user"></i> Kepegawaian
+                                                </tab-heading>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-md-3">Section</label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-group">
+                                                                <ui-select ng-model="form.Section" theme="bootstrap" required>
+                                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in results">
+                                                                        {{val.id_section}}<br>
+                                                                        <small>{{val.section}}</small>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                                <span class="input-group-btn">
+                                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-md-3">Periode</label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)"/>
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-calendar-o"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </tab>
+                                            <tab>
+                                                <tab-heading>
+                                                    <i class="glyphicon glyphicon-user"></i> Kepegawaian
+                                                </tab-heading>
+                                                <div class="row"></div>
+                                            </tab>
+                                        </tabset>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3"></label>
