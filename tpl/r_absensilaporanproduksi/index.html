@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN {{show_form.labelstatus}}
                 <br/> Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}
@@ -100,7 +100,13 @@
                         <td>&nbsp;&nbsp;{{kr.nama}}</td>
                         <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
                     </tr>
-                </tbody>             
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>&nbsp;&nbsp;<b>Total Orang</b></td>
+                        <td ng-repeat="thadir in ttl_hadir">{{thadir}}</td>
+                    </tr>
+                </tfoot>
             </table>			
         </div>
     </div>

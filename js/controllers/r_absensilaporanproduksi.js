@@ -54,6 +54,7 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
 
     $scope.listSrc = [];
     $scope.list = [];
+    $scope.ttl_hadir = [];
     $scope.view = function (form) {
 
         if ('bulan' in form && 'tahun' in form) {
@@ -61,6 +62,7 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
             $scope.show_form = form;
             Data.get('absensi/absensiproduksi', form).then(function (data) {
                 $scope.listSrc = [];
+                $scope.ttl_hadir = [];
                 $scope.show_form.tanggal_startDate = new Date(data.start);
                 $scope.show_form.tanggal_endDate = new Date(data.end);
                 var jml = data.jmlhr;
@@ -69,7 +71,7 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
                 for (var i = 1; i <= jml; i++) {
                     listbln.push(i);
                 }
-
+                $scope.ttl_hadir= data.jmlhdr;
                 $scope.listbn = listbln;
                 $scope.colsp = jml + 1;
 

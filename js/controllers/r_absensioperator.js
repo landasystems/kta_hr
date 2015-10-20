@@ -1,13 +1,13 @@
-app.controller('absensioperatorCtrl', function ($scope, Data, toaster) {
+app.controller('absensioperatorCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
     $scope.show_detail = false;
     $scope.show_form = [];
 
-    $scope.print = function (form) {
+    $scope.print = function(form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
+            Data.post('karyawan/rekapkeluar', form).then(function(data) {
                 window.open('api/web/karyawan/excelkeluar?print=true', "", "width=500");
             });
         } else {
@@ -15,9 +15,9 @@ app.controller('absensioperatorCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.excelkeluar = function (form) {
+    $scope.excelkeluar = function(form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
+            Data.post('karyawan/rekapkeluar', form).then(function(data) {
                 window.location = 'api/web/karyawan/excelkeluar';
             });
         } else {
@@ -53,23 +53,28 @@ app.controller('absensioperatorCtrl', function ($scope, Data, toaster) {
     ];
     $scope.listSrc = [];
     $scope.list = [];
-    $scope.view = function (form) {
+    $scope.ttl_hadir = [];
+    $scope.view = function(form) {
         $scope.show_detail = true;
         $scope.show_form = form;
         if ('bulan' in form && 'tahun' in form) {
-            Data.get('absensi/absensioperator', form).then(function (data) {
+            Data.get('absensi/absensioperator', form).then(function(data) {
                 $scope.listSrc = [];
-
+                $scope.ttl_hadir = [];
                 var jml = data.jmlhr;
-                 $scope.show_form.tanggal_endDate = new Date(data.end);
+                $scope.show_form.tanggal_endDate = new Date(data.end);
                 var listbln = [];
                 for (var i = 1; i <= jml; i++) {
                     listbln.push(i);
                 }
 
+
                 $scope.listbn = listbln;
+                $scope.ttl_hadir= data.totalhadir;
+                $scope.ttl_tak_hadir= data.totaltakhadir;
+
                 $scope.colsp = jml + 1;
-                angular.forEach(data.data, function ($value, $key) {
+                angular.forEach(data.data, function($value, $key) {
                     $scope.listSrc.push($value);
                 });
             });

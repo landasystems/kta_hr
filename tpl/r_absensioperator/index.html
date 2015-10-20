@@ -49,12 +49,12 @@
             </div>
         </div>
 
-        <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN ABSENSI OPERATOR
                 <br/> Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}
             </div>
-            <table style="font-size: 13px;" st-safe-src="listSrc" st-table="list" class="table table-striped">
+            <table st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
                         <th rowspan="2" style="text-align: center;vertical-align: center;">NO</th>
@@ -81,8 +81,19 @@
                         <td >&nbsp;Tidak Hadir</td>
                         <td ng-repeat="jmlth in row.tdkhadir">{{jmlth}}</td>
                     </tr>
+                    
 
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><b>TOTAL HADIR</b></td>
+                        <td ng-repeat="thadir in ttl_hadir">{{thadir}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><b>TOTAL TAK HADIR</b></td>
+                        <td ng-repeat="tdhadir in ttl_tak_hadir">{{tdhadir}}</td>
+                    </tr>
+                </tfoot>
             </table>			
         </div>
     </div>
