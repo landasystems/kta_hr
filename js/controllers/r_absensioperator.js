@@ -2,9 +2,6 @@ app.controller('absensioperatorCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
-    $scope.form.status = 'tidakhadir';
-    $scope.form.tanggal = new Date();
-    $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
 
@@ -28,20 +25,58 @@ app.controller('absensioperatorCtrl', function ($scope, Data, toaster) {
         }
     };
 
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+    var list = [];
+    for (var i = year - 3; i < year + 3; i++) {
+        list.push(i);
+    }
+    $scope.form.tahun = year;
+    $scope.form.bulan = month;
+//    console.log(myDate);
+
+    $scope.listth = list;
+    $scope.listbln = [
+        {key: "01", value: "Januari"},
+        {key: "02", value: "Februari"},
+        {key: "03", value: "Maret"},
+        {key: "04", value: "April"},
+        {key: "05", value: "Mei"},
+        {key: "06", value: "Juni"},
+        {key: "07", value: "Juli"},
+        {key: "08", value: "Agustus"},
+        {key: "09", value: "September"},
+        {key: "10", value: "Oktober"},
+        {key: "11", value: "November"},
+        {key: "12", value: "Desember"}
+    ];
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            Data.get('absensi/lembur', form).then(function (data) {
+        $scope.show_detail = true;
+        $scope.show_form = form;
+        if ('bulan' in form && 'tahun' in form) {
+            Data.get('absensi/absensioperator', form).then(function (data) {
                 $scope.listSrc = [];
+
+                var jml = data.jmlhr;
+                 $scope.show_form.tanggal_endDate = new Date(data.end);
+                var listbln = [];
+                for (var i = 1; i <= jml; i++) {
+                    listbln.push(i);
+                }
+
+                $scope.listbn = listbln;
+                $scope.colsp = jml + 1;
                 angular.forEach(data.data, function ($value, $key) {
                     $scope.listSrc.push($value);
                 });
             });
-        
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Pilih bulan dan Tahun terlebih dahulu");
+        }
     };
-    
-    
+
+
 });
