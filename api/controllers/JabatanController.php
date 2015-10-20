@@ -26,6 +26,7 @@ class JabatanController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
+                    'list' => ['get'],
                     'listkaryawan' => ['get'],
                     'listkaryawanabsent' => ['get'],
                     'listkaryawansales' => ['get'],
@@ -56,6 +57,25 @@ class JabatanController extends Controller {
         }
 
         return true;
+    }
+    
+    public function actionList() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_jabatan')
+                ->select("*")
+                ->orderBy('id_jabatan ASC');
+        Yii::error($params);
+        if(!empty($params['nama'])){
+            $query->andWhere(['krj'=> $params['nama']]);
+        }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
     public function actionListkaryawanabsent() {

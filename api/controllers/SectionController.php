@@ -49,10 +49,15 @@ class SectionController extends Controller {
     }
     
     public function actionList() {
+        $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_section')
                 ->select("*")
                 ->orderBy('id_section ASC');
+
+        if(!empty($params['nama'])){
+            $query->andWhere(['dept'=>$params['nama']]);
+        }
 
         $command = $query->createCommand();
         $models = $command->queryAll();
