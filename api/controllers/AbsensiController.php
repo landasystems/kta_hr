@@ -262,31 +262,18 @@ class AbsensiController extends Controller {
         
         $models = [];
         $data = [];
-        foreach ($period as $prd) {
+        $i=0;
+//        foreach ($period as $prd) {
 
-            foreach ($kry as $r) {
-                if (isset($abs[$r->nik][$prd])) {
-                    foreach($tanggal as  $val){
-                        $dt = date('d',  strtotime($prd));
-                        $tanggal[$dt] = 'v';
-                    }
-                    
-                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
-                     $models[]= array_merge($data,$tanggal); 
-                    
-//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
-//                    $models= array_merge($data,$tanggal); 
-                }else{
-                    
-                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
-                     $models[]= array_merge($data,$tanggal); 
-//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
-//                    $models= array_merge($data,$tanggal);
-                }
+            foreach ($kry as $kr) {
+               $data[$kr->status_karyawan]['title'] = $kr->status_karyawan;
+               $data[$kr->status_karyawan]['body'][$i]['nik'] = $kr->nik;
+               $data[$kr->status_karyawan]['body'][$i]['nama'] = $kr->nama;
+               $i++;
             }
-        }
+//        }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
     }
 
     public function actionAbsensiharian() {
