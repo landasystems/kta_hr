@@ -20,6 +20,7 @@ class AbsensiController extends Controller {
                 'actions' => [
                     'absensiharian' => ['get'],
                     'absensiproduksi' => ['get'],
+                    'absensioperator' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
                     'penggajian' => ['get'],
@@ -225,68 +226,143 @@ class AbsensiController extends Controller {
         return $selisih - $libur1 - $libur2;
     }
 
-    public function Htg_hr($m, $y) {
+    public function Htghr($m, $y) {
 
         $hasil = cal_days_in_month(CAL_GREGORIAN, $m, $y);
 
         return $hasil;
     }
 
-    public function actionAbsensiproduksi() {
-//        $params = $_REQUEST;
-        $params['tanggal']='{"startDate":"2015-09-30T17:00:00.000Z","endDate":"2015-10-07T16:59:59.999Z"}';
-        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
-//        $date = date('Y-m-d', strtotime($params['tanggal']));
-        // $hitungHr = $this->Htg_hr($m, $y);
+    public function Depart($kd) {
+        $qs = \app\models\Jabatan::find()
+                ->where(['id_jabatan' => $kd])
+                ->one();
+        return $qs->jabatan;
+    }
 
-        if (isset($params['tanggal'])) {
-            $test = json_decode($params['tanggal'], true);
-            $start = date("Y-m-d", strtotime($test['startDate']));
-            $endate = date("Y-m-d", strtotime($test['endDate']));
-        }
+    public function actionAbsensiproduksi() {
+        $params = $_REQUEST;
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $bulan = $params['bulan'];
+        $tahun = $params['tahun'];
+        $awaltgl = $tahun . "-" . $bulan . "-1";
+        $akhirtgl = $tahun . "-" . $bulan . "-" . $this->Htghr($bulan, $tahun);
+        $start = date("Y-m-d", strtotime($awaltgl));
+        $endate = date("Y-m-d", strtotime($akhirtgl));
         //==========================[tanggal]=======================
         $begin = new \DateTime($start);
         $end = new \DateTime($endate);
+        $end = $end->modify('+1 day');
         $interval = \DateInterval::createFromDateString('1 day');
-        
+
         //array periode
         $period = new \DatePeriod($begin, $interval, $end);
-        //array tanggal
-        $tanggal = ['1' => '-','2' => '-','3' => '-','4' => '-','5' => '-','6' => '-','7' => '-','8' => '-','9' => '-','10' => '-','11' => '-','12' => '-','13' => '-','14' => '-','15' => '-','16' => '-','17' => '-','18' => '-','19' => '-','20' => '-','21' => '-','22' => '-','23' => '-','24' => '-','25' => '-','26' => '-','27' => '-','28' => '-','29' => '-','30' => '-','31' => '-'];
-        //==========================[absensi]=======================
-     
         $abs = AbsensiEttLog::absen($start, $endate);
-        
+
+        $mm = date("m", strtotime($endate));
+        $yy = date("Y", strtotime($endate));
+        $htghr = $this->Htghr($mm, $yy);
+
         //==========================[karyawan]=======================
         $kry = TblKaryawan::aktif($niknama);
-        
-        $models = [];
         $data = [];
-        foreach ($period as $prd) {
+        $hadir = [];
+        $i = 0;
 
-            foreach ($kry as $r) {
-                if (isset($abs[$r->nik][$prd])) {
-                    foreach($tanggal as  $val){
-                        $dt = date('d',  strtotime($prd));
-                        $tanggal[$dt] = 'v';
+        //taruh data karyawan
+        foreach ($kry as $r) {
+            if (!empty($r->status_karyawan)) {
+                $data[$r->jabatan]['title'] = $this->Depart($r->jabatan);
+                $data[$r->jabatan]['body'][$r->status_karyawan]['title'] = strtoupper($r->status_karyawan);
+                $data[$r->jabatan]['body'][$r->status_karyawan]['subbody'][$i]['nik'] = $r->nik;
+                $data[$r->jabatan]['body'][$r->status_karyawan]['subbody'][$i]['nama'] = $r->nama;
+
+                foreach ($period as $dt) {
+                    if (!isset($hadir[$dt->format("Y-m-d")])) {
+                        $hadir[$dt->format("Y-m-d")] = 0;
                     }
-                    
-                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
-                     $models[]= array_merge($data,$tanggal); 
-                    
-//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
-//                    $models= array_merge($data,$tanggal); 
-                }else{
-                    
-                    $data[]=['nik'=> $r->nik,'nama'=> $r->nama];
-                     $models[]= array_merge($data,$tanggal); 
-//                    $models[]=['nik'=> $r->nik,'nama'=> $r->nama, $tanggal];
-//                    $models= array_merge($data,$tanggal);
+                    if (isset($abs[$r->nik][$dt->format("Y-m-d")])) {
+                        
+                        $hadir[$dt->format("Y-m-d")] += 1;
+                        $data[$r->jabatan]['body'][$r->status_karyawan]['subbody'][$i]['tanggal'][$dt->format("Y-m-d")] = 'v';
+                    } else {
+                        $data[$r->jabatan]['body'][$r->status_karyawan]['subbody'][$i]['tanggal'][$dt->format("Y-m-d")] = '-';
+                    }
+                }
+                $i++;
+            }
+        }
+
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $data, 'start' => $start, 'end' => $endate, 'jmlhr' => $htghr,'jmlhdr' => $hadir), JSON_PRETTY_PRINT);
+    }
+
+    public function actionAbsensioperator() {
+        $params = $_REQUEST;
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $bulan = $params['bulan'];
+        $tahun = $params['tahun'];
+        $awaltgl = $tahun . "-" . $bulan . "-1";
+        $akhirtgl = $tahun . "-" . $bulan . "-" . $this->Htghr($bulan, $tahun);
+        //==========================[tanggal]=======================
+        $start = date("Y-m-d", strtotime($awaltgl));
+        $endate = date("Y-m-d", strtotime($akhirtgl));
+        $begin = new \DateTime($start);
+        $end = new \DateTime($endate);
+        $end = $end->modify('+1 day');
+        $interval = \DateInterval::createFromDateString('1 day');
+
+        //array periode
+        $period = new \DatePeriod($begin, $interval, $end);
+        $abs = AbsensiEttLog::absen($start, $endate);
+        //array karyawan aktif
+        $kry = TblKaryawan::aktif($niknama);
+
+        $mm = date("m", strtotime($endate));
+        $yy = date("Y", strtotime($endate));
+        $htghr = $this->Htghr($mm, $yy);
+
+        $i = 0;
+        $jml = 1;
+        $data = [];
+        $hadir = [];
+        $tidakhadir = [];
+
+        foreach ($kry as $kr) {
+            if (!empty($kr->status_karyawan)) {
+
+                $jml = isset($data[$kr->status_karyawan]['jumlah']) ? $data[$kr->status_karyawan]['jumlah'] + 1 : 0;
+
+                $data[$kr->status_karyawan]['title'] = $kr->status_karyawan;
+                $data[$kr->status_karyawan]['jumlah'] = $jml;
+                foreach ($period as $dt) {
+                    //init data
+                    if (!isset($hadir[$dt->format("Y-m-d")])) {
+                        $hadir[$dt->format("Y-m-d")] = 0;
+                    }
+                    if (!(isset($tidakhadir[$dt->format("Y-m-d")]))) {
+                        $tidakhadir[$dt->format("Y-m-d")] = 0;
+                    }
+
+                    if (isset($abs[$kr->nik][$dt->format("Y-m-d")])) {
+                        $jml_hadir = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 0;
+                        $hadir[$dt->format("Y-m-d")] += $jml_hadir;
+                        $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
+                        $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = $jml_hadir;
+                        $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] = $jml - $jml_hadir;
+                    } else {
+                        $jml_tak_hadir = isset($data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] + 1 : 0;
+                        $tidakhadir[$dt->format("Y-m-d")] += $jml_tak_hadir;
+                        $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
+                        $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = $jml - $jml_tak_hadir;
+                        $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] = $jml_tak_hadir;
+                    }
                 }
             }
         }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $data, 'jmlhr' => $htghr, 'end' => $endate, 'totalhadir' => $hadir, 'totaltakhadir' => $tidakhadir), JSON_PRETTY_PRINT);
     }
 
     public function actionAbsensiharian() {
