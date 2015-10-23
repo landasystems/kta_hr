@@ -10,7 +10,7 @@
                 </div> 
             </div>
             <div class="panel-body">
-                <div class="panel panel-info" style="text-align: center">
+                <div class="panel panel-info" style="text-align: left">
                     <div class="panel-heading">
                         <div class="form-horizontal">
                             <div class="row">
@@ -35,9 +35,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-md-3">Status Karyawan</label>
+                                        <div class="col-md-9">
+                                            <div class="btn-group" ng-init="form.status_karyawan = {Tetap: false, Kontrak: false,Borongan : false}">
+                                                <label class="btn btn-sm btn-default" ng-model="form.status_karyawan.Tetap" btn-checkbox>Tetap</label>
+                                                <label class="btn btn-sm btn-default" ng-model="form.status_karyawan.Kontrak" btn-checkbox>Kontrak</label>
+                                                <label class="btn btn-sm btn-default" ng-model="form.status_karyawan.Borongan" btn-checkbox>Borongan</label>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-md-3">Periode</label>
                                         <div class="col-md-9">
-                                            <input placeholder="Tanggal Periode" ng-change="setDate(form,form.tanggal)" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
+                                            <input placeholder="Tanggal Periode" ng-change="setDate(form, form.tanggal)" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -97,7 +107,7 @@
                             <td align="center">{{row.pendidikan}}</td>
                             <td align="center">{{row.tmpt_lahir}}</td>
                             <td align="center">{{row.tgl_lahir| date}}</td>
-                            <td align="center">{{row.umur}}</td>
+                            <td align="center">{{row.usia}}</td>
                             <td align="center">{{row.alamat_jln}}</td>
                             <td align="center">{{row.desa}}</td>
                             <td align="center">{{row.kecamatan}}</td>
@@ -106,8 +116,8 @@
                             <td align="center">{{row.agama}}</td>
                             <td align="center">{{row.status_pernikahan}}</td>
                             <td align="center">{{row.tgl_masuk_kerja| date}}</td>
-                            <td align="center">{{row.lama_kerja_thn}}</td>
-                            <td align="center">{{row.lama_kerja_bln % 12}}</td>
+                            <td align="center">{{row.tahun}}</td>
+                            <td align="center">{{row.bulan}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

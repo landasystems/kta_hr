@@ -190,7 +190,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
     };
 
     $scope.setCode = function (form) {
-        if (form.status_karyawan !== undefined) {
+        if ($scope.is_create == true && form.status_karyawan !== undefined) {
             var data = {status: form.status_karyawan};
             Data.get('karyawan/kode', {status: form.status_karyawan}).then(function (data) {
                 form.nik = data.kode;
@@ -208,6 +208,23 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.tgl_ijazah = (data.ijazah.tgl_ijazah !== undefined) ? new Date(data.ijazah.tgl_ijazah) : null;
             $scope.form.tgl_masuk = (data.ijazah.tgl_masuk !== undefined) ? new Date(data.ijazah.tgl_masuk) : null;
         });
+    };
+    
+    $scope.inisial= function(form){
+        if(form.nama.length){
+            var slr = form.nama;
+            var ini = slr.split(" ");
+            if(ini.length >= 2){
+                var pertama = ini[0];
+                var kedua = ini[1];
+                form.initial = pertama.substring(2,0) + kedua.substring(1,0);
+            }else{
+                var pertama = ini[0];
+                form.initial = pertama.substring(3,0);
+            }
+        }else{
+            form.initial = undefined;
+        }
     };
 
     $scope.cariDepartment = function () {

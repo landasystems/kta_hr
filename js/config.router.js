@@ -377,6 +377,15 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/kendaraan.js');
                                             }]
                                     }})
+                                .state('master.sekolah', {
+                                    url: '/sekolah',
+                                    templateUrl: 'tpl/m_sekolah/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load('js/controllers/sekolah.js');
+                                            }]
+                                    }})
 
                                 // Pegawai
                                 .state('pegawai', {

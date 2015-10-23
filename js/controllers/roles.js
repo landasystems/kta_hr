@@ -126,6 +126,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "master_stokatk": false,
             "master_filelegalitas": false,
             "master_kendaraan": false,
+            "master_sekolah": false,
             "transaksi_karyawanspd": false,
             "transaksi_agendapelatihan": false,
             "transaksi_agendaumum": false,

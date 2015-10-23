@@ -232,19 +232,30 @@ class KaryawanController extends Controller {
     public function actionRekapiso() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $sort = "v.nik DESC";
+        $sort = "nik DESC";
         $offset = 0;
         $limit = 10;
-        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND v.id_section="' . $params['Section']['id_section'] . '"' : '';
+        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)
-                ->from('v_karyawan_masuk as v')
-                ->join('LEFT JOIN', 'tbl_karyawan as k', 'k.nik = v.nik')
-                ->where('(v.tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_end'])) . '")' . $adWhere)
+                ->from('tbl_karyawan')
+                ->where('(tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tgl_end'])) . '")' . $adWhere)
 //                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
+        $filter = [];
+        if (!empty($params['status_karyawan'])) {
+            foreach ($params['status_karyawan'] as $key => $val) {
+                if ($val == true) {
+                    $filter[] = $key;
+                }
+            }
+        }
+
+        if (!empty($filter)) {
+            $query->andWhere('status_karyawan IN("' . implode('","', $filter) . '")');
+        }
 
         session_start();
         $_SESSION['query'] = $query;
@@ -253,6 +264,17 @@ class KaryawanController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
+                $dateWork = new \DateTime(date('Y-m-d', strtotime($val['tgl_masuk_kerja'])));
+                $dateNow = new \DateTime(date('Y-m-d'));
+                
+                $models[$key]['usia'] = (!empty($val['tgl_lahir'])) ? floor((time() - strtotime(date('Y-m-d', strtotime($val['tgl_lahir'])))) / 31556926) : '';
+                $models[$key]['tahun'] = floor((time() - strtotime(date('Y-m-d', strtotime($val['tgl_masuk_kerja'])))) / 31556926);
+
+                $models[$key]['bulan'] = $dateWork->diff($dateNow)->m;
+            }
+        }
 
         $this->setHeader(200);
 
@@ -265,17 +287,20 @@ class KaryawanController extends Controller {
         $sort = "nik DESC";
         $offset = 0;
         $limit = 10;
-        Yii::error($params);
-        $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
                 ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="' . date('m', strtotime($params['tanggal'])) . '")' . $adWhere)
-//                ->where($adWhere)
                 ->orderBy($sort)
                 ->select("*");
+        if ($params['tipe'] == 'kelompok') {
+            $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+            $query->where('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="' . date('m', strtotime($params['tanggal'])) . '")' . $adWhere);
+        } else {
+            $query->where(['nik' => $params['Karyawan']['nik']]);
+        }
 
         session_start();
         $_SESSION['query'] = $query;
@@ -283,11 +308,10 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $totalItems = $query->count();
 
         $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
 
     public function actionView($id) {
