@@ -1,10 +1,10 @@
 <div ng-app="app" ng-controller="absensilaporanproduksiCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Laporan Absensi Produksi</h1>
+        <h1 class="m-n font-thin h3">Laporan Absensi </h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Laporan Absensi Produksi
+            <div class="panel-heading">.:: Laporan Absensi
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
@@ -15,22 +15,24 @@
                     <div class="panel-heading">
                         <div class="form-horizontal">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label required">Tanggal</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required/>
+                                    <div class="control-group">
+                                        <label class="col-sm-3 control-label">Pilih Bulan</label>
+                                        <div class="col-sm-4">
+                                            <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                            </select>
+                                        </div>
+                                        <div style="float: left;padding: 7px;">s/d</div>
+                                        <div class="col-sm-4">
+                                            <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Status</label>
-                                        <div class="col-md-9">
-                                            <div class="btn-group">
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'hadir'">Hadir</label>
-                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'tidakhadir'">Tidak Hadir</label>
-                                            </div>
-                                        </div>
                                     </div>
+                                
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">NIK/ Nama</label>
                                         <div class="col-md-9">
@@ -54,32 +56,57 @@
             </div>
         </div>
 
-        <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN {{show_form.labelstatus}}
-                <br/> TANGGAL : {{show_form.tanggal | date}}
-                <br/> JUMLAH : {{show_form.total}}
+                <br/> Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}
+
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
-                        <th style="text-align: center;vertical-align: center;">Nama</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Masuk</th>
-                        <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Pulang</th>
-                    </tr>
-                </thead>
-                <tbody ng-show="!isLoading">
-                    <tr ng-repeat="row in list">
-                        <td style="text-align: center">{{row.nik}}</td>
-                        <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk| asDate | date:"shortTime"}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
+                        <th style="text-align:center">ABSENSI</th>
+                        <th colspan="{{colsp - 1}}" style="text-align: left;">Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}</th>
                     </tr>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>
+                        <th style="text-align: left;vertical-align: left;">Nama</th>
+                        <th style="text-align: center;width:30px" ng-repeat="bln in listbn">{{bln}}</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="!isLoading" ng-repeat="row in list">
+                    <tr>
+                        <td colspan="{{colsp}}" style="text-align: center"><b>{{row.title}}</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Tetap">
+                        <td colspan="{{colsp}}"><b>Tetap</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Tetap" ng-repeat="kry in row.body.Tetap.subbody">
+                        <td>&nbsp;&nbsp;{{kry.nama}}</td>
+                        <td ng-repeat="tgl in kry.tanggal">{{tgl}}</td>
+                    </tr>
+
+                    <tr ng-show="row.body.Kontrak">
+                        <td colspan="{{colsp}}" ><b>Kontrak</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Kontrak" ng-repeat="kr in row.body.Kontrak.subbody">
+                        <td>&nbsp;&nbsp;{{kr.nama}}</td>
+                        <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
+                    </tr>
+
+                    <tr ng-show="row.body.Borongan">
+                        <td colspan="{{colsp}}"><b>Borongan</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Borongan" ng-repeat="kr in row.body.Borongan.subbody">
+                        <td>&nbsp;&nbsp;{{kr.nama}}</td>
+                        <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td>&nbsp;&nbsp;<b>Total Orang</b></td>
+                        <td ng-repeat="thadir in ttl_hadir">{{thadir}}</td>
+                    </tr>
+                </tfoot>
             </table>			
         </div>
     </div>
