@@ -368,11 +368,12 @@ class AbsensiController extends Controller {
     public function actionAbsensiharian() {
         $params = $_REQUEST;
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $lokasi_kntr = (isset($params['lokasi_kntr'])) ? $params['lokasi_kntr'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date);
-        $kry = TblKaryawan::aktif($niknama);
+        $kry = TblKaryawan::aktif($niknama, $lokasi_kntr);
 
         foreach ($kry as $r) {
             if (isset($abs[$r->nik][$date]) && $params['status'] == 'hadir') {

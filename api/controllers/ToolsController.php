@@ -74,7 +74,7 @@ class ToolsController extends Controller {
         //create query
         $query = new Query;
         $query->offset($offset)
-                ->select('kry.nik, kry.nama, abs.nik as nik_abs, abs.first_name as nama_abs')
+                ->select('kry.nik, kry.nama, abs.nik as nik_abs, abs.first_name as nama_abs, abs.last_name as nama_last_abs')
                 ->limit($limit)
                 ->from('tbl_karyawan as kry')
                 ->join('LEFT JOIN', 'ftm.emp as abs', 'abs.nik=kry.nik')
