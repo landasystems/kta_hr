@@ -89,7 +89,10 @@
     <div class="wrapper-md" ng-show="is_edit">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {{formtitle}} 
+                {{formtitle}}
+                <div class="btn-group pull-right" role="group" style="margin-top: -3px;" ng-show="is_view">
+                    <button type="button" class="btn btn-info fa fa-print" ng-print print-element-id="printCv" ng-show="is_view">&nbsp;Cetak Laporan CV</button>
+                </div>
             </div>
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation ">
@@ -264,5 +267,130 @@
                 </form>
             </div>
         </div>
+    </div>
+    <div id="printCv" style="display:none" ng-show="is_view">
+        <center><h2>Daftar Riwayat Hidup</h2></center>
+        <br>
+        <hr/>
+        <ul>
+            <li>
+                <b>Kepegawaian</b><br/>
+                <table>
+                    <tr>
+                        <td style="width:40%">Nama</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.nama}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Status Karyawan</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.status_karyawan}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Department</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.Department.department}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Section</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.Section.section}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Sub Section</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.SubSection.kerja}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Jabatan</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.Jabatan.jabatan}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Lokasi Kantor</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.lokasi_kntr}}</td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <b>Data Pribadi</b><br/>
+                <table>
+                    <tr>
+                        <td style="width:40%">No. KTP</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.no_ktp}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Tempat, Tanggal Lahir</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.tmpt_lahir}}, {{form.tgl_lahir | date}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Alamat</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.alamat}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Kode Pos</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.alamat}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Agama</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.agama}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Status Pernikahan</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.status_pernikahan}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Jenis Kelamin</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.jk}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Kewarganegaraan</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.kewarganegaraan}}</td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <b>Riwayat Pendidikan</b><br/>
+                <table>
+                    <tr>
+                        <td style="width:40%">Pendidikan Terakhir</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.pendidikan}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Nama Sekolah/ Universitas</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.sekolah}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">Jurusan</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.jurusan}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%">No Ijazah</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.no_ijazah}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="width:40%">Tanggal Lulus</td>
+                        <td style="width:5%">:</td>
+                        <td>{{form.tgl_ijazah | date}}</td>
+                    </tr>
+                    
+                </table>
+            </li>
+        </ul>
+        
     </div>
 </div>
