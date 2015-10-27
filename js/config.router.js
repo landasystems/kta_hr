@@ -641,6 +641,24 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                
+                                .state('tools', {
+                                    url: '/tools',
+                                    templateUrl: 'tpl/app.html'
+                                })
+                                .state('tools.absennama', {
+                                    url: '/absennama',
+                                    templateUrl: 'tpl/tools_absennama/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/tools_absennama.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'

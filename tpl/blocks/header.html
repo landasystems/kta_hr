@@ -148,7 +148,7 @@
                                         <a ui-sref="pegawai.prakerin"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Prakerin</a>
                                     </li>
                                     <li ng-show="user.akses.pegawai_absentmasuk">
-                                        <a ui-sref="pegawai.absentmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Absen Tidak Masuk</a>
+                                        <a ui-sref="pegawai.absentmasuk"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Surat Ijin</a>
                                     </li>
                                 </ul>
                             </div>
@@ -253,6 +253,12 @@
                                 </ul>
                             </div>
                             <div class="col-xs-3 b-l">
+                                <div class="m-l-xs m-t-xs m-b-xs font-bold">Tools</div>
+                                <ul class="list-unstyled l-h-2x">
+                                    <li ng-show="user.akses.tools_absennama">
+                                        <a ui-sref='tools.absennama'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Cek Kesamaan Data Absensi</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

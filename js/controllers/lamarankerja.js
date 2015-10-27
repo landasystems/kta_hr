@@ -1,4 +1,4 @@
-app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader) {
+app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster, FileUploader) {
     var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
     var uploader = $scope.uploader = new FileUploader({
         url: 'img/upload.php?folder=barang&kode=' + kode_unik,
@@ -60,6 +60,21 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader)
             $scope.form.no_lamaran = data.kode;
         });
     };
+
+    $scope.cariJabatan = function (nama) {
+        if (nama.length > 2) {
+            var data = {
+                nama: nama
+            };
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.detAuditee = data.data;
+            });
+        }
+    };
+    $scope.getJabatan = function (form, item) {
+        form.posisi = item.jabatan;
+    };
+
     $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
@@ -84,7 +99,7 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster,FileUploader)
             form.foto = '';
         }
 
-        
+
         var url = ($scope.is_create == true) ? 'lamarankerja/create/' : 'lamarankerja/update/' + form.no_lamaran;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
