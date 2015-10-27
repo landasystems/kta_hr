@@ -240,9 +240,6 @@ class AbsensiController extends Controller {
         return $qs->jabatan;
     }
     
-//    public function actionLIstjab(){
-//        $list = \app\models\Jabatan::findAll($condition)
-//    }
 
     public function actionAbsensiproduksi() {
         $params = $_REQUEST;
