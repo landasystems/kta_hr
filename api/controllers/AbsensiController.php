@@ -19,7 +19,7 @@ class AbsensiController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'absensiharian' => ['get'],
-                    'absensiproduksi' => ['get'],
+                    'absensiproduksi' => ['post'],
                     'absensioperator' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
@@ -242,8 +242,9 @@ class AbsensiController extends Controller {
     
 
     public function actionAbsensiproduksi() {
-        $params = $_REQUEST;
+        $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $jabatan = (isset($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : '';
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
         $awaltgl = $tahun . "-" . $bulan . "-1";
@@ -265,7 +266,7 @@ class AbsensiController extends Controller {
         $htghr = $this->Htghr($mm, $yy);
 
         //==========================[karyawan]=======================
-        $kry = TblKaryawan::aktif($niknama);
+        $kry = TblKaryawan::aktif($niknama,$jabatan);
         $data = [];
         $hadir = [];
         $i = 0;

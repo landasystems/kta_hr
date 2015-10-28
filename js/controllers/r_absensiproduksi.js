@@ -28,20 +28,22 @@ app.controller('absensiproduksiCtrl', function ($scope, Data, toaster) {
         }
     };
 
+   
+
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            Data.get('absensi/lembur', form).then(function (data) {
-                $scope.listSrc = [];
-                angular.forEach(data.data, function ($value, $key) {
-                    $scope.listSrc.push($value);
-                });
+        $scope.show_detail = true;
+        $scope.show_form = form;
+
+        Data.get('absensi/lembur', form).then(function (data) {
+            $scope.listSrc = [];
+            angular.forEach(data.data, function ($value, $key) {
+                $scope.listSrc.push($value);
             });
-        
+        });
+
     };
-    
-    
+
+
 });

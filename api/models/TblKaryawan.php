@@ -154,10 +154,14 @@ class TblKaryawan extends \yii\db\ActiveRecord
         ];
     }
     
-    public static function aktif($niknama = '', $lokasi_kntr = 'SUKOREJO'){
+    public static function aktif($niknama = '',$jabatan = '', $lokasi_kntr = 'SUKOREJO'){
         $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="'.$lokasi_kntr.'"')->orderBy('nik')->indexBy('nik');
         if (!empty($niknama)){
             $query->andWhere('(nik LIKE "%'.$niknama.'%" OR nama LIKE "%'.$niknama.'%")');
+        }
+        
+        if(!empty($jabatan)){
+            $query->andWhere("jabatan = '".$jabatan."'");
         }
         return $query->all();
     }
