@@ -16,7 +16,6 @@ if (!isset($_GET['print'])) {
     <div class="printedArea">
         <center style="font-weight: bold;font-size: 16px"><u>SURAT IJIN</u></center>
         <br>
-        <br>
         Yang bertandatangan di bawah ini:<br/>
         <table>
             <tr>
@@ -71,7 +70,7 @@ if (!isset($_GET['print'])) {
                 <td style="vertical-align: top;height: 100px;"><?= $models['ket_uraian'] ?></td>
             </tr>
         </table>
-        <br/>
+        <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
         <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>

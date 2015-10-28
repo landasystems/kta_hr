@@ -23,7 +23,7 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.excel = function (form) {
-        if ('tanggal' in form && form.tanggal != null) {
+        if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapkontrak', form).then(function (data) {
                 window.location = 'api/web/karyawan/excelkontrak?rekap=karyawankontrak';
             });
@@ -46,12 +46,12 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-    
-    $scope.clear1= function(){
+
+    $scope.clear1 = function () {
         $scope.form.Section = undefined;
         $scope.form.tanggal = undefined;
     };
-    $scope.clear2= function(){
+    $scope.clear2 = function () {
         $scope.form.Karyawan = undefined;
     };
 
