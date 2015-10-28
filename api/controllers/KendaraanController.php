@@ -212,7 +212,7 @@ class KendaraanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/kendaraan", ['models' => $models]);
+        return $this->render("/expmaster/kendaraan", ['models' => $models]);
     }
 
 }

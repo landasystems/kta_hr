@@ -38,6 +38,7 @@ class KaryawanController extends Controller {
                     'subsection' => ['get'],
                     'jabatan' => ['get'],
                     'kode' => ['get'],
+                    'ijazah' => ['get'],
                     'keluar' => ['post'],
                     'upload' => ['post'],
                     'removegambar' => ['post'],
@@ -612,6 +613,22 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+    
+    public function actionIjazah(){
+        $params = $_REQUEST;
+        $query = new Query();
+        
+        $query->select('*')
+                ->from('tbl_ijazah')
+                ->join('LEFT JOIN', 'tbl_karyawan', 'tbl_karyawan.nik = tbl_ijazah.nik')
+                ->limit(10);
+        
+        $execute = $query->createCommand();
+        $models = $execute->queryOne();
+        
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));
     }
