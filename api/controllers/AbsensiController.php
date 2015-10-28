@@ -244,7 +244,7 @@ class AbsensiController extends Controller {
     public function actionAbsensiproduksi() {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
-        $jabatan = (isset($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : '';
+        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
         $awaltgl = $tahun . "-" . $bulan . "-1";
@@ -266,7 +266,7 @@ class AbsensiController extends Controller {
         $htghr = $this->Htghr($mm, $yy);
 
         //==========================[karyawan]=======================
-        $kry = TblKaryawan::aktif($niknama,$jabatan);
+        $kry = TblKaryawan::aktif($niknama,$section);
         $data = [];
         $hadir = [];
         $i = 0;
