@@ -52,6 +52,15 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
         {key: "12", value: "Desember"}
     ];
 
+    $scope.cariJabatan = function ($query) {
+
+        if ($query.length >= 3) {
+            Data.get('jabatan/cari',{nama: $query}).then(function (data) {
+                $scope.listJabatan = data.data;
+            });
+        }
+    };
+
     $scope.listSrc = [];
     $scope.list = [];
     $scope.ttl_hadir = [];
@@ -60,7 +69,7 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
         if ('bulan' in form && 'tahun' in form) {
             $scope.show_detail = true;
             $scope.show_form = form;
-            Data.get('absensi/absensiproduksi', form).then(function (data) {
+            Data.post('absensi/absensiproduksi', form).then(function (data) {
                 $scope.listSrc = [];
                 $scope.ttl_hadir = [];
                 $scope.show_form.tanggal_startDate = new Date(data.start);
