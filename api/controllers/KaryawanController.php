@@ -212,10 +212,18 @@ class KaryawanController extends Controller {
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)
-                ->from('v_karyawan_masuk')
-                ->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->from('tbl_karyawan')
+                
                 ->orderBy($sort)
                 ->select("*");
+        
+        if ($params['tipe'] == 'kelompok') {
+            $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+            $adWhere .= (!empty($params['lokasi_kantor'])) ? ' AND lokasi_kntr ="'.$params['lokasi_kantor'].'"' : '';
+            $query->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")'.$adWhere);
+        } else {
+            $query->where(['nik' => $params['Karyawan']['nik']]);
+        }
 
         session_start();
         $_SESSION['query'] = $query;

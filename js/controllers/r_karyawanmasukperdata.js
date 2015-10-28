@@ -4,6 +4,12 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.form.tipe = 'kelompok';
     $scope.show_detail = false;
+    
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
+    };
 
     $scope.print = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
@@ -52,6 +58,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
         $scope.form.Section = undefined;
         $scope.form.tanggal = undefined;
     };
+    
     $scope.clear2 = function () {
         $scope.form.Karyawan = undefined;
     };

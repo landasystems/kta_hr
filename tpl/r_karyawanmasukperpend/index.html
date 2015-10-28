@@ -42,14 +42,23 @@
                                         </div>
                                     </div>
                                     <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Lokasi Kantor</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" ng-model="form.lokasi_kantor">
+                                                <option value="SUKOREJO">SUKOREJO</option>
+                                                <option value="WARU">WARU</option>
+                                                <option value="JAKARTA">JAKARTA</option>
+                                                <option value="BANDUNG">BANDUNG</option>
+                                                <option value="MEDAN">MEDAN</option>
+                                                <option value="SURABAYA">SURABAYA</option>
+                                                <option value="GRESIK">GRESIK</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                         <label class="col-md-3">Periode</label>
                                         <div class="col-md-9">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened1" ng-click="open1($event)"/>
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-calendar-o"></i>
-                                                </span>
-                                            </div>
+                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
                                         </div>
                                     </div>
                                     <div class="form-group" ng-show="form.tipe == 'perorangan'">
@@ -69,6 +78,25 @@
                                                     </button>
                                                 </span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+                                                    <td
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Karyawan Masuk<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
