@@ -40,17 +40,17 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Jabatan<span class="required"></span></label>
+                                        <label class="col-sm-3 control-label">Section<span class="required"></span></label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                <ui-select ng-model="form.Jabatan" theme="bootstrap">
-                                                    <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
-                                                         {{val.id_jabatan}} - {{val.jabatan}}
+                                                <ui-select ng-model="form.Section" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                         {{val.id_section}} - {{val.section}}
                                                     </ui-select-choices>
                                                 </ui-select>
                                                 <span class="input-group-btn">
-                                                    <button ng-click="form.Jabatan = undefined" class="btn btn-default">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
                                                         <span class="glyphicon glyphicon-trash"></span>
                                                     </button>
                                                 </span>

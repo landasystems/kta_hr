@@ -52,11 +52,11 @@ app.controller('absensilaporanproduksiCtrl', function ($scope, Data, toaster) {
         {key: "12", value: "Desember"}
     ];
 
-    $scope.cariJabatan = function ($query) {
+    $scope.cariSection = function ($query) {
 
         if ($query.length >= 3) {
-            Data.get('jabatan/cari',{nama: $query}).then(function (data) {
-                $scope.listJabatan = data.data;
+            Data.get('section/cari',{nama: $query}).then(function (data) {
+                $scope.listSection = data.data;
             });
         }
     };
