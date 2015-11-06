@@ -776,35 +776,43 @@
         <style media="print">
             div,table {
                 font-size: 14pt;
+                line-height: 25px; 
             }
             .print-footer{
                 position: absolute;
                 bottom: 0;
+                font-size : 12pt !important;
+                line-height: 15px; 
+            }
+            h5{
+                margin: 0px;
             }
         </style>
         <div style="margin-top: 10px;" ng-if="form.status == 'Kerja'">
-            <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
-            <div class="panel-heading"><center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center></div>
+            <center><h5>BERITA ACARA</h5></center>
+            <center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center>
+            
+            <hr>
+            <br/>
             <div class="col-md-12 col-sm-12">
-                Pada tanggal {{form.tgl_masuk| date:'dd MMMM yyyy'}} telah diserah diterimakan dokumen ijazah dengan data sebagai berikut.<br/>
+                Pada tanggal {{form.tgl_masuk| date:'dd MMMM yyyy'}} telah diserah diterimakan dokumen ijazah dengan data sebagai berikut.<br/><br/>
                 <div class="form-group">
-                    <table style="font-weight: bold;">
+                    <table style="line-height: 20px;">
                         <tr>
                             <td style="text-align: left;">No. Ijazah</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.no_ijazah}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;width: 25% !important;">Nama</td>
+                            <td style="text-align: left;width: 30% !important;">Nama</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.nama}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
+                            <td style="text-align: left;width: 30% !important;">Tempat, tanggal lahir</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tempat_lahir}}, {{form.tgl_lahir| date:'dd MMMM yyyy'}}</td>
+                            <td>{{form.tmpt_lahir}}, {{form.tgl_lahir| date:'dd MMMM yyyy'}}</td>
                         </tr>
-
                         <tr>
                             <td style="text-align: left;">Sekolah</td>
                             <td style="text-align: right;">:</td>
@@ -820,10 +828,9 @@
                 <br>
                 <div class="form-group">
                     Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan penitipan Ijazah di PT. KARYA TUGAS ANDA. Berkaitan dengan diterimanya yang bersangkutan diatas sebagai Karyawan.
-                    <br/>
-                    <br>Demikian berita acara ini, untuk dapat dipergunakaan sebagaimana mestinya.
+                    <br/>Demikian berita acara ini, untuk dapat dipergunakaan sebagaimana mestinya.
                 </div>
-                <br>
+                <br/><br/>
                 Sukorejo, {{form.tgl_masuk| date:'dd MMMM yyyy'}}
                 <br>
                 <div class="form-group">
@@ -864,6 +871,8 @@
         <div style="margin-top: 10px;" ng-if="form.status == 'Keluar'">
             <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
             <div class="panel-heading"><center><h5>SERAH TERIMA IJAZAH</h5></center></div>
+            <hr>
+            <br/>
             <div class="col-md-12 col-sm-12">
                 Pada tanggal {{form.tgl_keluar| date:'dd MMMM yyyy'}} telah diserah terimakan dokumen Ijazah dengan data sebagai berikut.<br/>
                 <br>
@@ -875,12 +884,12 @@
                             <td>{{form.no_ijazah}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;width: 25% !important;">Nama</td>
+                            <td style="text-align: left;width: 30% !important;">Nama</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.nama}}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;width: 25% !important;">Tempat, tanggal lahir</td>
+                            <td style="text-align: left;width: 30% !important;">Tempat, tanggal lahir</td>
                             <td style="text-align: right;">:</td>
                             <td>{{form.tempat_lahir}}, {{form.tgl_lahir| date:'dd MMMM yyyy'}}</td>
                         </tr>
