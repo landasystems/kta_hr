@@ -88,11 +88,13 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
         $scope.formtitle = "Lihat Data : " + form.no_mservice;
         $scope.form = form;
         $scope.retDetail(form);
+        
     };
 
     $scope.retDetail = function (no) {
         Data.get('mservice/view/' + no.no_mservice).then(function (data) {
             $scope.detService = data.data;
+            $scope.total($scope.detService);
         });
     };
 
@@ -114,6 +116,15 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
         });
 
     };
+    
+    $scope.total = function(detService){
+        var total = 0;
+        angular.forEach(detService, function (detail) {
+            total += parseInt(detail.biaya);
+        });
+        $scope.form.total = total;
+    };
+    
     $scope.cancel = function () {
         if (!$scope.is_view) { //hanya waktu edit cancel, di load table lagi
             $scope.callServer(tableStateRef);
@@ -121,6 +132,7 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = false;
         $scope.is_view = false;
     };
+    
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('mservice/delete/' + row.no_mservice).then(function (result) {
@@ -138,14 +150,15 @@ app.controller('moServiceKendaraanCtrl', function ($scope, Data, toaster) {
             biaya: '',
         });
     };
+    
     $scope.removeRow = function (paramindex) {
         var comArr = eval($scope.detService);
         if (comArr.length > 1) {
             $scope.detService.splice(paramindex, 1);
+            $scope.total($scope.detService);
         } else {
             alert("Something gone wrong");
         }
     };
-
 
 });

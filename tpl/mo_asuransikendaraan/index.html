@@ -54,11 +54,11 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                             <td>{{row.no_mansuransi}}</td>
-                            <td>{{row.tgl | date}}</td>
+                            <td>{{row.tgl| date}}</td>
                             <td>{{row.nopol}}</td>
                             <td>{{row.merk}}</td>
                             <td>{{row.tipe}}</td>
-                            <td>{{row.thn_pembuatan  }}</td>
+                            <td>{{row.thn_pembuatan}}</td>
                             <td>{{row.user}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
@@ -161,7 +161,7 @@
                                     <input class="form-control" type="text" ng-model="form.model" ng-disabled="is_view">
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <div class="form-group">
@@ -198,13 +198,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Masa Berlaku</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.masa_berlaku" is-open="opened2" ng-click="open2($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
-                                    </div>
+                                <div class="col-md-8">
+                                    <input ng-change="setDate(form);" placeholder="Masa Berlaku" date-range-picker class="form-control" type="text"  ng-model="form.masa_berlaku">
                                 </div>
                             </div>
                             <div class="form-group">
