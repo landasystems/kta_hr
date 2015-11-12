@@ -18,7 +18,7 @@ class PenilaiankontrakController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
-                    'view' => ['get'],
+                    'view' => ['post'],
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -120,17 +120,39 @@ class PenilaiankontrakController extends Controller {
     }
 
     public function actionView($id) {
+        $params = json_decode(file_get_contents("php://input"), true);
 
-        $model = $this->findModel($id);
+        $query = new Query();
+        $query->select("*")
+                ->from('tbl_karyawan as kar')
+                ->where('kar.nik="' . $id . '"')
+                ->join('LEFT JOIN', 'tbl_penilaian_kontrak as pen', 'pen.nik = kar.nik');
+
+        if ($params['tipe'] == 1) {
+            $query->andWhere(['pen.nm_kontrak' => "Kontrak 1"]);
+        } else if ($params['tipe'] == 2) {
+            $query->andWhere(['pen.nm_kontrak' => "Kontrak 2"]);
+        }
+
+        $getInstance = $query->createCommand();
+        $model = $getInstance->queryOne();
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $model), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
+
         $model = new TblPenilaianKontrak();
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
+        if ($params['kontrak'] == 1)
+            $model->nm_kontrak = 'Kontrak 1';
+        else
+            $model->nm_kontrak = 'Kontrak 2';
+
+        $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
+//        $model->penilaian = $params['form']['terbilang'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -144,7 +166,14 @@ class PenilaiankontrakController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
+        if ($params['kontrak'] == 1)
+            $model->nm_kontrak = 'Kontrak 1';
+        else
+            $model->nm_kontrak = 'Kontrak 2';
+
+        $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
+//        $model->penilaian = $params['form']['terbilang'];
 
         if ($model->save()) {
             $this->setHeader(200);

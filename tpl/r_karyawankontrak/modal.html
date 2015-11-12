@@ -1,0 +1,268 @@
+<div class="modal-header">
+    <h3 class="modal-title">Form Penilaian Karyawan Kontrak</h3>
+</div>
+<div class="modal-body">
+    <form name="modalform" class="form-horizontal form-validation">
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="col-md-12 col-sm-12">&nbsp;</div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">NIK</label>
+                            <div class="col-sm-8">
+                                {{formmodal.nik}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nama</label>
+                            <div class="col-sm-8">
+                                {{formmodal.nama}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Jabatan</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-readonly="true" ng-model="formmodal.jabatan">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Dept</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-readonly="true" ng-model="formmodal.department">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Divisi</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-readonly="true" ng-model="formmodal.sub_section">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Tanggal Penilaian</label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-disabled="is_view" datepicker-popup="dd-MM-yyyy" ng-model="formmodal.tgl" is-open="opened1" ng-click="open1($event)"/>
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar-o"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">I. KETERAMPILAN DAN KEPRIBADIAN (40%)</div>
+                        <div class="form-group">
+                            Penilai : Kepala Departemen
+                        </div>
+                        <div class="form-group">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">1</td>
+                                        <td>Mutu Kerja</td>
+                                        <td style="text-align: center;width:25%">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.mutu_kerja" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.mutu_kerja" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.mutu_kerja" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.mutu_kerja" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">2</td>
+                                        <td>Pengetahuan Teknis</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pengetahuan_teknis" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pengetahuan_teknis" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pengetahuan_teknis" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pengetahuan_teknis" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">3</td>
+                                        <td>Tanggung Jawab Atas Pekerjaan</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.tgjawab_pekerjaan" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.tgjawab_pekerjaan" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.tgjawab_pekerjaan" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.tgjawab_pekerjaan" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">4</td>
+                                        <td>Kerja Sama dan Komunikasi</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kerjasama_komunikasi" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kerjasama_komunikasi" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kerjasama_komunikasi" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kerjasama_komunikasi" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">5</td>
+                                        <td>Sikap Kerja</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.sikap_kerja" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.sikap_kerja" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.sikap_kerja" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.sikap_kerja" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">6</td>
+                                        <td>Inisiatif / Prakarsa</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.inisiatif" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.inisiatif" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.inisiatif" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.inisiatif" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">7</td>
+                                        <td>Rasa Turut Memiliki</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.rasa_turut_memiliki" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.rasa_turut_memiliki" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.rasa_turut_memiliki" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.rasa_turut_memiliki" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">8</td>
+                                        <td>Disiplinitas</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.disiplinitas" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.disiplinitas" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.disiplinitas" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.disiplinitas" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Nilai Sub Total</td>
+                                        <td colspan="4">{{formmodal.sub1}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">II. MANAGERIAL (20%)</div>
+                        <div class="form-group">
+                            Penilai : Wakil Direktur/ Kepala Divisi
+                        </div>
+                        <div class="form-group">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">1</td>
+                                        <td>Kepemimpinan</td>
+                                        <td style="text-align: center;width:25% !important">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kepemimpinan" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kepemimpinan" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kepemimpinan" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kepemimpinan" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">2</td>
+                                        <td>Pelaksanaan Managerial</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pelaksanaan_managerial" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pelaksanaan_managerial" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pelaksanaan_managerial" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.pelaksanaan_managerial" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">3</td>
+                                        <td>Problem Solving</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.problem_solving" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.problem_solving" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.problem_solving" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.problem_solving" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Nilai Sub Total</td>
+                                        <td colspan="4">{{formmodal.sub2}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">III. KEPEGAWAIAN (40%)</div>
+                        <div class="form-group">
+                            Penilai : Kepala HRD
+                        </div>
+                        <div class="form-group">
+                            <table class="table table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">1</td>
+                                        <td>Kehadiran</td>
+                                        <td style="text-align: center;width:25% !important">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kehadiran" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kehadiran" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kehadiran" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.kehadiran" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;width:5%;">2</td>
+                                        <td>Administratif</td>
+                                        <td style="text-align: center;">
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.administratif" btn-radio="'4'">A</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.administratif" btn-radio="'3'">B</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.administratif" btn-radio="'2'">C</label>
+                                            <label class="btn btn-default" ng-readonly="is_view" ng-change="nilaiTotal()" ng-model="formmodal.administratif" btn-radio="'1'">D</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2">Nilai Sub Total</td>
+                                        <td colspan="4">{{formmodal.sub3}}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="col-md-6 col-sm-12 pull-right">
+                        <table class="table table-bordered pull-right" style="width: 35%">
+                            <tr>
+                                <th>Nilai Final</th>
+                            </tr>
+                            <tr>
+                                <th style="height: 45px;">{{ternilai(formmodal.penilaian)}}</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="form-group">
+        <div class="col-sm-8 text-danger alert-danger">
+            <h5 style="text-align: left">Simpan Penilaian?</h5>
+        </div>  
+        <div class="col-sm-4">
+            <button class="btn btn-primary" ng-click="cancel()">Cancle</button>
+            <button class="btn btn-danger" ng-disabled="modalform.$invalid" ng-click="save(formmodal)">Ya</button>
+        </div>
+    </div>
+</div>
