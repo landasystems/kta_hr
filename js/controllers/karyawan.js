@@ -209,6 +209,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.Section = data.section;
             $scope.form.SubSection = data.subSection;
             $scope.form.Jabatan = data.jabatan;
+            $scope.form.Ketua = data.ketua;
             $scope.form.no = data.ijazah.no;
             $scope.form.tgl_ijazah = (data.ijazah.tgl_ijazah !== undefined) ? new Date(data.ijazah.tgl_ijazah) : null;
             $scope.form.tgl_masuk = (data.ijazah.tgl_masuk !== undefined) ? new Date(data.ijazah.tgl_masuk) : null;
@@ -292,6 +293,19 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             }
         });
     };
+
+    $scope.cariKetua = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.listKetua = data.data;
+            });
+        }
+    };
+    $scope.retKetua = function (item, form) {
+        form.nik_ketua = item.nik;
+    };
+
     $scope.saveNew = function (form) {
         if ($scope.uploader.queue.length > 0) {
             $scope.uploader.uploadAll();

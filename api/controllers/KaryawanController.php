@@ -317,16 +317,16 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        
-        if(!empty($models)){
-            foreach($models as $key => $val){
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $ternilai = \app\models\Tblpenilaiankontrak::find()->where([
-                    'nik' => $val['nik'],
-                ])->orderBy('tgl DESC')->one();
-                if(!empty($ternilai)){
+                            'nik' => $val['nik'],
+                        ])->orderBy('tgl DESC')->one();
+                if (!empty($ternilai)) {
                     $models[$key]['status_penilaian'] = ($ternilai->nm_kontrak == "Kontrak 1") ? 'Kontrak 1' : 'Kontrak 2';
                     $models[$key]['tgl_penilaian'] = $ternilai->tgl;
-                }else{
+                } else {
                     $models[$key]['status_penilaian'] = 'Belum di Nilai';
                     $models[$key]['tgl_penilaian'] = null;
                 }
@@ -359,9 +359,11 @@ class KaryawanController extends Controller {
             $jabatan = (empty($jab)) ? [] : $jab->attributes;
             $ijz = Tblijazah::find()->where(['nik' => $model->nik])->one();
             $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
+            $ket = Tblkaryawan::find()->where(['nik' => $model->nik_ketua])->one();
+            $ketua = (empty($ket)) ? [] : $ket->attributes;
         }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'ijazah' => $ijazah, 'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'ijazah' => $ijazah, 'ketua' => $ketua, 'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
     }
 
     public function actionUpload() {

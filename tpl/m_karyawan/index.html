@@ -233,6 +233,32 @@
                                                                         </div>-->
                                     <div class="col-md-6 col-sm-12">
                                         <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
+                                        <div class="form-group" ng-show="form.Department.id_department == 'DPRT004'">
+                                            <label class="col-sm-4 control-label">Satus Dalam Kelompok</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.status_kelompok" btn-radio="'ketua'">Ketua Kelompok</label>
+                                                <label class="btn btn-default" ng-model="form.status_kelompok" btn-radio="'anggota'">Anggota</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="form.status_kelompok == 'anggota'">
+                                            <label class="col-sm-4 control-label">Ketua Kelompok</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <ui-select on-select="retKetua($item,form)" ng-disabled="is_view" ng-model="form.Ketua" theme="bootstrap">
+                                                        <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                        <ui-select-choices refresh="cariKetua($select.search)" repeat="val in listKetua">
+                                                            {{val.nik}}<br>
+                                                            <small>{{val.nama}}</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span class="input-group-btn">
+                                                        <button ng-click="form.Ketua = undefined" class="btn btn-default">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Lokasi Kantor</label>
                                             <div class="col-sm-8">
