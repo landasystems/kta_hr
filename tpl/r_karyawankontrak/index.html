@@ -132,8 +132,8 @@
                             <td align="center">{{row.tgl_penilaian | date}}</td>
                             <td align="center">{{row.status_penilaian}}</td>
                             <td align="center">
-                                <button type="button" class="btn btn-primary fa fa-sign-out" ng-click="modalPenilaian(row,1)"></button>
-                                <button ng-show="row.Kontrak_2 != undefined" type="button" class="btn btn-info fa fa-sign-out" ng-click="modalPenilaian(row,2)"></button>
+                                <button type="button" class="btn btn-primary fa fa-check-square-o" ng-click="modalPenilaian(row,1)">1</button>
+                                <button ng-show="row.Kontrak_2 != undefined" type="button" class="btn btn-info fa fa-check-square-o" ng-click="modalPenilaian(row,2)">2</button>
                             </td>
                         </tr>
                         <tr>

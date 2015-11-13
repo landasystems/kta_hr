@@ -306,7 +306,7 @@ class KaryawanController extends Controller {
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('(MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" OR MONTH(Kontrak_21) ="' . date('m', strtotime($params['tanggal'])) . '")' . $adWhere);
+            $query->andWhere('((MONTH(Kontrak_11) ="' . date('m', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) ="' . date('m', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
@@ -317,6 +317,21 @@ class KaryawanController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $ternilai = \app\models\Tblpenilaiankontrak::find()->where([
+                    'nik' => $val['nik'],
+                ])->orderBy('tgl DESC')->one();
+                if(!empty($ternilai)){
+                    $models[$key]['status_penilaian'] = ($ternilai->nm_kontrak == "Kontrak 1") ? 'Kontrak 1' : 'Kontrak 2';
+                    $models[$key]['tgl_penilaian'] = $ternilai->tgl;
+                }else{
+                    $models[$key]['status_penilaian'] = 'Belum di Nilai';
+                    $models[$key]['tgl_penilaian'] = null;
+                }
+            }
+        }
 
         $this->setHeader(200);
 
@@ -658,5 +673,3 @@ class KaryawanController extends Controller {
     }
 
 }
-
-?>

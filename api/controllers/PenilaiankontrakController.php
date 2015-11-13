@@ -152,7 +152,6 @@ class PenilaiankontrakController extends Controller {
             $model->nm_kontrak = 'Kontrak 2';
 
         $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
-//        $model->penilaian = $params['form']['terbilang'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -173,7 +172,6 @@ class PenilaiankontrakController extends Controller {
             $model->nm_kontrak = 'Kontrak 2';
 
         $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
-//        $model->penilaian = $params['form']['terbilang'];
 
         if ($model->save()) {
             $this->setHeader(200);
