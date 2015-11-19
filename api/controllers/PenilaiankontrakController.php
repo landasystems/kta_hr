@@ -271,6 +271,8 @@ class PenilaiankontrakController extends Controller {
                 ->where('pen.nik="' . $params['karyawan']['nik'] . '"')
                 ->orderBy($sort)
                 ->select("*");
+        
+        
 
         session_start();
         $_SESSION['query'] = $query;
