@@ -98,9 +98,8 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-//        $scope.form.tanggal = new Date(form.tanggal);
         var startDate =  new Date(form.tanggal);
-        var endDate = (form.tanggal_kembali !== undefined || form.tanggal_kembali !== null) ? new Date(form.tanggal_kembali) : new Date();
+        var endDate = (form.tanggal_kembali == null) ? new Date(form.tanggal) : new Date(form.tanggal_kembali);
         $scope.form.datesRange = {
             startDate : startDate,
             endDate : endDate,
@@ -114,7 +113,7 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = true;
         var startDate =  new Date(form.tanggal);
-        var endDate = (form.tanggal_kembali !== undefined || form.tanggal_kembali !== null) ? new Date(form.tanggal_kembali) : startDate.addHours(1);
+        var endDate = (form.tanggal_kembali == null) ? new Date(form.tanggal) : new Date(form.tanggal_kembali);
         $scope.form.datesRange = {
             startDate : startDate,
             endDate : endDate,

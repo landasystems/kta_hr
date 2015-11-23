@@ -49,7 +49,7 @@ if (!isset($_GET['print'])) {
                     <?php
                         if(!empty($models['tanggal_kembali'])){
                             if($models['tanggal_kembali'] != $models['tanggal']){
-                                echo ' - '.Yii::$app->landa->date2ind($models['tangga_selesai']);
+                                echo ' - '.Yii::$app->landa->date2ind($models['tanggal_kembali']);
                             }
                         }
                     ?>
