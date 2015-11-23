@@ -42,7 +42,18 @@ if (!isset($_GET['print'])) {
             <tr>
                 <td>Hari/ Tanggal</td>
                 <td>:</td>
-                <td><?= date('D', strtotime($models['tanggal'])) ?> / <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?></td>
+                <td>
+                    <?= date('D', strtotime($models['tanggal'])) ?>
+                    / 
+                    <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?>
+                    <?php
+                        if(!empty($models['tanggal_kembali'])){
+                            if($models['tanggal_kembali'] != $models['tanggal']){
+                                echo ' - '.Yii::$app->landa->date2ind($models['tangga_selesai']);
+                            }
+                        }
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td>Waktu</td>
@@ -60,10 +71,10 @@ if (!isset($_GET['print'])) {
                 <td></td>
                 <td></td>
                 <td>b. Dinas : <u><?php
-                if ($models['ket_absen'] == 'Dinas Luar') {
-                    echo $models['ket_uraian'];
-                }
-                ?></u></td>
+                    if ($models['ket_absen'] == 'Dinas Luar') {
+                        echo $models['ket_uraian'];
+                    }
+                    ?></u></td>
             </tr>
 
         </table>

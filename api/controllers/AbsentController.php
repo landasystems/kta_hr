@@ -153,6 +153,8 @@ class AbsentController extends Controller {
         $model = new TblAbsent();
         $model->attributes = $params;
         $model->tgl_pembuatan = date('Y-m-d');
+        $model->tanggal = date('Y-m-d',  strtotime($params['datesRange']['startDate']));
+        $model->tanggal_kembali = date('Y-m-d',  strtotime($params['datesRange']['endDate']));
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -170,6 +172,8 @@ class AbsentController extends Controller {
         if(empty($model->tgl_pembuatan)){
             $model->tgl_pembuatan = date('Y-m-d');
         }
+        $model->tanggal = date('Y-m-d',  strtotime($params['datesRange']['startDate']));
+        $model->tanggal_kembali = date('Y-m-d',  strtotime($params['datesRange']['endDate']));
 
         if ($model->save()) {
             $this->setHeader(200);

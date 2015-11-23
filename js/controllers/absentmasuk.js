@@ -78,7 +78,13 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Absen Tidak Masuk";
         $scope.form = {};
-        $scope.form.tanggal = new Date();
+        var startDate =  new Date();
+        var endDate = new Date() ;
+        $scope.form.datesRange = {
+            startDate : startDate,
+            endDate : endDate,
+        };
+//        $scope.form.tanggal = new Date();
 //        $scope.form.jmasuk = new Date();
 //        $scope.form.jkeluar = new Date();
         Data.get('absent/kode').then(function (data) {
@@ -92,9 +98,13 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.form.tanggal = new Date(form.tanggal);
-//        $scope.form.jmasuk = new Date(form.jmasuk);
-//        $scope.form.jkeluar = new Date(form.jkeluar);
+//        $scope.form.tanggal = new Date(form.tanggal);
+        var startDate =  new Date(form.tanggal);
+        var endDate = (form.tanggal_kembali !== undefined || form.tanggal_kembali !== null) ? new Date(form.tanggal_kembali) : new Date();
+        $scope.form.datesRange = {
+            startDate : startDate,
+            endDate : endDate,
+        };
         $scope.formtitle = "Edit Data : " + form.no_absent;
     };
 
@@ -103,6 +113,12 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        var startDate =  new Date(form.tanggal);
+        var endDate = (form.tanggal_kembali !== undefined || form.tanggal_kembali !== null) ? new Date(form.tanggal_kembali) : startDate.addHours(1);
+        $scope.form.datesRange = {
+            startDate : startDate,
+            endDate : endDate,
+        };
         Data.get('absent/view/' + form.no_absent).then(function (data) {
         });
         $scope.formtitle = "Lihat Data : " + form.no_absent;
