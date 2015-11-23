@@ -18,7 +18,7 @@ class PenilaiankontrakController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
-                    'view' => ['get'],
+                    'view' => ['post'],
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -120,17 +120,38 @@ class PenilaiankontrakController extends Controller {
     }
 
     public function actionView($id) {
+        $params = json_decode(file_get_contents("php://input"), true);
 
-        $model = $this->findModel($id);
+        $query = new Query();
+        $query->select("*")
+                ->from('tbl_karyawan as kar')
+                ->where('kar.nik="' . $id . '"')
+                ->join('LEFT JOIN', 'tbl_penilaian_kontrak as pen', 'pen.nik = kar.nik');
+
+        if ($params['tipe'] == 1) {
+            $query->andWhere(['pen.nm_kontrak' => "Kontrak 1"]);
+        } else if ($params['tipe'] == 2) {
+            $query->andWhere(['pen.nm_kontrak' => "Kontrak 2"]);
+        }
+
+        $getInstance = $query->createCommand();
+        $model = $getInstance->queryOne();
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $model), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
+
         $model = new TblPenilaianKontrak();
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
+        if ($params['kontrak'] == 1)
+            $model->nm_kontrak = 'Kontrak 1';
+        else
+            $model->nm_kontrak = 'Kontrak 2';
+
+        $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -144,7 +165,13 @@ class PenilaiankontrakController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
+        if ($params['kontrak'] == 1)
+            $model->nm_kontrak = 'Kontrak 1';
+        else
+            $model->nm_kontrak = 'Kontrak 2';
+
+        $model->tgl = date('Y-m-d', strtotime($params['form']['tgl']));
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -210,8 +237,23 @@ class PenilaiankontrakController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $params = $_SESSION['params'];
-        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'params' => $params['karyawan']]);
+//        $params = $_SESSION['params'];
+
+        $penilaian = function($angka) {
+            $hasil = '';
+            if ($angka == 4) {
+                $hasil = 'A';
+            } else if ($angka == 3) {
+                $hasil = 'B';
+            } else if ($angka == 2) {
+                $hasil = 'C';
+            } else {
+                $hasil = 'D';
+            }
+            return $hasil;
+        };
+
+        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
     }
 
     public function actionCari() {
@@ -231,7 +273,6 @@ class PenilaiankontrakController extends Controller {
 
     public function actionRekap() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
         $sort = "tgl DESC";
         $offset = 0;
         $limit = 10;
@@ -241,9 +282,15 @@ class PenilaiankontrakController extends Controller {
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'pen.nik = kar.nik')
-                ->where('pen.nik="' . $params['karyawan']['nik'] . '"')
                 ->orderBy($sort)
                 ->select("*");
+
+        if ($params['tipe'] == 'kelompok') {
+            $adWhere = (!empty($params['Section']['id_section'])) ? ' AND kar.section="' . $params['Section']['id_section'] . '"' : '';
+            $query->andWhere('(pen.tgl <="' . date('Y-m-d', strtotime($params['tanggal'])) . '")' . $adWhere);
+        } else {
+            $query->where('pen.nik="' . $params['karyawan']['nik'] . '"');
+        }
 
         session_start();
         $_SESSION['query'] = $query;
@@ -251,10 +298,6 @@ class PenilaiankontrakController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-//        foreach ($models as $key => $val) {
-//            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
-//            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
-//        }
         $totalItems = $query->count();
 
         $this->setHeader(200);

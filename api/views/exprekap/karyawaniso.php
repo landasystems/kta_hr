@@ -89,7 +89,7 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['pendidikan'] . '</td>';
                 echo '<td align="center">' . $val['tmpt_lahir'] . '</td>';
                 echo '<td align="center">' . $val['tgl_lahir'] . '</td>';
-                echo '<td align="center">' . $val['umur'] . '</td>';
+                echo '<td align="center">' . $val['usia'] . '</td>';
                 echo '<td align="center">' . $val['alamat_jln'] . '</td>';
                 echo '<td align="center">' . $val['desa'] . '</td>';
                 echo '<td align="center">' . $val['kecamatan'] . '</td>';
@@ -98,8 +98,8 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['agama'] . '</td>';
                 echo '<td align="center">' . $val['status_pernikahan'] . '</td>';
                 echo '<td align="center">' . $val['tgl_masuk_kerja'] . '</td>';
-                echo '<td align="center">' . $val['lama_kerja_thn'] . '</td>';
-                echo '<td align="center">' . $val['lama_kerja_bln'] . '</td>';
+                echo '<td align="center">' . $val['tahun'] . '</td>';
+                echo '<td align="center">' . $val['bulan'] . '</td>';
                 echo '</tr>';
                 $no++;
             }

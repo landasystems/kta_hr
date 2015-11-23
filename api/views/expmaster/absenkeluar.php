@@ -8,14 +8,17 @@ if (!isset($_GET['print'])) {
 //$end = $params['tanggal']['endDate'];
 ?>
 <div id="printArea">
-    <style>
+    <style media="print">
         .printedArea,.printedArea table,printedArea span, printedArea div{
-            font-size: 11px;
+            font-size: 12pt;
+        }
+        .printedArea div{
+            margin-right: 20px;
+            margin-left: 20px;
         }
     </style>
     <div class="printedArea">
-        <center style="font-weight: bold;font-size: 16px"><u>SURAT IJIN</u></center>
-        <br>
+        <center style="font-weight: bold;font-size: 17px"><u>SURAT IJIN</u></center>
         <br>
         Yang bertandatangan di bawah ini:<br/>
         <table>
@@ -39,7 +42,18 @@ if (!isset($_GET['print'])) {
             <tr>
                 <td>Hari/ Tanggal</td>
                 <td>:</td>
-                <td><?= date('D', strtotime($models['tanggal'])) ?> / <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?></td>
+                <td>
+                    <?= date('D', strtotime($models['tanggal'])) ?>
+                    / 
+                    <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?>
+                    <?php
+                        if(!empty($models['tanggal_kembali'])){
+                            if($models['tanggal_kembali'] != $models['tanggal']){
+                                echo ' - '.Yii::$app->landa->date2ind($models['tangga_selesai']);
+                            }
+                        }
+                    ?>
+                </td>
             </tr>
             <tr>
                 <td>Waktu</td>
@@ -57,10 +71,10 @@ if (!isset($_GET['print'])) {
                 <td></td>
                 <td></td>
                 <td>b. Dinas : <u><?php
-                if ($models['ket_absen'] == 'Dinas Luar') {
-                    echo $models['ket_uraian'];
-                }
-                ?></u></td>
+                    if ($models['ket_absen'] == 'Dinas Luar') {
+                        echo $models['ket_uraian'];
+                    }
+                    ?></u></td>
             </tr>
 
         </table>
@@ -71,15 +85,15 @@ if (!isset($_GET['print'])) {
                 <td style="vertical-align: top;height: 100px;"><?= $models['ket_uraian'] ?></td>
             </tr>
         </table>
-        <br/>
+        <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
         <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>
         <table style="width:100%;border-collapse:collapse;" border="3">
             <tr>
-                <td style="height: 100px;vertical-align: bottom;border-right: 3px;">HRD</td>
-                <td style="height: 100px;vertical-align: bottom;border-right: 3px;">Pimpinan</td>
-                <td style="height: 100px;vertical-align: bottom;border-right: 3px;">PEMOHON</td>
+                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">HRD</td>
+                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PIMPINAN</td>
+                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PEMOHON</td>
             </tr>
         </table>
     </div>
@@ -88,10 +102,10 @@ if (!isset($_GET['print'])) {
 if (isset($_GET['print'])) {
     ?>
     <script type="text/javascript">
-            window.print();
-            setTimeout(function () {
-                window.close();
-            }, 1);
+        window.print();
+        setTimeout(function () {
+            window.close();
+        }, 1);
     </script>
     <?php
 }

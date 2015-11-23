@@ -121,6 +121,30 @@ function printDirective() {
 }
 angular.module('app').directive('ngPrint', [printDirective]);
 
+/*directive no urut*/
+
+function noUrut(){
+    function link(scope, element, attrs) {
+        element.on('change', function () {
+            var elemToPrint = document.getElementById(attrs.printElementId);
+            if (elemToPrint) {
+                printElement(elemToPrint);
+            }
+        });
+    }
+    
+    function urutan(angka){
+        
+    }
+    return {
+        link: link,
+        restrict: 'A'
+    };
+}
+
+angular.module('app').directive('ngUrut', [noUrut]); //create directive
+/*end no urut*/
+
 /*scroll ke atas*/
 angular.module('app')
         .directive('uiScroll', ['$location', '$anchorScroll', function ($location, $anchorScroll) {

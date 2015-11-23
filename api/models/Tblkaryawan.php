@@ -80,9 +80,9 @@ class Tblkaryawan extends \yii\db\ActiveRecord
     {
         return [
             [['nik'], 'required'],
-            [['Kontrak_1', 'Kontrak_11', 'Kontrak_2', 'Kontrak_21', 'tgl_lahir', 'tgl_masuk_kerja', 'tgl_keluar_kerja'], 'safe'],
+            [['Kontrak_1', 'nik_ketua', 'status_kelompok', 'Kontrak_11', 'Kontrak_2', 'Kontrak_21', 'tgl_lahir', 'tgl_masuk_kerja', 'tgl_keluar_kerja'], 'safe'],
             [['gaji_pokok', 't_fungsional', 't_kehadiran', 'thp', 'upah_tetap', 'pesangon', 't_masa_kerja', 'penggantian_hak', 'normatif'], 'number'],
-            [['nik', 'initial', 'status_kepemilikan', 'status_karyawan', 'department', 'section', 'sub_section', 'lokasi_kntr', 'tmt_kerja', 'pendidikan', 'tmpt_lahir', 'bulan_lahir', 'rt', 'rw', 'desa', 'kecamatan', 'kabupaten', 'kode_pos', 'no_ktp', 'agama', 'status_pernikahan', 'kewarganegaraan', 'kode_bank', 'nama_bank', 'jk', 'status', 'ket', 'no_npwp'], 'string', 'max' => 20],
+            [['nik', 'nik_ketua', 'status_kelompok', 'initial', 'status_kepemilikan', 'status_karyawan', 'department', 'section', 'sub_section', 'lokasi_kntr', 'tmt_kerja', 'pendidikan', 'tmpt_lahir', 'bulan_lahir', 'rt', 'rw', 'desa', 'kecamatan', 'kabupaten', 'kode_pos', 'no_ktp', 'agama', 'status_pernikahan', 'kewarganegaraan', 'kode_bank', 'nama_bank', 'jk', 'status', 'ket', 'no_npwp'], 'string', 'max' => 20],
             [['nama', 'sekolah', 'jurusan', 'no_ijazah', 'alamat_jln', 'no_polis', 'no_pasport'], 'string', 'max' => 50],
             [['foto'], 'string', 'max' => 500],
             [['jabatan', 'alasan_keluar'], 'string', 'max' => 100],
@@ -109,6 +109,8 @@ class Tblkaryawan extends \yii\db\ActiveRecord
             'department' => 'Department',
             'section' => 'Section',
             'sub_section' => 'Sub Section',
+            'status_kelompok' => 'Status Kelompok',
+            'nik_ketua' => 'Ketua Kelompok',
             'jabatan' => 'Jabatan',
             'lokasi_kntr' => 'Lokasi Kntr',
             'tmt_kerja' => 'Tmt Kerja',

@@ -116,15 +116,15 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $event.stopPropagation();
         $scope.openedkntrk21 = true;
     };
-    $scope.openTglIjz= function ($event) {
+    $scope.openTglIjz = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedijz= true;
+        $scope.openedijz = true;
     };
-    $scope.openTglMasuk= function ($event) {
+    $scope.openTglMasuk = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedtglmasuk= true;
+        $scope.openedtglmasuk = true;
     };
 
     $scope.excel = function () {
@@ -132,7 +132,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             window.location = 'api/web/karyawan/excel';
         });
     };
-    
+
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -165,14 +165,19 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.cariDepartment();
         $scope.form.tgl_lahir = new Date(form.tgl_lahir);
         $scope.form.tgl_masuk_kerja = new Date(form.tgl_masuk_kerja);
-        $scope.form.Kontrak_1 = new Date(form.Kontrak_1);
+        $scope.form.Kontrak_1 = (form.Kontrak_1 !== undefined) ? new Date(form.Kontrak_1) : undefined;
         $scope.form.Kontrak_11 = new Date(form.Kontrak_11);
         $scope.form.Kontrak_2 = new Date(form.Kontrak_2);
         $scope.form.Kontrak_21 = new Date(form.Kontrak_21);
         $scope.formtitle = "Edit Data : " + form.nik;
+
         $scope.loadDetail(form.nik);
         $scope.nikSkarang = form.nik;
-
+        if ($scope.form.no === undefined) {
+            Data.get('ijazah/kode', form).then(function (data) {
+                $scope.form.no = data.kode;
+            });
+        }
     };
 
     $scope.view = function (form) {
@@ -204,25 +209,26 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.form.Section = data.section;
             $scope.form.SubSection = data.subSection;
             $scope.form.Jabatan = data.jabatan;
+            $scope.form.Ketua = data.ketua;
             $scope.form.no = data.ijazah.no;
             $scope.form.tgl_ijazah = (data.ijazah.tgl_ijazah !== undefined) ? new Date(data.ijazah.tgl_ijazah) : null;
             $scope.form.tgl_masuk = (data.ijazah.tgl_masuk !== undefined) ? new Date(data.ijazah.tgl_masuk) : null;
         });
     };
-    
-    $scope.inisial= function(form){
-        if(form.nama.length){
+
+    $scope.inisial = function (form) {
+        if (form.nama.length) {
             var slr = form.nama;
             var ini = slr.split(" ");
-            if(ini.length >= 2){
+            if (ini.length >= 2) {
                 var pertama = ini[0];
                 var kedua = ini[1];
-                form.initial = pertama.substring(2,0) + kedua.substring(1,0);
-            }else{
+                form.initial = pertama.substring(2, 0) + kedua.substring(1, 0);
+            } else {
                 var pertama = ini[0];
-                form.initial = pertama.substring(3,0);
+                form.initial = pertama.substring(3, 0);
             }
-        }else{
+        } else {
             form.initial = undefined;
         }
     };
@@ -238,7 +244,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             $scope.listSection = data.data;
         });
     };
-    
+
     $scope.cariSubSection = function (nama) {
         var data = {nama: nama};
         Data.get('subsection/list', data).then(function (data) {
@@ -287,6 +293,19 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             }
         });
     };
+
+    $scope.cariKetua = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.listKetua = data.data;
+            });
+        }
+    };
+    $scope.retKetua = function (item, form) {
+        form.nik_ketua = item.nik;
+    };
+
     $scope.saveNew = function (form) {
         if ($scope.uploader.queue.length > 0) {
             $scope.uploader.uploadAll();

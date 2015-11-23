@@ -19,7 +19,7 @@ class AbsensiController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'absensiharian' => ['get'],
-                    'absensiproduksi' => ['get'],
+                    'absensiproduksi' => ['post'],
                     'absensioperator' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
@@ -244,8 +244,9 @@ class AbsensiController extends Controller {
     }
 
     public function actionAbsensiproduksi() {
-        $params = $_REQUEST;
+        $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
         $awaltgl = $tahun . "-" . $bulan . "-1";
@@ -267,7 +268,7 @@ class AbsensiController extends Controller {
         $htghr = $this->Htghr($mm, $yy);
 
         //==========================[karyawan]=======================
-        $kry = TblKaryawan::aktif($niknama);
+        $kry = TblKaryawan::aktif($niknama, $section);
         $data = [];
         $hadir = [];
         $i = 0;
@@ -541,8 +542,10 @@ class AbsensiController extends Controller {
     public function actionPenggajian() {
         $params = $_REQUEST;
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $date_sampai = date('Y-m-d', strtotime($params['tanggal_sampai'] . ' +1day'));
+        $lokasi = $params['lokasi_kntr'];
         //---init perulangan tanggal
         $begin = new \DateTime($date);
         $end = new \DateTime($date_sampai);
@@ -553,7 +556,7 @@ class AbsensiController extends Controller {
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date_sampai);
-        $kry = TblKaryawan::aktif($niknama);
+        $kry = TblKaryawan::aktif($niknama, $section, $lokasi);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
@@ -625,7 +628,9 @@ class AbsensiController extends Controller {
         }
 
         //=========PROSES POTONGAN
-        $potongan = TblHtransPotongan::find()->where('tgl>="' . $date . '" AND tgl<="' . $date_sampai . '"')->all();
+        $potongan = TblHtransPotongan::find()
+                ->where('tgl>="' . $date . '" AND tgl<="' . $date_sampai . '"')
+                ->all();
         $potongan_pinjaman = [];
         $potongan_sepatu = [];
         $potongan_oksigen = [];
@@ -675,9 +680,44 @@ class AbsensiController extends Controller {
             $ijin_rp = ($r->gaji_pokok / 25) * $ijin;
             $kotor = $r->gaji_pokok - $bpjs - $ijin_rp;
             $bersih = $kotor - $potongan_pinjaman_rp - $potongan_sepatu_rp - $potongan_oksigen_rp;
+            /*
+              sementara
+             */
 
-            $models[$r->nik] = ['no' => $no, 'nik' => $r->nik, 'nama' => $r->nama, 'gaji_pokok' => $r->gaji_pokok, 'ijin' => $ijin, 'ijin_rp' => $ijin_rp, 'bpjs' => $bpjs,
-                'kotor' => $kotor, 'potongan_pinjaman_rp' => $potongan_pinjaman_rp, 'potongan_sepatu_rp' => $potongan_sepatu_rp, 'potongan_oksigen_rp' => $potongan_oksigen_rp, 'bersih' => $bersih, 'lembur' => $lembur[$r->nik]];
+            //incentive
+            $inc = 100000;
+            $jml_inc = 5;
+            $ttl_inc = ($inc * $jml_inc);
+            $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
+            $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
+            $kesehatan = ($r->gaji_pokok * 1 / 100);
+            $pinjaman = ($potongan_pinjaman_rp + $potongan_sepatu_rp + $potongan_oksigen_rp);
+            $jml_potongan = ($ketengakerjaan + $kesehatan + $pinjaman);
+            $absen = 0;
+            $netto = ($ttl_kopensasi - $jml_potongan);
+
+            ////
+
+            $models[$r->nik] = [
+                'no' => $no,
+                'nama' => $r->nama,
+                'thp' => $r->thp,
+                'gaji_pokok' => $r->gaji_pokok,
+                't_fungsional' => $r->t_fungsional,
+                'mgm' => $r->mgm,
+                'incentive' => $inc,
+                'jml_inc' => $jml_inc,
+                'ttl_incentive' => $ttl_inc,
+                'jumlah_kopensasi' => $ttl_kopensasi,
+                'ketenagakerjaan' => $ketengakerjaan,
+                'kesehatan' => $kesehatan,
+                'pinjaman' => $pinjaman,
+                'jml_absen' => 0,
+                'absen' => $absen,
+                'jml_potongan' => $jml_potongan,
+                'netto' => $netto
+            ];
+//                'lembur' => $lembur[$r->nik]];
             $no++;
         }
 

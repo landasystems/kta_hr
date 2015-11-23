@@ -114,18 +114,27 @@
                             <th  style="text-align: center;vertical-align: center;">KONTRAK 11</th>
                             <th  style="text-align: center;vertical-align: center;">KONTRAK 2</th>
                             <th  style="text-align: center;vertical-align: center;">KONTRAK 21</th>
+                            <th  style="text-align: center;vertical-align: center;">TGL PENILAIAN</th>
+                            <th  style="text-align: center;vertical-align: center;">STATUS PENILAIAN</th>
+                            <th  style="text-align: center;vertical-align: center;">#</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
                             <td align="center">{{row.nik}}</td>
-                            <td align="center">{{row.nama}}</td>
+                            <td align="left">{{row.nama}}</td>
                             <td align="center">{{row.kerja}}</td>
-                            <td align="center">{{row.Kontrak_1| date}}</td>
-                            <td align="center">{{row.Kontrak_11| date}}</td>
-                            <td align="center">{{row.Kontrak_2| date}}</td>
-                            <td align="center">{{row.Kontrak_21| date}}</td>
+                            <td align="center"><span ng-if="row.Kontrak_1 !== undefined">{{row.Kontrak_1| date}}</span></td>
+                            <td align="center"><span ng-if="row.Kontrak_11 !== undefined">{{row.Kontrak_11| date}}</span></td>
+                            <td align="center"><span ng-if="row.Kontrak_2 !== undefined">{{row.Kontrak_2| date}}</span></td>
+                            <td align="center"><span ng-if="row.Kontrak_21 !== undefined">{{row.Kontrak_21| date}}</span></td>
+                            <td align="center">{{row.tgl_penilaian | date}}</td>
+                            <td align="center">{{row.status_penilaian}}</td>
+                            <td align="center">
+                                <button type="button" class="btn btn-primary fa fa-check-square-o" ng-click="modalPenilaian(row,1)">1</button>
+                                <button ng-show="row.Kontrak_2 != undefined" type="button" class="btn btn-info fa fa-check-square-o" ng-click="modalPenilaian(row,2)">2</button>
+                            </td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

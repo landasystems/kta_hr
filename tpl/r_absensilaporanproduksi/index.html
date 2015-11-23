@@ -17,26 +17,44 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group">
-                                    <div class="control-group">
-                                        <label class="col-sm-3 control-label">Pilih Bulan</label>
-                                        <div class="col-sm-4">
-                                            <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
-                                                <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
-                                            </select>
-                                        </div>
-                                        <div style="float: left;padding: 7px;">s/d</div>
-                                        <div class="col-sm-4">
-                                            <select stInputEvent="change" ng-model="form.tahun" class="form-control">
-                                                <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
-                                            </select>
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan<span class="required"></span></label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                
+
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">NIK/ Nama</label>
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" ng-model="form.niknama">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section<span class="required"></span></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                         {{val.id_section}} - {{val.section}}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">

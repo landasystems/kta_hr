@@ -74,7 +74,9 @@ app.controller('moAsuransiCtrl', function ($scope, Data, toaster) {
         $scope.formtitle = "Form Tambah Data";
         $scope.form = {};
         $scope.form.tgl = new Date();
-        $scope.form.masa_berlaku = new Date();
+//        var start = new Date();
+//        var end = new Date();
+//        $scope.form.masa_berlaku = {startDate: start, endDate: end};
         Data.get('masuransi/kode').then(function (data) {
             $scope.form.no_mansuransi = data.kode;
         });
@@ -86,13 +88,18 @@ app.controller('moAsuransiCtrl', function ($scope, Data, toaster) {
         $scope.formtitle = "Edit Data : " + form.no_mansuransi;
         $scope.form = form;
         $scope.form.tgl = new Date(form.tgl);
-        $scope.form.masa_berlaku = new Date(form.masa_berlaku);
+        var start = new Date(form.masa_berlaku_mulai);
+        var end = new Date(form.masa_berlaku_sampai);
+        $scope.form.masa_berlaku = {startDate: start, endDate: end};
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.no_mansuransi;
         $scope.form = form;
+        var start = new Date(form.masa_berlaku_mulai);
+        var end = new Date(form.masa_berlaku_sampai);
+        $scope.form.masa_berlaku = {startDate: start, endDate: end};
     };
     $scope.save = function (form) {
         var url = ($scope.is_create == true) ? 'masuransi/create' : 'masuransi/update/' + form.no_mansuransi;
@@ -121,6 +128,9 @@ app.controller('moAsuransiCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-
-
-})
+    
+    $scope.setDate = function(form){
+        form.masa_berlaku_mulai = form.masa_berlaku.startDate;
+        form.masa_berlaku_sampai = form.masa_berlaku.endDate;
+    };
+});

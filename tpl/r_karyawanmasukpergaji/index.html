@@ -16,9 +16,68 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="col-md-3">Tipe Pencarian</label>
+                                        <div class="col-md-9">
+                                            <label class="btn btn-default" ng-click="clear1()" ng-model="form.tipe" btn-radio="'kelompok'">Kelompok</label>
+                                            <label class="btn btn-default" ng-click="clear2()" ng-model="form.tipe" btn-radio="'perorangan'">Perorangan</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Section</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in results">
+                                                        {{val.id_section}}<br>
+                                                        <small>{{val.section}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Lokasi Kantor</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" ng-model="form.lokasi_kantor">
+                                                <option value="SUKOREJO">SUKOREJO</option>
+                                                <option value="WARU">WARU</option>
+                                                <option value="JAKARTA">JAKARTA</option>
+                                                <option value="BANDUNG">BANDUNG</option>
+                                                <option value="MEDAN">MEDAN</option>
+                                                <option value="SURABAYA">SURABAYA</option>
+                                                <option value="GRESIK">GRESIK</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                         <label class="col-md-3">Periode</label>
                                         <div class="col-md-9">
                                             <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'perorangan'">
+                                        <label class="col-md-3">NIK - Nama</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Karyawan" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in listKaryawan">
+                                                        {{val.nik}}<br>
+                                                        <small>{{val.nama}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Karyawan = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
