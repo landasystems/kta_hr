@@ -301,7 +301,7 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('tbl_karyawan')
                 ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('status_karyawan = "Kontrak"')
+                ->where('status_karyawan = "Kontrak" AND status="Kerja"')
                 ->orderBy($sort)
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
@@ -322,7 +322,7 @@ class KaryawanController extends Controller {
             foreach ($models as $key => $val) {
                 $ternilai = \app\models\Tblpenilaiankontrak::find()->where([
                             'nik' => $val['nik'],
-                        ])->orderBy('tgl DESC')->one();
+                        ])->orderBy('tgl DESC,id DESC,nm_kontrak DESC')->one();
                 if (!empty($ternilai)) {
                     $models[$key]['status_penilaian'] = ($ternilai->nm_kontrak == "Kontrak 1") ? 'Kontrak 1' : 'Kontrak 2';
                     $models[$key]['tgl_penilaian'] = $ternilai->tgl;

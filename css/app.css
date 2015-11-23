@@ -1,6 +1,15 @@
+.navbar-nav button.dropdown-toggle{
+    margin-right: 20px !important;
+}
+.navbar-nav .caret{
+    float: right;
+    margin-top: 7px;
+}
+
+
 .control-label.required:after {
-  content:" *";
-  color:red;
+    content:" *";
+    color:red;
 }
 
 .required:after { 

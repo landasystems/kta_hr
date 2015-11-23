@@ -26,46 +26,51 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d/F/Y'); ?></div>
-<table>
-    <tr>
-        <td>NO KONTRAK</td>
-        <td style="text-align: right">:</td>
-        <td style="width:35% !important;"><?= $params['no_kontrak'] ?></td>
-        <td>NAMA</td>
-        <td style="text-align: right">:</td>
-        <td><?= $params['nama'] ?></td>
-    </tr>
-    <tr>
-        <td>NIK</td>
-        <td style="text-align: right">:</td>
-        <td style="width:35% !important;"><?= $params['nik'] ?></td>
-        <td>STATUS KARYAWAN</td>
-        <td style="text-align: right">:</td>
-        <td><?= $params['status_karyawan'] ?></td>
-    </tr>
-</table>
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
         <tr>
-            <th>NO</th>
-            <th>TANGGAL</th>
-            <th>KONTRAK</th>
-            <th>PENILAIAN KE</th>
-            <th>KETERANGAN</th>
+            <th>No</th>
+            <th>Tanggal</th>
+            <th>Nama Kontrak</th>
+            <th>Mutu Kerja</th>
+            <th>Pengetahuan Teknis</th>
+            <th>Tg Jawab Pekerjaan</th>
+            <th>Kerjasama / Komunikasi</th>
+            <th>Sikap Kerja</th>
+            <th>Inisiatif</th>
+            <th>Rs Turut Memiliki</th>
+            <th>Disiplinitas</th>
+            <th>Kepemimpinan</th>
+            <th>Pelaksanaan Managerial</th>
+            <th>Problem Solving</th>
+            <th>Kehadiran</th>
+            <th>Administratif</th>
+            <th>Keterangan</th>
         </tr>
     </thead>
     <tbody>
         <?php
         $no = 1;
         foreach ($models as $val) {
-            echo '<tr>';
-            echo '<td align="center">' . $no . '</td>';
-            echo '<td align="center">' . date('d/F/Y', strtotime($val['tgl'])) . '</td>';
-            echo '<td align="center">' . $val['nm_kontrak'] . '</td>';
-            echo '<td align="center">' . $val['penilaian'] . '</td>';
-            echo '<td align="center">' . $val['keterangan'] . '</td>';
-            echo '</tr>';
-            $no++;
+            echo '<tr>
+                            <td>' . $no . '</td>
+                            <td>' . $val['tgl'] . '</td>
+                            <td>' . $val['nm_kontrak'] . '</td>
+                            <td style="text-align: center">' . $penilaian($val['mutu_kerja']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['pengetahuan_teknis']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['tgjawab_pekerjaan']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['kerjasama_komunikasi']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['sikap_kerja']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['inisiatif']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['rasa_turut_memiliki']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['disiplinitas']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['kepemimpinan']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['pelaksanaan_managerial']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['problem_solving']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['kehadiran']) . '</td>
+                            <td style="text-align: center">' . $penilaian($val['administratif']) . '</td>
+                            <td>' . $val['keterangan'] . '</td>
+                        </tr>';
         }
         ?>
     </tbody>

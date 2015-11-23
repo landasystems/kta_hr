@@ -237,8 +237,23 @@ class PenilaiankontrakController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $params = $_SESSION['params'];
-        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'params' => $params['karyawan']]);
+//        $params = $_SESSION['params'];
+
+        $penilaian = function($angka) {
+            $hasil = '';
+            if ($angka == 4) {
+                $hasil = 'A';
+            } else if ($angka == 3) {
+                $hasil = 'B';
+            } else if ($angka == 2) {
+                $hasil = 'C';
+            } else {
+                $hasil = 'D';
+            }
+            return $hasil;
+        };
+
+        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
     }
 
     public function actionCari() {
@@ -258,7 +273,6 @@ class PenilaiankontrakController extends Controller {
 
     public function actionRekap() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
         $sort = "tgl DESC";
         $offset = 0;
         $limit = 10;
@@ -268,9 +282,15 @@ class PenilaiankontrakController extends Controller {
                 ->limit($limit)
                 ->from('tbl_penilaian_kontrak as pen')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'pen.nik = kar.nik')
-                ->where('pen.nik="' . $params['karyawan']['nik'] . '"')
                 ->orderBy($sort)
                 ->select("*");
+
+        if ($params['tipe'] == 'kelompok') {
+            $adWhere = (!empty($params['Section']['id_section'])) ? ' AND kar.section="' . $params['Section']['id_section'] . '"' : '';
+            $query->andWhere('(pen.tgl <="' . date('Y-m-d', strtotime($params['tanggal'])) . '")' . $adWhere);
+        } else {
+            $query->where('pen.nik="' . $params['karyawan']['nik'] . '"');
+        }
 
         session_start();
         $_SESSION['query'] = $query;
@@ -278,10 +298,6 @@ class PenilaiankontrakController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-//        foreach ($models as $key => $val) {
-//            $kKontrak = \app\models\Tblkaryawankontrak::findOne($val['nik']);
-//            $models[$key]['karyawan'] = (empty($kKontrak)) ? array() : $kKontrak->attributes;
-//        }
         $totalItems = $query->count();
 
         $this->setHeader(200);

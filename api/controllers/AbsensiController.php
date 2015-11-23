@@ -237,7 +237,10 @@ class AbsensiController extends Controller {
         $qs = \app\models\Jabatan::find()
                 ->where(['id_jabatan' => $kd])
                 ->one();
-        return $qs->jabatan;
+        if (isset($qs->jabatan))
+            return $qs->jabatan;
+        else
+            return '';
     }
 
     public function actionAbsensiproduksi() {
