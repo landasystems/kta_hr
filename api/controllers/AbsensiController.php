@@ -23,7 +23,7 @@ class AbsensiController extends Controller {
                     'absensioperator' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
-                    'penggajian' => ['get'],
+                    'penggajian' => ['post'],
                     'rekap' => ['get'],
                     'penggajianexcel' => ['post'],
                     'karyawanexcel' => ['post'],
@@ -537,10 +537,11 @@ class AbsensiController extends Controller {
     }
 
     public function actionPenggajian() {
-        $params = $_REQUEST;
+        $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
+        $tahun = date('Y', strtotime($params['tanggal']));
         $date_sampai = date('Y-m-d', strtotime($params['tanggal_sampai'] . ' +1day'));
         $lokasi = $params['lokasi_kntr'];
         //---init perulangan tanggal
@@ -619,8 +620,10 @@ class AbsensiController extends Controller {
 
             if ($arr->ket == 'Setengah Hari') {
                 $ijin_jml[$arr->nik] += 0.5;
-            } else {
+            } elseif($arr->ket == 'Izin') {
                 $ijin_jml[$arr->nik] += 1;
+            }elseif($arr->ket == 'Dinas Luar'){
+                  $ijin_jml[$arr->nik] += 1;
             }
         }
 
@@ -651,7 +654,9 @@ class AbsensiController extends Controller {
         //=========PROSES MASUKKAN DATA
         $no = 1;
         foreach ($kry as $r) {
-            $bpjs = ($r->gaji_pokok * 2.5) / 100;
+            
+//            $bpjs = ($r->gaji_pokok * 2.5) / 100;
+            
             if (isset($ijin_jml[$r->nik])) { //cari ijin, dari proses di atas
                 $ijin = $ijin_jml[$r->nik];
             } else {
@@ -675,22 +680,22 @@ class AbsensiController extends Controller {
             }
 
             $ijin_rp = ($r->gaji_pokok / 25) * $ijin;
-            $kotor = $r->gaji_pokok - $bpjs - $ijin_rp;
-            $bersih = $kotor - $potongan_pinjaman_rp - $potongan_sepatu_rp - $potongan_oksigen_rp;
+//            $kotor = $r->gaji_pokok - $bpjs - $ijin_rp;
+//            $bersih = $kotor - $potongan_pinjaman_rp - $potongan_sepatu_rp - $potongan_oksigen_rp;
             /*
               sementara
              */
 
             //incentive
-            $inc = 100000;
-            $jml_inc = 5;
+            $inc = 0;
+            $jml_inc = 0;
             $ttl_inc = ($inc * $jml_inc);
             $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
             $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
             $kesehatan = ($r->gaji_pokok * 1 / 100);
             $pinjaman = ($potongan_pinjaman_rp + $potongan_sepatu_rp + $potongan_oksigen_rp);
             $jml_potongan = ($ketengakerjaan + $kesehatan + $pinjaman);
-            $absen = 0;
+            $absen = ($ijin * ($r->gaji_pokok / 25));
             $netto = ($ttl_kopensasi - $jml_potongan);
 
             ////
@@ -719,7 +724,7 @@ class AbsensiController extends Controller {
         }
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models,'tahun' => $tahun), JSON_PRETTY_PRINT);
     }
 
     public function actionPenggajianexcel() {

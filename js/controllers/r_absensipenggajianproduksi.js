@@ -48,7 +48,8 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         $scope.show_detail = true;
         $scope.show_form = form;
 
-        Data.get('absensi/penggajian', form).then(function (data) {
+        Data.post('absensi/penggajian', form).then(function (data) {
+            $scope.tahun = data.tahun; 
             $scope.listSrc = [];
             angular.forEach(data.data, function ($value, $key) {
                 $scope.listSrc.push($value);
