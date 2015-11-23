@@ -237,7 +237,10 @@ class AbsensiController extends Controller {
         $qs = \app\models\Jabatan::find()
                 ->where(['id_jabatan' => $kd])
                 ->one();
-        return $qs->jabatan;
+        if (isset($qs->jabatan))
+            return $qs->jabatan;
+        else
+            return '';
     }
 
     public function actionAbsensiproduksi() {
@@ -282,7 +285,7 @@ class AbsensiController extends Controller {
                         $hadir[$dt->format("Y-m-d")] = 0;
                     }
                     if (isset($abs[$r->nik][$dt->format("Y-m-d")])) {
-                        
+
                         $hadir[$dt->format("Y-m-d")] += 1;
                         $data[$r->jabatan]['body'][$r->status_karyawan]['subbody'][$i]['tanggal'][$dt->format("Y-m-d")] = 'v';
                     } else {
@@ -295,7 +298,7 @@ class AbsensiController extends Controller {
 
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $data, 'start' => $start, 'end' => $endate, 'jmlhr' => $htghr,'jmlhdr' => $hadir), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $data, 'start' => $start, 'end' => $endate, 'jmlhr' => $htghr, 'jmlhdr' => $hadir), JSON_PRETTY_PRINT);
     }
 
     public function actionAbsensioperator() {
