@@ -3,6 +3,7 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
     var paramRef;
     $scope.form = {};
     $scope.form.tanggal = new Date();
+    $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
@@ -27,6 +28,19 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
             saveExcel(data, 'slipgaji.xls');
         });
     };
+    
+    $scope.cariSection = function ($query) {
+
+        if ($query.length >= 3) {
+            Data.get('section/cari',{nama: $query}).then(function (data) {
+                $scope.listSection = data.data;
+            });
+        }
+    };
+    
+    Data.get('lokasikantor').then(function (data) {
+            $scope.listLokasi = data.data;
+        });
 
     $scope.listSrc = [];
     $scope.list = [];
