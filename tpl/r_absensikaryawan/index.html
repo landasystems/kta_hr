@@ -67,24 +67,28 @@
                     <tr>
                         <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
                         <th style="text-align: center;vertical-align: center;">Nama</th>
-                        <th style="text-align: center;vertical-align: center;">A</th>
-                        <th style="text-align: center;vertical-align: center;">I</th>
-                        <th style="text-align: center;vertical-align: center;">SD</th>
-                        <th style="text-align: center;vertical-align: center;">C</th>
-                        <th style="text-align: center;vertical-align: center;">S</th>
-                        <th style="text-align: center;vertical-align: center;">JMLH HADIR</th>
+                        <th style="text-align: center;vertical-align: center;" title="Absen">A</th>
+                        <th style="text-align: center;vertical-align: center;" title="Izin">I</th>
+                        <th style="text-align: center;vertical-align: center;" title="Surat Dokter">SD</th>
+                        <th style="text-align: center;vertical-align: center;" title="Dinas Luar">DL</th>
+                        <th style="text-align: center;vertical-align: center;" title="Setengah Hari">SH</th>
+                        <th style="text-align: center;vertical-align: center;" title="Cuti">C</th>
+                        <th style="text-align: center;vertical-align: center;" title="Sakit">S</th>
+                        <th style="text-align: center;vertical-align: center;" title="Hadir">JMLH HADIR</th>
                     </tr>
                 </thead>
                 <tbody ng-show="!isLoading">
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.nik}}</td>
                         <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center">{{row.Absen}}</td>
-                        <td style="text-align: center">{{row.Izin}}</td>
-                        <td style="text-align: center">{{row.Surat_Dokter}}</td>
-                        <td style="text-align: center">{{row.Cuti}}</td>
-                        <td style="text-align: center">{{row.Sakit}}</td>
-                        <td style="text-align: center">{{row.Hadir}}</td>
+                        <td style="text-align: center" title="Absen">{{row.Absen}}</td>
+                        <td style="text-align: center" title="Izin">{{row.Izin}}</td>
+                        <td style="text-align: center" title="Surat Dokter">{{row.Surat_Dokter}}</td>
+                        <td style="text-align: center" title="Dinas Luar">{{row.Dinas_Luar}}</td>
+                        <td style="text-align: center" title="Setengah Hari">{{row.Setengah_Hari}}</td>
+                        <td style="text-align: center" title="Cuti">{{row.Cuti}}</td>
+                        <td style="text-align: center" title="Sakit">{{row.Sakit}}</td>
+                        <td style="text-align: center" title="Hadir">{{row.Hadir}}</td>
                     </tr>
                     <tr>
                         <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="12"></td>
