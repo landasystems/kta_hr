@@ -212,6 +212,8 @@ class AbsentController extends Controller {
 
     public function actionDelete($id) {
         $model = TblAbsent::deleteAll(['no_absent'=>$id]);
+//        $model = $this->findModel($id);
+//        $models 
         
         if ($model) {
             $this->setHeader(200);
