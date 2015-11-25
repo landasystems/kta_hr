@@ -130,7 +130,7 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.no_absent;
+        var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.id;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);

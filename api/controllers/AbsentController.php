@@ -101,7 +101,7 @@ class AbsentController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_absent')
-                ->where('ket <> "Hadir"')
+                ->where('ket <> "Hadir" AND nama is not null')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -135,9 +135,9 @@ class AbsentController extends Controller {
     public function actionView($id) {
         $query = new Query;
         $query->from('tbl_absent as abs')
-                ->join('LEFT JOIN','tbl_karyawan as kar','abs.nik=kar.nik')
-                ->join('LEFT JOIN','pekerjaan as pek','kar.sub_section=pek.kd_kerja')
-                ->where('no_absent="'.$id.'"')
+                ->join('LEFT JOIN', 'tbl_karyawan as kar', 'abs.nik=kar.nik')
+                ->join('LEFT JOIN', 'pekerjaan as pek', 'kar.sub_section=pek.kd_kerja')
+                ->where('no_absent="' . $id . '"')
                 ->select("*,abs.ket as ket_absen");
         $command = $query->createCommand();
         $models = $command->queryOne();
@@ -150,12 +150,25 @@ class AbsentController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new TblAbsent();
-        $model->attributes = $params;
-        $model->tgl_pembuatan = date('Y-m-d');
-        $model->tanggal = date('Y-m-d',  strtotime($params['datesRange']['startDate']));
-        $model->tanggal_kembali = date('Y-m-d',  strtotime($params['datesRange']['endDate']));
 
+
+        $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
+        $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
+
+        for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
+            $model = new TblAbsent();
+            if ($i == 0) {
+                $model->attributes = $params;
+                $model->tgl_pembuatan = date('Y-m-d');
+            }
+            $model->nik = $params['nik'];
+            $model->ket = $params['ket'];
+            $model->no_absent = $params['no_absent'];
+            $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
+            $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
+//            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
+            $model->save();
+        }
         if ($model->save()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -167,14 +180,26 @@ class AbsentController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = $this->findModel($id);
-        $model->attributes = $params;
-        if(empty($model->tgl_pembuatan)){
-            $model->tgl_pembuatan = date('Y-m-d');
-        }
-        $model->tanggal = date('Y-m-d',  strtotime($params['datesRange']['startDate']));
-        $model->tanggal_kembali = date('Y-m-d',  strtotime($params['datesRange']['endDate']));
 
+        $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
+        $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
+        $deleteAll = TblAbsent::deleteAll('no_absent="' . $params['no_absent'] . '" AND nama is NULL AND tgl_pembuatan is NULL');
+        for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
+            if ($i == 0) {
+                $model = TblAbsent::findOne($id);
+                $model->attributes = $params;
+                $model->tgl_pembuatan = date('Y-m-d');
+            } else {
+                $model = new TblAbsent();
+            }
+            $model->nik = $params['nik'];
+            $model->ket = $params['ket'];
+            $model->no_absent = $params['no_absent'];
+            $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
+            $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
+//            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
+            $model->save();
+        }
         if ($model->save()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -185,16 +210,25 @@ class AbsentController extends Controller {
     }
 
     public function actionDelete($id) {
-        $model = $this->findModel($id);
+        $model = TblAbsent::deleteAll(['no_absent' => $id]);
 
-        if ($model->delete()) {
+        try {
+            if (!$model) {
+                throw 'Terjadi Kesalahan';
+            }
+
             $this->setHeader(200);
-            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
-        } else {
-
+            echo json_encode(array('status' => 1), JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
             $this->setHeader(400);
-            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $e->getMessage()), JSON_PRETTY_PRINT);
         }
+
+//        if ($model) {
+//            
+//        } else {
+//            
+//        }
     }
 
     protected function findModel($id) {
@@ -207,9 +241,9 @@ class AbsentController extends Controller {
             exit;
         }
     }
-    
-    public function actionPrint(){
-        
+
+    public function actionPrint() {
+
         session_start();
         $models = $_SESSION['models'];
         return $this->render("/expmaster/absenkeluar", ['models' => $models]);
