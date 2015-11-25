@@ -166,7 +166,8 @@ class AbsentController extends Controller {
             $model->no_absent = $params['no_absent'];
             $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
-//            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
+            Yii::error($params['datesRange']['startDate']);
+            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
             $model->save();
         }
         if ($model->save()) {
