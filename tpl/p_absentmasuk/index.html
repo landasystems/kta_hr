@@ -120,7 +120,6 @@
                                     <input type="text" class="form-control" ng-model="form.no_absent" ng-disabled="is_view" readonly>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NIK - Nama</label>
                                 <div class="col-sm-7">
@@ -142,7 +141,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label pull-left">Tanggal</label>
-                                <div class="col-md-2 col-sm-7">
+                                <div class="col-md-4 col-sm-7">
                                     <div class="input-group">
                                         <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.datesRange">
                                         <span class="input-group-addon">
@@ -161,7 +160,7 @@
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Izin'">Izin</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Dinas Luar'">Dinas Luar</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Setengah Hari'">Setengah Hari</label>
-                                    </div>  
+                                    </div> 
                                 </div>
                             </div>
                             <div class="form-group" ng-show="form.ket == 'Izin' || form.ket == 'Dinas Luar' || form.ket == 'Setengah Hari'">

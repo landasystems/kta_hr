@@ -10,7 +10,7 @@ if (!isset($_GET['print'])) {
 <div id="printArea">
     <style media="print">
         .printedArea,.printedArea table,printedArea span, printedArea div{
-            font-size: 12pt;
+            font-size: 10pt;
         }
         .printedArea div{
             margin-right: 20px;
@@ -71,29 +71,30 @@ if (!isset($_GET['print'])) {
                 <td></td>
                 <td></td>
                 <td>b. Dinas : <u><?php
-                    if ($models['ket_absen'] == 'Dinas Luar') {
-                        echo $models['ket_uraian'];
-                    }
+//                    if ($models['ket_absen'] == 'Dinas Luar') {
+//                        echo $models['ket_uraian'];
+//                    }
                     ?></u></td>
             </tr>
-
         </table>
-        <table style="border-style: solid;border-collapse: collapse;width:100%;">
+        <hr/>
+        <table style="border-collapse: collapse;width:100%;">
             <tr>
-                <td style="vertical-align: top;height: 100px;">Keterangan</td>
-                <td style="vertical-align: top;height: 100px;">:</td>
-                <td style="vertical-align: top;height: 100px;"><?= $models['ket_uraian'] ?></td>
+                <td style="vertical-align: top;height: 90px;">Keterangan</td>
+                <td style="vertical-align: top;height: 90px;">:</td>
+                <td style="vertical-align: top;height: 90px;"><?= $models['ket_uraian'] ?></td>
             </tr>
         </table>
         <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
-        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>
-        <table style="width:100%;border-collapse:collapse;" border="3">
+        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y, H:i', strtotime($models['tgl_pembuatan'])); ?></div>
+        <hr/>
+        <table style="width:100%;border-collapse:collapse;">
             <tr>
-                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">HRD</td>
-                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PIMPINAN</td>
-                <td style="height: 100px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PEMOHON</td>
+                <td style="height: 90px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">HRD</td>
+                <td style="height: 90px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PIMPINAN</td>
+                <td style="height: 90px;vertical-align: bottom;width:33%;border-right: 3px;text-align: center;">PEMOHON</td>
             </tr>
         </table>
     </div>
