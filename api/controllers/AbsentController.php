@@ -184,13 +184,13 @@ class AbsentController extends Controller {
 
         $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
         $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
-        $deleteAll = TblAbsent::deleteAll('no_absent="' . $params['no_absent'] . '" AND nama is NULL AND tgl_pembuatan is NULL');
+        $deleteAll = TblAbsent::deleteAll('no_absent="'.$params['no_absent'].'" AND nama is NULL AND tgl_pembuatan is NULL');
         for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
             if ($i == 0) {
                 $model = TblAbsent::findOne($id);
                 $model->attributes = $params;
                 $model->tgl_pembuatan = date('Y-m-d');
-            } else {
+            }else{
                 $model = new TblAbsent();
             }
             $model->nik = $params['nik'];
@@ -211,25 +211,16 @@ class AbsentController extends Controller {
     }
 
     public function actionDelete($id) {
-        $model = TblAbsent::deleteAll(['no_absent' => $id]);
-
-        try {
-            if (!$model) {
-                throw 'Terjadi Kesalahan';
-            }
-
+        $model = TblAbsent::deleteAll(['no_absent'=>$id]);
+        
+        if ($model) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1), JSON_PRETTY_PRINT);
-        } catch (\Exception $e) {
-            $this->setHeader(400);
-            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $e->getMessage()), JSON_PRETTY_PRINT);
-        }
+        } else {
 
-//        if ($model) {
-//            
-//        } else {
-//            
-//        }
+            $this->setHeader(400);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
+        }
     }
 
     protected function findModel($id) {

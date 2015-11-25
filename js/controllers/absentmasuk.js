@@ -84,9 +84,7 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
             startDate : startDate,
             endDate : endDate,
         };
-//        $scope.form.tanggal = new Date();
-//        $scope.form.jmasuk = new Date();
-//        $scope.form.jkeluar = new Date();
+        console.log(startDate);
         Data.get('absent/kode').then(function (data) {
             $scope.form.no_absent = data.kode;
         });
