@@ -431,6 +431,7 @@ class AbsensiController extends Controller {
             if (!empty($kr->status_karyawan)) {
 
                 $jml = isset($data[$kr->status_karyawan]['jumlah']) ? $data[$kr->status_karyawan]['jumlah'] + 1 : 0;
+//                $jml = $this->Jmlkry($kr->status_karyawan);
 
                 $data[$kr->status_karyawan]['title'] = $kr->status_karyawan;
                 $data[$kr->status_karyawan]['jumlah'] = $jml;
@@ -447,13 +448,13 @@ class AbsensiController extends Controller {
                     }
 
                     if (isset($abs[$kr->nik][$dt->format("Y-m-d")])) {
-                        $jml_hadir = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 1;
+                        $jml_hadir = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 0;
                         $hadir[$dt->format("Y-m-d")] += 1;
                         $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
                         $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 1;
                         $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] = $jml - $jml_hadir;
                     } else {
-                        $jml_tak_hadir = isset($data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] + 1 : 1;
+                        $jml_tak_hadir = isset($data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] + 1 : 0;
                         $tidakhadir[$dt->format("Y-m-d")] += 1;
                         $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
                         $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = $jml - $jml_tak_hadir;
@@ -465,6 +466,17 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
 //        echo json_encode($data);
         echo json_encode(array('status' => 1, 'data' => $data, 'jmlhr' => $htghr, 'end' => $endate, 'totalhadir' => $hadir, 'totaltakhadir' => $tidakhadir), JSON_PRETTY_PRINT);
+    }
+    
+    public function Jmlkry($status) {
+        $jml = TblKaryawan::find()
+                ->where(['status' => 'kerja','status_karyawan' =>$status])
+                ->groupBy('status_karyawan')
+                ->select('count(*) as mgm')
+                ->one();
+        
+        return $jml->mgm;
+        
     }
 
     public function actionAbsensiharian() {
@@ -714,6 +726,7 @@ class AbsensiController extends Controller {
 
         //=========PROSES HITUNG ABSENT
         $ijin = TblAbsent::find()->where('tanggal>="' . $date . '" AND tanggal<="' . $date_sampai . '"')->all();
+//        echo json_encode($ijin);
         $ijin_jml = [];
         foreach ($ijin as $arr) {
             if (!isset($ijin_jml[$arr->nik]))
@@ -727,6 +740,8 @@ class AbsensiController extends Controller {
                 $ijin_jml[$arr->nik] += 1;
             }
         }
+        
+//        echo json_encode($ijin_jml);
 
         //=========PROSES POTONGAN
         $potongan = TblHtransPotongan::find()
