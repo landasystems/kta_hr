@@ -78,6 +78,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Transaksi Potongan";
         $scope.form = {};
+        $scope.form.tgl = new Date();
         $scope.detPotongan = [{}];
         Data.get('transpotongan/kode', form).then(function (data) {
             $scope.form.no_pot = data.kode;
@@ -88,6 +89,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.form.tgl = new Date(form.tgl);
         $scope.formtitle = "Edit Data : " + form.no_pot;
         Data.get('transpotongan/view/' + form.no_pot).then(function (data) {
             $scope.detPotongan = data.data;
@@ -99,6 +101,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        $scope.form.tgl = new Date(form.tgl);
         $scope.formtitle = "Lihat Data : " + form.no_pot;
     };
     

@@ -292,7 +292,7 @@ class KaryawanController extends Controller {
     public function actionRekapkontrak() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $sort = "nik DESC";
+        $sort = "Kontrak_21 ASC, Kontrak_11 ASC";
         $offset = 0;
         $limit = 10;
 
@@ -306,7 +306,7 @@ class KaryawanController extends Controller {
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
