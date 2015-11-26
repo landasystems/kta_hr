@@ -587,7 +587,7 @@
         <li class="hidden-xs">
             <a ui-fullscreen></a>
         </li>
-        <li class="dropdown" dropdown>
+        <li class="dropdown" dropdown ng-show="user.akses.tools_absennama || user.akses.master_roles || user.akses.master_user">
             <a href class="dropdown-toggle clear" dropdown-toggle>
                 <!--<span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">-->
                 <i class="fa fa-wrench"></i>
@@ -598,11 +598,9 @@
                 <li ng-show="user.akses.tools_absennama">
                     <a ui-sref='tools.absennama'>Cek Kesamaan Data Absensi</a>
                 </li>
-                <li class="divider"></li>
                 <li ng-show="user.akses.master_roles">
                     <a ui-sref="master.roles">Hak Akses</a>
                 </li>
-                <li class="divider"></li>
                 <li ng-show="user.akses.master_user">
                     <a ui-sref="master.user">User</a>
                 </li>
