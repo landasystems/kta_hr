@@ -162,7 +162,7 @@ class AbsentController extends Controller {
                 $model->tgl_pembuatan = date('Y-m-d');
             }
             $model->nik = $params['nik'];
-            $model->ket = $params['ket'];
+            $model->ket = (!empty($params['ket'] || isset($params['ket']))) ? $params['ket'] : '';
             $model->no_absent = $params['no_absent'];
             $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
@@ -197,7 +197,7 @@ class AbsentController extends Controller {
                 $model = new TblAbsent();
             }
             $model->nik = $params['nik'];
-            $model->ket = $params['ket'];
+            $model->ket = (!empty($params['ket'] || isset($params['ket']))) ? $params['ket'] : '';
             $model->no_absent = $params['no_absent'];
             $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));

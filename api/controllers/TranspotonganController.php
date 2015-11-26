@@ -103,6 +103,7 @@ class TranspotonganController extends Controller {
                 ->limit($limit)
                 ->from('tbl_htrans_potongan as h')
                 ->join('LEFT JOIN', 'tbl_gaji_produksi as g','h.no_gaji=g.no_gaji')
+                ->join('LEFT JOIN', 'tbl_karyawan as k','k.nik=h.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -128,7 +129,7 @@ class TranspotonganController extends Controller {
         foreach($models as $key => $val){
             if(!empty($val['nik'])){
                 $pegawai = \app\models\Tblkaryawan::findOne($val['nik']);
-                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+                $models[$key]['Karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }
 
@@ -176,7 +177,7 @@ class TranspotonganController extends Controller {
         if (!empty($findDet)) {
             foreach ($findDet as $key => $val) {
                 $detail[$key] = $val->attributes;
-                $atk = \app\models\Tblpotongan::findOne($val->no_pot);
+                $atk = \app\models\Tblpotongan::findOne($val->kd_pot);
                 $detail[$key]['potongan'] = (!empty($atk)) ? $atk->attributes : [];
 //                $detail[$key]['jumlah_brng'] = $atk->jumlah_brng;
             }

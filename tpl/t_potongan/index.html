@@ -48,8 +48,6 @@
                     <thead>
                         <tr>
                             <th st-sort="no_pot">No. Potongan</th>
-                            <th st-sort="kd_pot">Kode Potongan</th>
-                            <th st-sort="nm_pot">Nama Potongan</th>
                             <th st-sort="tgl">Tanggal</th>
                             <th st-sort="nik">NIK</th>
                             <th st-sort="nama">Nama</th>
@@ -60,8 +58,6 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                             <td>{{row.no_pot}}</td>
-                            <td>{{row.kd_pot}}</td>
-                            <td>{{row.nm_pot}}</td>
                             <td>{{row.tgl| date}}</td>
                             <td>{{row.nik}}</td>
                             <td>{{row.nama}}</td>
@@ -100,27 +96,27 @@
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation ">
                     <div class="col-md-12 col-sm-12">
-<!--                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">No. Gaji</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <ui-select on-select="getGaji($item,form)" ng-model="form.gaji" theme="bootstrap" required>
-                                            <ui-select-match>{{$select.selected.no_gaji}}</ui-select-match>
-                                            <ui-select-choices refresh="cari($select.search)" repeat="val in results">
-                                                {{val.no_gaji}}<br>
-                                                <small>{{val.merk}} - {{val.type}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.gaji = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
+                        <!--                        <div class="col-md-4 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4 control-label">No. Gaji</label>
+                                                        <div class="col-sm-8">
+                                                            <div class="input-group">
+                                                                <ui-select on-select="getGaji($item,form)" ng-model="form.gaji" theme="bootstrap" required>
+                                                                    <ui-select-match>{{$select.selected.no_gaji}}</ui-select-match>
+                                                                    <ui-select-choices refresh="cari($select.search)" repeat="val in results">
+                                                                        {{val.no_gaji}}<br>
+                                                                        <small>{{val.merk}} - {{val.type}}</small>
+                                                                    </ui-select-choices>
+                                                                </ui-select>
+                                                                <span class="input-group-btn">
+                                                                    <button ng-click="form.gaji = undefined" class="btn btn-default">
+                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
                         <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">No Potongan</label>
@@ -144,31 +140,38 @@
                         </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-4 col-sm-12">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">NIK</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nik" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <ui-select on-select="getKaryawan($item,form)" ng-model="form.Karyawan" theme="bootstrap" required>
+                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                            <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in results">
+                                                {{val.nik}}<br>
+                                                <small>{{val.nama}}</small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <span class="input-group-btn">
+                                            <button ng-click="form.Karyawan = undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.nama" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Kompensasi</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.kompensasi" ng-disabled="is_view">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Gaji Bersih</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.gaji_bersih" ng-disabled="is_view">
-                                </div>
-                            </div>
+                            <!--                            <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Kompensasi</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" ng-model="form.kompensasi" ng-disabled="is_view">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-sm-4 control-label">Gaji Bersih</label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control" ng-model="form.gaji_bersih" ng-disabled="is_view">
+                                                            </div>
+                                                        </div>-->
                         </div>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
                         <label class="col-sm-4 control-label">Detail Potongan</label>
@@ -187,7 +190,7 @@
                                             <div class="input-group">
                                                 <ui-select on-select="getPotongan($item,det)" ng-model="det.potongan" theme="bootstrap" required>
                                                     <ui-select-match>{{$select.selected.kode_potongan}} - {{$select.selected.nm_potongan}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariPotongan($select.search)" repeat="val in detailPotongan">
+                                                    <ui-select-choices  repeat="val in listPotongan">
                                                         {{val.kode_potongan}}<br>
                                                         <small>{{val.nm_potongan}}</small>
                                                     </ui-select-choices>

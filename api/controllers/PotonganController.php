@@ -25,6 +25,7 @@ class PotonganController extends Controller {
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
+                    'list' => ['get'],
                     'cari' => ['get'],
                 ],
             ]
@@ -110,7 +111,7 @@ class PotonganController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
@@ -228,6 +229,17 @@ class PotonganController extends Controller {
                 ->select("*")
                 ->where(['like', 'kode_potongan', $params['nama']])
                 ->orWhere(['like', 'nm_potongan', $params['nama']]);
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionList() {
+        $query = new Query;
+        $query->from('tbl_potongan')
+                ->select("*");
 
         $command = $query->createCommand();
         $models = $command->queryAll();
