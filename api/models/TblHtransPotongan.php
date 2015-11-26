@@ -32,7 +32,7 @@ class TblHtransPotongan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['no_pot'], 'required'],
+            [['no_pot','nik'], 'required'],
             [['tgl'], 'safe'],
             [['total'], 'number'],
             [['no_pot', 'no_gaji', 'nik'], 'string', 'max' => 20]
