@@ -83,45 +83,48 @@
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="text-align:center">ABSENSI</th>
+                        <th colspan="2" style="text-align:center">ABSENSI</th>
                         <th colspan="{{colsp - 1}}" style="text-align: left;">Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}</th>
                     </tr>
                     <tr>
-                        <th style="text-align: left;vertical-align: left;">Nama</th>
+                        <th colspan="2" style="text-align: left;vertical-align: left;">Nama</th>
                         <th style="text-align: center;width:30px" ng-repeat="bln in listbn">{{bln}}</th>
                     </tr>
                 </thead>
                 <tbody ng-show="!isLoading" ng-repeat="row in list">
                     <tr>
-                        <td colspan="{{colsp}}" style="text-align: center"><b>{{row.title}}</b></td>
+                        <td colspan="{{colsp+1}}" style="text-align: center"><b>{{row.title}}</b></td>
                     </tr>
                     <tr ng-show="row.body.Tetap">
-                        <td colspan="{{colsp}}"><b>Tetap</b></td>
+                        <td colspan="{{colsp+1}}"><b>Tetap</b></td>
                     </tr>
                     <tr ng-show="row.body.Tetap" ng-repeat="kry in row.body.Tetap.subbody">
+                        <td>{{kry.nik}}</td>
                         <td>&nbsp;&nbsp;{{kry.nama}}</td>
                         <td ng-repeat="tgl in kry.tanggal">{{tgl}}</td>
                     </tr>
 
                     <tr ng-show="row.body.Kontrak">
-                        <td colspan="{{colsp}}" ><b>Kontrak</b></td>
+                        <td colspan="{{colsp+1}}" ><b>Kontrak</b></td>
                     </tr>
                     <tr ng-show="row.body.Kontrak" ng-repeat="kr in row.body.Kontrak.subbody">
+                        <td>{{kr.nik}}</td>
                         <td>&nbsp;&nbsp;{{kr.nama}}</td>
                         <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
                     </tr>
 
                     <tr ng-show="row.body.Borongan">
-                        <td colspan="{{colsp}}"><b>Borongan</b></td>
+                        <td colspan="{{colsp+1}}"><b>Borongan</b></td>
                     </tr>
                     <tr ng-show="row.body.Borongan" ng-repeat="kr in row.body.Borongan.subbody">
+                        <td>{{kr.nik}}</td>
                         <td>&nbsp;&nbsp;{{kr.nama}}</td>
                         <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>&nbsp;&nbsp;<b>Total Orang</b></td>
+                        <td colspan="2">&nbsp;&nbsp;<b>Total Orang</b></td>
                         <td ng-repeat="thadir in ttl_hadir">{{thadir}}</td>
                     </tr>
                 </tfoot>
