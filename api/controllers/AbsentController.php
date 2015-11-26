@@ -166,7 +166,7 @@ class AbsentController extends Controller {
             $model->no_absent = $params['no_absent'];
             $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
-//            Yii::error($params['datesRange']['startDate']);
+//            Yii::error($params['datesRange']['startDate']."===");
 //            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
             $model->save();
         }
@@ -184,6 +184,9 @@ class AbsentController extends Controller {
 
         $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
         $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
+//        Yii::error($params['datesRange']['startDate']."===");
+//        Yii::error($params['datesRange']['endDate']);
+        
         $deleteAll = TblAbsent::deleteAll('no_absent="'.$params['no_absent'].'" AND nama is NULL AND tgl_pembuatan is NULL');
         for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
             if ($i == 0) {
@@ -198,7 +201,6 @@ class AbsentController extends Controller {
             $model->no_absent = $params['no_absent'];
             $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
-//            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
             $model->save();
         }
         if ($model->save()) {
