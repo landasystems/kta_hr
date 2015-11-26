@@ -292,7 +292,7 @@ class KaryawanController extends Controller {
     public function actionRekapkontrak() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $sort = "nik DESC";
+        $sort = "Kontrak_11 Kontrak_21";
         $offset = 0;
         $limit = 10;
 
@@ -302,11 +302,11 @@ class KaryawanController extends Controller {
                 ->from('tbl_karyawan')
                 ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
                 ->where('status_karyawan = "Kontrak" AND status="Kerja"')
-                ->orderBy($sort)
+//                ->orderBy('Kontrak_11 ASC')
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }

@@ -193,11 +193,12 @@ class TranspotonganController extends Controller {
 
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
+//                Yii::error($params['detail']);
                 $detail = new TblDtransPotongan();
-                $detail->no = $model->no_pot;
                 $detail->attributes = $val;
+                $detail->no = $params['form']['no_pot'];
                 $detail->save();
-                
+                $detail->getErrors();
             }
 
             $this->setHeader(200);
@@ -217,11 +218,10 @@ class TranspotonganController extends Controller {
 //            $delDet = TblDtransPotongan::deleteAll(['no_trans' => $model->no_pot]);
             foreach ($params['detail'] as $key => $val) {
                 $detail = TblDtransPotongan::findOne($val['id']);
-                $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransPotongan();                
-                $detail->no = $model->no_pot;
+                    $detail = new TblDtransPotongan();
                 $detail->attributes = $val;
+                $detail->no = $model->no_pot;
                 $detail->save();
                 
             }
@@ -235,7 +235,8 @@ class TranspotonganController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
-
+        $delDetail = TblDtransPotongan::deleteAll(['no'=>$id]);
+        
         if ($model->delete()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
