@@ -102,8 +102,8 @@ class TranspotonganController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_htrans_potongan as h')
-                ->join('LEFT JOIN', 'tbl_gaji_produksi as g','h.no_gaji=g.no_gaji')
-                ->join('LEFT JOIN', 'tbl_karyawan as k','k.nik=h.nik')
+                ->join('LEFT JOIN', 'tbl_gaji_produksi as g', 'h.no_gaji=g.no_gaji')
+                ->join('LEFT JOIN', 'tbl_karyawan as k', 'k.nik=h.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -125,11 +125,20 @@ class TranspotonganController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        foreach($models as $key => $val){
-            if(!empty($val['nik'])){
-                $pegawai = \app\models\Tblkaryawan::findOne($val['nik']);
-                $models[$key]['Karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
+                if (!empty($val['nik'])) {
+                    $pegawai = \app\models\Tblkaryawan::findOne($val['nik']);
+                    $models[$key]['Karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+                }
+                $qDet = new Query();
+                $qDet->select('SUM(jmlh) as totals')
+                        ->from('tbl_dtrans_potongan')
+                        ->where(['no' => $val['no_pot']]);
+                $comm = $qDet->createCommand();
+                $nilai = $comm->queryOne();
+                $models[$key]['total'] = $nilai['totals'];
             }
         }
 
@@ -137,6 +146,7 @@ class TranspotonganController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -150,8 +160,8 @@ class TranspotonganController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_htrans_potongan as h')
-                ->join('LEFT JOIN', 'tbl_dtrans_potongan as d','h.no_pot=d.no')
-                ->join('LEFT JOIN', 'tbl_karyawan as k','h.nik=k.nik')
+                ->join('LEFT JOIN', 'tbl_dtrans_potongan as d', 'h.no_pot=d.no')
+                ->join('LEFT JOIN', 'tbl_karyawan as k', 'h.nik=k.nik')
                 ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
@@ -223,7 +233,6 @@ class TranspotonganController extends Controller {
                 $detail->attributes = $val;
                 $detail->no = $model->no_pot;
                 $detail->save();
-                
             }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -235,8 +244,8 @@ class TranspotonganController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
-        $delDetail = TblDtransPotongan::deleteAll(['no'=>$id]);
-        
+        $delDetail = TblDtransPotongan::deleteAll(['no' => $id]);
+
         if ($model->delete()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);

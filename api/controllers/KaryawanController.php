@@ -292,7 +292,7 @@ class KaryawanController extends Controller {
     public function actionRekapkontrak() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $sort = "Kontrak_11 Kontrak_21";
+        $sort = "Kontrak_21 ASC, Kontrak_11 ASC";
         $offset = 0;
         $limit = 10;
 
@@ -302,7 +302,7 @@ class KaryawanController extends Controller {
                 ->from('tbl_karyawan')
                 ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
                 ->where('status_karyawan = "Kontrak" AND status="Kerja"')
-//                ->orderBy('Kontrak_11 ASC')
+                ->orderBy($sort)
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
