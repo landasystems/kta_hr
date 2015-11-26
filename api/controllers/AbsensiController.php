@@ -121,8 +121,6 @@ class AbsensiController extends Controller {
 //            $data[$val['nik']]['nama'] = $val['nama'];
 //            $data[$val['nik']][str_replace(" ", "_", $val['ket'])] = $val['countKet'];
 //        }
-
-
         /////
         $begin = new \DateTime($start);
         $end = new \DateTime($endate);
@@ -163,7 +161,6 @@ class AbsensiController extends Controller {
             $izin = 0;
             $sd = 0;
             $sh = 0;
-            $dinas = 0;
             foreach ($arrtgl as $dt) {
 //                Yii::error($dt);
                 if (isset($abs[$r->nik][$dt])) {
@@ -178,7 +175,7 @@ class AbsensiController extends Controller {
                     } elseif ($ketAbsen == 'Cuti') {
                         $cuti +=1;
                     } elseif ($ketAbsen == 'Dinas Luar') {
-                        $dinas +=1;
+                        $hadir +=1;
                     } elseif ($ketAbsen == 'Hadir') {
                         $hadir +=1;
                     } elseif ($ketAbsen == 'Sakit') {
@@ -199,7 +196,6 @@ class AbsensiController extends Controller {
                 'Izin' => $izin,
                 'Cuti' => $cuti,
                 'Sakit' => $sakit,
-                'Dinas_Luar' => $dinas,
                 'Surat_Dokter' => $sd,
                 'Setengah_Hari' => $sh,
                 'Hadir' => $hadir
@@ -254,11 +250,11 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
 
 //        echo json_encode(array('status' => 1, 'data' => $datas, 'start' => $start, 'end' => $end, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
-        echo json_encode(array('status' => 1, 'data' => $dnew,'start' => $start, 'end' => $ende), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $dnew, 'start' => $start, 'end' => $ende), JSON_PRETTY_PRINT);
     }
 
     public function Izin($nik, $tanggal) {
-        
+
         $absen = TblAbsent::find()->where(['nik' => $nik, 'tanggal' => $tanggal])->select('ket')->one();
 
         return isset($absen->ket) ? $absen->ket : '-';
@@ -273,7 +269,6 @@ class AbsensiController extends Controller {
 //        foreach ($libur as $as) {
 //            $tglibur[] = $as['tgl'];
 //        }
-
         // memecah string tanggal awal untuk mendapatkan
         // tanggal, bulan, tahun
         $pecah1 = explode("-", $day1);
@@ -312,7 +307,6 @@ class AbsensiController extends Controller {
 //                    $libur1++;
 //                }
 //            }
-
             // menghitung jumlah tanggal pada hari ke-i
             // yang merupakan hari minggu
             if ((date("w", $tanggal) != 0)) {
@@ -427,11 +421,13 @@ class AbsensiController extends Controller {
 
         $i = 0;
         $jml = 1;
+
         $data = [];
         $hadir = [];
         $tidakhadir = [];
 
         foreach ($kry as $kr) {
+
             if (!empty($kr->status_karyawan)) {
 
                 $jml = isset($data[$kr->status_karyawan]['jumlah']) ? $data[$kr->status_karyawan]['jumlah'] + 1 : 0;
@@ -442,20 +438,23 @@ class AbsensiController extends Controller {
                     //init data
                     if (!isset($hadir[$dt->format("Y-m-d")])) {
                         $hadir[$dt->format("Y-m-d")] = 0;
+                        $jml_hadir = 0;
                     }
-                    if (!(isset($tidakhadir[$dt->format("Y-m-d")]))) {
+
+                    if (!isset($tidakhadir[$dt->format("Y-m-d")])) {
                         $tidakhadir[$dt->format("Y-m-d")] = 0;
+                        $jml_tak_hadir = 0;
                     }
 
                     if (isset($abs[$kr->nik][$dt->format("Y-m-d")])) {
-                        $jml_hadir = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 0;
-                        $hadir[$dt->format("Y-m-d")] += $jml_hadir;
+                        $jml_hadir = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 1;
+                        $hadir[$dt->format("Y-m-d")] += 1;
                         $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
-                        $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = $jml_hadir;
+                        $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = isset($data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] + 1 : 1;
                         $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] = $jml - $jml_hadir;
                     } else {
-                        $jml_tak_hadir = isset($data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] + 1 : 0;
-                        $tidakhadir[$dt->format("Y-m-d")] += $jml_tak_hadir;
+                        $jml_tak_hadir = isset($data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")]) ? $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] + 1 : 1;
+                        $tidakhadir[$dt->format("Y-m-d")] += 1;
                         $data[$kr->status_karyawan]['listjumlah'][$dt->format("Y-m-d")] = $jml;
                         $data[$kr->status_karyawan]['hadir'][$dt->format("Y-m-d")] = $jml - $jml_tak_hadir;
                         $data[$kr->status_karyawan]['tdkhadir'][$dt->format("Y-m-d")] = $jml_tak_hadir;
@@ -464,6 +463,7 @@ class AbsensiController extends Controller {
             }
         }
         $this->setHeader(200);
+//        echo json_encode($data);
         echo json_encode(array('status' => 1, 'data' => $data, 'jmlhr' => $htghr, 'end' => $endate, 'totalhadir' => $hadir, 'totaltakhadir' => $tidakhadir), JSON_PRETTY_PRINT);
     }
 
