@@ -137,7 +137,6 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.save = function (form) {
-        console.log(form);
 
         var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.id;
         Data.post(url, form).then(function (result) {
