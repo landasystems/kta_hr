@@ -106,7 +106,7 @@
                     <button type="button" class="btn btn-info fa fa-print" ng-print print-element-id="printCv" ng-show="is_view">&nbsp;Cetak Laporan CV</button>
                     <button type="button" class="btn btn-primary fa fa-print" ng-print print-element-id="printArea" ng-show="is_view">&nbsp;Cetak Laporan Ijazah</button>
                 </div>
-                
+
             </div>
             <div class="panel-body">
                 <form name="landaform" class="form-horizontal form-validation">
@@ -294,7 +294,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened2" ng-click="open2($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened1" ng-click="open1($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -305,7 +305,7 @@
                                             <label class="col-sm-4 control-label">Kontrak 1</label>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="open1" ng-click="open1 = true"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="opened2" ng-click="open2($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -313,7 +313,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="open2" ng-click="open2 = true"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="opened3" ng-click="open3($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -324,7 +324,7 @@
                                             <label class="col-sm-4 control-label">Kontrak 2</label>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="open3" ng-click="open3 = true"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="opened4" ng-click="open4($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -332,7 +332,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="open4" ng-click="open4 = true"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="opened5" ng-click="open5($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -369,7 +369,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Lahir</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened1" ng-click="open1($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened6" ng-click="open6($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -517,12 +517,12 @@
                                                 <input type="text" class="form-control" ng-model="form.thp" ng-disabled="is_view" >
                                             </div>
                                         </div>
-<!--                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">Upah Tetap</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.upah_tetap" ng-disabled="is_view" >
-                                            </div>
-                                        </div>-->
+                                        <!--                                        <div class="form-group">
+                                                                                    <label class="col-sm-4 control-label">Upah Tetap</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="text" class="form-control" ng-model="form.upah_tetap" ng-disabled="is_view" >
+                                                                                    </div>
+                                                                                </div>-->
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Pesangon</label>
                                             <div class="col-sm-8">
@@ -590,7 +590,7 @@
                                             <label class="col-sm-4 control-label">Tgl Ijazah</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="openedijz" ng-click="openTglIjz($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="opened7" ng-click="open7($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -601,7 +601,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Masuk</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="openedtglmasuk" ng-click="openTglMasuk($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened8" ng-click="open8($event)"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -823,7 +823,7 @@
         <div style="margin-top: 10px;" ng-if="form.status == 'Kerja'">
             <center><h5>BERITA ACARA</h5></center>
             <center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center>
-            
+
             <hr>
             <br/>
             <div class="col-md-12 col-sm-12">
@@ -853,7 +853,7 @@
                         <tr>
                             <td style="text-align: left;">Tgl Ijazah</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tgl_ijazah | date:'dd MMMM yyyy'}}</td>
+                            <td>{{form.tgl_ijazah| date:'dd MMMM yyyy'}}</td>
                         </tr>
                     </table>
                 </div>
@@ -934,7 +934,7 @@
                         <tr>
                             <td style="text-align: left;">Tgl Ijazah</td>
                             <td style="text-align: right;">:</td>
-                            <td>{{form.tgl_ijazah | date:'dd MMMM yyyy'}}</td>
+                            <td>{{form.tgl_ijazah| date:'dd MMMM yyyy'}}</td>
                         </tr>
                     </table>
                 </div>
@@ -1032,7 +1032,7 @@
                     <tr>
                         <td style="width:40%">Tempat, Tanggal Lahir</td>
                         <td style="width:5%">:</td>
-                        <td>{{form.tmpt_lahir}}, {{form.tgl_lahir | date}}</td>
+                        <td>{{form.tmpt_lahir}}, {{form.tgl_lahir| date}}</td>
                     </tr>
                     <tr>
                         <td style="width:40%">Alamat</td>
@@ -1089,16 +1089,16 @@
                         <td style="width:5%">:</td>
                         <td>{{form.no_ijazah}}</td>
                     </tr>
-                    
+
                     <tr>
                         <td style="width:40%">Tanggal Lulus</td>
                         <td style="width:5%">:</td>
-                        <td>{{form.tgl_ijazah | date}}</td>
+                        <td>{{form.tgl_ijazah| date}}</td>
                     </tr>
-                    
+
                 </table>
             </li>
         </ul>
-        
+
     </div>
 </div>

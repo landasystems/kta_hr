@@ -43,6 +43,15 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.isLoading = false;
     };
 
+//    $scope.openedkntrk1 = false;
+//    $scope.openedkntrk11 = false;
+//    $scope.openedkntrk2 = false;
+//    $scope.openedkntrk21 = false;
+//    $scope.openedijz = false;
+//    $scope.openedtglmasuk = false;
+//    $scope.openedtglmasukkerja = false;
+//    $scope.openedtgllahir= false;
+
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -61,70 +70,30 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.opened3 = true;
     };
 
-    $scope.openkntrk1 = function ($event) {
+    $scope.open4 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedkntrk1 = true;
+        $scope.opened4 = true;
     };
-
-    $scope.openkntrk11 = function ($event) {
+    $scope.open5 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedkntrk11 = true;
+        $scope.opened5 = true;
     };
-
-    $scope.openkntrk2 = function ($event) {
+    $scope.open6 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedkntrk2 = true;
+        $scope.opened6 = true;
     };
-
-    $scope.openkntrk21 = function ($event) {
+    $scope.open7 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedkntrk21 = true;
+        $scope.opened7 = true;
     };
-
-    $scope.openTglIjz = function ($event) {
+    $scope.open8 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.openedijz = true;
-    };
-
-    $scope.openTglMasuk = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedtglmasuk = true;
-    };
-    $scope.openkntrk1 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedkntrk1 = true;
-    };
-    $scope.openkntrk11 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedkntrk11 = true;
-    };
-    $scope.openkntrk2 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedkntrk2 = true;
-    };
-    $scope.openkntrk21 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedkntrk21 = true;
-    };
-    $scope.openTglIjz = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedijz = true;
-    };
-    $scope.openTglMasuk = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.openedtglmasuk = true;
+        $scope.opened8 = true;
     };
 
     $scope.excel = function () {
@@ -144,10 +113,10 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.form.tgl_masuk_kerja = new Date();
         $scope.form.tgl_selesai = new Date();
         $scope.form.tgl_lahir = new Date();
-        $scope.form.Kontrak_1 = new Date();
-        $scope.form.Kontrak_11 = new Date();
-        $scope.form.Kontrak_2 = new Date();
-        $scope.form.Kontrak_21 = new Date();
+//        $scope.form.Kontrak_1 = new Date();
+//        $scope.form.Kontrak_11 = new Date();
+//        $scope.form.Kontrak_2 = new Date();
+//        $scope.form.Kontrak_21 = new Date();
         $scope.form.nik = '';
         $scope.setCode($scope.form);
         Data.get('ijazah/kode', form).then(function (data) {
@@ -165,10 +134,10 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.cariDepartment();
         $scope.form.tgl_lahir = new Date(form.tgl_lahir);
         $scope.form.tgl_masuk_kerja = new Date(form.tgl_masuk_kerja);
-        $scope.form.Kontrak_1 = (form.Kontrak_1 !== undefined) ? new Date(form.Kontrak_1) : undefined;
-        $scope.form.Kontrak_11 = new Date(form.Kontrak_11);
-        $scope.form.Kontrak_2 = new Date(form.Kontrak_2);
-        $scope.form.Kontrak_21 = new Date(form.Kontrak_21);
+        $scope.form.Kontrak_1 = (form.Kontrak_1 != undefined) ? new Date(form.Kontrak_1) : null;
+        $scope.form.Kontrak_11 = (form.Kontrak_1 != undefined) ? new Date(form.Kontrak_11) : null;
+        $scope.form.Kontrak_2 = (form.Kontrak_2 != undefined) ? new Date(form.Kontrak_2) : null;
+        $scope.form.Kontrak_21 = (form.Kontrak_21 != undefined) ? new Date(form.Kontrak_21) : null;
         $scope.formtitle = "Edit Data : " + form.nik;
 
         $scope.loadDetail(form.nik);
