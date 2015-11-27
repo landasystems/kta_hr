@@ -42,10 +42,10 @@ if (!isset($_GET['print'])) {
     <table border="1">
         <thead>
             <tr>
-                <td colspan="5" rowspan="2" style="text-align: center;vertical-align: central;">
+                <td colspan="6" rowspan="2" style="text-align: center;vertical-align: central;">
                     <h4><u>DATA KONTRAK KERJA</u></h4>
                 </td>
-                <td  rowspan="2" style="text-align: left">
+                <td  rowspan="2" colspan="2" style="text-align: left">
                     <span>AKAN BERAKHIR PADA: <?= date('d F Y', strtotime($tanggal)); ?></span>
                     <br/><span>SEKSI : <?= $section; ?></span>
                 </td>
@@ -63,16 +63,20 @@ if (!isset($_GET['print'])) {
                 <th  style="text-align: center;vertical-align: center;">NIK</th>
                 <th  style="text-align: center;vertical-align: center;">NAMA</th>
                 <th  style="text-align: center;vertical-align: center;">BAGIAN</th>
-                <th  style="text-align: center;vertical-align: center;">KONTRAK 1</th>
-                <th  style="text-align: center;vertical-align: center;">KONTRAK 11</th>
-                <th  style="text-align: center;vertical-align: center;">KONTRAK 2</th>
-                <th  style="text-align: center;vertical-align: center;">KONTRAK 21</th>
+                <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 1</th>
+                <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 11</th>
+                <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 2</th>
+                <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 21</th>
+                <th  style="text-align: center;vertical-align: center;">TGL PENILAIAN</th>
+                <th  style="text-align: center;vertical-align: center;">STATUS PENILAIAN</th>
             </tr>
         </thead>
         <tbody>
             <?php
             $no = 1;
             foreach ($models as $val) {
+                $tglPenilaian = (!empty($val['tgl_penilaian'])) ? date('d-F-Y', strtotime($val['tgl_penilaian'])) : '';
+                $status_penilaian = (!empty($val['status_penilaian'])) ? $val['status_penilaian'] : '';
                 echo '<tr>';
                 echo '<td align="center">' . $no . '</td>';
                 echo '<td align="center">' . $val['nik'] . '</td>';
@@ -82,6 +86,8 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['Kontrak_11'] . '</td>';
                 echo '<td align="center">' . $val['Kontrak_2'] . '</td>';
                 echo '<td align="center">' . $val['Kontrak_21'] . '</td>';
+                echo '<td align="center">' . $tglPenilaian . '</td>';
+                echo '<td align="center">' . $status_penilaian . '</td>';
                 echo '</tr>';
                 $no++;
             }
