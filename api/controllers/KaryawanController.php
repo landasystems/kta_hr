@@ -294,7 +294,6 @@ class KaryawanController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $sort = "Kontrak_21 ASC, Kontrak_11 ASC";
         $offset = 0;
-        $limit = 10;
 
         $query = new Query;
         $query->offset($offset)
@@ -604,6 +603,21 @@ class KaryawanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
+                $ternilai = \app\models\Tblpenilaiankontrak::find()->where([
+                            'nik' => $val['nik'],
+                        ])->orderBy('tgl DESC,id DESC,nm_kontrak DESC')->one();
+                if (!empty($ternilai)) {
+                    $models[$key]['status_penilaian'] = ($ternilai->nm_kontrak == "Kontrak 1") ? 'Kontrak 1' : 'Kontrak 2';
+                    $models[$key]['tgl_penilaian'] = $ternilai->tgl;
+                } else {
+                    $models[$key]['status_penilaian'] = 'Belum di Nilai';
+                    $models[$key]['tgl_penilaian'] = null;
+                }
+            }
+        }
+
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
         return $this->render("/exprekap/" . $rekap, ['models' => $models, 'tanggal' => $tanggal, 'section' => $section]);
     }

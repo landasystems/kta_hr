@@ -103,8 +103,10 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $scope.is_view = true;
         $scope.form.tgl = new Date(form.tgl);
         $scope.formtitle = "Lihat Data : " + form.no_pot;
+        Data.get('transpotongan/view/' + form.no_pot).then(function (data) {
+            $scope.detPotongan = data.data;
+        });
     };
-    
     
     $scope.save = function (form, detail) {
         var data = {

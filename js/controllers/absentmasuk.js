@@ -72,19 +72,30 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         form.nik = item.nik;
         form.nama = item.nama;
     };
+
+//    $scope.setTanggal = function(form){
+//       var tglAwal= new Date(form.datesRange.startDate);
+//       var tglAkhir= new Date(form.datesRange.endDate);
+//       
+//       $scope.form.datesRange = {
+//           startDate : tglAwal,
+//           endDate : tglAkhir
+//       };
+//       
+//    };
+
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.formtitle = "Form Absen Tidak Masuk";
         $scope.form = {};
-        var startDate =  new Date();
-        var endDate = new Date() ;
+        var startDate = new Date();
+        var endDate = new Date();
         $scope.form.datesRange = {
-            startDate : startDate,
-            endDate : endDate,
+            startDate: startDate,
+            endDate: endDate,
         };
-        console.log(startDate);
         Data.get('absent/kode').then(function (data) {
             $scope.form.no_absent = data.kode;
         });
@@ -96,11 +107,11 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
-        var startDate =  new Date(form.tanggal);
+        var startDate = new Date(form.tanggal);
         var endDate = (form.tanggal_kembali == null) ? new Date(form.tanggal) : new Date(form.tanggal_kembali);
         $scope.form.datesRange = {
-            startDate : startDate,
-            endDate : endDate,
+            startDate: startDate,
+            endDate: endDate,
         };
         $scope.formtitle = "Edit Data : " + form.no_absent;
     };
@@ -110,24 +121,23 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
-        var startDate =  new Date(form.tanggal);
-        var endDate = (form.tanggal_kembali == null) ? new Date(form.tanggal) : new Date(form.tanggal_kembali);
+        var startDate = new Date(form.tanggal);
+        var endDate = new Date(form.tanggal_kembali);
         $scope.form.datesRange = {
-            startDate : startDate,
-            endDate : endDate,
+            startDate: startDate,
+            endDate: endDate,
         };
-        Data.get('absent/view/' + form.no_absent).then(function (data) {
-        });
         $scope.formtitle = "Lihat Data : " + form.no_absent;
     };
 
     $scope.print = function (form) {
-        Data.get('absent/view/'+form.no_absent).then(function (data) {
+        Data.get('absent/view/' + form.no_absent).then(function (data) {
             window.open('api/web/absent/print?print=true', "", "width=500");
         });
     };
 
     $scope.save = function (form) {
+
         var url = ($scope.is_create == true) ? 'absent/create/' : 'absent/update/' + form.id;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
@@ -135,7 +145,14 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
             } else {
                 $scope.is_edit = false;
                 $scope.is_view = true;
-                $scope.view(form);
+
+                //function view
+                $scope.is_create = false;
+                $scope.is_edit = true;
+                $scope.is_view = true;
+                $scope.formtitle = "Lihat Data : " + form.no_absent;
+                //end function view
+
                 toaster.pop('success', "Berhasil", "Data berhasil tersimpan");
                 $scope.callServer(tableStateRef); //reload grid ulang
             }
