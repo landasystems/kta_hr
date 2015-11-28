@@ -40,12 +40,8 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Lokasi Kantor</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
-                                                <option value="SUKOREJO">Sukorejo</option>
-                                                <option value="SURABAYA">Surabaya</option>
-                                                <option value="JAKARTA">Jakarta</option>
-                                                <option value="MEDAN">Medan</option>
-                                                <option value="BANDUNG">Bandung</option>
+                                            <select class="form-control" ng-model="form.lokasi_kntr">
+                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
                                             </select>
                                         </div>
                                     </div>

@@ -29,6 +29,33 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         });
     };
     
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
+    var list = [];
+    for (var i = year - 3; i < year + 3; i++) {
+        list.push(i);
+    }
+    $scope.form.tahun = year;
+    $scope.form.bulan = month;
+//    console.log(myDate);
+
+    $scope.listth = list;
+    $scope.listbln = [
+        {key: "01", value: "Januari"},
+        {key: "02", value: "Februari"},
+        {key: "03", value: "Maret"},
+        {key: "04", value: "April"},
+        {key: "05", value: "Mei"},
+        {key: "06", value: "Juni"},
+        {key: "07", value: "Juli"},
+        {key: "08", value: "Agustus"},
+        {key: "09", value: "September"},
+        {key: "10", value: "Oktober"},
+        {key: "11", value: "November"},
+        {key: "12", value: "Desember"}
+    ];
+    
     $scope.cariSection = function ($query) {
 
         if ($query.length >= 3) {

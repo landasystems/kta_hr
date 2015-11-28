@@ -3,6 +3,7 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
     var paramRef;
     $scope.form = {};
     $scope.form.status = 'tidakhadir';
+    $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
@@ -26,6 +27,10 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
         }
     };
+    
+     Data.get('lokasikantor').then(function (data) {
+            $scope.listLokasi = data.data;
+        });
 
     $scope.listSrc = [];
     $scope.list = [];

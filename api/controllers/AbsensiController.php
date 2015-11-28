@@ -85,73 +85,28 @@ class AbsensiController extends Controller {
         if (isset($params['tanggal'])) {
             $test = json_decode($params['tanggal'], true);
             $start = date("Y-m-d", strtotime($test['startDate']));
+
             $endate = date("Y-m-d", strtotime($test['endDate']));
         }
+//         Yii::error($params['test']);
         $kry = TblKaryawan::aktif($niknama);
-//        Yii::error($niknama);
-//        $sort = "ta.nik ASC";
-//        $offset = 0;
-//        $limit = 10;
-//
-//        $query = new Query;
-//        $query->offset(null)
-////                ->limit(10)
-//                ->from('tbl_absent as ta')
-////                ->orderBy($sort)
-//                ->groupBy(['ta.nik', 'ta.ket'])
-//                ->select("ta.*,count(ta.ket) as countKet");
-//        if (isset($params['tanggal'])) {
-//            $test = json_decode($params['tanggal'], true);
-//            $start = date("Y-m-d", strtotime($test['startDate']));
-//            $endate = date("Y-m-d", strtotime($test['endDate']));
-//
-//            $query->andFilterWhere(['between', 'ta.tanggal', $start, $endate]);
-//        }
-//
-//
-////        Yii::error($params['nama']);
-//
-//        $command = $query->createCommand();
-//        $models = $command->queryAll();
-//        $totalItems = $query->count();
-//
-//        $data = [];
-//        foreach ($models as $key => $val) {
-//            $data[$val['nik']]['nik'] = $val['nik'];
-//            $data[$val['nik']]['nama'] = $val['nama'];
-//            $data[$val['nik']][str_replace(" ", "_", $val['ket'])] = $val['countKet'];
-//        }
         /////
         $begin = new \DateTime($start);
+//        $begine = $begin->format('Y-m-d');
         $end = new \DateTime($endate);
         $end = $end->modify('+1 day');
         $ende = $end->format('Y-m-d');
         $interval = \DateInterval::createFromDateString('1 day');
 
+//        Yii::error($start);
         //array periode
         $period = new \DatePeriod($begin, $interval, $end);
         $abs = AbsensiEttLog::absen($start, $endate);
         $arrtgl = $this->Hitunghr($start, $endate);
 //        Yii::error($ende);
+//        echo json_encode($arrtgl);
         $dnew = [];
-
-//        $a = $this->Izin('00001', '2015-10-31');
-//        echo $a;
-//        $query = new Query;
-//        $query->select("*")
-//                ->from("tbl_absent")
-//                ->where('nik = "00001" and tanggal = "2015-10-31"');
-//        $command = $query->createCommand();
-//        $models = $command->query()->read();
-//        
-//        $a = TblAbsent::find()->where(['nik' => "00001", 'tanggal' => "2015-10-31"])->one();
-//
-//        $absen = TblAbsent::find()
-//                ->where('nik = "00001" and tanggal = "2015-10-31"')
-////                ->select('ket')
-//                ->one();
-//        print_r($a->ket);
-//        echo $a->ket;
+//        Yii::error($period);
 
         foreach ($kry as $r) {
             $hadir = 0;
@@ -162,7 +117,8 @@ class AbsensiController extends Controller {
             $sd = 0;
             $sh = 0;
             foreach ($arrtgl as $dt) {
-//                Yii::error($dt);
+//                echo json_encode($dt);
+
                 if (isset($abs[$r->nik][$dt])) {
                     $hadir +=1;
                 } else {
@@ -184,6 +140,9 @@ class AbsensiController extends Controller {
                         $sh +=1;
                     } elseif ($ketAbsen == 'Surat Dokter') {
                         $sd +=1;
+                    } elseif ($ketAbsen == '-') {
+                        $absen +=1;
+//                        echo json_encode('cuk');
                     } else {
                         $absen +=1;
                     }
@@ -201,48 +160,6 @@ class AbsensiController extends Controller {
                 'Hadir' => $hadir
             ];
         }
-//        Yii::error($abs);
-//        Yii::error($data);
-//        $jml_hr =0;
-//
-//        foreach ($data as $key => $val) {
-//            $data[$key]['nik'] = $val['nik'];
-//            $data[$key]['nama'] = $val['nama'];
-//            $data[$key]['Absent'] = (!empty($val['Absent'])) ? $val['Absent'] : '0';
-//            $data[$key]['Izin'] = (!empty($data[$key]['Izin'])) ? $val['Izin'] : '0';
-//            $data[$key]['Surat_Dokter'] = (!empty($data[$key]['Surat_Dokter'])) ? $val['Surat_Dokter'] : '0';
-//            $data[$key]['Sakit'] = (!empty($val['Sakit'])) ? $val['Sakit'] : '0';
-//            $data[$key]['Cuti'] = (!empty($val['Cuti'])) ? $val['Cuti'] : '0';
-//            $data[$key]['Hadir'] = ($jml_hr - $data[$key]['Absent'] - $data[$key]['Izin'] - $data[$key]['Surat_Dokter'] - $data[$key]['Sakit'] - $data[$key]['Cuti']);
-//        }
-//
-//        $datas = [];
-//
-//        foreach ($kry as $ky) {
-//            if (isset($data[$ky->nik])) {
-//                $datas[] = [
-//                    'nik' => $ky->nik,
-//                    'nama' => $ky->nama,
-//                    'Absen' => $data[$ky->nik]['Absent'],
-//                    'Izin' => $data[$ky->nik]['Izin'],
-//                    'Surat_Dokter' => $data[$ky->nik]['Surat_Dokter'],
-//                    'Sakit' => $data[$ky->nik]['Sakit'],
-//                    'Cuti' => $data[$ky->nik]['Cuti'],
-//                    'Hadir' => $data[$ky->nik]['Hadir']
-//                ];
-//            } else {
-//                $datas[] = [
-//                    'nik' => $ky->nik,
-//                    'nama' => $ky->nama,
-//                    'Absen' => '0',
-//                    'Izin' => '0',
-//                    'Surat_Dokter' => '0',
-//                    'Sakit' => '0',
-//                    'Cuti' => '0',
-//                    'Hadir' => $jml_hr
-//                ];
-//            }
-//        }
         session_start();
         $_SESSION['tglStart'] = $start;
         $_SESSION['tglEnd'] = $endate;
@@ -250,7 +167,7 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
 
 //        echo json_encode(array('status' => 1, 'data' => $datas, 'start' => $start, 'end' => $end, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
-        echo json_encode(array('status' => 1, 'data' => $dnew, 'start' => $start, 'end' => $ende), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $dnew, 'start' => $start, 'end' => $endate), JSON_PRETTY_PRINT);
     }
 
     public function Izin($nik, $tanggal) {
@@ -262,13 +179,6 @@ class AbsensiController extends Controller {
 
     public function Hitunghr($day1, $day2) {
 
-//        $libur = \app\models\TblKalender::find()
-//                ->where(['between', 'tgl', $day1, $day2])
-//                ->all();
-//        $tglibur = [];
-//        foreach ($libur as $as) {
-//            $tglibur[] = $as['tgl'];
-//        }
         // memecah string tanggal awal untuk mendapatkan
         // tanggal, bulan, tahun
         $pecah1 = explode("-", $day1);
@@ -294,7 +204,7 @@ class AbsensiController extends Controller {
         $arrtgl = [];
         // proses menghitung tanggal merah dan hari minggu
         // di antara tanggal awal dan akhir
-        for ($i = 1; $i <= $selisih; $i++) {
+        for ($i = 0; $i <= $selisih; $i++) {
 
             // menentukan tanggal pada hari ke-i dari tanggal awal
             $tanggal = mktime(0, 0, 0, $month1, $date1 + $i, $year1);
@@ -467,16 +377,15 @@ class AbsensiController extends Controller {
 //        echo json_encode($data);
         echo json_encode(array('status' => 1, 'data' => $data, 'jmlhr' => $htghr, 'end' => $endate, 'totalhadir' => $hadir, 'totaltakhadir' => $tidakhadir), JSON_PRETTY_PRINT);
     }
-    
+
     public function Jmlkry($status) {
         $jml = TblKaryawan::find()
-                ->where(['status' => 'kerja','status_karyawan' =>$status])
+                ->where(['status' => 'kerja', 'status_karyawan' => $status])
                 ->groupBy('status_karyawan')
                 ->select('count(*) as mgm')
                 ->one();
-        
+
         return $jml->mgm;
-        
     }
 
     public function actionAbsensiharian() {
@@ -487,15 +396,15 @@ class AbsensiController extends Controller {
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date);
-        $kry = TblKaryawan::aktif($niknama, $lokasi_kntr);
-
+//        Yii::error($abs);
+        $kry = TblKaryawan::aktif($niknama,'', $lokasi_kntr);
         foreach ($kry as $r) {
             if (isset($abs[$r->nik][$date]) && $params['status'] == 'hadir') {
                 $absensi = $abs[$r->nik][$date];
+                
                 if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
                     $absensi['keluar'] = '';
                 }
-
                 $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => $absensi['masuk'], 'keluar' => $absensi['keluar']];
             } elseif (!isset($abs[$r->nik][$date]) && $params['status'] == 'tidakhadir') {
                 $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'masuk' => '', 'keluar' => ''];
@@ -653,36 +562,48 @@ class AbsensiController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
-        $date = date('Y-m-d', strtotime($params['tanggal']));
-        $tahun = date('Y', strtotime($params['tanggal']));
-        $date_sampai = date('Y-m-d', strtotime($params['tanggal_sampai'] . ' +1day'));
-        $lokasi = $params['lokasi_kntr'];
-        //---init perulangan tanggal
-        $begin = new \DateTime($date);
-        $end = new \DateTime($date_sampai);
-        $interval = \DateInterval::createFromDateString('1 day');
-        $period = new \DatePeriod($begin, $interval, $end);
-        //--------
 
+        $bulan = $params['bulan'];
+        $tahun = $params['tahun'];
+
+        //last month
+        $last_month = $bulan - 1 % 12;
+        $lyear = ($last_month == 0 ? ($tahun - 1) : $tahun);
+        $lmonth = ($last_month == 0 ? '12' : $last_month);
+
+//        $start = $lyear . '-' . $lmonth . '-20';
+
+        $endate = $tahun . '-' . $bulan . '-20';
+
+        $date = $lyear . '-' . $lmonth . '-21';
+
+
+        $lokasi = $params['lokasi_kntr'];
+
+        $arrtgl = $this->Hitunghr($date, $endate);
+//        Yii::error($arrtgl);
+        
+        //--------
+//         Yii::error($date);
         $models = [];
 
-        $abs = AbsensiEttLog::absen($date, $date_sampai);
+        $abs = AbsensiEttLog::absen($date, $endate);
         $kry = TblKaryawan::aktif($niknama, $section, $lokasi);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
             $lembur[$r->nik] = 0;
 
-            foreach ($period as $dt) {
-                $masuk = $dt->format("Y-m-d") . ' 7:45';
-                if (date('w', strtotime($dt->format("Y-m-d"))) == 6) { //jika sabtu, pulang jam 12
-                    $pulang = $dt->format("Y-m-d") . ' 12:00';
+            foreach ($arrtgl as $dt) {
+                $masuk = $dt . ' 7:45';
+                if (date('w', strtotime($dt)) == 6) { //jika sabtu, pulang jam 12
+                    $pulang = $dt . ' 12:00';
                 } else {
-                    $pulang = $dt->format("Y-m-d") . ' 16:00';
+                    $pulang = $dt . ' 16:00';
                 }
 
-                if (isset($abs[$r->nik][$dt->format("Y-m-d")])) {
-                    $absensi = $abs[$r->nik][$dt->format("Y-m-d")];
+                if (isset($abs[$r->nik][$dt])) {
+                    $absensi = $abs[$r->nik][$dt];
                     if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
                         $absensi['keluar'] = '';
                     }
@@ -725,7 +646,10 @@ class AbsensiController extends Controller {
         }
 
         //=========PROSES HITUNG ABSENT
-        $ijin = TblAbsent::find()->where('tanggal>="' . $date . '" AND tanggal<="' . $date_sampai . '"')->all();
+        $ijin = TblAbsent::find()
+                ->where('tanggal>="' . $date . '" AND tanggal<="' . $endate . '"')
+//                ->where(['between','tanggal',$date,$endate])
+                ->all();
 //        echo json_encode($ijin);
         $ijin_jml = [];
         foreach ($ijin as $arr) {
@@ -736,42 +660,34 @@ class AbsensiController extends Controller {
                 $ijin_jml[$arr->nik] += 0.5;
             } elseif ($arr->ket == 'Izin') {
                 $ijin_jml[$arr->nik] += 1;
-            } elseif ($arr->ket == 'Dinas Luar') {
+            } elseif ($arr->ket == 'Absent') {
                 $ijin_jml[$arr->nik] += 1;
             }
         }
-        
 //        echo json_encode($ijin_jml);
 
-        //=========PROSES POTONGAN
-        $potongan = TblHtransPotongan::find()
-                ->where('tgl>="' . $date . '" AND tgl<="' . $date_sampai . '"')
-                ->all();
+        $query = new Query;
+        $query->from('tbl_htrans_potongan as thp')
+                ->join('LEFT JOIN', 'tbl_dtrans_potongan as tdp', 'tdp.no = thp.no_pot')
+                ->where('tgl>="' . $date . '" AND tgl<="' . $endate . '"')
+//                ->where(['between','tgl',$date,$endate])
+                ->select("thp.tgl,thp.nik,tdp.jmlh");
+        $command = $query->createCommand();
+        $pinjaman = $command->queryAll();
+//        Yii::error($potongan);
         $potongan_pinjaman = [];
-        $potongan_sepatu = [];
-        $potongan_oksigen = [];
-        foreach ($potongan as $arr) {
-            if (!isset($potongan_pinjaman[$arr->nik]))
-                $potongan_pinjaman[$arr->nik] = 0;
-            if (!isset($potongan_sepatu[$arr->nik]))
-                $potongan_sepatu[$arr->nik] = 0;
-            if (!isset($potongan_oksigen[$arr->nik]))
-                $potongan_oksigen[$arr->nik] = 0;
 
-            if ($arr->no_pot == 'POT001') { //pinjaman
-                $potongan_pinjaman[$arr->nik] += $arr->total;
-            } elseif ($arr->no_pot == 'POT002') { //sepatu
-                $potongan_sepatu[$arr->nik] += $arr->total;
-            } elseif ($arr->no_pot == 'POT003') { //oksigen
-                $potongan_oksigen[$arr->nik] += 1;
+        foreach ($pinjaman as $arr) {
+            if (!isset($potongan_pinjaman[$arr['nik']])) {
+                $potongan_pinjaman[$arr['nik']] = 0;
             }
+            $potongan_pinjaman[$arr['nik']] += $arr['jmlh'];
         }
-
+//                    Yii::error($potongan_pinjaman);
         //=========PROSES MASUKKAN DATA
         $no = 1;
         foreach ($kry as $r) {
 
-//            $bpjs = ($r->gaji_pokok * 2.5) / 100;
 
             if (isset($ijin_jml[$r->nik])) { //cari ijin, dari proses di atas
                 $ijin = $ijin_jml[$r->nik];
@@ -784,20 +700,7 @@ class AbsensiController extends Controller {
             } else {
                 $potongan_pinjaman_rp = 0;
             }
-            if (isset($potongan_sepatu[$r->nik])) { //cari potongan sepatu, dari proses di atas
-                $potongan_sepatu_rp = $potongan_pinjaman[$r->nik];
-            } else {
-                $potongan_sepatu_rp = 0;
-            }
-            if (isset($potongan_oksigen[$r->nik])) { //cari potongan oksigen, dari proses di atas
-                $potongan_oksigen_rp = $potongan_pinjaman[$r->nik];
-            } else {
-                $potongan_oksigen_rp = 0;
-            }
 
-            $ijin_rp = ($r->gaji_pokok / 25) * $ijin;
-//            $kotor = $r->gaji_pokok - $bpjs - $ijin_rp;
-//            $bersih = $kotor - $potongan_pinjaman_rp - $potongan_sepatu_rp - $potongan_oksigen_rp;
             /*
               sementara
              */
@@ -809,12 +712,15 @@ class AbsensiController extends Controller {
             $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
             $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
             $kesehatan = ($r->gaji_pokok * 1 / 100);
-            $pinjaman = ($potongan_pinjaman_rp + $potongan_sepatu_rp + $potongan_oksigen_rp);
-            $jml_potongan = ($ketengakerjaan + $kesehatan + $pinjaman);
+            $pinjaman = $potongan_pinjaman_rp;
+//            echo json_encode($ijin);
             $absen = (($r->gaji_pokok / 25) * $ijin);
+//            $test= 'nik'.$r->nik.'=>'.$ketengakerjaan."+".$kesehatan."+".$pinjaman."+".$absen;
+//            Yii::error($test);
+            $jml_potongan = ($ketengakerjaan + $kesehatan + $pinjaman + $absen);
             $netto = ($ttl_kopensasi - $absen - $jml_potongan);
             $nama = ($r->nik . ' - ' . $r->nama);
-
+            
             ////
 
             $models[$r->nik] = [
@@ -840,8 +746,10 @@ class AbsensiController extends Controller {
             $no++;
         }
 
+//        Yii::error($models);
+
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun,'start'=>$date,'end' =>$endate), JSON_PRETTY_PRINT);
     }
 
     public function actionPenggajianexcel() {
