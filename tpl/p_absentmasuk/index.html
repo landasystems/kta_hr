@@ -63,6 +63,7 @@
                         <tr>
                             <th st-sort="no_absent">No Absen</th>
                             <th st-sort="tanggal">Tanggal</th>
+                            <th st-sort="tanggal_kembali">Sampai</th>
                             <th st-sort="nik">NIK</th>
                             <th st-sort="nama">Nama</th>
                             <th st-sort="jmasuk">Jam Masuk</th>
@@ -75,6 +76,7 @@
                         <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                             <td>{{row.no_absent}}</td>
                             <td>{{row.tanggal| date}}</td>
+                            <td><span ng-show="row.tanggal != row.tanggal_kembali">{{row.tanggal_kembali| date}}</span></td>
                             <td>{{row.nik}}</td>
                             <td>{{row.nama}}</td>
                             <td>{{row.jmasuk}}</td>
