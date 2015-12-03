@@ -10,15 +10,41 @@
                 </div> 
             </div>
             <div class="panel-body">
-                <div class="panel panel-info" style="text-align: center">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="form-horizontal">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3">Periode</label>
+                                        <label class="col-md-3">Periode Tahun</label>
                                         <div class="col-md-9">
-                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
+                                            <select class="form-control" ng-model="form.tanggal">
+                                                <option value="2013">2013</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2029">2029</option>
+                                                <option value="2030">2030</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3">Semester</label>
+                                        <div class="col-md-9">
+                                            <label class="btn btn-default" ng-model="form.semester" btn-radio="1">Semester 1</label>
+                                            <label class="btn btn-default" ng-model="form.semester" btn-radio="2">Semester 2</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -32,7 +58,7 @@
                                                             <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Jadwal Penilaian<span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <!--<li><a href="#" ng-click="excel(form)">Export Excel</a></li>-->
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -51,22 +77,39 @@
                 <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th style="text-align: center;vertical-align: center;">NO</th>
-                            <th style="text-align: center;vertical-align: center;">TANGGAL</th>
-                            <th style="text-align: center;vertical-align: center;">PENILAI</th>
-                            <th style="text-align: center;vertical-align: center;">DEPT. PENILAI</th>
-                            <th style="text-align: center;vertical-align: center;">YANG DINILAI</th>
-                            <th style="text-align: center;vertical-align: center;">DEPT.DINILAI</th>
+                            <th style="text-align: center;vertical-align: center;" rowspan="2">NO</th>
+                            <th style="text-align: center;vertical-align: center;" rowspan="2">NAMA</th>
+                            <th style="text-align: center;vertical-align: center;" rowspan="2">BAGIAN</th>
+                            <th style="text-align: center;vertical-align: center;" colspan="6">BULAN</th>
+                        </tr>
+                        <tr ng-show="form.semester == 1">
+                            <th>Januari</th>
+                            <th>Februari</th>
+                            <th>Maret</th>
+                            <th>April</th>
+                            <th>Mei</th>
+                            <th>Juni</th>
+                        </tr>
+                        <tr ng-show="form.semester == 2">
+                            <th>Juli</th>
+                            <th>Agustus</th>
+                            <th>September</th>
+                            <th>Oktober</th>
+                            <th>November</th>
+                            <th>Desember</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
-                            <td align="center">{{row.tgl_penilaian}}</td>
-                            <td align="center">{{row.penilai}}</td>
-                            <td align="center">{{row.dep_penilai}}</td>
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.bagian}}</td>
+                            <td align="center"><span ng-show="row.month == '01' || row.month == '07'">{{row.day}}</span></td>
+                            <td align="center"><span ng-show="row.month == '02' || row.month == '08'">{{row.day}}</span></td>
+                            <td align="center"><span ng-show="row.month == '03' || row.month == '09'">{{row.day}}</span></td>
+                            <td align="center"><span ng-show="row.month == '04' || row.month == '10'">{{row.day}}</span></td>
+                            <td align="center"><span ng-show="row.month == '05' || row.month == '11'">{{row.day}}</span></td>
+                            <td align="center"><span ng-show="row.month == '06' || row.month == '12'">{{row.day}}</span></td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

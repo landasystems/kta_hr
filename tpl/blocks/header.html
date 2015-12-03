@@ -504,6 +504,9 @@
                                 <div class="input-group-btn dropdown-submenu" dropdown>
                                     <button type="button" class="btn btn-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">REKAP ATK<span class="caret"></span></button>
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
+                                        <li ng-show="user.akses.rekap_stockatk">
+                                            <a ui-sref='rekap.stockatk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Stock ATK</a>
+                                        </li>
                                         <li ng-show="user.akses.rekap_atkkeluar">
                                             <a ui-sref='rekap.atkkeluar'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>ATK Keluar</a>
                                         </li>

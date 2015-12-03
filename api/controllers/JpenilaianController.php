@@ -20,6 +20,7 @@ class JpenilaianController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'excelrekap' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekap' => ['post'],
@@ -141,25 +142,33 @@ class JpenilaianController extends Controller {
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
-        $filter = array();
-        $sort = "no_jpenilaian DESC";
-        $offset = 0;
-        $limit = 10;
-
+        $sort = "tgl_penilaian ASC";
+        
         //create query
         $query = new Query;
-        $query->offset($offset)
-                ->limit($limit)
-                ->from('tbl_jpenilaian')
+        $query->from('tbl_jpenilaian')
+                ->where('YEAR(tgl_penilaian)="'.date('Y',  strtotime($params['tanggal'])).'"')
                 ->orderBy($sort)
                 ->select("*");
-
+        
+        if($params['semester'] == 1){
+            $query->andWhere('MONTH(tgl_penilaian) >=1 AND MONTH(tgl_penilaian) <= 6');
+        }else{
+            $query->andWhere('MONTH(tgl_penilaian) >=7 AND MONTH(tgl_penilaian) <= 12');
+        }
         session_start();
         $_SESSION['query'] = $query;
         $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $models[$key]['month'] = date('m',  strtotime($val['tgl_penilaian']));
+                $models[$key]['day'] = date('d',  strtotime($val['tgl_penilaian']));
+            }
+        }
 
         $totalItems = $query->count();
 
@@ -264,6 +273,25 @@ class JpenilaianController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         return $this->render("/exprekap/jadwalpenilaian", ['models' => $models, 'start' => $start, 'end' => $end]);
+    }
+    public function actionExcelrekap() {
+        session_start();
+        $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
+        $semester = ($params['semester'] == 1) ? 'I' : 'II';
+//        $end = $params['tanggal']['endDate'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        
+        if(!empty($models)){
+            foreach($models as $key => $val){
+                $models[$key]['month'] = date('m',  strtotime($val['tgl_penilaian']));
+                $models[$key]['day'] = date('d',  strtotime($val['tgl_penilaian']));
+            }
+        }
+        return $this->render("/exprekap/jadwalpenilaian", ['models' => $models,'params' => $params ,'semester' => $semester]);
     }
 
 }

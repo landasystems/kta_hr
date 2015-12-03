@@ -17,6 +17,9 @@ class TblDtransAtkKeluar extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $stockkeluar;
+    public $saldokeluar;
+    
     public static function tableName()
     {
         return 'tbl_dtrans_atk_keluar';

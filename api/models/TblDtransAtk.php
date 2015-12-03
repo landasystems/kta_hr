@@ -17,6 +17,9 @@ class TblDtransAtk extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $stockmasuk;
+    public $saldomasuk;
+    
     public static function tableName()
     {
         return 'tbl_dtrans_atk';
@@ -45,4 +48,6 @@ class TblDtransAtk extends \yii\db\ActiveRecord
             'jmlh_brng' => 'Jmlh Brng',
         ];
     }
+    
+    
 }

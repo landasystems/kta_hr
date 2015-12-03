@@ -183,7 +183,7 @@ class TranspotonganController extends Controller {
 
 //        $model = $this->findModel($id);
         $detail = array();
-        $findDet = TblDtransPotongan::findAll(['no' => $id]);
+        $findDet = TblDtransPotongan::findAll(['no' => $id, 'parent_id' => NULL]);
         if (!empty($findDet)) {
             foreach ($findDet as $key => $val) {
                 $detail[$key] = $val->attributes;
@@ -198,17 +198,27 @@ class TranspotonganController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
+//        Yii::error($params);
+
         $model = new TblHtransPotongan();
         $model->attributes = $params['form'];
 
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
 //                Yii::error($params['detail']);
-                $detail = new TblDtransPotongan();
-                $detail->attributes = $val;
-                $detail->no = $params['form']['no_pot'];
-                $detail->save();
-                $detail->getErrors();
+                $parentId = null;
+                for ($i = 0; $i <= $params['form']['cicilan']; $i++) {
+                    $detail = new TblDtransPotongan();
+                    $detail->attributes = $val;
+                    $detail->no = $params['form']['no_pot'];
+                    $detail->parent_id = $parentId;
+//                    $detail->perbulan = (!empty($val['perbulan'])) ? $val['perbulan'] : null;
+                    $detail->save();
+                    if ($i == 0) {
+                        $parentId = $detail->id;
+                    }
+                    $detail->getErrors();
+                }
             }
 
             $this->setHeader(200);
@@ -225,14 +235,29 @@ class TranspotonganController extends Controller {
         $model->attributes = $params['form'];
 
         if ($model->save()) {
-//            $delDet = TblDtransPotongan::deleteAll(['no_trans' => $model->no_pot]);
+            $delDet = TblDtransPotongan::deleteAll(['no' => $model->no_pot]);
             foreach ($params['detail'] as $key => $val) {
-                $detail = TblDtransPotongan::findOne($val['id']);
-                if (empty($detail))
+//                $detail = TblDtransPotongan::findOne($val['id']);
+//                if (empty($detail))
+//                    $detail = new TblDtransPotongan();
+//                $detail->attributes = $val;
+//                $detail->no = $model->no_pot;
+//                $detail->save();
+//                
+                //-->>
+                $parentId = null;
+                for ($i = 0; $i <= $params['form']['cicilan']; $i++) {
                     $detail = new TblDtransPotongan();
-                $detail->attributes = $val;
-                $detail->no = $model->no_pot;
-                $detail->save();
+                    $detail->attributes = $val;
+                    $detail->no = $params['form']['no_pot'];
+                    $detail->parent_id = $parentId;
+//                    $detail->perbulan = (!empty($val['perbulan'])) ? $val['perbulan'] : null;
+                    $detail->save();
+                    if ($i == 0) {
+                        $parentId = $detail->id;
+                    }
+                    $detail->getErrors();
+                }
             }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);

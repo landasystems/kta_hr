@@ -1229,6 +1229,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.stockatk', {
+                                    url: '/stockatk',
+                                    templateUrl: 'tpl/r_stockatk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_stockatk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.agendapelatihan', {
                                     url: '/agendapelatihan',
                                     templateUrl: 'tpl/r_agendapelatihan/index.html',
