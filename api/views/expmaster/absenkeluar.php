@@ -7,7 +7,7 @@ if (!isset($_GET['print'])) {
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
-<div id="printArea" style="margin-right: 20px;margin-left: 20px;">
+<div id="printArea" style="margin-right: 30px;margin-left: 30px;">
     <style media="print">
         .printedArea,.printedArea table,printedArea span, printedArea div{
             font-size: 10pt;
@@ -19,7 +19,7 @@ if (!isset($_GET['print'])) {
         Yang bertandatangan di bawah ini:<br/>
         <table>
             <tr>
-                <td width="75">Nama</td>
+                <td width="125">Nama</td>
                 <td>:</td>
                 <td><u><?= $models['nama'] ?></u></td>
             </tr>
@@ -61,7 +61,13 @@ if (!isset($_GET['print'])) {
             <tr>
                 <td>Waktu</td>
                 <td>:</td>
-                <td><u><?= $models['jmasuk'] ?></u> s/d <u><?= $models['jkeluar'] ?></u></td>
+                <td>
+                    <?php
+                    if(empty($models['jmasuk']) && empty($models['jkeluar']))
+                        echo '-';
+                    else
+                        echo '<u>'.$models['jmasuk'].'</u> s/d <u>'.$models['jkeluar'].'</u>';
+                    ?>
             </tr>
             <tr>
                 <td>Keperluan</td>
@@ -84,7 +90,7 @@ if (!isset($_GET['print'])) {
         <hr/>
         <table style="border-collapse: collapse;width:100%;">
             <tr>
-                <td style="vertical-align: top;height: 90px;" width="76">Keterangan</td>
+                <td style="vertical-align: top;height: 90px;" width="125">Keterangan</td>
                 <td style="vertical-align: top;height: 90px;">:</td>
                 <td style="vertical-align: top;height: 90px;"><?= $models['ket_uraian'] ?></td>
             </tr>
