@@ -294,7 +294,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Masuk Kerja</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened1" ng-click="open1($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk_kerja" is-open="opened1" ng-click="opened1 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -302,18 +302,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
-                                            <label class="col-sm-4 control-label">Kontrak 1</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-4 control-label">Awal Kontrak 1</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="opened2" ng-click="open2($event)"/>
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-calendar-o"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="opened3" ng-click="open3($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="opened2" ng-click="opened2 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -321,23 +313,39 @@
                                             </div>
                                         </div>
                                         <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
-                                            <label class="col-sm-4 control-label">Kontrak 2</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-4 control-label">Akhir Kontrak 1</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="opened4" ng-click="open4($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="opened3" ng-click="opened3 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                        </div>
+                                        <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
+                                            <label class="col-sm-4 control-label">Awal Kontrak 2</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="opened5" ng-click="open5($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="opened4" ng-click="opened4 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
+                                            <label class="col-sm-4 control-label">Akhir Kontrak 2</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="opened5" ng-click="opened5 = true"/>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-o"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <br>
@@ -369,7 +377,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Lahir</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened6" ng-click="open6($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_lahir" is-open="opened6" ng-click="opened6 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -590,7 +598,7 @@
                                             <label class="col-sm-4 control-label">Tgl Ijazah</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="opened7" ng-click="open7($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_ijazah" is-open="opened7" ng-click="opened7 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -601,7 +609,7 @@
                                             <label class="col-sm-4 control-label">Tanggal Masuk</label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened8" ng-click="open8($event)"/>
+                                                    <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl_masuk" is-open="opened8" ng-click="opened8 = true"/>
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </span>
@@ -811,25 +819,22 @@
                 line-height: 25px; 
             }
             .print-footer{
-                position: absolute;
-                bottom: 0;
+                /*                position: absolute;
+                                bottom: 75px;*/
                 font-size : 12pt !important;
                 line-height: 15px; 
             }
-            h5{
-                margin: 0px;
-            }
         </style>
-        <div style="margin-top: 10px;" ng-if="form.status == 'Kerja'">
-            <center><h5>BERITA ACARA</h5></center>
-            <center><h5>SERAH TERIMA PENITIPAN IJAZAH</h5></center>
+        <div style="margin:50px" ng-if="form.status == 'Kerja'">
+            <center><h4 style="margin: 0px;">BERITA ACARA</h4></center>
+            <center><h4 style="margin: 0px;">SERAH TERIMA PENITIPAN IJAZAH</h4></center>
 
             <hr>
             <br/>
             <div class="col-md-12 col-sm-12">
                 Pada tanggal {{form.tgl_masuk| date:'dd MMMM yyyy'}} telah diserah diterimakan dokumen ijazah dengan data sebagai berikut.<br/><br/>
                 <div class="form-group">
-                    <table style="line-height: 20px;">
+                    <table style="line-height: 20px;font-weight: bold !important">
                         <tr>
                             <td style="text-align: left;">No. Ijazah</td>
                             <td style="text-align: right;">:</td>
@@ -860,37 +865,37 @@
                 <br>
                 <div class="form-group">
                     Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan penitipan Ijazah di PT. KARYA TUGAS ANDA. Berkaitan dengan diterimanya yang bersangkutan diatas sebagai Karyawan.
-                    <br/>Demikian berita acara ini, untuk dapat dipergunakaan sebagaimana mestinya.
+                    <br/><br/>Demikian berita acara ini, untuk dapat dipergunakaan sebagaimana mestinya.
                 </div>
-                <br/><br/>
-                Sukorejo, {{form.tgl_masuk| date:'dd MMMM yyyy'}}
-                <br>
+                <br/>
                 <div class="form-group">
                     <table>
                         <tr>
-                            <td style="width:33%;">Yang menerima</td>
+                            <td style="width:33%;text-align: center">
+                                Sukorejo, {{form.tgl_masuk| date:'dd MMMM yyyy'}}<br/>
+                                Yang menerima</td>
                             <td style="width:33%;"></td>
-                            <td style="width:33%;">Yang menyerahkan</td>
+                            <td style="width:33%;text-align: center">Yang menyerahkan</td>
                         </tr>
                         <tr>
-                            <td style="width:33%;text-align: center;height: 45px !important;"></td>
+                            <td style="width:33%;text-align: center;height: 65px !important;"></td>
                             <td style="width:33%;text-align: center;"></td>
                             <td style="width:33%;text-align: center;"></td>
                         </tr>
                         <tr>
-                            <td style="width:33%;">
+                            <td style="width:33%;text-align: center">
                                 Binti Rofikah<br>
-                                <hr>
+                                <hr style="margin:0">
                                 HRD Head
                             </td>
                             <td style="width:33%;"></td>
-                            <td style="width:33%;">{{form.nama}}<br>
-                                <hr>
+                            <td style="width:33%;;text-align: center">{{form.nama}}<br>
+                                <hr style="margin:0">
                                 Karyawan
                             </td>
                         </tr>
                     </table>
-                    <br>
+                    <br><br><br><br><br>
                     <div class="print-footer">
                         <i>
                             <b><u>Keterangan :</u></b><br/>
@@ -900,9 +905,9 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 10px;" ng-if="form.status == 'Keluar'">
-            <div class="panel-heading"><center><h5>BERITA ACARA</h5></center></div>
-            <div class="panel-heading"><center><h5>SERAH TERIMA IJAZAH</h5></center></div>
+        <div style="margin: 50px;" ng-if="form.status == 'Keluar'">
+            <div class="panel-heading"><center><h4 style="margin: 0px;">BERITA ACARA</h4></center></div>
+            <div class="panel-heading"><center><h4 style="margin: 0px;">SERAH TERIMA IJAZAH</h4></center></div>
             <hr>
             <br/>
             <div class="col-md-12 col-sm-12">
@@ -940,19 +945,20 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan Ijazah yang diserahkan oleh PT. Karyawa Tugasa Anda Jl. Raya Sukorejo No.01 Pasuruan - Jawa Timur kepada yang bersangkutan, karena yang bersangkutan tidak lagi bekerja pada perusahaan kami maka ijazah tersebut kami kembalikan.
+                    Berita acara serah terima ini dibuat sekaligus sebagai tanda terima penyerahan Ijazah yang diserahkan oleh PT. Karyawan Tugas Anda Jl. Raya Sukorejo No.01 Pasuruan - Jawa Timur kepada yang bersangkutan, karena yang bersangkutan tidak lagi bekerja pada perusahaan kami maka ijazah tersebut kami kembalikan.
                     <br>
                     <br>Demikian berita acara ini, kami sampaikan terimakasih.
                 </div>
-                <br>
-                Sukorejo, {{form.tgl_keluar| date:'dd MMMM yyyy'}}
-                <br>
+                <br/>
                 <div class="form-group">
                     <table>
                         <tr>
-                            <td style="width:33%;">Yang menyerahkan</td>
+                            <td style="width:33%;text-align: center">
+                                Sukorejo, {{form.tgl_keluar| date:'dd MMMM yyyy'}}
+                                <br/>
+                                Yang menyerahkan</td>
                             <td style="width:33%;"></td>
-                            <td style="width:33%;">Yang menerima</td>
+                            <td style="width:33%;text-align: center">Yang menerima</td>
                         </tr>
                         <tr>
                             <td style="width:33%;text-align: center;height: 45px !important;"></td>
@@ -960,14 +966,14 @@
                             <td style="width:33%;text-align: center;"></td>
                         </tr>
                         <tr>
-                            <td style="width:33%;">
+                            <td style="width:33%;text-align: center">
                                 Binti Rofikah<br>
-                                <hr>
+                                <hr style="margin:0">
                                 HRD Head
                             </td>
                             <td style="width:33%;"></td>
-                            <td style="width:33%;">{{form.nama}}<br>
-                                <hr>
+                            <td style="width:33%;;text-align: center">{{form.nama}}<br>
+                                <hr style="margin:0">
                                 Karyawan
                             </td>
                         </tr>

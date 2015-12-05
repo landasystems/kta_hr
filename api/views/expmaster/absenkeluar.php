@@ -7,14 +7,10 @@ if (!isset($_GET['print'])) {
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
-<div id="printArea">
+<div id="printArea" style="margin-right: 30px;margin-left: 30px;">
     <style media="print">
         .printedArea,.printedArea table,printedArea span, printedArea div{
             font-size: 10pt;
-        }
-        .printedArea div{
-            margin-right: 20px;
-            margin-left: 20px;
         }
     </style>
     <div class="printedArea">
@@ -23,7 +19,7 @@ if (!isset($_GET['print'])) {
         Yang bertandatangan di bawah ini:<br/>
         <table>
             <tr>
-                <td>Nama</td>
+                <td width="125">Nama</td>
                 <td>:</td>
                 <td><u><?= $models['nama'] ?></u></td>
             </tr>
@@ -43,44 +39,58 @@ if (!isset($_GET['print'])) {
                 <td>Hari/ Tanggal</td>
                 <td>:</td>
                 <td>
-                    <?= date('D', strtotime($models['tanggal'])) ?>
-                    / 
+                    <?php
+                    setlocale(LC_TIME, 'id_ID');
+                    $arrDay = array("Monday" => "Senin", "Tuesday" => "Selasa", "Wednesday" => "Rabu", "Thursday" => "Kamis", "Friday" => "Jum'at", "Saturday" => "Sabtu", "Sunday" => "Minggu");
+                    $day = strftime("%A", strtotime($models['tanggal']));
+                    echo $arrDay[$day];
+//                    setlocale(LC_TIME, 'id_ID');
+//                    echo strftime("Today in Indonesia is %A");
+                    ?>
+                    ,
                     <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?>
                     <?php
-                        if(!empty($models['tanggal_kembali'])){
-                            if($models['tanggal_kembali'] != $models['tanggal']){
-                                echo ' - '.Yii::$app->landa->date2ind($models['tanggal_kembali']);
-                            }
+                    if (!empty($models['tanggal_kembali'])) {
+                        if ($models['tanggal_kembali'] != $models['tanggal']) {
+                            echo ' - ' . Yii::$app->landa->date2ind($models['tanggal_kembali']);
                         }
+                    }
                     ?>
                 </td>
             </tr>
             <tr>
                 <td>Waktu</td>
                 <td>:</td>
-                <td><u><?= $models['jmasuk'] ?></u> s/d <u><?= $models['jkeluar'] ?></u></td>
+                <td>
+                    <?php
+                    if(empty($models['jmasuk']) && empty($models['jkeluar']))
+                        echo '-';
+                    else
+                        echo '<u>'.$models['jmasuk'].'</u> s/d <u>'.$models['jkeluar'].'</u>';
+                    ?>
             </tr>
             <tr>
                 <td>Keperluan</td>
                 <td>:</td>
                 <td>
-                    a. Pribadi : <u></u>
+                    <?php echo $models['ket_absen']?>
+<!--                    a. Pribadi : <u></u>-->
             </td>
             </tr>
-            <tr>
+<!--            <tr>
                 <td></td>
                 <td></td>
                 <td>b. Dinas : <u><?php
 //                    if ($models['ket_absen'] == 'Dinas Luar') {
 //                        echo $models['ket_uraian'];
 //                    }
-                    ?></u></td>
-            </tr>
+                ?></u></td>
+            </tr>-->
         </table>
         <hr/>
         <table style="border-collapse: collapse;width:100%;">
             <tr>
-                <td style="vertical-align: top;height: 90px;">Keterangan</td>
+                <td style="vertical-align: top;height: 90px;" width="125">Keterangan</td>
                 <td style="vertical-align: top;height: 90px;">:</td>
                 <td style="vertical-align: top;height: 90px;"><?= $models['ket_uraian'] ?></td>
             </tr>
@@ -88,7 +98,7 @@ if (!isset($_GET['print'])) {
         <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
-        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y, H:i', strtotime($models['tgl_pembuatan'])); ?></div>
+        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>
         <hr/>
         <table style="width:100%;border-collapse:collapse;">
             <tr>

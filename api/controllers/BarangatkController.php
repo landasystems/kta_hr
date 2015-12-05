@@ -4,6 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Tblstockatk;
+use app\models\TblHtransAtk;
+use app\models\TblHtransAtkKeluar;
+use app\models\TblDtransAtkKeluar;
+use app\models\TblDtransAtk;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,11 +24,13 @@ class BarangatkController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'excelstock' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
+                    'rekapstock' => ['post'],
                     'cari' => ['get'],
                 ],
             ]
@@ -127,6 +133,71 @@ class BarangatkController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
+    public function actionRekapstock() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $sort = "kode_brng ASC";
+
+        //create query
+        $query = new Query;
+        $query->from('tbl_stock_atk')
+                ->orderBy($sort)
+                ->select("*");
+
+        session_start();
+        $_SESSION['params'] = $params;
+        $_SESSION['query'] = $query;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        if (!empty($models)) {
+            $saldoAwal = 0;
+            $saldoAkhir = 0;
+            $masuk = 0;
+            $keluar = 0;
+            foreach ($models as $key => $val) {
+                $atkMasuk = TblDtransAtk::find()
+                        ->select('sum(jmlh_brng) as stockmasuk')
+                        ->join('JOIN', 'tbl_htrans_atk', 'tbl_htrans_atk.no_transaksi = tbl_dtrans_atk.no_trans')
+                        ->where('tbl_htrans_atk.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tbl_htrans_atk.tgl <= "' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '" and tbl_dtrans_atk.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $atkKeluar = TblDtransAtkKeluar::find()
+                        ->select('sum(jmlh_brng) as stockkeluar')
+                        ->join('JOIN', 'tbl_htrans_atk_keluar', 'tbl_htrans_atk_keluar.no_transaksi = tbl_dtrans_atk_keluar.no_trans')
+                        ->where('tbl_htrans_atk_keluar.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tbl_htrans_atk_keluar.tgl <= "' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '" and tbl_dtrans_atk_keluar.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+//                Yii::error($atkKeluar->stockkeluar);
+                $saldoMasuk = TblDtransAtk::find()
+                        ->select('sum(jmlh_brng) as saldomasuk')
+                        ->join('JOIN', 'tbl_htrans_atk', 'tbl_htrans_atk.no_transaksi = tbl_dtrans_atk.no_trans')
+                        ->where('tbl_htrans_atk.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" and tbl_dtrans_atk.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $saldoKeluar = TblDtransAtkKeluar::find()
+                        ->select('sum(jmlh_brng) as saldokeluar')
+                        ->join('JOIN', 'tbl_htrans_atk_keluar', 'tbl_htrans_atk_keluar.no_transaksi = tbl_dtrans_atk_keluar.no_trans')
+                        ->where('tbl_htrans_atk_keluar.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" and tbl_dtrans_atk_keluar.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $jmlBarang = (empty($val['jumlah_brng'])) ? 0 : $val['jumlah_brng'];
+
+                $saldoAwal = $jmlBarang + $saldoKeluar->saldokeluar - $saldoMasuk->saldomasuk;
+
+
+                $masuk = (empty($atkMasuk->stockmasuk)) ? 0 : $atkMasuk->stockmasuk;
+                $keluar = (empty($atkKeluar->stockkeluar)) ? 0 : $atkKeluar->stockkeluar;
+
+                $saldoAkhir = $saldoAwal + $masuk - $keluar;
+                $models[$key]['masuk'] = $masuk;
+                $models[$key]['keluar'] = $keluar;
+                $models[$key]['saldo_awal'] = $saldoAwal;
+                $models[$key]['saldo_akhir'] = $saldoAkhir;
+            }
+        }
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+    }
+
     public function actionView($id) {
 
         $model = $this->findModel($id);
@@ -219,6 +290,61 @@ class BarangatkController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         return $this->render("/expmaster/barangatk", ['models' => $models]);
+    }
+
+    public function actionExcelstock() {
+        session_start();
+        $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $params = $_SESSION['params'];
+
+        if (!empty($models)) {
+            $saldoAwal = 0;
+            $saldoAkhir = 0;
+            $masuk = 0;
+            $keluar = 0;
+            foreach ($models as $key => $val) {
+                $atkMasuk = TblDtransAtk::find()
+                        ->select('sum(jmlh_brng) as stockmasuk')
+                        ->join('JOIN', 'tbl_htrans_atk', 'tbl_htrans_atk.no_transaksi = tbl_dtrans_atk.no_trans')
+                        ->where('tbl_htrans_atk.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tbl_htrans_atk.tgl <= "' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '" and tbl_dtrans_atk.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $atkKeluar = TblDtransAtkKeluar::find()
+                        ->select('sum(jmlh_brng) as stockkeluar')
+                        ->join('JOIN', 'tbl_htrans_atk_keluar', 'tbl_htrans_atk_keluar.no_transaksi = tbl_dtrans_atk_keluar.no_trans')
+                        ->where('tbl_htrans_atk_keluar.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tbl_htrans_atk_keluar.tgl <= "' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '" and tbl_dtrans_atk_keluar.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+//                Yii::error($atkKeluar->stockkeluar);
+                $saldoMasuk = TblDtransAtk::find()
+                        ->select('sum(jmlh_brng) as saldomasuk')
+                        ->join('JOIN', 'tbl_htrans_atk', 'tbl_htrans_atk.no_transaksi = tbl_dtrans_atk.no_trans')
+                        ->where('tbl_htrans_atk.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" and tbl_dtrans_atk.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $saldoKeluar = TblDtransAtkKeluar::find()
+                        ->select('sum(jmlh_brng) as saldokeluar')
+                        ->join('JOIN', 'tbl_htrans_atk_keluar', 'tbl_htrans_atk_keluar.no_transaksi = tbl_dtrans_atk_keluar.no_trans')
+                        ->where('tbl_htrans_atk_keluar.tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" and tbl_dtrans_atk_keluar.kd_brng="' . $val['kode_brng'] . '"')
+                        ->one();
+                $jmlBarang = (empty($val['jumlah_brng'])) ? 0 : $val['jumlah_brng'];
+
+                $saldoAwal = $jmlBarang + $saldoKeluar->saldokeluar - $saldoMasuk->saldomasuk;
+
+
+                $masuk = (empty($atkMasuk->stockmasuk)) ? 0 : $atkMasuk->stockmasuk;
+                $keluar = (empty($atkKeluar->stockkeluar)) ? 0 : $atkKeluar->stockkeluar;
+
+                $saldoAkhir = $saldoAwal + $masuk - $keluar;
+                $models[$key]['masuk'] = $masuk;
+                $models[$key]['keluar'] = $keluar;
+                $models[$key]['saldo_awal'] = $saldoAwal;
+                $models[$key]['saldo_akhir'] = $saldoAkhir;
+            }
+        }
+
+        return $this->render("/exprekap/stockatk", ['models' => $models,'params'=> $params]);
     }
 
     public function actionCari() {

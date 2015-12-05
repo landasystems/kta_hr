@@ -43,59 +43,6 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.isLoading = false;
     };
 
-//    $scope.openedkntrk1 = false;
-//    $scope.openedkntrk11 = false;
-//    $scope.openedkntrk2 = false;
-//    $scope.openedkntrk21 = false;
-//    $scope.openedijz = false;
-//    $scope.openedtglmasuk = false;
-//    $scope.openedtglmasukkerja = false;
-//    $scope.openedtgllahir= false;
-
-    $scope.open1 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened1 = true;
-    };
-
-    $scope.open2 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened2 = true;
-    };
-
-    $scope.open3 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened3 = true;
-    };
-
-    $scope.open4 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened4 = true;
-    };
-    $scope.open5 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened5 = true;
-    };
-    $scope.open6 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened6 = true;
-    };
-    $scope.open7 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened7 = true;
-    };
-    $scope.open8 = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened8 = true;
-    };
-
     $scope.excel = function () {
         Data.get('karyawan', paramRef).then(function (data) {
             window.location = 'api/web/karyawan/excel';

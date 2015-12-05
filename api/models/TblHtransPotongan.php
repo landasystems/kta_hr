@@ -33,8 +33,8 @@ class TblHtransPotongan extends \yii\db\ActiveRecord
     {
         return [
             [['no_pot','nik'], 'required'],
-            [['tgl'], 'safe'],
-            [['total'], 'number'],
+            [['tgl','cicilan'], 'safe'],
+            [['total','cicilan'], 'number'],
             [['no_pot', 'no_gaji', 'nik'], 'string', 'max' => 20]
         ];
     }
