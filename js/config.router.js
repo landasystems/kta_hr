@@ -659,6 +659,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('tools.cekminggu', {
+                                    url: '/cekminggu',
+                                    templateUrl: 'tpl/tools_cekminggu/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/tools_cekminggu.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'

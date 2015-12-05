@@ -150,6 +150,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "monitoring_servicekendaraan": false,
             "monitoring_stnk": false,
             "tools_absennama": false,
+            "tools_cekminggu": false,
             "pegawai_ijazah": false,
             "pegawai_karyawan": false,
             "pegawai_lamarankerja": false,

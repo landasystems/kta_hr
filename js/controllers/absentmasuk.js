@@ -1,10 +1,11 @@
-app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
+app.controller('absenMasukCtrl', function ($scope, $state, $stateParams, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
+    $scope.is_absen = false;
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -84,12 +85,20 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
 //       
 //    };
 
+
+
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.formtitle = "Form Absen Tidak Masuk";
-        $scope.form = {};
+        if ($stateParams.form != null) {
+            $scope.is_absen = true;
+            $scope.form = $stateParams.form;
+        } else {
+            $scope.is_absen = false;
+            $scope.form = {};
+        }
         var startDate = new Date();
         var endDate = new Date();
         $scope.form.datesRange = {
@@ -102,11 +111,20 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
 
     };
 
+    if ($stateParams.form != null) { //pengecekan jika ada pencarian, dilempar ke view
+        $scope.create();
+    }
+    
+    $scope.kembali = function(){
+        $state.go('rekap.absensiharian');
+    }
+
     $scope.update = function (form) {
         $scope.form = form;
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = false;
+        $scope.is_absen = false;
         var startDate = new Date(form.tanggal);
         var endDate = (form.tanggal_kembali == null) ? new Date(form.tanggal) : new Date(form.tanggal_kembali);
         $scope.form.datesRange = {
@@ -121,6 +139,11 @@ app.controller('absenMasukCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        if ($stateParams.form != null) {
+            $scope.is_absen = true;
+        } else {
+            $scope.is_absen = false;
+        }
         var startDate = new Date(form.tanggal);
         var endDate = new Date(form.tanggal_kembali);
         $scope.form.datesRange = {

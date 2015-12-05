@@ -1,0 +1,123 @@
+<div ng-app="app" ng-controller="cekmingguCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Tools - Cek Minggu Incentive</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Cek Minggu Incentive
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <form name="landaform" class="form-horizontal form-validation" method="get">
+
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan</label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
+            <div class="panel-heading no-border bg-primary text-center">          
+                Cek Minggu Incentive
+                <br/> TANGGAL : {{mulai_tanggal| date:'dd MMM yyyy'}} - {{tanggal_sampai| date:'dd MMM yyyy'}}
+            </div>
+            <table st-safe-src="listSrc" st-table="list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;vertical-align: center;width: 100px">Kelompok</th>
+                        <th colspan="9"style="text-align: center;vertical-align: center;">Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center">
+                            <span class="label text-base bg-warning pos-rlt m-r">
+                                <i class="arrow right arrow-warning"></i>
+                                Minggu1
+                            </span>
+                        </td>
+                        <td style="text-align: left"  ng-repeat="mg1 in listSrc.minggu1.hari"> {{mg1| date}} </td>
+                        <td ng-if="hari_max - listSrc.minggu1.jml_hari > 0" colspan="{{hari_max - listSrc.minggu1.jml_hari}}">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <span class="label text-base bg-danger pos-rlt m-r">
+                                <i class="arrow right arrow-danger"></i>
+                                Minggu2
+                            </span>
+                        </td>
+                        <td style="text-align: left" ng-repeat="mg2 in listSrc.minggu2.hari">{{mg2| date}}</td>
+                        <td ng-if="hari_max - listSrc.minggu2.jml_hari > 0" colspan="{{hari_max - listSrc.minggu1.jml_hari}}">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <span class="label text-base bg-info pos-rlt m-r">
+                                <i class="arrow right arrow-info"></i>
+                                Minggu3
+                            </span>
+                        </td>
+                        <td style="text-align: left" ng-repeat="mg3 in listSrc.minggu3.hari">{{mg3| date}}</td>
+                        <td ng-if="hari_max - listSrc.minggu3.jml_hari > 0" colspan="{{hari_max - listSrc.minggu1.jml_hari}}">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center">
+                            <span class="label text-base bg-primary pos-rlt m-r">
+                                <i class="arrow right arrow-primary"></i>
+                                Minggu4
+                            </span>
+                        </td>
+                        <td style="text-align: left" ng-repeat="mg4 in listSrc.minggu4.hari">{{mg4| date}}</td>
+                        <td ng-if="hari_max - listSrc.minggu4.jml_hari > 0" colspan="{{hari_max - listSrc.minggu1.jml_hari}}">&nbsp;</td>
+                    </tr>
+                    <tr ng-show="hide_mg5 == 'no'">
+                        <td style="text-align: center" >
+
+                            <span class="label text-base bg-success pos-rlt m-r">
+                                <i class="arrow right arrow-success"></i>
+                                Minggu5
+                            </span>
+                        </td>
+                        <td style="text-align: left" ng-repeat="mg5 in listSrc.minggu5.hari">{{mg5| date}}</td>
+                        <td ng-if="hari_max - listSrc.minggu5.jml_hari > 0" colspan="{{hari_max - listSrc.minggu1.jml_hari}}">&nbsp;</td>
+                    </tr>
+
+                </tbody>
+            </table>			
+        </div>
+    </div>
+</div>
+<!--FORM-->
+</div>

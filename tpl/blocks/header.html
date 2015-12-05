@@ -587,7 +587,7 @@
         <li class="hidden-xs">
             <a ui-fullscreen></a>
         </li>
-        <li class="dropdown" dropdown ng-show="user.akses.tools_absennama || user.akses.master_roles || user.akses.master_user">
+        <li class="dropdown" dropdown ng-show="user.akses.tools_absennama || user.akses.tools_cekminggu || user.akses.master_roles || user.akses.master_user">
             <a href class="dropdown-toggle clear" dropdown-toggle>
                 <i class="fa fa-wrench"></i>
                 <span class="hidden-sm hidden-md">Tools</span> <b class="caret"></b>
@@ -595,6 +595,9 @@
             <ul class="dropdown-menu animated fadeInRight w">
                 <li ng-show="user.akses.tools_absennama">
                     <a ui-sref='tools.absennama'>Cek Kesamaan Data Absensi</a>
+                </li>
+                <li ng-show="user.akses.tools_cekminggu">
+                    <a ui-sref='tools.cekminggu'>Cek Minggu Incentive</a>
                 </li>
                 <li ng-show="user.akses.master_roles">
                     <a ui-sref="master.roles">Hak Akses</a>
