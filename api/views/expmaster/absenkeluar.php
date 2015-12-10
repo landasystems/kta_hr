@@ -63,7 +63,7 @@ if (!isset($_GET['print'])) {
                 <td>:</td>
                 <td>
                     <?php
-                    if ((!empty($models['jmasuk']) && !empty($models['jkeluar'])) && ($models['ket_absen'] == "izin" || $models['ket_absen'] == "dinas"))
+                    if ((!empty($models['jmasuk']) && !empty($models['jkeluar'])) && ($models['ket_absen'] == "Izin" || $models['ket_absen'] == "Dinas Luar"))
                         echo '<u>' . $models['jmasuk'] . '</u> s/d <u>' . $models['jkeluar'] . '</u>';
                     else
                         echo '-';
