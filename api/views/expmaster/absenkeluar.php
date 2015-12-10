@@ -41,12 +41,9 @@ if (!isset($_GET['print'])) {
                 <td>:</td>
                 <td>
                     <?php
-                    setlocale(LC_TIME, 'id_ID');
                     $arrDay = array("Monday" => "Senin", "Tuesday" => "Selasa", "Wednesday" => "Rabu", "Thursday" => "Kamis", "Friday" => "Jum'at", "Saturday" => "Sabtu", "Sunday" => "Minggu");
                     $day = strftime("%A", strtotime($models['tanggal']));
                     echo $arrDay[$day];
-//                    setlocale(LC_TIME, 'id_ID');
-//                    echo strftime("Today in Indonesia is %A");
                     ?>
                     ,
                     <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?>
@@ -64,7 +61,7 @@ if (!isset($_GET['print'])) {
                 <td>:</td>
                 <td>
                     <?php
-                    if ((!empty($models['jmasuk']) && !empty($models['jkeluar'])) && ($models['ket_absen'] == "Izin" || $models['ket_absen'] == "Dinas Luar"))
+                    if ((!empty($models['jmasuk']) or !empty($models['jkeluar'])) && ($models['ket_absen'] == "Izin" || $models['ket_absen'] == "Dinas Luar"))
                         echo '<u>' . $models['jmasuk'] . '</u> s/d <u>' . $models['jkeluar'] . '</u>';
                     else
                         echo '-';
@@ -99,7 +96,7 @@ if (!isset($_GET['print'])) {
         <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
-        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>
+        <div style="text-align: right;"><br>Dibuat di Sukorejo, <?= Yii::$app->landa->date2ind($models['tgl_pembuatan']) ?></div>
         <hr/>
         <table style="width:100%;border-collapse:collapse;">
             <tr>
