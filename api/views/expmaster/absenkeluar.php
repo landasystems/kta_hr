@@ -8,9 +8,10 @@ if (!isset($_GET['print'])) {
 //$end = $params['tanggal']['endDate'];
 ?>
 <div id="printArea" style="margin-right: 30px;margin-left: 30px;">
-    <style media="print">
+    <style>
         .printedArea,.printedArea table,printedArea span, printedArea div{
             font-size: 10pt;
+            letter-spacing: 8px !important;
         }
     </style>
     <div class="printedArea">
@@ -36,7 +37,7 @@ if (!isset($_GET['print'])) {
                 <td colspan="3">Mengajukan permohonan ijin pada:</td>
             </tr>
             <tr>
-                <td>Hari/ Tanggal</td>
+                <td>Hari/ Tgl</td>
                 <td>:</td>
                 <td>
                     <?php
