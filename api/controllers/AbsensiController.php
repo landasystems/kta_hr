@@ -854,19 +854,21 @@ class AbsensiController extends Controller {
         $query = new Query;
         $query->from('tbl_htrans_potongan as thp')
                 ->join('LEFT JOIN', 'tbl_dtrans_potongan as tdp', 'tdp.no = thp.no_pot')
-                ->where('tgl>="' . $date . '" AND tgl<="' . $endate . '"')
-//                ->where(['between','tgl',$date,$endate])
-                ->select("thp.tgl,thp.nik,tdp.jmlh");
+                ->where('tgl<="' . $endate . '" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "' . $endate . '"')
+                ->select('thp.tgl,thp.nik,tdp.perbulan');
         $command = $query->createCommand();
         $pinjaman = $command->queryAll();
 //        Yii::error($potongan);
         $potongan_pinjaman = [];
-
+//        Yii::error($pinjaman);
         foreach ($pinjaman as $arr) {
+//            Yii::error($arr['tgl_ak']);
+//            if($endate <= $arr['tgl_ak']){
             if (!isset($potongan_pinjaman[$arr['nik']])) {
                 $potongan_pinjaman[$arr['nik']] = 0;
             }
-            $potongan_pinjaman[$arr['nik']] += $arr['jmlh'];
+            $potongan_pinjaman[$arr['nik']] += $arr['perbulan'];
+//            }
         }
 //                    Yii::error($potongan_pinjaman);
         //=========PROSES MASUKKAN DATA
