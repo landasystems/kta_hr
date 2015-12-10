@@ -300,12 +300,12 @@ class KaryawanController extends Controller {
 //                ->limit($limit)
                 ->from('tbl_karyawan')
                 ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('status_karyawan = "Kontrak" AND status="Kerja"')
+                ->where('tbl_karyawan.status_karyawan = "Kontrak" AND tbl_karyawan.status="Kerja"')
                 ->orderBy($sort)
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 = NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
@@ -456,8 +456,12 @@ class KaryawanController extends Controller {
         $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
         $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
         $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
-        $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
-        $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        if (!empty($params['Kontrak_2']) && date('Y-m-d', strtotime($model->Kontrak_11)) <= date('Y-m-d', strtotime($params['Kontrak_2']))) {
+            $model->Kontrak_2 = (!empty($params['Kontrak_2'])) ? date('Y-m-d', strtotime($params['Kontrak_2'])) : null;
+            $model->Kontrak_21 = (!empty($params['Kontrak_21'])) ? date('Y-m-d', strtotime($params['Kontrak_21'])) : null;
+        }
+
+
         $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
 
         if ($model->save()) {
