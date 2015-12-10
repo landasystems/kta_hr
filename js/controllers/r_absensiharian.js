@@ -1,8 +1,9 @@
-app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
+app.controller('absensiharianCtrl', function ($state, $scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
     $scope.form.status = 'tidakhadir';
+    $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
@@ -27,27 +28,35 @@ app.controller('absensiharianCtrl', function ($scope, Data, toaster) {
         }
     };
 
+    Data.get('lokasikantor').then(function (data) {
+        $scope.listLokasi = data.data;
+    });
+
+    $scope.absen = function ($query) {
+        $state.go('pegawai.absentmasuk', {form: $query});
+    };
+
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-            $scope.show_detail = true;
-            $scope.show_form = form;
-            
-            if ($scope.show_form.status == 'hadir'){
-                $scope.show_form.labelstatus = 'KEHADIRAN';
-            } else {
-                $scope.show_form.labelstatus = 'TIDAK HADIR';
-            }
-            
-            Data.get('absensi/absensiharian', form).then(function (data) {
-                $scope.listSrc = [];
-                $scope.show_form.total = data.data.length;
-                angular.forEach(data.data, function ($value, $key) {
-                    $scope.listSrc.push($value);
-                });
+        $scope.show_detail = true;
+        $scope.show_form = form;
+
+        if ($scope.show_form.status == 'hadir') {
+            $scope.show_form.labelstatus = 'KEHADIRAN';
+        } else {
+            $scope.show_form.labelstatus = 'TIDAK HADIR';
+        }
+
+        Data.get('absensi/absensiharian', form).then(function (data) {
+            $scope.listSrc = [];
+            $scope.show_form.total = data.data.length;
+            angular.forEach(data.data, function ($value, $key) {
+                $scope.listSrc.push($value);
             });
-        
+        });
+
     };
-    
-    
+
+
 });

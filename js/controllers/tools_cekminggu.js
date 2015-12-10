@@ -1,10 +1,7 @@
-app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster, $http) {
+app.controller('cekmingguCtrl', function ($scope, Data, toaster, $http) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
-    $scope.form.tanggal = new Date();
-    $scope.form.lokasi_kntr = "SUKOREJO";
-    $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
 
@@ -56,18 +53,7 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         {key: "12", value: "Desember"}
     ];
     
-    $scope.cariSection = function ($query) {
-
-        if ($query.length >= 3) {
-            Data.get('section/cari',{nama: $query}).then(function (data) {
-                $scope.listSection = data.data;
-            });
-        }
-    };
     
-    Data.get('lokasikantor').then(function (data) {
-            $scope.listLokasi = data.data;
-        });
 
     $scope.listSrc = [];
     $scope.list = [];
@@ -75,14 +61,18 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         $scope.show_detail = true;
         $scope.show_form = form;
 
-        Data.post('absensi/penggajian', form).then(function (data) {
-            $scope.tahun = data.tahun; 
+        Data.get('absensi/minggu', form).then(function (data) {
+            //$scope.tahun = data.tahun; 
+//            console.log(data.data);
+            $scope.hide_mg5 = data.hide; 
+            $scope.hari_max = data.hari_max;
+            console.log($scope.hari_max);
             $scope.tanggal_sampai = data.end; 
             $scope.mulai_tanggal = data.start; 
-            $scope.listSrc = [];
-            angular.forEach(data.data, function ($value, $key) {
-                $scope.listSrc.push($value);
-            });
+            $scope.listSrc = data.data;
+//            angular.forEach(data.data, function ($value, $key) {
+//                $scope.listSrc.push($value);
+//            });
         });
 
     };

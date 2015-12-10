@@ -13,7 +13,8 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
     $scope.view = function (form) {
         $scope.show_detail = true;
         $scope.show_form = form;
-
+//        $scope.form.test = new Date(form.tanggal.startDate);
+//        console.log(test);
         Data.get('absensi/rekap', form).then(function (data) {
             $scope.listSrc = [];
             $scope.show_form.tanggal_startDate = new Date(data.start);
