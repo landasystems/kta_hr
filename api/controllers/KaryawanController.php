@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tblkaryawan;
+use app\models\TblKaryawan;
 use app\models\Tblijazah;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
