@@ -518,6 +518,16 @@
                             </li>
                             <li>
                                 <div class="input-group-btn dropdown-submenu" dropdown>
+                                    <button type="button" class="btn btn-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">LEGALITAS<span class="caret"></span></button>
+                                    <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
+                                        <li ng-show="user.akses.rekap_filelegalitas">
+                                            <a ui-sref='rekap.filelegalitas'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>File Legalitas</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="input-group-btn dropdown-submenu" dropdown>
                                     <button type="button" class="btn btn-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">ASSET<span class="caret"></span></button>
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
                                         <li ng-show="user.akses.rekap_moasuransi">
