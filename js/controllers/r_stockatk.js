@@ -1,4 +1,4 @@
-app.controller('fileLegalitasCtrl', function ($scope, Data, toaster) {
+app.controller('stockAtkCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
@@ -6,8 +6,8 @@ app.controller('fileLegalitasCtrl', function ($scope, Data, toaster) {
 
     $scope.print = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('filelegalitas/rekap', form).then(function (data) {
-                window.open('api/web/filelegalitas/excel?print=true', "", "width=500");
+            Data.post('barangatk/rekapstock', form).then(function (data) {
+                window.open('api/web/barangatk/excelstock?print=true', "", "width=500");
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
@@ -16,8 +16,8 @@ app.controller('fileLegalitasCtrl', function ($scope, Data, toaster) {
 
     $scope.excel = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('filelegalitas/rekap', form).then(function (data) {
-                window.location = 'api/web/filelegalitas/excel';
+            Data.post('barangatk/rekapstock', form).then(function (data) {
+                window.location = 'api/web/barangatk/excelstock';
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
@@ -26,8 +26,8 @@ app.controller('fileLegalitasCtrl', function ($scope, Data, toaster) {
 
 //    $scope.cariBarang = function ($query) {
 //        if ($query.length >= 3) {
-//            Data.get('filelegalitas/cari', {filelegalitas: $query}).then(function (data) {
-//                $scope.resultsfilelegalitas = data.data;
+//            Data.get('atkmasuk/cari', {atkmasuk: $query}).then(function (data) {
+//                $scope.resultsatkmasuk = data.data;
 //            });
 //        }
 //    };
@@ -37,7 +37,7 @@ app.controller('fileLegalitasCtrl', function ($scope, Data, toaster) {
     $scope.view = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             $scope.show_detail = true;
-            Data.post('filelegalitas/rekap', form).then(function (data) {
+            Data.post('barangatk/rekapstock', form).then(function (data) {
                 $scope.listSrc = [];
                 angular.forEach(data.data, function ($value, $key) {
                     $scope.listSrc.push($value);

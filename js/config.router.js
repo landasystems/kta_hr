@@ -659,6 +659,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('tools.cekminggu', {
+                                    url: '/cekminggu',
+                                    templateUrl: 'tpl/tools_cekminggu/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/tools_cekminggu.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'
@@ -1225,6 +1238,19 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_atkmasuk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.stockatk', {
+                                    url: '/stockatk',
+                                    templateUrl: 'tpl/r_stockatk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_stockatk.js');
                                                         }
                                                 );
                                             }]

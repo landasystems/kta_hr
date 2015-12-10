@@ -5,22 +5,22 @@ app.controller('jadwalPenilaianCtrl', function ($scope, Data, toaster) {
     $scope.show_detail = false;
 
     $scope.print = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+        if (form.tanggal != null && form.semester != null) {
             Data.post('jpenilaian/rekap', form).then(function (data) {
-                window.open('api/web/jpenilaian/excel?print=true', "", "width=500");
+                window.open('api/web/jpenilaian/excelrekap?print=true', "", "width=500");
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Tentukan Periode dan Semester terlebih dahulu!!");
         }
     };
 
-    $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+    $scope.excel = function (form) {
+        if (form.tanggal != null && form.semester != null) {
             Data.post('jpenilaian/rekap', form).then(function (data) {
-                window.location = 'api/web/jpenilaian/excel';
+                window.location = 'api/web/jpenilaian/excelrekap';
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Tentukan Periode dan Semester terlebih dahulu!!");
         }
     };
 
@@ -35,7 +35,7 @@ app.controller('jadwalPenilaianCtrl', function ($scope, Data, toaster) {
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+        if (form.tanggal != undefined && form.semester != undefined) {
             $scope.show_detail = true;
             Data.post('jpenilaian/rekap', form).then(function (data) {
                 $scope.listSrc = [];
@@ -44,7 +44,7 @@ app.controller('jadwalPenilaianCtrl', function ($scope, Data, toaster) {
                 });
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Tentukan Periode dan Semester terlebih dahulu!!");
         }
     };
 });

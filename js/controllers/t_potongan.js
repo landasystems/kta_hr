@@ -24,7 +24,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
-        Data.get('potongan/list').then(function(data){
+        Data.get('potongan/list').then(function (data) {
 //            console.log(data);
             $scope.listPotongan = data.data;
         });
@@ -38,14 +38,14 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-    
-    
-    
-    $scope.getKaryawan= function (item, form) {
+
+
+
+    $scope.getKaryawan = function (item, form) {
         form.nik = item.nik;
         form.nama = item.nama;
     };
-    
+
     $scope.cariPotongan = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
@@ -54,7 +54,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-    
+
     $scope.getPotongan = function (item, det) {
         det.kd_pot = item.kode_potongan;
         det.nm_pot = item.nm_potongan;
@@ -65,13 +65,13 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $event.stopPropagation();
         $scope.opened1 = true;
     };
-    
+
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
     };
-    
+
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -95,7 +95,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             $scope.detPotongan = data.data;
         });
     };
-    
+
     $scope.view = function (form) {
         $scope.form = form;
         $scope.is_create = false;
@@ -107,7 +107,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             $scope.detPotongan = data.data;
         });
     };
-    
+
     $scope.save = function (form, detail) {
         var data = {
             form: form,
@@ -124,7 +124,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             }
         });
     };
-    
+
     $scope.cancel = function () {
         $scope.is_edit = false;
         $scope.is_view = false;
@@ -132,7 +132,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             $scope.callServer(tableStateRef);
         }
     };
-    
+
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('transpotongan/delete/' + row.no_pot).then(function (result) {
@@ -140,7 +140,18 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-    
+
+    $scope.hitungCicilan = function (data) {
+        var jmlh = 0;
+        var cicilan = 0;
+        var angsuran = parseInt(data);
+        angular.forEach($scope.detPotongan  , function ($value, $key) {
+            jmlh = parseInt($value.jmlh);
+            cicilan = jmlh / angsuran;
+            $scope.detPotongan[$key].perbulan = cicilan.toFixed(2);
+        });
+    };
+
     $scope.addrow = function () {
         $scope.detPotongan.unshift({
             id: 0,
@@ -149,7 +160,7 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             jmlh: 0,
         });
     };
-    
+
     $scope.removeRow = function (paramindex) {
         var comArr = eval($scope.detPotongan);
         if (comArr.length > 1) {

@@ -64,19 +64,19 @@ if (!isset($_GET['print'])) {
                 <td>:</td>
                 <td>
                     <?php
-                    if(empty($models['jmasuk']) && empty($models['jkeluar']))
-                        echo '-';
+                    if ((!empty($models['jmasuk']) && !empty($models['jkeluar'])) && ($models['ket_absen'] == "Izin" || $models['ket_absen'] == "Dinas Luar"))
+                        echo '<u>' . $models['jmasuk'] . '</u> s/d <u>' . $models['jkeluar'] . '</u>';
                     else
-                        echo '<u>'.$models['jmasuk'].'</u> s/d <u>'.$models['jkeluar'].'</u>';
+                        echo '-';
                     ?>
             </tr>
             <tr>
                 <td>Keperluan</td>
                 <td>:</td>
                 <td>
-                    <?php echo $models['ket_absen']?>
-<!--                    a. Pribadi : <u></u>-->
-            </td>
+                    <?php echo $models['ket_absen'] ?>
+                    <!--                    a. Pribadi : <u></u>-->
+                </td>
             </tr>
 <!--            <tr>
                 <td></td>
@@ -85,7 +85,7 @@ if (!isset($_GET['print'])) {
 //                    if ($models['ket_absen'] == 'Dinas Luar') {
 //                        echo $models['ket_uraian'];
 //                    }
-                ?></u></td>
+                    ?></u></td>
             </tr>-->
         </table>
         <hr/>

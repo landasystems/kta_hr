@@ -40,12 +40,8 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Lokasi Kantor</label>
                                         <div class="col-md-9">
-                                            <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
-                                                <option value="SUKOREJO">Sukorejo</option>
-                                                <option value="SURABAYA">Surabaya</option>
-                                                <option value="JAKARTA">Jakarta</option>
-                                                <option value="MEDAN">Medan</option>
-                                                <option value="BANDUNG">Bandung</option>
+                                            <select class="form-control" ng-model="form.lokasi_kntr">
+                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -79,6 +75,8 @@
                         <th style="text-align: center;vertical-align: center;">Nama</th>
                         <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Masuk</th>
                         <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Pulang</th>
+                        <th style="text-align: right;vertical-align: center;" ng-hide="show_form.status == 'hadir'"><div style="margin-right: 26px;">Action</div></th>
+                        
                     </tr>
                 </thead>
                 <tbody ng-show="!isLoading">
@@ -87,6 +85,14 @@
                         <td style="text-align: left">{{row.nama}}</td>
                         <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk| asDate | date:"shortTime"}}</td>
                         <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
+                        <td ng-hide="show_form.status == 'hadir'">
+                            <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                                <button type="button" class="btn btn-info fa fa-external-link " ng-click="absen(row)">
+                                    Absen
+                                </button>
+                            </div> 
+                        </td>
+                            
                     </tr>
                     <tr>
                         <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>

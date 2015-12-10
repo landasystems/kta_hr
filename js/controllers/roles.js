@@ -50,6 +50,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
         $scope.form = form;
         $scope.form.akses = JSON.parse($scope.form.akses);
     };
+    
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
@@ -57,6 +58,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
         $scope.form = form;
         $scope.form.akses = JSON.parse($scope.form.akses);
     };
+    
     $scope.save = function (form) {
         var url = (form.id > 0) ? 'roles/update/' + form.id : 'roles/create';
         form.akses = JSON.stringify(form.akses);
@@ -70,6 +72,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             }
         });
     };
+    
     $scope.cancel = function () {
         if (!$scope.is_view) { //hanya waktu edit cancel, di load table lagi
             $scope.callServer(tableStateRef);
@@ -86,6 +89,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             });
         }
     };
+    
     $scope.restore = function (row) {
         if (confirm("Apa anda yakin akan MERESTORE item ini ?")) {
             row.is_deleted = 0;
@@ -94,6 +98,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             });
         }
     };
+    
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('roles/delete/' + row.id).then(function (result) {
@@ -150,6 +155,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "monitoring_servicekendaraan": false,
             "monitoring_stnk": false,
             "tools_absennama": false,
+            "tools_cekminggu": false,
             "pegawai_ijazah": false,
             "pegawai_karyawan": false,
             "pegawai_lamarankerja": false,
@@ -183,6 +189,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_pemakianlat": false,
             "rekap_karyawanspd": false,
             "rekap_filelegalitas": false,
+            "rekap_stockatk": false,
             "rekap_atkkeluar": false,
             "rekap_atkmasuk": false,
             "rekap_agendapelatihan": false,
@@ -200,8 +207,8 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_absensi": false,
             "rekap_lembur": false,
             "rekap_absensiproduksi": false,
-            "rekap_absensioperator": false,
-        }
+            "rekap_absensioperator": false
+        };
         angular.forEach(akses, function ($value, $key) {
             if ($key.indexOf(module) >= 0)
                 $scope.form.akses[$key] = valueCheck;

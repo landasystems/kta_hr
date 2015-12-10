@@ -17,9 +17,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label required">Tanggal</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" required style="width: 100px;float: left"/> <div style="float: left;padding: 7px;">s/d</div> <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal_sampai" is-open="opened2" ng-click="opened2 = true" required style="width: 100px;float: left"/>
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan<span class="required"></span></label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -84,7 +94,7 @@
         <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN GAJI KARYAWAN PRODUKSI
-                <br/> TANGGAL : {{show_form.tanggal | date}} - {{show_form.tanggal_sampai | date}}
+                <br/> TANGGAL : {{mulai_tanggal | date}} - {{tanggal_sampai | date}}
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
@@ -126,7 +136,7 @@
                         <td style="text-align: right">{{row.ketenagakerjaan | currency:"":0}}</td>
                         <td style="text-align: right">{{row.kesehatan | currency:"":0}}</td>
                         <td style="text-align: right">{{row.pinjaman| currency:"":0}}</td>
-                        <td style="text-align: right">{{row.jml_absen| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.jml_absen}}</td>
                         <td style="text-align: right">{{row.absen| currency:"":0}}</td>
                         <td style="text-align: right">{{row.jml_potongan| currency:"":0}}</td>
                         <td style="text-align: right">{{row.netto| currency:"":0}}</td>

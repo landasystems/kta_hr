@@ -302,8 +302,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
-                                            <label class="col-sm-4 control-label">Kontrak 1</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-4 control-label">Awal Kontrak 1</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_1" is-open="opened2" ng-click="opened2 = true"/>
                                                     <span class="input-group-addon">
@@ -311,7 +311,10 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                        </div>
+                                        <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
+                                            <label class="col-sm-4 control-label">Akhir Kontrak 1</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_11" is-open="opened3" ng-click="opened3 = true"/>
                                                     <span class="input-group-addon">
@@ -321,8 +324,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
-                                            <label class="col-sm-4 control-label">Kontrak 2</label>
-                                            <div class="col-sm-4">
+                                            <label class="col-sm-4 control-label">Awal Kontrak 2</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_2" is-open="opened4" ng-click="opened4 = true"/>
                                                     <span class="input-group-addon">
@@ -330,7 +333,11 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+
+                                        </div>
+                                        <div class="form-group" ng-show="form.status_karyawan != 'Borongan'">
+                                            <label class="col-sm-4 control-label">Akhir Kontrak 2</label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.Kontrak_21" is-open="opened5" ng-click="opened5 = true"/>
                                                     <span class="input-group-addon">
@@ -338,6 +345,7 @@
                                                     </span>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     <br>
@@ -811,8 +819,8 @@
                 line-height: 25px; 
             }
             .print-footer{
-/*                position: absolute;
-                bottom: 75px;*/
+                /*                position: absolute;
+                                bottom: 75px;*/
                 font-size : 12pt !important;
                 line-height: 15px; 
             }
