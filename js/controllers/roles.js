@@ -198,6 +198,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_siswaprakerin": false,
             "rekap_rpenilaiankontrak": false,
             "rekap_moasuransi": false,
+            "rekap_monitoringlegalitas": false,
             "rekap_moservice": false,
             "rekap_mostnk": false,
             "rekap_absensiharian": false,

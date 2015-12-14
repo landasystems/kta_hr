@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-monitoring-legalitas.xls");
+    header("Content-Disposition: attachment; filename=excel-jadwal-hse.xls");
 }
 
 //$start = $params['tanggal']['startDate'];
@@ -29,7 +29,7 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h4>MONITORING FILE LEGALITAS</h4><br/></center>
+<center><h4>LAPORAN FILE LEGALITAS</h4><br/></center>
 <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
 
 <table width="100%" border="1" style="border-collapse: collapse">

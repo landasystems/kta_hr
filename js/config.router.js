@@ -1359,6 +1359,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.monitoringlegalitas', {
+                                    url: '/monitoringlegalitas',
+                                    templateUrl: 'tpl/r_mofilelegalitas/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mofilelegalitas.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 
                                 /* ============== ABSENSI ============================== */
                                 

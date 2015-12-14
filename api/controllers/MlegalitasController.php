@@ -122,9 +122,9 @@ class MlegalitasController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        if(!empty($models)){
-            foreach($models as $key => $val){
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $file = \app\models\TblDataFlegalitas::find()->where(['no_file' => $val['no_file']])->one();
                 $models[$key]['filelegalitas'] = (!empty($file)) ? $file->attributes : [];
             }
@@ -147,11 +147,25 @@ class MlegalitasController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_monitoring_flegalitas')
-                ->where('status like "%Masuk%"')
-                ->andWhere('(tgl_masuk >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->where('(masa_berlaku >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND masa_berlaku <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
 
+        if (!empty($params['atas_nama'])) {
+            $query->andWhere('atas_nm like "%' . $params['atas_nama'] . '%"');
+        }
+
+        if (!empty($params['jns_legalitas'])) {
+            foreach ($params['jns_legalitas'] as $key => $val) {
+                if ($val == true) {
+                    $filter[] = str_replace('_', ' ', $key);
+                }
+            }
+        }
+
+        if (!empty($filter)) {
+            $query->andWhere('jns_legalitas IN("' . implode('","', $filter) . '")');
+        }
         session_start();
         $_SESSION['query'] = $query;
         $_SESSION['params'] = $params;
@@ -164,7 +178,6 @@ class MlegalitasController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-
 
     public function actionView($id) {
 
@@ -258,7 +271,7 @@ class MlegalitasController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        return $this->render("/exprekap/monitoringlegalitas", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
     }
 
     public function actionCari() {
