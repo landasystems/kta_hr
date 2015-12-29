@@ -183,10 +183,10 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->join('LEFT JOIN','tbl_department','tbl_department.id_department = tbl_karyawan.department')
+                ->join('LEFT JOIN','tbl_jabatan','tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
                 ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
-                ->select("tbl_karyawan.*,tbl_department.department as departemen");
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as jabat");
 
         session_start();
         $_SESSION['query'] = $query;
