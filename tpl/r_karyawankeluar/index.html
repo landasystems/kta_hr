@@ -53,7 +53,7 @@
                         <tr>
                             <th rowspan="3" style="text-align: center;vertical-align: center;">No</th>
                             <th rowspan="3" style="text-align: center;vertical-align: center;">Nama</th>
-                            <th rowspan="3" style="text-align: center;vertical-align: center;">Bagian</th>
+                            <th rowspan="3" style="text-align: center;vertical-align: center;">Department</th>
                             <th rowspan="3" style="text-align: center;vertical-align: center;">NIK</th>
                             <th rowspan="3" style="text-align: center;vertical-align: center;">Tanggal Masuk</th>
                             <th rowspan="3" style="text-align: center;vertical-align: center;">Tanggal Keluar</th>
@@ -64,7 +64,7 @@
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
                             <td style="text-align: center">{{row.nama}}</td>
-                            <td style="text-align: center">{{row.sub_section}}</td>
+                            <td style="text-align: center">{{row.departemen}}</td>
                             <td style="text-align: center">{{row.nik}}</td>
                             <td style="text-align: center">{{row.tgl_masuk_kerja | date}}</td>
                             <td style="text-align: center">{{row.tgl_keluar_kerja | date}}</td>

@@ -45,7 +45,7 @@ if (!isset($_GET['print'])) {
         <tr>
             <th>NO</th>
             <th>NAMA</th>
-            <th>BAGIAN</th>
+            <th>DEPARTMENT</th>
             <th>NIK</th>
             <th>TANGGAL MASUK</th>
             <th>TANGGAL KELUAR</th>
@@ -59,7 +59,7 @@ if (!isset($_GET['print'])) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
-            echo '<td align="center">' . $val['department'] . '</td>';
+            echo '<td align="center">' . $val['departemen'] . '</td>';
             echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_keluar_kerja'])) . '</td>';
