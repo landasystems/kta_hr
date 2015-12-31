@@ -173,6 +173,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_karyawankeluar": false,
             "rekap_karyawankontrak": false,
             "rekap_karyawaniso": false,
+            "rekap_karyawanmasuk": false,
             "rekap_karyawanmasukpertunjangan": false,
             "rekap_karyawanmasukpergaji": false,
             "rekap_karyawanmasukperdata": false,

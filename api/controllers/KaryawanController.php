@@ -214,8 +214,11 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
+                ->join('LEFT JOIN','tbl_jabatan','tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
+                ->join('LEFT JOIN','tbl_department','tbl_department.id_department = tbl_karyawan.department')
+                ->join('LEFT JOIN','tbl_section','tbl_section.id_section = tbl_karyawan.section')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
 
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
