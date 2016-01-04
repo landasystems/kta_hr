@@ -1021,6 +1021,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.karyawanmasuk', {
+                                    url: '/karyawanmasuk',
+                                    templateUrl: 'tpl/r_karyawanmasuk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasuk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.karyawanmasukpergaji', {
                                     url: '/karyawanmasukpergaji',
                                     templateUrl: 'tpl/r_karyawanmasukpergaji/index.html',
@@ -1355,6 +1368,19 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_mo_stnk.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.monitoringlegalitas', {
+                                    url: '/monitoringlegalitas',
+                                    templateUrl: 'tpl/r_mofilelegalitas/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_mofilelegalitas.js');
                                                         }
                                                 );
                                             }]

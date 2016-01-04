@@ -1,16 +1,16 @@
 <div ng-app="app" ng-controller="karyawanMasukCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Masuk Per Data Pribadi</h1>
+        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Masuk</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Karyawan Masuk Per Data Pribadi
+            <div class="panel-heading">.:: Karyawan Masuk
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
             </div>
             <div class="panel-body">
-                <div class="panel panel-info">
+                <div class="panel panel-info" style="text-align: left">
                     <div class="panel-heading">
                         <div class="form-horizontal">
                             <div class="row">
@@ -104,50 +104,35 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
-                <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th  style="text-align: center;vertical-align: center;">No</th>
-                            <th  style="text-align: center;vertical-align: center;">NIK</th>
-                            <th  style="text-align: center;vertical-align: center;">NAMA LENGKAP</th>
-                            <th  style="text-align: center;vertical-align: center;">JALAN</th>
-                            <th  style="text-align: center;vertical-align: center;">DESA</th>
-                            <th  style="text-align: center;vertical-align: center;">KECAMATAN</th>
-                            <th  style="text-align: center;vertical-align: center;">KOTA/KABUPATEN</th>
-                            <th  style="text-align: center;vertical-align: center;">NO KTP</th>
-                            <th  style="text-align: center;vertical-align: center;">AGAMA</th>
-                            <th  style="text-align: center;vertical-align: center;">STATUS</th>
-                            <th  style="text-align: center;vertical-align: center;">TANGGAL MASUK KERJA</th>
-                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (TH)</th>
-                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (BLN)</th>
-                        </tr>
-                    </thead>
-                    <tbody ng-show="!isLoading">
-                        <tr ng-repeat="row in list">
-                            <td style="text-align: center">{{$index + 1}}</td>
-                            <td align="center">{{row.nik}}</td>
-                            <td align="center">{{row.nama}}</td>
-                            <td align="center">{{row.alamat_jln}}</td>
-                            <td align="center">{{row.desa}}</td>
-                            <td align="center">{{row.kecamatan}}</td>
-                            <td align="center">{{row.kabupaten}}</td>
-                            <td align="center">{{row.no_ktp}}</td>
-                            <td align="center">{{row.agama}}</td>
-                            <td align="center">{{row.status_pernikahan}}</td>
-                            <td align="center">{{row.tgl_masuk_kerja | date}}</td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
-                        </tr>
-                    </tbody>
-                </table>			
+                <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
+                    <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">No</th>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">Nama</th>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">Jabatan</th>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">NIK</th>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">Tanggal Masuk</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-show="!isLoading">
+                            <tr ng-repeat="row in list">
+                                <td style="text-align: center">{{$index + 1}}</td>
+                                <td style="text-align: center">{{row.nama}}</td>
+                                <td style="text-align: center">{{row.nama_jabatan}}</td>
+                                <td style="text-align: center">{{row.nik}}</td>
+                                <td style="text-align: center">{{row.tgl_masuk_kerja| date}}</td>
+                                <td align="center"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
+                            </tr>
+                        </tbody>
+                    </table>			
+                </div>
             </div>
         </div>
+        <!--FORM-->
     </div>
-    <!--FORM-->
 </div>

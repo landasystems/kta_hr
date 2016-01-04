@@ -4,7 +4,6 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.form.tipe = 'kelompok';
     $scope.show_detail = false;
-    
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -14,7 +13,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.print = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapmasuk', form).then(function (data) {
-                window.open('api/web/karyawan/excelmasuk?print=true&rekap=karyawanmasukperpribadi', "", "width=500");
+                window.open('api/web/karyawan/excelmasuk?print=true&rekap=karyawanmasuk', "", "width=500");
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
@@ -24,7 +23,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.excel = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapmasuk', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelmasuk?rekap=karyawanmasukperpribadi';
+                window.location = 'api/web/karyawan/excelmasuk?rekap=karyawanmasuk';
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
@@ -58,7 +57,6 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
         $scope.form.Section = undefined;
         $scope.form.tanggal = undefined;
     };
-    
     $scope.clear2 = function () {
         $scope.form.Karyawan = undefined;
     };

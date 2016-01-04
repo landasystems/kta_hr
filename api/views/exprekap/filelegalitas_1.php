@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-karyawan-masuk-perpekerjaan.xls");
+    header("Content-Disposition: attachment; filename=excel-jadwal-hse.xls");
 }
 
 //$start = $params['tanggal']['startDate'];
@@ -29,38 +29,39 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h4>DATA KARYAWAN MASUK PER PEKERJAAN</h4><br/></center>
+<center><h4>LAPORAN FILE LEGALITAS</h4><br/></center>
 <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
 
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
         <tr>
             <th style="text-align: center;vertical-align: center;">NO</th>
-            <th style="text-align: center;vertical-align: center;">NIK</th>
-            <th style="text-align: center;vertical-align: center;">NAMA LENGKAP</th>
-            <th style="text-align: center;vertical-align: center;">INITIAL</th>
-            <th style="text-align: center;vertical-align: center;">STATUS KEPEMILIKAN</th>
-            <th style="text-align: center;vertical-align: center;">DEPARTEMEN</th>
-            <th style="text-align: center;vertical-align: center;">SEKSI</th>
-            <th style="text-align: center;vertical-align: center;">JABATAN</th>
-            <th style="text-align: center;vertical-align: center;">LOKASI</th>
+            <th style="text-align: center;vertical-align: center;">MASA BERLAKU</th>
+            <th style="text-align: center;vertical-align: center;">NO LEGALITAS</th>
+            <th style="text-align: center;vertical-align: center;">LEGALITAS</th>
+            <th style="text-align: center;vertical-align: center;">INSTANSI</th>
+            <th style="text-align: center;vertical-align: center;">ATAS NAMA</th>
+            <th style="text-align: center;vertical-align: center;">JENIS LEGALITAS</th>
+            <th style="text-align: center;vertical-align: center;">TANGGAL PENGESAHAN</th>
+            <th style="text-align: center;vertical-align: center;">KETERANGAN</th>
         </tr>
     </thead>
     <tbody>
         <?php
         $no = 1;
+        $tgl = '';
         foreach ($models as $val) {
+            $tgl = (empty($val['tgl_pengesahan']))? '' : $val['tgl_pengesahan'];
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
-            echo '<td align="center">' . $val['nik'] . '</td>';
-            echo '<td align="center">' . $val['nama'] . '</td>';
-            echo '<td align="center">' . $val['initial'] . '</td>';
-            echo '<td align="center">' . $val['status_kepemilikan'] . '</td>';
-            echo '<td align="center">' . $val['department'] . '</td>';
-            echo '<td align="center">' . $val['section'] . '</td>';
-            echo '<td align="center">' . $val['jabatan'] . '</td>';
-            echo '<td align="center">' . $val['lokasi_kntr'] . '</td>';
-            echo '</tr>';
+            echo '<td align="center">' . $val['masa_berlaku'] . '</td>';
+            echo '<td align="center">' . $val['no_file'] . '</td>';
+            echo '<td align="center">' . $val['nm_file'] . '</td>';
+            echo '<td align="center">' . $val['instansi'] . '</td>';
+            echo '<td align="center">' . $val['atas_nm'] . '</td>';
+            echo '<td align="center">' . $val['jns_legalitas'] . '</td>';
+            echo '<td align="center">' . $tgl . '</td>';
+            echo '<td align="center">' . $val['ket'] . '</td>';
             $no++;
         }
         ?>

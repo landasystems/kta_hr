@@ -354,6 +354,9 @@
                                 <div class="input-group-btn dropdown-submenu" dropdown>
                                     <button type="button" class="btn btn-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">KARYAWAN MASUK<span class="caret"></span></button>
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
+                                        <li ng-show="user.akses.rekap_karyawanmasuk">
+                                            <a ui-sref='rekap.karyawanmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
+                                        </li>
                                         <li ng-show="user.akses.rekap_karyawanmasukpertunjangan">
                                             <a ui-sref='rekap.karyawanmasukpertunjangan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Tunjangan</a>
                                         </li>
@@ -522,6 +525,9 @@
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
                                         <li ng-show="user.akses.rekap_filelegalitas">
                                             <a ui-sref='rekap.filelegalitas'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>File Legalitas</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_monitoringlegalitas">
+                                            <a ui-sref='rekap.monitoringlegalitas'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Monitoring File Legalitas</a>
                                         </li>
                                     </ul>
                                 </div>

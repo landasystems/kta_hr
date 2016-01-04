@@ -1,8 +1,11 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-rekap-karyawan-keluar.xls");
+    header("Content-Disposition: attachment; filename=excel-karyawan-masuk.xls");
 }
+
+//$start = $params['tanggal']['startDate'];
+//$end = $params['tanggal']['endDate'];
 ?>
 <div style="font-size: 10px;">
     <table>
@@ -26,20 +29,9 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<table border="1" style="border-collapse: collapse;width:100%">
-    <tr>
-        <td colspan="5" rowspan="2" style="width:60%;text-align: center">
-            <h4>DATA KARYAWAN KELUAR</h4><br/>
-            <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
-        </td>
-        <td style="text-align: center">Dibuat</td>
-        <td style="text-align: center">Diketahui</td>
-    </tr>
-    <tr>
-        <td style="height: 45px;"></td>
-        <td></td>
-    </tr>
-</table>
+<center><h3>REKAP KARYAWAN MASUK PER GAJI</h3><br/></center>
+<span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
+
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
         <tr>
@@ -48,8 +40,6 @@ if (!isset($_GET['print'])) {
             <th>JABATAN</th>
             <th>NIK</th>
             <th>TANGGAL MASUK</th>
-            <th>TANGGAL KELUAR</th>
-            <th>ALASAN KELUAR</th>
         </tr>
     </thead>
     <tbody>
@@ -59,11 +49,9 @@ if (!isset($_GET['print'])) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
-            echo '<td align="center">' . $val['jabat'] . '</td>';
+            echo '<td align="center">' . $val['nama_jabatan'] . '</td>';
             echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
-            echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_keluar_kerja'])) . '</td>';
-            echo '<td align="center">' . $val['alasan_keluar'] . '</td>';
             echo '</tr>';
             $no++;
         }

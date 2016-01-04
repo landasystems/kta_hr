@@ -8,9 +8,10 @@ if (!isset($_GET['print'])) {
 //$end = $params['tanggal']['endDate'];
 ?>
 <div id="printArea" style="margin-right: 30px;margin-left: 30px;">
-    <style media="print">
+    <style>
         .printedArea,.printedArea table,printedArea span, printedArea div{
             font-size: 10pt;
+            letter-spacing: 8px !important;
         }
     </style>
     <div class="printedArea">
@@ -36,16 +37,13 @@ if (!isset($_GET['print'])) {
                 <td colspan="3">Mengajukan permohonan ijin pada:</td>
             </tr>
             <tr>
-                <td>Hari/ Tanggal</td>
+                <td>Hari/ Tgl</td>
                 <td>:</td>
                 <td>
                     <?php
-                    setlocale(LC_TIME, 'id_ID');
                     $arrDay = array("Monday" => "Senin", "Tuesday" => "Selasa", "Wednesday" => "Rabu", "Thursday" => "Kamis", "Friday" => "Jum'at", "Saturday" => "Sabtu", "Sunday" => "Minggu");
                     $day = strftime("%A", strtotime($models['tanggal']));
                     echo $arrDay[$day];
-//                    setlocale(LC_TIME, 'id_ID');
-//                    echo strftime("Today in Indonesia is %A");
                     ?>
                     ,
                     <?php echo Yii::$app->landa->date2ind($models['tanggal']); ?>
@@ -63,19 +61,19 @@ if (!isset($_GET['print'])) {
                 <td>:</td>
                 <td>
                     <?php
-                    if(empty($models['jmasuk']) && empty($models['jkeluar']))
-                        echo '-';
+                    if ((!empty($models['jmasuk']) or !empty($models['jkeluar'])) && ($models['ket_absen'] == "Izin" || $models['ket_absen'] == "Dinas Luar"))
+                        echo '<u>' . $models['jmasuk'] . '</u> s/d <u>' . $models['jkeluar'] . '</u>';
                     else
-                        echo '<u>'.$models['jmasuk'].'</u> s/d <u>'.$models['jkeluar'].'</u>';
+                        echo '-';
                     ?>
             </tr>
             <tr>
                 <td>Keperluan</td>
                 <td>:</td>
                 <td>
-                    <?php echo $models['ket_absen']?>
-<!--                    a. Pribadi : <u></u>-->
-            </td>
+                    <?php echo $models['ket_absen'] ?>
+                    <!--                    a. Pribadi : <u></u>-->
+                </td>
             </tr>
 <!--            <tr>
                 <td></td>
@@ -84,7 +82,7 @@ if (!isset($_GET['print'])) {
 //                    if ($models['ket_absen'] == 'Dinas Luar') {
 //                        echo $models['ket_uraian'];
 //                    }
-                ?></u></td>
+                    ?></u></td>
             </tr>-->
         </table>
         <hr/>
@@ -98,7 +96,7 @@ if (!isset($_GET['print'])) {
         <!--<br/>-->
         <span style="text-align: right;">Demikian Surat Ijin ini dibuat, untuk dapat dipergunakan sebagaimana mestinya.</span>
         <br/>
-        <div style="text-align: right;">Dibuat di Sukorejo, <?= date('d F Y', strtotime($models['tgl_pembuatan'])); ?></div>
+        <div style="text-align: right;"><br>Dibuat di Sukorejo, <?= Yii::$app->landa->date2ind($models['tgl_pembuatan']) ?></div>
         <hr/>
         <table style="width:100%;border-collapse:collapse;">
             <tr>
