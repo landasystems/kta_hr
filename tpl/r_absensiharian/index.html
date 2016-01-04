@@ -38,6 +38,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" ng-model="form.section">
+                                                <option value="">Pilih Section</option>
+                                                <option ng-repeat="sec in listsec" value="{{sec.id_section}}">{{sec.section}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-md-3 control-label">Lokasi Kantor</label>
                                         <div class="col-md-9">
                                             <select class="form-control" ng-model="form.lokasi_kntr">
@@ -76,8 +85,8 @@
                         <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Masuk</th>
                         <th style="text-align: center;vertical-align: center;" ng-show="show_form.status == 'hadir'">Pulang</th>
                         <th style="text-align: right;vertical-align: center;" ng-hide="show_form.status == 'hadir'"><div style="margin-right: 26px;">Action</div></th>
-                        
-                    </tr>
+
+                </tr>
                 </thead>
                 <tbody ng-show="!isLoading">
                     <tr ng-repeat="row in list">
@@ -87,12 +96,15 @@
                         <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
                         <td ng-hide="show_form.status == 'hadir'">
                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                <button type="button" class="btn btn-info fa fa-external-link " ng-click="absen(row)">
+                                <button type="button" class="btn btn-info fa fa-external-link " ng-hide="row.disable" ng-click="absen(row)">
+                                    Absen
+                                </button>
+                                <button type="button" class="btn btn-success fa fa-check-square-o" ng-show="row.disable" ng-disabled="row.disable">
                                     Absen
                                 </button>
                             </div> 
                         </td>
-                            
+
                     </tr>
                     <tr>
                         <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="6"></td>
