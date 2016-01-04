@@ -27,6 +27,7 @@ class KaryawanController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekapkeluar' => ['post'],
+                    'rekap-ulang-tahun' => ['post'],
                     'rekapiso' => ['post'],
                     'rekapmasuk' => ['post'],
                     'rekapkontrak' => ['post'],
@@ -228,6 +229,37 @@ class KaryawanController extends Controller {
             $query->where(['nik' => $params['Karyawan']['nik']]);
         }
 
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    public function actionRekapUlangTahun() {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $sort = "day(tbl_karyawan.tgl_lahir) ASC";
+        $offset = 0;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_karyawan')
+                ->join('LEFT JOIN','tbl_jabatan','tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
+                ->join('LEFT JOIN','tbl_department','tbl_department.id_department = tbl_karyawan.department')
+                ->join('LEFT JOIN','tbl_section','tbl_section.id_section = tbl_karyawan.section')
+                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal']. '")')
+                ->orderBy($sort)
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
+
+        
         session_start();
         $_SESSION['query'] = $query;
         $_SESSION['params'] = $params;

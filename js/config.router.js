@@ -995,6 +995,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.ulangtahun', {
+                                    url: '/ulangtahun',
+                                    templateUrl: 'tpl/r_ulangtahun/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_ulangtahun.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.karyawankontrak', {
                                     url: '/karyawankontrak',
                                     templateUrl: 'tpl/r_karyawankontrak/index.html',

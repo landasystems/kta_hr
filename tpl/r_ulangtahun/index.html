@@ -1,0 +1,115 @@
+<div ng-app="app" ng-controller="ulangTahunCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Ulang Tahun</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Karyawan Ulang Tahun
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-info" style="text-align: left">
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3">Periode</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" ng-model="form.tanggal">
+                                                <option value="1">Januari</option>
+                                                <option value="2">Februari</option>
+                                                <option value="3">Maret</option>
+                                                <option value="4">April</option>
+                                                <option value="5">Mei</option>
+                                                <option value="6">Juni</option>
+                                                <option value="7">Juli</option>
+                                                <option value="8">Agustus</option>
+                                                <option value="9">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+<!--                                                    <td
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Karyawan Masuk <span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>-->
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
+                <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th  style="text-align: center;vertical-align: center;">No</th>
+                            <th  style="text-align: center;vertical-align: center;">NIK</th>
+                            <th  style="text-align: center;vertical-align: center;">NAMA LENGKAP</th>
+                            <th  style="text-align: center;vertical-align: center;">PENDIDIKAN TERAKHIR</th>
+                            <th  style="text-align: center;vertical-align: center;">TEMPAT</th>
+                            <th  style="text-align: center;vertical-align: center;">TANGGAL LAHIR</th>
+                            <th  style="text-align: center;vertical-align: center;">USIA</th>
+                            <th  style="text-align: center;vertical-align: center;">ALAMAT</th>
+                            <th  style="text-align: center;vertical-align: center;">DESA</th>
+                            <th  style="text-align: center;vertical-align: center;">KECAMATAN</th>
+                            <th  style="text-align: center;vertical-align: center;">KOTA/ KABUPATEN</th>
+                            <th  style="text-align: center;vertical-align: center;">NO KTP</th>
+                            <th  style="text-align: center;vertical-align: center;">AGAMA</th>
+                            <th  style="text-align: center;vertical-align: center;">STATUS</th>
+                            <th  style="text-align: center;vertical-align: center;">TGL MASUK KERJA</th>
+                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (TH)</th>
+                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (BLN)</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!isLoading">
+                        <tr ng-repeat="row in list">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.nik}}</td>
+                            <td align="center">{{row.nama}}</td>
+                            <td align="center">{{row.pendidikan}}</td>
+                            <td align="center">{{row.tmpt_lahir}}</td>
+                            <td align="center">{{row.tgl_lahir| date}}</td>
+                            <td align="center">{{row.usia}}</td>
+                            <td align="center">{{row.alamat_jln}}</td>
+                            <td align="center">{{row.desa}}</td>
+                            <td align="center">{{row.kecamatan}}</td>
+                            <td align="center">{{row.kabupaten}}</td>
+                            <td align="center">{{row.no_ktp}}</td>
+                            <td align="center">{{row.agama}}</td>
+                            <td align="center">{{row.status_pernikahan}}</td>
+                            <td align="center">{{row.tgl_masuk_kerja| date}}</td>
+                            <td align="center">{{row.tahun}}</td>
+                            <td align="center">{{row.bulan}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
+                        </tr>
+                    </tbody>
+                </table>			
+            </div>
+        </div>
+    </div>
+    <!--FORM-->
+</div>
