@@ -67,20 +67,13 @@
                             <th  style="text-align: center;vertical-align: center;">No</th>
                             <th  style="text-align: center;vertical-align: center;">NIK</th>
                             <th  style="text-align: center;vertical-align: center;">NAMA LENGKAP</th>
-                            <th  style="text-align: center;vertical-align: center;">PENDIDIKAN TERAKHIR</th>
-                            <th  style="text-align: center;vertical-align: center;">TEMPAT</th>
+                            <th  style="text-align: center;vertical-align: center;">TEMPAT LAHIR</th>
                             <th  style="text-align: center;vertical-align: center;">TANGGAL LAHIR</th>
                             <th  style="text-align: center;vertical-align: center;">USIA</th>
                             <th  style="text-align: center;vertical-align: center;">ALAMAT</th>
                             <th  style="text-align: center;vertical-align: center;">DESA</th>
                             <th  style="text-align: center;vertical-align: center;">KECAMATAN</th>
                             <th  style="text-align: center;vertical-align: center;">KOTA/ KABUPATEN</th>
-                            <th  style="text-align: center;vertical-align: center;">NO KTP</th>
-                            <th  style="text-align: center;vertical-align: center;">AGAMA</th>
-                            <th  style="text-align: center;vertical-align: center;">STATUS</th>
-                            <th  style="text-align: center;vertical-align: center;">TGL MASUK KERJA</th>
-                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (TH)</th>
-                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (BLN)</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
@@ -88,7 +81,6 @@
                             <td style="text-align: center">{{$index + 1}}</td>
                             <td align="center">{{row.nik}}</td>
                             <td align="center">{{row.nama}}</td>
-                            <td align="center">{{row.pendidikan}}</td>
                             <td align="center">{{row.tmpt_lahir}}</td>
                             <td align="center">{{row.tgl_lahir| date}}</td>
                             <td align="center">{{row.usia}}</td>
@@ -96,12 +88,6 @@
                             <td align="center">{{row.desa}}</td>
                             <td align="center">{{row.kecamatan}}</td>
                             <td align="center">{{row.kabupaten}}</td>
-                            <td align="center">{{row.no_ktp}}</td>
-                            <td align="center">{{row.agama}}</td>
-                            <td align="center">{{row.status_pernikahan}}</td>
-                            <td align="center">{{row.tgl_masuk_kerja| date}}</td>
-                            <td align="center">{{row.tahun}}</td>
-                            <td align="center">{{row.bulan}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
