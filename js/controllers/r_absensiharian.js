@@ -27,9 +27,21 @@ app.controller('absensiharianCtrl', function ($state, $scope, Data, toaster) {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
         }
     };
+    
+    $scope.cariSection = function ($query) {
+
+        if ($query.length >= 3) {
+            Data.get('section/cari',{nama: $query}).then(function (data) {
+                $scope.listSection = data.data;
+            });
+        }
+    };
 
     Data.get('lokasikantor').then(function (data) {
         $scope.listLokasi = data.data;
+    });
+    Data.get('absensi/listsec').then(function (data) {
+        $scope.listsec = data.data;
     });
 
     $scope.absen = function ($query) {
@@ -48,7 +60,7 @@ app.controller('absensiharianCtrl', function ($state, $scope, Data, toaster) {
             $scope.show_form.labelstatus = 'TIDAK HADIR';
         }
 
-        Data.get('absensi/absensiharian', form).then(function (data) {
+        Data.post('absensi/absensiharian', form).then(function (data) {
             $scope.listSrc = [];
             $scope.show_form.total = data.data.length;
             angular.forEach(data.data, function ($value, $key) {

@@ -18,11 +18,12 @@ class AbsensiController extends Controller {
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'absensiharian' => ['get'],
+                    'absensiharian' => ['post'],
                     'absensiproduksi' => ['post'],
                     'absensioperator' => ['get'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
+                    'listsec' => ['get'],
                     'penggajian' => ['post'],
                     'minggu' => ['get'],
                     'rekap' => ['get'],
@@ -129,6 +130,10 @@ class AbsensiController extends Controller {
                         $absen +=1;
                     } elseif ($ketAbsen == 'Izin') {
                         $izin +=1;
+                    } elseif ($ketAbsen == 'Izin Keluar') {
+                        $hadir +=1;
+                    } elseif ($ketAbsen == 'Izin Absent') {
+                        $hadir +=1;
                     } elseif ($ketAbsen == 'Cuti') {
                         $cuti +=1;
                     } elseif ($ketAbsen == 'Dinas Luar') {
@@ -399,6 +404,21 @@ class AbsensiController extends Controller {
 
         return $data2;
     }
+    
+     public function actionListsec() {
+        
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_section')
+                ->select("id_section,section");
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
 
     public function Htghr($m, $y) {
 
@@ -572,15 +592,21 @@ class AbsensiController extends Controller {
     }
 
     public function actionAbsensiharian() {
-        $params = $_REQUEST;
+//        $params = $_REQUEST;
+        $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $lokasi_kntr = (isset($params['lokasi_kntr'])) ? $params['lokasi_kntr'] : '';
+//        $sec = json_decode($params['Section'], true);
+//        $section = (isset($sec)) ? $sec['id_section'] : '';
+        $section = (isset($params['section'])) ? $params['section'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $models = [];
-
+      
         $abs = AbsensiEttLog::absen($date, $date);
 //        Yii::error($abs);
-        $kry = TblKaryawan::aktif($niknama, '', $lokasi_kntr);
+        $kry = TblKaryawan::aktif($niknama, $section, $lokasi_kntr);
+        
+//        Yii::error($ijn);
         foreach ($kry as $r) {
             $pegawai = ['nik' => $r->nik, 'nama' => $r->nama];
 //            Yii::error($pegawai);
@@ -592,12 +618,21 @@ class AbsensiController extends Controller {
                 }
                 $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => $absensi['masuk'], 'keluar' => $absensi['keluar']];
             } elseif (!isset($abs[$r->nik][$date]) && $params['status'] == 'tidakhadir') {
-                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => '', 'keluar' => ''];
+                $absen = $this->Sttsabsen($r->nik, $date);
+                if($absen == false){
+                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => '', 'keluar' => '','disable' => $absen];
+                }
             }
         }
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+    }
+    
+    public function Sttsabsen($nik,$date){
+        $absen = TblAbsent::findOne(['nik' => $nik,'tanggal' => $date]);
+        $return = (isset($absen)) ? true : false;
+        return $return;
     }
 
     public function actionLemburharian() {
