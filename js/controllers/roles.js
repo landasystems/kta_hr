@@ -207,6 +207,7 @@ app.controller('rolesCtrl', function ($scope, Data, toaster) {
             "rekap_absensiharian": false,
             "rekap_lemburharian": false,
             "rekap_penggajianproduksi": false,
+            "rekap_penggajiankaryawan": false,
             "rekap_laporanabsensiproduksi": false,
             "rekap_absensi": false,
             "rekap_lembur": false,

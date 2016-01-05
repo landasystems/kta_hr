@@ -1453,6 +1453,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.penggajiankaryawan', {
+                                    url: '/penggajiankaryawan',
+                                    templateUrl: 'tpl/r_penggajiankaryawan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_penggajiankaryawan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.laporanabsensiproduksi', {
                                     url: '/laporanabsensiproduksi',
                                     templateUrl: 'tpl/r_absensilaporanproduksi/index.html',
