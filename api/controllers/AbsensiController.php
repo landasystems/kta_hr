@@ -840,9 +840,7 @@ class AbsensiController extends Controller {
         $sdh = [];
         $skh = [];
         foreach ($ijin as $arr) {
-            if (!isset($ijin_jml[$arr->nik])) {
-                $ijin_jml[$arr->nik] = 0;
-            }
+
             if (!isset($sth[$arr->nik])) {
                 $sth[$arr->nik] = 0;
             }
@@ -864,20 +862,37 @@ class AbsensiController extends Controller {
 
             if ($arr->ket == 'Setengah Hari') {
                 $sth[$arr->nik] += 1;
-            } else if ($arr->ket == 'Izin') {
+            } else {
+                $sth[$arr->nik] += 0;
+            }
+            if ($arr->ket == 'Izin') {
                 $ijnh[$arr->nik] += 1;
-            } else if ($arr->ket == 'Absent') {
+            } else {
+                $ijnh[$arr->nik] += 0;
+            }
+            if ($arr->ket == 'Absent') {
                 $absh[$arr->nik] += 1;
-            } else if ($arr->ket == 'Cuti') {
+            } else {
+                $absh[$arr->nik] += 0;
+            }
+            if ($arr->ket == 'Cuti') {
                 $cth[$arr->nik] +=1;
-            } else if ($arr->ket == 'Surat Dokter') {
+            } else {
+                $cth[$arr->nik] +=0;
+            }
+            if ($arr->ket == 'Surat Dokter') {
                 $sdh[$arr->nik] +=1;
-            } else if ($arr->ket == 'Sakit') {
+            } else {
+                $sdh[$arr->nik] +=0;
+            }
+            if ($arr->ket == 'Sakit') {
                 $skh[$arr->nik] +=1;
+            } else {
+                $skh[$arr->nik] +=0;
             }
         }
 //        echo json_encode($ijin_jml);
-        Yii::error($ijnh);
+//        Yii::error($cth);
         $query = new Query;
         $query->from('tbl_htrans_potongan as thp')
                 ->join('LEFT JOIN', 'tbl_dtrans_potongan as tdp', 'tdp.no = thp.no_pot')
@@ -899,43 +914,54 @@ class AbsensiController extends Controller {
         }
 //                    Yii::error($potongan_pinjaman);
         //=========PROSES MASUKKAN DATA
+
+//        Yii::error($cth['00003']);
+
         $no = 1;
+        $sth_qty = 0;
+        $ijnh_qty = 0;
+        $absh_qty = 0;
+        $cth_qty = 0;
+        $sdh_qty = 0;
+        $skh_qty = 0;
         foreach ($kry as $r) {
 
-            
+
             if (isset($sth[$r->nik])) { //cari ijin, dari proses di atas
-                $sth = $sth[$r->nik];
+                $sth_qty = $sth[$r->nik];
             } else {
-                $sth = 0;
+                $sth_qty = 0;
             }
 
             if (isset($ijnh[$r->nik])) {
-                $ijnh = $ijnh[$r->nik];
+                $ijnh_qty = $ijnh[$r->nik];
             } else {
-                $ijnh = 0;
+                $ijnh_qty = 0;
             }
 
             if (isset($absh[$r->nik])) {
-                $absh = $absh[$r->nik];
+                $absh_qty = $absh[$r->nik];
             } else {
-                $absh = 0;
+                $absh_qty = 0;
             }
-            if (isset($cth[$r->nik])) {
-                $cth = $cth[$r->nik];
+            if (!empty($cth[$r->nik])) {
+                $cth_qty = $cth[$r->nik];
             } else {
-                $cth = 0;
+                $cth_qty = 0;
             }
             if (isset($sdh[$r->nik])) {
-                $sdh = $sdh[$r->nik];
+                $sdh_qty = $sdh[$r->nik];
             } else {
-                $sdh = 0;
+                $sdh_qty = 0;
             }
             if (isset($skh[$r->nik])) {
-                $skh = $skh[$r->nik];
+                $skh_qty = $skh[$r->nik];
             } else {
-                $skh = 0;
+                $skh_qty = 0;
             }
 
+//             Yii::error($cth_qty);
+            
             if (isset($potongan_pinjaman[$r->nik])) { //cari potongan pinjaman, dari proses di atas
                 $potongan_pinjaman_rp = $potongan_pinjaman[$r->nik];
             } else {
@@ -1044,12 +1070,12 @@ class AbsensiController extends Controller {
                 'mg4' => $mg4,
                 'mg5' => $mg5,
                 'ttlinc' => $incentive,
-                'absh' => $absh,
-                'ijnh' => $ijnh,
-                'skh' => $skh,
-                'sdh' => $sdh,
-                'sth' => $sth,
-                'cth' => $cth
+                'absh' => $absh_qty,
+                'ijnh' => $ijnh_qty,
+                'skh' => $skh_qty,
+                'sdh' => $sdh_qty,
+                'sth' => $sth_qty,
+                'cth' => $cth_qty
             ];
 //                'lembur' => $lembur[$r->nik]];
             $no++;
