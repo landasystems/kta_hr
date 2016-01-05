@@ -395,6 +395,9 @@
                                         <li ng-show="user.akses.rekap_karyawaniso">
                                             <a ui-sref='rekap.karyawaniso'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Iso</a>
                                         </li>
+                                        <li ng-show="user.akses.rekap_ulangtahun">
+                                            <a ui-sref='rekap.ulangtahun'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Ulang Tahun</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -620,6 +623,9 @@
                 </li>
                 <li ng-show="user.akses.tools_cekminggu">
                     <a ui-sref='tools.cekminggu'>Cek Minggu Incentive</a>
+                </li>
+                <li ng-show="user.akses.tools_urutjabatan">
+                    <a ui-sref='tools.urutjabatan'>Struktur Organisasi</a>
                 </li>
                 <li ng-show="user.akses.master_roles">
                     <a ui-sref="master.roles">Hak Akses</a>

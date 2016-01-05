@@ -672,6 +672,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('tools.urutjabatan', {
+                                    url: '/urutjabatan',
+                                    templateUrl: 'tpl/tools_urutjabatan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['angularBootstrapNavTree']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/tools_urutjabatan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'
@@ -991,6 +1004,19 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_karyawaniso.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.ulangtahun', {
+                                    url: '/ulangtahun',
+                                    templateUrl: 'tpl/r_ulangtahun/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_ulangtahun.js');
                                                         }
                                                 );
                                             }]
