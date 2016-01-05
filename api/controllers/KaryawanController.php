@@ -42,6 +42,7 @@ class KaryawanController extends Controller
                     'jabatan' => ['get'],
                     'urut-jabatan' => ['get'],
                     'kode' => ['get'],
+                    'det-karyawan' => ['get'],
                     'ijazah' => ['get'],
                     'keluar' => ['post'],
                     'upload' => ['post'],
@@ -284,7 +285,7 @@ class KaryawanController extends Controller
                     $date1 = date_create($val['tgl_lahir']);
                     $date2 = date_create(date('Y-m-d'));
                     $diff = date_diff($date1, $date2);
-                    $models[$key]['usia'] = round(($diff->days)/365).' tahun';
+                    $models[$key]['usia'] = round(($diff->days) / 365) . ' tahun';
                 }
             }
         }
@@ -767,12 +768,78 @@ class KaryawanController extends Controller
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));
     }
-    
-    public function actionUrutJabatan(){
+
+    public function actionUrutJabatan()
+    {
         $karyawan = TblKaryawan::findAll([
-            'tbl_karyawan.status like "kerja"'
+                    'tbl_karyawan.status like "kerja"'
         ]);
-        
+
+        $data = [];
+        $subData = [];
+        $subSubData = [];
+//        $section = [];
+
+        $department = \app\models\Department::find()->all();
+        if (!empty($department)) {
+            foreach ($department as $k => $v) {
+                $data[$k]['label'] = $v->department;
+                $data[$k]['kode'] = $v->id_department;
+                $section = \app\models\Section::find()->where('dept ="' . $v->id_department . '"')->all();
+
+                if (!empty($section)) {
+                    foreach ($section as $ke => $va) {
+                        $subData[] = $va->section;
+                        $data[$k]['children'][$ke]['label'] = $va->section;
+                        $data[$k]['children'][$ke]['kode'] = $va->id_section;
+                        $subSection = \app\models\SubSection::find()->where('id_section="' . $va->id_section . '"')->all();
+                        if (!empty($subSection)) {
+                            foreach ($subSection as $key => $val) {
+//                                $subSubData[] = $val->kerja;
+                                $data[$k]['children'][$ke]['children'][$key]['label'] = $val->kerja;
+                                $data[$k]['children'][$ke]['children'][$key]['kode'] = $val->kd_kerja;
+//                                $data[$k]['children'][$ke]['children'][$key]['children'] = $subSubData;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $data));
+    }
+
+    public function actionDetKaryawan()
+    {
+        $params = $_REQUEST;
+        $tipeKode = substr($params['kode'], 0, 2);
+//        Yii::error($tipeKode);
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("kar.nik, kar.nama as nm_karyawan,jab.jabatan as nm_jabatan")
+                ->where('kar.status like "Kerja"');
+
+
+
+        if ($tipeKode == 'DP') {
+            $query->andWhere(['kar.department' => $params['kode']]);
+        } else if ($tipeKode == 'SC') {
+            $query->andWhere(['kar.section' => $params['kode']]);
+        } else if ($tipeKode == 'KR') {
+            $query->andWhere(['kar.sub_section' => $params['kode']]);
+        }
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
 }
