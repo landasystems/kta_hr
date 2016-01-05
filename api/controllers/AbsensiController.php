@@ -25,6 +25,7 @@ class AbsensiController extends Controller {
                     'lembur' => ['get'],
                     'listsec' => ['get'],
                     'penggajian' => ['post'],
+                    'penggajiankaryawan' => ['post'],
                     'minggu' => ['get'],
                     'rekap' => ['get'],
                     'penggajianexcel' => ['post'],
@@ -234,49 +235,10 @@ class AbsensiController extends Controller {
         return $arrtgl;
     }
 
-//    public function actionTest() {
-//        $start_date = '2015-10-21';
-//        $end_date = '2015-11-20';
-//        $nik = '00006';
-//        $sunday = $this->Sunday($start_date, $end_date);
-//
-//        $abs = AbsensiEttLog::absen($start_date, $end_date);
-////        Yii::error($abs);
-//        $data = [];
-//        $data2 = [];
-//
-//
-//        foreach ($sunday as $key => $value) {
-//
-//            foreach ($value as $val) {
-//
-//                if (isset($abs[$nik][$val])) {
-//
-//                    $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-//                } else {
-//
-//
-//                    $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
-//                }
-//            }
-//
-//            $data[$key] = ($data2[$key] == 0) ? 1 : 0;
-//        }
-//        $newdata = 0;
-//        foreach ($data as $newdt) {
-//            $newdata += $newdt;
-//        }
-//
-//
-//        echo json_encode($newdata, true);
-//    }
-    
     public function actionMinggu() {
         $params = $_REQUEST;
-         $bulan = $params['bulan'];
+        $bulan = $params['bulan'];
         $tahun = $params['tahun'];
-//        $bulan = 12;
-//        $tahun = 2015;
 
         //last month
         $last_month = $bulan - 1 % 12;
@@ -287,16 +249,15 @@ class AbsensiController extends Controller {
         $endate = $tahun . '-' . $bulan . '-20';
 
         $date = $lyear . '-' . $lmonth . '-21';
-        
+
         $minggu = $this->Sunday($date, $endate);
         $date2 = [];
         $mg5 = 0;
-        $i= 0;
-        foreach($minggu as $key => $value){
-           $jml = 0;
+        $i = 0;
+        foreach ($minggu as $key => $value) {
+            $jml = 0;
             foreach ($value as $val) {
                 $jml +=1;
-                
             }
             $date2[$key]['hari'] = $value;
             $date2[$key]['jml_hari'] = $jml;
@@ -305,14 +266,13 @@ class AbsensiController extends Controller {
             $mg5 +=1;
             $i++;
         }
-        
+
         $jmlHari = max($date2['hari']);
-        
+
         $ng_hide = ($mg5 < 5) ? 'yes' : 'no';
-        
+
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $date2, 'start' => $date, 'end' => $endate,'hide' => $ng_hide,'hari_max'=>$jmlHari), JSON_PRETTY_PRINT);
-    
+        echo json_encode(array('status' => 1, 'data' => $date2, 'start' => $date, 'end' => $endate, 'hide' => $ng_hide, 'hari_max' => $jmlHari), JSON_PRETTY_PRINT);
     }
 
     public function Sunday($start, $end) {
@@ -404,9 +364,9 @@ class AbsensiController extends Controller {
 
         return $data2;
     }
-    
-     public function actionListsec() {
-        
+
+    public function actionListsec() {
+
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_section')
@@ -601,11 +561,11 @@ class AbsensiController extends Controller {
         $section = (isset($params['section'])) ? $params['section'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $models = [];
-      
+
         $abs = AbsensiEttLog::absen($date, $date);
 //        Yii::error($abs);
         $kry = TblKaryawan::aktif($niknama, $section, $lokasi_kntr);
-        
+
 //        Yii::error($ijn);
         foreach ($kry as $r) {
             $pegawai = ['nik' => $r->nik, 'nama' => $r->nama];
@@ -619,8 +579,8 @@ class AbsensiController extends Controller {
                 $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => $absensi['masuk'], 'keluar' => $absensi['keluar']];
             } elseif (!isset($abs[$r->nik][$date]) && $params['status'] == 'tidakhadir') {
                 $absen = $this->Sttsabsen($r->nik, $date);
-                if($absen == false){
-                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => '', 'keluar' => '','disable' => $absen];
+                if ($absen == false) {
+                    $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => '', 'keluar' => '', 'disable' => $absen];
                 }
             }
         }
@@ -628,9 +588,9 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
-    
-    public function Sttsabsen($nik,$date){
-        $absen = TblAbsent::findOne(['nik' => $nik,'tanggal' => $date]);
+
+    public function Sttsabsen($nik, $date) {
+        $absen = TblAbsent::findOne(['nik' => $nik, 'tanggal' => $date]);
         $return = (isset($absen)) ? true : false;
         return $return;
     }
@@ -776,6 +736,329 @@ class AbsensiController extends Controller {
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+    }
+
+    public function actionPenggajiankaryawan() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+
+        $bulan = $params['bulan'];
+        $tahun = $params['tahun'];
+
+        //last month
+        $last_month = $bulan - 1 % 12;
+        $lyear = ($last_month == 0 ? ($tahun - 1) : $tahun);
+        $lmonth = ($last_month == 0 ? '12' : $last_month);
+
+//        $start = $lyear . '-' . $lmonth . '-20';
+
+        $endate = $tahun . '-' . $bulan . '-20';
+
+        $date = $lyear . '-' . $lmonth . '-21';
+
+
+        $lokasi = $params['lokasi_kntr'];
+
+        $arrtgl = $this->Hitunghr($date, $endate);
+        $sunday = $this->Sunday($date, $endate);
+
+        // Yii::error($sunday['minggu1']);
+//         Yii::error($date);
+        $models = [];
+
+        $abs = AbsensiEttLog::absen($date, $endate);
+        $kry = TblKaryawan::aktif($niknama, $section, $lokasi);
+
+        //============PROSES HITUNG LEMBUR
+        foreach ($kry as $r) {
+            $lembur[$r->nik] = 0;
+
+            foreach ($arrtgl as $dt) {
+                $masuk = $dt . ' 7:45';
+                if (date('w', strtotime($dt)) == 6) { //jika sabtu, pulang jam 12
+                    $pulang = $dt . ' 12:00';
+                } else {
+                    $pulang = $dt . ' 16:00';
+                }
+
+                if (isset($abs[$r->nik][$dt])) {
+                    $absensi = $abs[$r->nik][$dt];
+                    if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
+                        $absensi['keluar'] = '';
+                    }
+
+                    //--------lembur pagi
+                    $lemburpagi = 0;
+                    $from_time = strtotime($absensi['masuk']);
+                    $to_time = strtotime($masuk);
+                    if ($from_time < $to_time) {
+                        $lemburpagi = round(abs($to_time - $from_time) / 60, 2);
+                        if ($lemburpagi < 105) { //toleransi 15 menit
+                            $lemburpagi = 0;
+                        } else {
+                            $lemburpagi = floor($lemburpagi / 60);
+                        }
+                    } else {
+                        $lemburpagi = 0;
+                    }
+
+
+                    //-------lembur sore
+                    $lemburpagi = 0;
+                    $from_time = strtotime($pulang);
+                    $to_time = strtotime($absensi['keluar']);
+                    if ($to_time > $from_time) {
+                        $lembursore = round(abs($to_time - $from_time) / 60, 2);
+                        if ($lembursore < 115) { //toleransi 5 menit
+                            $lembursore = 0;
+                        } else {
+                            $lembursore = floor($lembursore / 60);
+                        }
+                    } else {
+                        $lembursore = 0;
+                    }
+
+                    //cek lembur,jika sudah ada
+                    $lembur[$r->nik] += $lemburpagi + $lembursore;
+                }
+            }
+        }
+
+        //=========PROSES HITUNG ABSENT
+        $ijin = TblAbsent::find()
+                ->where('tanggal>="' . $date . '" AND tanggal<="' . $endate . '"')
+//                ->where(['between','tanggal',$date,$endate])
+                ->all();
+//        echo json_encode($ijin);
+//        error e di kene
+        $ijin_jml = [];
+        $sth = [];
+        $ijnh = [];
+        $absh = [];
+        $cth = [];
+        $sdh = [];
+        $skh = [];
+        foreach ($ijin as $arr) {
+            if (!isset($ijin_jml[$arr->nik])) {
+                $ijin_jml[$arr->nik] = 0;
+            }
+            if (!isset($sth[$arr->nik])) {
+                $sth[$arr->nik] = 0;
+            }
+            if (!isset($ijnh[$arr->nik])) {
+                $ijnh[$arr->nik] = 0;
+            }
+            if (!isset($absh[$arr->nik])) {
+                $absh[$arr->nik] = 0;
+            }
+            if (!isset($cth[$arr->nik])) {
+                $cth[$arr->nik] = 0;
+            }
+            if (!isset($sdh[$arr->nik])) {
+                $sdh[$arr->nik] = 0;
+            }
+            if (!isset($skh[$arr->nik])) {
+                $skh[$arr->nik] = 0;
+            }
+
+            if ($arr->ket == 'Setengah Hari') {
+                $sth[$arr->nik] += 1;
+            } else if ($arr->ket == 'Izin') {
+                $ijnh[$arr->nik] += 1;
+            } else if ($arr->ket == 'Absent') {
+                $absh[$arr->nik] += 1;
+            } else if ($arr->ket == 'Cuti') {
+                $cth[$arr->nik] +=1;
+            } else if ($arr->ket == 'Surat Dokter') {
+                $sdh[$arr->nik] +=1;
+            } else if ($arr->ket == 'Sakit') {
+                $skh[$arr->nik] +=1;
+            }
+        }
+//        echo json_encode($ijin_jml);
+        Yii::error($ijnh);
+        $query = new Query;
+        $query->from('tbl_htrans_potongan as thp')
+                ->join('LEFT JOIN', 'tbl_dtrans_potongan as tdp', 'tdp.no = thp.no_pot')
+                ->where('tgl<="' . $endate . '" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "' . $endate . '"')
+                ->select('thp.tgl,thp.nik,tdp.perbulan');
+        $command = $query->createCommand();
+        $pinjaman = $command->queryAll();
+//        Yii::error($potongan);
+        $potongan_pinjaman = [];
+//        Yii::error($pinjaman);
+        foreach ($pinjaman as $arr) {
+//            Yii::error($arr['tgl_ak']);
+//            if($endate <= $arr['tgl_ak']){
+            if (!isset($potongan_pinjaman[$arr['nik']])) {
+                $potongan_pinjaman[$arr['nik']] = 0;
+            }
+            $potongan_pinjaman[$arr['nik']] += $arr['perbulan'];
+//            }
+        }
+//                    Yii::error($potongan_pinjaman);
+        //=========PROSES MASUKKAN DATA
+        $no = 1;
+        foreach ($kry as $r) {
+
+            
+            if (isset($sth[$r->nik])) { //cari ijin, dari proses di atas
+                $sth = $sth[$r->nik];
+            } else {
+                $sth = 0;
+            }
+
+            if (isset($ijnh[$r->nik])) {
+                $ijnh = $ijnh[$r->nik];
+            } else {
+                $ijnh = 0;
+            }
+
+            if (isset($absh[$r->nik])) {
+                $absh = $absh[$r->nik];
+            } else {
+                $absh = 0;
+            }
+            if (isset($cth[$r->nik])) {
+                $cth = $cth[$r->nik];
+            } else {
+                $cth = 0;
+            }
+            if (isset($sdh[$r->nik])) {
+                $sdh = $sdh[$r->nik];
+            } else {
+                $sdh = 0;
+            }
+            if (isset($skh[$r->nik])) {
+                $skh = $skh[$r->nik];
+            } else {
+                $skh = 0;
+            }
+
+            if (isset($potongan_pinjaman[$r->nik])) { //cari potongan pinjaman, dari proses di atas
+                $potongan_pinjaman_rp = $potongan_pinjaman[$r->nik];
+            } else {
+                $potongan_pinjaman_rp = 0;
+            }
+
+            /* start incentive */
+
+            $data = [];
+            $data2 = [];
+            $incentive = 0;
+
+            foreach ($sunday as $key => $value) {
+
+                foreach ($value as $val) {
+
+                    if (isset($abs[$r->nik][$val])) {
+
+                        $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                    } else {
+
+
+                        $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                    }
+                }
+
+                $data[$key] = ($data2[$key] == 0) ? 1 : 0;
+            }
+
+            foreach ($data as $newdt) {
+                $incentive += $newdt;
+            }
+
+            /* end incentive */
+
+            /*
+              sementara
+             */
+
+            //deskripsi
+            $inc = $incentive;
+            $jml_inc = $r->t_kehadiran;
+            $ttl_inc = ($inc * $jml_inc);
+            $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
+            $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
+            $kesehatan = ($r->gaji_pokok * 1 / 100);
+            $pinjaman = $potongan_pinjaman_rp;
+//            echo json_encode($ijin);
+//            $absen = (($r->gaji_pokok / 25) * $ijin);
+//            $test= 'nik'.$r->nik.' => '.$ketengakerjaan."+".$kesehatan."+".$pinjaman."+".$absen;
+//            Yii::error($test);
+//            $jml_potongan = ($ketengakerjaan + $kesehatan + $pinjaman + $absen);
+//            $netto = ($ttl_kopensasi - $absen - $jml_potongan);
+            $nama = ($r->nik . ' - ' . $r->nama);
+
+            $mg1 = '';
+            $mg2 = '';
+            $mg3 = '';
+            $mg4 = '';
+            $mg5 = '';
+
+            if (isset($data['minggu1'])) {
+                if ($data['minggu1'] == 1) {
+                    $mg1 = 1;
+                } else {
+                    $mg1 = 'x';
+                }
+            }
+            if (isset($data['minggu2'])) {
+                if ($data['minggu2'] == 1) {
+                    $mg2 = 1;
+                } else {
+                    $mg2 = 'x';
+                }
+            }
+            if (isset($data['minggu3'])) {
+                if ($data['minggu3'] == 1) {
+                    $mg3 = 1;
+                } else {
+                    $mg3 = 'x';
+                }
+            }
+            if (isset($data['minggu4'])) {
+                if ($data['minggu4'] == 1) {
+                    $mg4 = 1;
+                } else {
+                    $mg4 = 'x';
+                }
+            }
+            if (isset($data['minggu5'])) {
+                if ($data['minggu5'] == 1) {
+                    $mg5 = 1;
+                } else {
+                    $mg5 = 'x';
+                }
+            }
+            ////
+//            Yii::error($mg1);
+
+            $models[$r->nik] = [
+                'no' => $no,
+                'nama' => $nama,
+                'mg1' => $mg1,
+                'mg2' => $mg2,
+                'mg3' => $mg3,
+                'mg4' => $mg4,
+                'mg5' => $mg5,
+                'ttlinc' => $incentive,
+                'absh' => $absh,
+                'ijnh' => $ijnh,
+                'skh' => $skh,
+                'sdh' => $sdh,
+                'sth' => $sth,
+                'cth' => $cth
+            ];
+//                'lembur' => $lembur[$r->nik]];
+            $no++;
+        }
+
+//        Yii::error($models);
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun, 'start' => $date, 'end' => $endate), JSON_PRETTY_PRINT);
     }
 
     public function actionPenggajian() {
@@ -938,18 +1221,16 @@ class AbsensiController extends Controller {
                         $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
                     } else {
 
-
                         $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
                     }
                 }
 
                 $data[$key] = ($data2[$key] == 0) ? 1 : 0;
             }
-            
             foreach ($data as $newdt) {
                 $incentive += $newdt;
             }
-
+//            Yii::error($data);
             /* end incentive */
 
             /*
