@@ -266,7 +266,7 @@ class KaryawanController extends Controller
                 ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
                 ->join('LEFT JOIN', 'tbl_department', 'tbl_department.id_department = tbl_karyawan.department')
                 ->join('LEFT JOIN', 'tbl_section', 'tbl_section.id_section = tbl_karyawan.section')
-                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal'] . '")')
+                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal'] . '") and tbl_karyawan.status like "kerja"')
                 ->orderBy($sort)
                 ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
 
