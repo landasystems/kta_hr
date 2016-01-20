@@ -62,7 +62,7 @@ if (!isset($_GET['print'])) {
                 <th  style="text-align: center;vertical-align: center;">No</th>
                 <th  style="text-align: center;vertical-align: center;">NIK</th>
                 <th  style="text-align: center;vertical-align: center;">NAMA</th>
-                <th  style="text-align: center;vertical-align: center;">BAGIAN</th>
+                <th  style="text-align: center;vertical-align: center;">JABATAN</th>
                 <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 1</th>
                 <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 11</th>
                 <th  style="text-align: center;vertical-align: center;width: 10%;">KONTRAK 2</th>
@@ -75,17 +75,22 @@ if (!isset($_GET['print'])) {
             <?php
             $no = 1;
             foreach ($models as $val) {
-                $tglPenilaian = (!empty($val['tgl_penilaian'])) ? date('d-F-Y', strtotime($val['tgl_penilaian'])) : '';
+                $tglPenilaian = (!empty($val['tgl_penilaian'])) ? Yii::$app->landa->date2Ind($val['tgl_penilaian']) : '';
                 $status_penilaian = (!empty($val['status_penilaian'])) ? $val['status_penilaian'] : '';
+                $kontrak1 = (empty($val['Kontrak_1'])) ? '' : Yii::$app->landa->date2Ind($val['Kontrak_1']);
+                $kontrak11 = (empty($val['Kontrak_11'])) ? '' : Yii::$app->landa->date2Ind($val['Kontrak_11']);
+                $kontrak2 = (empty($val['Kontrak_2'])) ? '' : Yii::$app->landa->date2Ind($val['Kontrak_2']);
+                $kontrak21 = (empty($val['Kontrak_21'])) ? '' : Yii::$app->landa->date2Ind($val['Kontrak_21']);
+
                 echo '<tr>';
                 echo '<td align="center">' . $no . '</td>';
                 echo '<td align="center">' . $val['nik'] . '</td>';
-                echo '<td align="center">' . $val['nama'] . '</td>';
-                echo '<td align="center">' . $val['kerja'] . '</td>';
-                echo '<td align="center">' . $val['Kontrak_1'] . '</td>';
-                echo '<td align="center">' . $val['Kontrak_11'] . '</td>';
-                echo '<td align="center">' . $val['Kontrak_2'] . '</td>';
-                echo '<td align="center">' . $val['Kontrak_21'] . '</td>';
+                echo '<td align="left">' . $val['nama'] . '</td>';
+                echo '<td align="left">' . $val['jabatan'] . '</td>';
+                echo '<td align="center">' . $kontrak1 . '</td>';
+                echo '<td align="center">' . $kontrak11 . '</td>';
+                echo '<td align="center">' . $kontrak2 . '</td>';
+                echo '<td align="center">' . $kontrak21 . '</td>';
                 echo '<td align="center">' . $tglPenilaian . '</td>';
                 echo '<td align="center">' . $status_penilaian . '</td>';
                 echo '</tr>';

@@ -359,7 +359,7 @@ class KaryawanController extends Controller
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_karyawan.jabatan = tbl_jabatan.id_jabatan')
                 ->where('tbl_karyawan.status_karyawan = "Kontrak" AND tbl_karyawan.status="Kerja"')
                 ->orderBy($sort)
                 ->select("*");
