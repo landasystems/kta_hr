@@ -365,7 +365,8 @@ class KaryawanController extends Controller
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $adWhere .= (!empty($params['Jabatan']['id_jabatan'])) ? ' AND tbl_karyawan.jabatan="' . $params['Jabatan']['id_jabatan'] . '"' : '';
+            $query->andWhere('((Kontrak_11 >= "'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND Kontrak_11 <= "'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'" AND Kontrak_2 is NULL) OR (Kontrak_21 >= "'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND Kontrak_21 <= "'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
@@ -674,7 +675,8 @@ class KaryawanController extends Controller
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        $tanggal = $params['tanggal'];
+        $startDate = $params['tanggal']['startDate'];
+        $endDate = $params['tanggal']['endDate'];
         $section = (!empty($params['Section']['section'])) ? $params['Section']['section'] : '';
         $query->offset("");
         $query->limit("");
@@ -696,7 +698,7 @@ class KaryawanController extends Controller
         }
 
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
-        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'tanggal' => $tanggal, 'section' => $section]);
+        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'startDate' => $startDate, 'endDate' => $endDate, 'section' => $section]);
     }
 
     public function actionExcelkeluar()

@@ -46,7 +46,7 @@ if (!isset($_GET['print'])) {
                     <h4><u>DATA KONTRAK KERJA</u></h4>
                 </td>
                 <td  rowspan="2" colspan="2" style="text-align: left">
-                    <span>AKAN BERAKHIR PADA: <?= date('d F Y', strtotime($tanggal)); ?></span>
+                    <span>PERIODE: <?= date('d F Y', strtotime($startDate)).' s/d '.date('d F Y', strtotime($endDate)); ?></span>
                     <br/><span>SEKSI : <?= $section; ?></span>
                 </td>
                 <td  style="text-align: center">Dibuat</td>
