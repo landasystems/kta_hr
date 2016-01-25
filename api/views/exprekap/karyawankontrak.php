@@ -33,11 +33,19 @@ if (!isset($_GET['print'])) {
             <td></td>
         </tr>
     </table>
+    <?php
+    $periode = '';
 
+    if ($tipe == 'rentang') {
+        $periode = date('d F Y', strtotime($start)) . ' s/d ' . date('d F Y', strtotime($end));
+    } else {
+        $periode = date('d F Y',  strtotime($tanggal));
+    }
+    ?>
 
-    <br>
-    <br>
-    <hr>
+    <br/>
+    <br/>
+    <hr/>
     <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
     <table border="1">
         <thead>
@@ -46,7 +54,7 @@ if (!isset($_GET['print'])) {
                     <h4><u>DATA KONTRAK KERJA</u></h4>
                 </td>
                 <td  rowspan="2" colspan="2" style="text-align: left">
-                    <span>PERIODE: <?= date('d F Y', strtotime($startDate)).' s/d '.date('d F Y', strtotime($endDate)); ?></span>
+                    <span>PERIODE: <?= $periode ?></span>
                     <br/><span>SEKSI : <?= $section; ?></span>
                 </td>
                 <td  style="text-align: center">Dibuat</td>

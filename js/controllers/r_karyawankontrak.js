@@ -3,13 +3,14 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster, $modal) {
     var paramRef;
     $scope.form = {};
     $scope.form.tipe = 'kelompok';
+    $scope.form.tipe_periode = 'rentang';
     $scope.show_detail = false;
 //    $scope.form.tanggal = {
 //        'startDate' : new Date(),
 //    };
 
     $scope.print = function (form) {
-        if (('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
+        if (('tanggal_rentang' in form && (form.tanggal_rentang != null || form.tanggal_rentang != undefined)) || ('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapkontrak', form).then(function (data) {
                 window.open('api/web/karyawan/excelkontrak?print=true&rekap=karyawankontrak', "", "width=500");
             });
@@ -19,12 +20,20 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster, $modal) {
     };
 
     $scope.excel = function (form) {
-        if (('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
+        if (('tanggal_rentang' in form && (form.tanggal_rentang != null || form.tanggal_rentang != undefined)) || ('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapkontrak', form).then(function (data) {
                 window.location = 'api/web/karyawan/excelkontrak?rekap=karyawankontrak';
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+
+    $scope.cariDepartment = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('department/cari', {nama: $query}).then(function (data) {
+                $scope.listDepartment = data.data;
+            });
         }
     };
 
@@ -35,8 +44,8 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster, $modal) {
             });
         }
     };
-    
-    $scope.cariJabatan= function ($query) {
+
+    $scope.cariJabatan = function ($query) {
         if ($query.length >= 3) {
             Data.get('jabatan/cari', {nama: $query}).then(function (data) {
                 $scope.listJabatan = data.data;
@@ -59,10 +68,17 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster, $modal) {
         $scope.form.Karyawan = undefined;
     };
 
+    $scope.clearTgl = function () {
+        $scope.form.tanggal = undefined;
+    };
+    $scope.clearRentang = function () {
+        $scope.form.tanggal_rentang = undefined;
+    };
+
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-        if (('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
+        if (('tanggal_rentang' in form && (form.tanggal_rentang != null || form.tanggal_rentang != undefined)) || ('tanggal' in form && (form.tanggal != null || form.tanggal != undefined)) || ('Karyawan' in form && form.Karyawan != undefined)) {
             $scope.show_detail = true;
             Data.post('karyawan/rekapkontrak', form).then(function (data) {
                 $scope.listSrc = [];
@@ -112,7 +128,7 @@ app.controller('modalCtrl', function ($scope, Data, toaster, $modalInstance, for
             $scope.formmodal = data.data;
             $scope.formmodal.tgl = new Date(data.data.tgl);
         }
-        
+
     });
 
     $scope.nilaiTotal = function () {

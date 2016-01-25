@@ -4,7 +4,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.form = {};
     $scope.form.tipe = 'kelompok';
     $scope.show_detail = false;
-    
+
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -31,13 +31,14 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
         }
     };
 
-//    $scope.cariBarang = function ($query) {
-//        if ($query.length >= 3) {
-//            Data.get('karyawan/cari', {karyawan: $query}).then(function (data) {
-//                $scope.resultskaryawan = data.data;
-//            });
-//        }
-//    };
+    $scope.cariDepartment = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('departement/cari', {nama: $query}).then(function (data) {
+                $scope.listDepartment = data.data;
+            });
+        }
+    };
+
     $scope.cariSection = function ($query) {
         if ($query.length >= 3) {
             Data.get('section/cari', {nama: $query}).then(function (data) {

@@ -26,6 +26,83 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-md-3">Tipe Tanggal </label>
+                                                <div class="col-md-9">
+                                                    <label class="btn btn-default" ng-click="clearRentang()" ng-model="form.tipe_periode" btn-radio="'rentang'">Rentang</label>
+                                                    <label class="btn btn-default" ng-click="clearTgl()" ng-model="form.tipe_periode" btn-radio="'tanggal'">Tanggal</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok' && form.tipe_periode == 'rentang'">
+                                                <label class="col-md-3">Periode (Rentang)</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal_rentang">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok' && form.tipe_periode == 'tanggal'">
+                                                <label class="col-md-3">Periode</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tanggal" is-open="opened" ng-click="opened = true" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar-o"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" ng-show="form.tipe == 'perorangan'">
+                                                <label class="col-md-3">NIK - Nama</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="form.Karyawan" theme="bootstrap" required>
+                                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in listKaryawan">
+                                                                {{val.nik}}<br>
+                                                                <small>{{val.nama}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.Karyawan = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <!--<div class="col">-->
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-md-3">Department</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="form.Department" theme="bootstrap" required>
+                                                            <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                                {{val.id_department}}<br>
+                                                                <small>{{val.department}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                                 <label class="col-md-3">Section</label>
                                                 <div class="col-md-9">
                                                     <div class="input-group">
@@ -63,55 +140,30 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
-                                                <label class="col-md-3">Periode</label>
-                                                <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
-                                                        <span class="input-group-addon">
-                                                            <i class="fa fa-calendar-o"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group" ng-show="form.tipe == 'perorangan'">
-                                                <label class="col-md-3">NIK - Nama</label>
-                                                <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        <ui-select ng-model="form.Karyawan" theme="bootstrap" required>
-                                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
-                                                            <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in listKaryawan">
-                                                                {{val.nik}}<br>
-                                                                <small>{{val.nama}}</small>
-                                                            </ui-select-choices>
-                                                        </ui-select>
-                                                        <span class="input-group-btn">
-                                                            <button ng-click="form.Karyawan = undefined" class="btn btn-default">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3"></label>
-                                        <div class="col-md-9" style="text-align: left;">
-                                            <table>
-                                                <tr>
-                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
-                                                    <td
-                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
-                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Kontrak<span class="caret"></span></button>
-                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
-                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-md-5"></label>
+                                            <div class="col-md-7" style="text-align: center;">
+                                                <table>
+                                                    <tr>
+                                                        <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+                                                        <td>
+                                                            <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                                <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Kontrak<span class="caret"></span></button>
+                                                                <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                    <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                    <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -148,11 +200,11 @@
                             <td align="center"><span ng-if="row.Kontrak_11 !== undefined">{{row.Kontrak_11| date}}</span></td>
                             <td align="center"><span ng-if="row.Kontrak_2 !== undefined">{{row.Kontrak_2| date}}</span></td>
                             <td align="center"><span ng-if="row.Kontrak_21 !== undefined">{{row.Kontrak_21| date}}</span></td>
-                            <td align="center">{{row.tgl_penilaian | date}}</td>
+                            <td align="center">{{row.tgl_penilaian| date}}</td>
                             <td align="center">{{row.status_penilaian}}</td>
                             <td align="center">
-                                <button type="button" class="btn btn-primary fa fa-check-square-o" ng-click="modalPenilaian(row,1)">1</button>
-                                <button ng-show="row.Kontrak_2 != undefined" type="button" class="btn btn-info fa fa-check-square-o" ng-click="modalPenilaian(row,2)">2</button>
+                                <button type="button" class="btn btn-primary fa fa-check-square-o" ng-click="modalPenilaian(row, 1)">1</button>
+                                <button ng-show="row.Kontrak_2 != undefined" type="button" class="btn btn-info fa fa-check-square-o" ng-click="modalPenilaian(row, 2)">2</button>
                             </td>
                         </tr>
                         <tr>
