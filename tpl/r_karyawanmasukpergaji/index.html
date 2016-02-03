@@ -23,6 +23,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Department</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Department" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                        {{val.id_department}}<br>
+                                                        <small>{{val.department}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                         <label class="col-md-3">Section</label>
                                         <div class="col-md-9">
                                             <div class="input-group">
@@ -131,15 +150,15 @@
                             <td align="center">{{row.nik}}</td>
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.kode_bank}}</td>
-                            <td align="center">{{row.gaji_pokok}}</td>
-                            <td align="center">{{row.t_fungsional}}</td>
-                            <td align="center">{{row.t_kehadiran}}</td>
-                            <td align="center">{{row.thp}}</td>
-                            <td align="center">{{row.upah_tetap}}</td>
-                            <td align="center">{{row.pesangon}}</td>
-                            <td align="center">{{row.t_masa_kerja}}</td>
-                            <td align="center">{{row.penggantian_hak}}</td>
-                            <td align="center">{{row.normatif}}</td>
+                            <td align="right">{{row.gaji_pokok | number}}</td>
+                            <td align="right">{{row.t_fungsional | number}}</td>
+                            <td align="right">{{row.t_kehadiran | number}}</td>
+                            <td align="right">{{row.thp | number}}</td>
+                            <td align="right">{{row.upah_tetap | number}}</td>
+                            <td align="right">{{row.pesangon | number}}</td>
+                            <td align="right">{{row.t_masa_kerja | number}}</td>
+                            <td align="right">{{row.penggantian_hak | number}}</td>
+                            <td align="right">{{row.normatif | number}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

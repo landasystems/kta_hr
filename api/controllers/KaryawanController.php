@@ -233,6 +233,7 @@ class KaryawanController extends Controller
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
             $adWhere .= (!empty($params['lokasi_kantor'])) ? ' AND lokasi_kntr ="' . $params['lokasi_kantor'] . '"' : '';
+            $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
             $query->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")' . $adWhere);
         } else {
             $query->where(['nik' => $params['Karyawan']['nik']]);
@@ -266,7 +267,7 @@ class KaryawanController extends Controller
                 ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
                 ->join('LEFT JOIN', 'tbl_department', 'tbl_department.id_department = tbl_karyawan.department')
                 ->join('LEFT JOIN', 'tbl_section', 'tbl_section.id_section = tbl_karyawan.section')
-                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal'] . '")')
+                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal'] . '") and tbl_karyawan.status like "kerja"')
                 ->orderBy($sort)
                 ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
 
@@ -357,15 +358,20 @@ class KaryawanController extends Controller
 
         $query = new Query;
         $query->offset($offset)
-//                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('tbl_karyawan.status_karyawan = "Kontrak" AND tbl_karyawan.status="Kerja"')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_karyawan.jabatan = tbl_jabatan.id_jabatan')
+                ->where('tbl_karyawan.status_karyawan like "Kontrak" AND tbl_karyawan.status like "Kerja"')
                 ->orderBy($sort)
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $adWhere .= (!empty($params['Jabatan']['id_jabatan'])) ? ' AND tbl_karyawan.jabatan="' . $params['Jabatan']['id_jabatan'] . '"' : '';
+            $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
+
+            if ($params['tipe_periode'] == 'rentang')
+                $query->andWhere('((Kontrak_11 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_11 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '" AND Kontrak_2 is NULL) OR (Kontrak_21 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_21 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '"))' . $adWhere);
+            else
+                $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
@@ -674,7 +680,15 @@ class KaryawanController extends Controller
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        $tanggal = $params['tanggal'];
+        $start = '';
+        $end = '';
+        $tanggal = '';
+        if ($params['tipe_periode'] == 'rentang') {
+            $start = $params['tanggal_rentang']['startDate'];
+            $end = $params['tanggal_rentang']['endDate'];
+        } else {
+            $tanggal = $params['tanggal'];
+        }
         $section = (!empty($params['Section']['section'])) ? $params['Section']['section'] : '';
         $query->offset("");
         $query->limit("");
@@ -696,7 +710,14 @@ class KaryawanController extends Controller
         }
 
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
-        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'tanggal' => $tanggal, 'section' => $section]);
+        return $this->render("/exprekap/" . $rekap, [
+                    'models' => $models,
+                    'start' => $start,
+                    'end' => $end,
+                    'tanggal' => $tanggal,
+                    'tipe' => $params['tipe_periode'],
+                    'section' => $section
+        ]);
     }
 
     public function actionExcelkeluar()
