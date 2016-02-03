@@ -8,6 +8,18 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     $scope.show_detail = false;
     $scope.show_form = [];
 
+ $scope.exceln = function () {
+//        Data.get(controller_link + '/view/' + id).then(function (data) {
+            window.open('api/web/absensi/gjkryexcel?excel=ex');
+//        });
+    };
+
+    $scope.printn = function () {
+//        Data.get(controller_link + '/view/' + id).then(function (data) {
+            window.open('api/web/absensi/gjkryexcel?excel=print');
+//        });
+    };
+
     $scope.print = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             Data.post('karyawan/rekapkeluar', form).then(function (data) {
@@ -83,7 +95,7 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
             angular.forEach(data.data, function ($value, $key) {
                 $scope.listSrc.push($value);
             });
-            console.log($scope.listSrc);
+//            console.log($scope.listSrc);
         });
 
     };

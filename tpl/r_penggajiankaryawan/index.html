@@ -70,6 +70,15 @@
                                             <table>
                                                 <tr>
                                                     <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                    <td>
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="exceln()">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="printn()">Print</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
                                                 </tr>
 
                                             </table>
@@ -85,7 +94,7 @@
         <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN GAJI KARYAWAN PRODUKSI
-                <br/> TANGGAL : {{mulai_tanggal| date}} - {{tanggal_sampai| date}}
+                <br/> TANGGAL : {{mulai_tanggal*1000 | date:'d MMM yyyy'}} - {{tanggal_sampai*1000 | date:'d MMM yyyy'}}
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
@@ -95,6 +104,9 @@
                         <th colspan="5" style="text-align: center;vertical-align: middle;">INCENTIVE</th>
                         <th rowspan="3" style="text-align: center;vertical-align: middle;">TOTAL</th>
                         <th colspan="6" style="text-align: center;vertical-align: middle;">ABSENSI</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;">TH</th>
+                        <th colspan="2" style="text-align: center;vertical-align: middle;">POTONGAN UPAH</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;" width="190">Ket</th>
                     </tr>
                     <tr>
                         <th colspan="5" style="text-align: center;vertical-align: middle;">MINGGU</th>
@@ -104,6 +116,8 @@
                         <th rowspan="2" style="text-align: center;vertical-align: middle;">SD</th>
                         <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
                         <th rowspan="2" style="text-align: center;vertical-align: middle;">C</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">ABSENT</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
                     </tr>
                     <tr>
                         <th style="text-align: center;vertical-align: middle;">I</th>
@@ -129,9 +143,13 @@
                         <td style="text-align: center">{{row.sdh}}</td>
                         <td style="text-align: center">{{row.sth}}</td>
                         <td style="text-align: center">{{row.cth}}</td>
+                        <td style="text-align: center">{{row.thp}}</td>
+                        <td style="text-align: center">{{row.ptga}}</td>
+                        <td style="text-align: center">{{row.ptgs}}</td>
+                        <td style="text-align: center">{{row.ket}}</td>
                     </tr>
                     <tr>
-                        <td colspan="17" class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html"></td>
+                        <td colspan="25" class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html"></td>
                     </tr>
                 </tbody>
             </table>			
