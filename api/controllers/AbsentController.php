@@ -109,7 +109,14 @@ class AbsentController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
+                if ($key == 'tanggal') {
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'tbl_absent.tanggal', $start, $end]);
+                }else{
                 $query->andFilterWhere(['like', $key, $val]);
+                }
             }
         }
 

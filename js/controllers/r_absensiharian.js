@@ -61,6 +61,7 @@ app.controller('absensiharianCtrl', function ($state, $scope, Data, toaster) {
         }
 
         Data.post('absensi/absensiharian', form).then(function (data) {
+             $scope.list = [];
             $scope.listSrc = [];
             $scope.show_form.total = data.data.length;
             angular.forEach(data.data, function ($value, $key) {
