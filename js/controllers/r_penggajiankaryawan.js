@@ -2,6 +2,7 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     var tableStateRef;
     var paramRef;
     $scope.form = {};
+    $scope.listsecs = [{}];
     $scope.form.tanggal = new Date();
     $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal_sampai = new Date();
@@ -80,7 +81,11 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     Data.get('lokasikantor').then(function (data) {
         $scope.listLokasi = data.data;
     });
-
+    
+    Data.get('section/list').then(function (data) {
+//        console.log(data.data);
+        $scope.listsecs = data.data;
+    });
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {

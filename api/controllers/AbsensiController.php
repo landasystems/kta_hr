@@ -752,11 +752,15 @@ class AbsensiController extends Controller {
     public function actionPenggajiankaryawan() {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
-        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+//        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+        $section = [];
+        foreach ($params['Sections'] as $key => $value) {
+            $section[] = $value['id_section'];
+        }
+
 
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
-
         //last month
         $last_month = $bulan - 1 % 12;
         $lyear = ($last_month == 0 ? ($tahun - 1) : $tahun);
@@ -960,6 +964,7 @@ class AbsensiController extends Controller {
                 $ket_absent = [];
                 $ket_sdokter = [];
                 $ket_izin = [];
+                $potongan_abs = [];
                 $penjelasan = [];
                 $ket_stengah = [];
                 foreach ($sunday as $key => $value) {
@@ -968,7 +973,31 @@ class AbsensiController extends Controller {
 //                      Yii::error($val);
                         if (isset($abs[$r->nik][$val])) {
 
-                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                            $tes = $abs[$r->nik][$val]['keluar'];
+
+                            if (!isset($ket_absent[$r->nik])) {
+                                $ket_absent[$r->nik] = 0;
+                            }
+                            if (!isset($ket_stengah[$r->nik])) {
+                                $ket_stengah[$r->nik] = 0;
+                            }
+                            /////
+                            if ($tes >= "7.45" && $tes <= "09.59") {
+
+                                $ket_absent[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Pulang)';
+                                $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                            } else if ($tes >= "10.00" && $tes <= "13.00") {
+
+                                $ket_stengah[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
+                                $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                            } else if ($tes > "13.00") {
+
+                                $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                            }
+
+//                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
                         } else {
                             $dataabs = isset($data_absen[$r->nik][$val]) ? $data_absen[$r->nik][$val] : '';
 //                        Yii::error($absensi);
@@ -993,6 +1022,9 @@ class AbsensiController extends Controller {
                                 if (!isset($ket_stengah[$r->nik])) {
                                     $ket_stengah[$r->nik] = 0;
                                 }
+                                if (!isset($potongan_abs[$r->nik])) {
+                                    $potongan_abs[$r->nik] = 0;
+                                }
 
                                 if ($dataabs['ket'] == 'Cuti') {
                                     if (isset($dataabs['tanggal_kembali'])) {
@@ -1010,10 +1042,12 @@ class AbsensiController extends Controller {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_sakit[$r->nik] += 1;
+//                                            $potongan_abs[$r->nik] += 1;
                                             $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                         }
                                     } else {
                                         $ket_sakit[$r->nik] += 1;
+//                                        $potongan_abs[$r->nik] += 1;
                                         $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                     }
                                 }
@@ -1033,10 +1067,12 @@ class AbsensiController extends Controller {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_absent[$r->nik] += 1;
+//                                            $potongan_abs[$r->nik] += 1;
                                             $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                         }
                                     } else {
                                         $ket_absent[$r->nik] += 1;
+//                                        $potongan_abs[$r->nik] += 1;
                                         $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                     }
                                 }
@@ -1044,10 +1080,12 @@ class AbsensiController extends Controller {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_izin[$r->nik] += 1;
+//                                            $potongan_abs[$r->nik] += 1;
                                             $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                         }
                                     } else {
                                         $ket_izin[$r->nik] += 1;
+//                                        $potongan_abs[$r->nik] += 1;
                                         $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                     }
                                 }
@@ -1063,7 +1101,7 @@ class AbsensiController extends Controller {
                                     }
                                 }
                                 //cek di keterangan absen
-                                if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent') {
+                                if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent' OR $dataabs['ket'] == 'Setengah Hari') {
                                     $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
                                 }
                             } else if (isset($tgl_libur[$val])) {
@@ -1154,14 +1192,21 @@ class AbsensiController extends Controller {
                 $ketdokter = (isset($ket_sdokter[$r->nik])) ? $ket_sdokter[$r->nik] : 0;
                 $ketsetengah = (isset($ket_stengah[$r->nik])) ? $ket_stengah[$r->nik] : 0;
                 $ketcuti = (isset($ket_cuti[$r->nik])) ? $ket_cuti[$r->nik] : 0;
-                $potong_absen = ($ketabsen * 1);
+                $potabs = ($ketabsen + $ketizin + $ketsakit);
+                if (isset($r->section)) {
+                    $secmod = $r->sect->section;
+                } else {
+                    $secmod = '-';
+                }
+//                $potong_absen = ($ketabsen * 1);
                 $potong_setengah = ($ketsetengah * 0.5);
-                $ptg = ($potong_absen != 0) ? $potong_absen : '';
+//                $ptg = ($potongan_abs[$r->nik] != 0) ? $potongan_abs[$r->nik] : '';
                 $ptgse = ($potong_setengah == 0) ? '' : $potong_setengah;
                 //
-
+//                Yii::error($r->nik);
                 $models[$r->nik] = [
                     'no' => $no,
+                    'sect' => $secmod,
                     'nama' => $nama,
                     'mg1' => $mg1,
                     'mg2' => $mg2,
@@ -1175,15 +1220,21 @@ class AbsensiController extends Controller {
                     'sdh' => $ketdokter,
                     'sth' => $ketsetengah,
                     'cth' => $ketcuti,
-                    'ptga' => $ptg,
-                    'thp' => ($r->thp / 1000000),
+                    'ptga' => $potabs,
+                    'thp' => (25 - ($ketabsen + $ketizin + $ketsakit)),
                     'ptgs' => $ptgse,
                     'ket' => implode(', ', $penjelasan[$r->nik])
                 ];
             } else {
                 $nama = ($r->nik . ' - ' . $r->nama);
+                if (isset($r->section)) {
+                    $secmod = $r->sect->section;
+                } else {
+                    $secmod = '-';
+                }
                 $models[$r->nik] = [
                     'no' => $no,
+                    'sect' => $secmod,
                     'nama' => $nama,
                     'mg1' => '',
                     'mg2' => '',
@@ -1212,7 +1263,7 @@ class AbsensiController extends Controller {
         $_SESSION['data_gajikr']['tahun'] = $tahun;
         $_SESSION['data_gajikr']['start'] = strtotime($date);
         $_SESSION['data_gajikr']['end'] = strtotime($endate);
-        
+
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun, 'start' => strtotime($date), 'end' => strtotime($endate)), JSON_PRETTY_PRINT);
     }
@@ -1443,7 +1494,7 @@ class AbsensiController extends Controller {
         }
 
 //        Yii::error($models);
-        
+
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun, 'start' => $date, 'end' => $endate), JSON_PRETTY_PRINT);
     }

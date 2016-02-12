@@ -1,7 +1,42 @@
 <?php
 if ($_GET['excel'] == 'ex') {
-    header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-rekapitulasi-gaji-karyawan.xls");
+//    header("Content-type: application/vnd-ms-excel");
+//    header("Content-Disposition: attachment; filename=excel-rekapitulasi-gaji-karyawan.xls");
+}
+
+function edtnama($tes) {
+    $ex1 = explode(" - ", $tes);
+    $ex = explode(" ", $ex1[1]);
+    $data = [];
+    foreach ($ex as $val) {
+        $data[] = ucfirst(strtolower($val));
+    }
+    return implode(' ', $data);
+}
+
+$data2 = [];
+$i = 0;
+foreach ($data as $value) {
+    $data2[$value['sect']]['title']['section'] = $value['sect'];
+    $data2[$value['sect']]['body'][$i]['no'] = $value['no'];
+    $data2[$value['sect']]['body'][$i]['nama'] = $value['nama'];
+    $data2[$value['sect']]['body'][$i]['mg1'] = $value['mg1'];
+    $data2[$value['sect']]['body'][$i]['mg2'] = $value['mg2'];
+    $data2[$value['sect']]['body'][$i]['mg3'] = $value['mg3'];
+    $data2[$value['sect']]['body'][$i]['mg4'] = $value['mg4'];
+    $data2[$value['sect']]['body'][$i]['mg5'] = $value['mg5'];
+    $data2[$value['sect']]['body'][$i]['ttlinc'] = $value['ttlinc'];
+    $data2[$value['sect']]['body'][$i]['absh'] = $value['absh'];
+    $data2[$value['sect']]['body'][$i]['ijnh'] = $value['ijnh'];
+    $data2[$value['sect']]['body'][$i]['skh'] = $value['skh'];
+    $data2[$value['sect']]['body'][$i]['sdh'] = $value['sdh'];
+    $data2[$value['sect']]['body'][$i]['sth'] = $value['sth'];
+    $data2[$value['sect']]['body'][$i]['cth'] = $value['cth'];
+    $data2[$value['sect']]['body'][$i]['ptga'] = $value['ptga'];
+    $data2[$value['sect']]['body'][$i]['thp'] = $value['thp'];
+    $data2[$value['sect']]['body'][$i]['ptgs'] = $value['ptgs'];
+    $data2[$value['sect']]['body'][$i]['ket'] = $value['ket'];
+    $i++;
 }
 ?>
 <style type="text/css">
@@ -74,9 +109,9 @@ if ($_GET['excel'] == 'ex') {
                 Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>
 
             </th>
-            <th style="width:150px" class="border-all">Approved</th>
-            <th style="width:150px" class="border-all">Checked</th>
-            <th style="width:150px" class="border-all">Prepared</th>
+            <th style="width:120px" class="border-all">Approved</th>
+            <th style="width:120px" class="border-all">Checked</th>
+            <th style="width:120px" class="border-all">Prepared</th>
         </tr>
         <tr>
             <td style="height:50px;" class="border-all"></td>
@@ -127,29 +162,52 @@ if ($_GET['excel'] == 'ex') {
             </thead>
             <tbody >
                 <?php
-                foreach ($data as $val) {
+                foreach ($data2 as $key) {
                     ?>
                     <tr>
-                        <td style="width:20px;text-align: center"><?= $val['no'] ?></td>
-                        <td style="text-align: left"><?= $val['nama'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['mg1'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['mg2'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['mg3'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['mg4'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['mg5'] ?></td>
-                        <td style="width:90px;text-align: center"><?= $val['ttlinc'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['absh'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['ijnh'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['skh'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['sdh'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['sth'] ?></td>
-                        <td style="width:25px;text-align: center"><?= $val['cth'] ?></td>
-                        <td style="text-align: center"><?= $val['thp'] ?></td>
-                        <td style="width:90px;text-align: center"><?= $val['ptga'] ?></td>
-                        <td style="width:90px;text-align: center"><?= $val['ptgs'] ?></td>
-                        <td style="width:190px;text-align: center"><?= $val['ket'] ?></td>
+                        <td colspan="2" style="text-align:left;font-weight: bold;"><?= strtoupper($key['title']['section']) ?></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     <?php
+                    foreach ($key['body'] as $val) {
+                        ?>
+                        <tr>
+                            <td style="width:20px;text-align: center"><?= $val['no'] ?></td>
+                            <td style="text-align: left">&nbsp;<?= edtnama($val['nama']) ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['mg1'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['mg2'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['mg3'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['mg4'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['mg5'] ?></td>
+                            <td style="width:90px;text-align: center"><?= $val['ttlinc'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['absh'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['ijnh'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['skh'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['sdh'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['sth'] ?></td>
+                            <td style="width:25px;text-align: center"><?= $val['cth'] ?></td>
+                            <td style="text-align: center"><?= $val['thp'] ?></td>
+                            <td style="width:90px;text-align: center"><?= $val['ptga'] ?></td>
+                            <td style="width:90px;text-align: center"><?= $val['ptgs'] ?></td>
+                            <td style="width:190px;text-align: center"><?= $val['ket'] ?></td>
+                        </tr>
+                        <?php
+                    }
                 }
                 ?>
             </tbody>
