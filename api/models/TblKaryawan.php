@@ -161,10 +161,11 @@ class TblKaryawan extends \yii\db\ActiveRecord {
         if (!empty($niknama)) {
             $query->andWhere('(nik LIKE "%' . $niknama . '%" OR nama LIKE "%' . $niknama . '%")');
         }
-
+        
         if (!empty($section)) {
             if (is_array($section)) {
-                    $query->orWhere(['section' => [$section]]);
+//                Yii::error($section);
+                    $query->andWhere(['in','section',$section]);
             } else {
                 $query->andWhere("section = '" . $section . "'");
             }

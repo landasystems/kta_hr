@@ -1,7 +1,7 @@
 <?php
 if ($_GET['excel'] == 'ex') {
-//    header("Content-type: application/vnd-ms-excel");
-//    header("Content-Disposition: attachment; filename=excel-rekapitulasi-gaji-karyawan.xls");
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=excel-rekapitulasi-gaji-karyawan.xls");
 }
 
 function edtnama($tes) {
@@ -40,6 +40,9 @@ foreach ($data as $value) {
 }
 ?>
 <style type="text/css">
+    * {
+        font-size: 12px;
+    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -101,25 +104,29 @@ foreach ($data as $value) {
 
 </style>
 <div>
-    <table>
-        <tr style="line-height: 20px;">
-            <th style="width:331px" rowspan="2"class="border-right">REKAPITULASI GAJI KARYAWAN</th>
+    <?php
+    if ($_GET['excel'] != 'ex') {
+        ?>
+        <table>
+            <tr style="line-height: 20px;">
+                <th style="width:331px" rowspan="2"class="border-right"><u>REKAPITULASI GAJI KARYAWAN</u><br><center>FR-HRD-026</center></th>
             <th rowspan="2" style="text-align:left;">
-                Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= date('d M Y', $start); ?> - <?= date('d M Y', $end) ?><br>
+                Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y', $start)); ?> - <?= Yii::$app->landa->date2ind(date('d-m-Y', $end)) ?><br>
                 Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>
 
             </th>
-            <th style="width:120px" class="border-all">Approved</th>
-            <th style="width:120px" class="border-all">Checked</th>
-            <th style="width:120px" class="border-all">Prepared</th>
-        </tr>
-        <tr>
-            <td style="height:50px;" class="border-all"></td>
-            <td  class="border-all"></td>
-            <td  class="border-all"></td>
-        </tr>
-    </table>
-    <?php
+            <th style="width:110px" class="border-all">Approved</th>
+            <th style="width:110px" class="border-all">Checked</th>
+            <th style="width:110px" class="border-all">Prepared</th>
+            </tr>
+            <tr>
+                <td style="height:50px;" class="border-all"></td>
+                <td  class="border-all"></td>
+                <td  class="border-all"></td>
+            </tr>
+        </table>
+        <?php
+    }
     if ($_GET['excel'] == 'ex') {
         ?>
         <table border="1">
@@ -132,32 +139,32 @@ foreach ($data as $value) {
             ?>
             <thead>
                 <tr>
-                    <th rowspan="3" style="text-align: center;vertical-align: middle;width: 30px">NO</th>
-                    <th rowspan="3" style="text-align: center;vertical-align: middle;">NAMA</th>
-                    <th colspan="5" style="text-align: center;vertical-align: middle;">INCENTIVE</th>
-                    <th rowspan="3" style="text-align: center;vertical-align: middle;">TOTAL</th>
-                    <th colspan="6" style="text-align: center;vertical-align: middle;">ABSENSI</th>
-                    <th rowspan="3" style="text-align: center;vertical-align: middle;">TH</th>
-                    <th colspan="2" style="text-align: center;vertical-align: middle;">POTONGAN UPAH</th>
-                    <th rowspan="3" style="text-align: center;vertical-align: middle;" width="190">Ket</th>
+                    <th rowspan="3" style="font-size: 12px;text-align: center;vertical-align: middle;width: 30px">NO</th>
+                    <th rowspan="3" style="font-size: 12px;text-align: center;vertical-align: middle;">NAMA</th>
+                    <th colspan="5" style="font-size: 12px;text-align: center;vertical-align: middle;">INCENTIVE</th>
+                    <th rowspan="3" style="font-size: 12px;text-align: center;vertical-align: middle;">TOTAL</th>
+                    <th colspan="6" style="font-size: 12px;text-align: center;vertical-align: middle;">ABSENSI</th>
+                    <th rowspan="3" style="font-size: 12px;text-align: center;vertical-align: middle;">TH</th>
+                    <th colspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">POTONGAN UPAH</th>
+                    <th rowspan="3" style="font-size: 12px;text-align: center;vertical-align: middle;" width="190">Ket</th>
                 </tr>
                 <tr>
-                    <th colspan="5" style="text-align: center;vertical-align: middle;">MINGGU</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">A</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">I</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">S</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">SD</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">C</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">ABSENT</th>
-                    <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
+                    <th colspan="5" style="font-size: 12px;text-align: center;vertical-align: middle;">MINGGU</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">A</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">I</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">S</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">SD</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">&nbsp;1/2</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">C</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">ABSENT</th>
+                    <th rowspan="2" style="font-size: 12px;text-align: center;vertical-align: middle;">&nbsp;1/2&nbsp;</th>
                 </tr>
                 <tr>
-                    <th style="text-align: center;vertical-align: middle;">I</th>
-                    <th style="text-align: center;vertical-align: middle;">II</th>
-                    <th style="text-align: center;vertical-align: middle;">III</th>
-                    <th style="text-align: center;vertical-align: middle;">IV</th>
-                    <th style="text-align: center;vertical-align: middle;">V</th>
+                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">I</th>
+                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">II</th>
+                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">III</th>
+                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">IV</th>
+                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">V</th>
                 </tr>
             </thead>
             <tbody >
@@ -165,7 +172,7 @@ foreach ($data as $value) {
                 foreach ($data2 as $key) {
                     ?>
                     <tr>
-                        <td colspan="2" style="text-align:left;font-weight: bold;"><?= strtoupper($key['title']['section']) ?></td>
+                        <td colspan="2" style="font-size: 12px;text-align:left;font-weight: bold;"><?= strtoupper($key['title']['section']) ?></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -187,24 +194,24 @@ foreach ($data as $value) {
                     foreach ($key['body'] as $val) {
                         ?>
                         <tr>
-                            <td style="width:20px;text-align: center"><?= $val['no'] ?></td>
-                            <td style="text-align: left">&nbsp;<?= edtnama($val['nama']) ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['mg1'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['mg2'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['mg3'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['mg4'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['mg5'] ?></td>
-                            <td style="width:90px;text-align: center"><?= $val['ttlinc'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['absh'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['ijnh'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['skh'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['sdh'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['sth'] ?></td>
-                            <td style="width:25px;text-align: center"><?= $val['cth'] ?></td>
-                            <td style="text-align: center"><?= $val['thp'] ?></td>
-                            <td style="width:90px;text-align: center"><?= $val['ptga'] ?></td>
-                            <td style="width:90px;text-align: center"><?= $val['ptgs'] ?></td>
-                            <td style="width:190px;text-align: center"><?= $val['ket'] ?></td>
+                            <td style="font-size: 12px;width:20px;text-align: center"><?= $val['no'] ?></td>
+                            <td style="font-size: 12px;text-align: left">&nbsp;<?= edtnama($val['nama']) ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg1'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg2'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg3'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg4'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg5'] ?></td>
+                            <td style="font-size: 12px;width:90px;text-align: center"><?= $val['ttlinc'] ?></td>
+                            <td style="font-size: 12px;width:27px;text-align: center"><?=$val['absh']?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['ijnh'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['skh'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['sdh'] ?></td>
+                            <td style="font-size: 12px;width:30px;text-align: center"><?= $val['sth'] ?></td>
+                            <td style="font-size: 12px;width:25px;text-align: center"><?= $val['cth'] ?></td>
+                            <td style="font-size: 12px;text-align: center"><?= $val['thp'] ?></td>
+                            <td style="font-size: 12px;width:90px;text-align: center"><?= $val['ptga'] ?></td>
+                            <td style="font-size: 12px;width:90px;text-align: center"><?= $val['ptgs'] ?></td>
+                            <td style="font-size: 12px;width:190px;text-align: center"><?= $val['ket'] ?></td>
                         </tr>
                         <?php
                     }

@@ -89,14 +89,16 @@ class AbsensiController extends Controller {
         if (isset($params['tanggal'])) {
             $test = json_decode($params['tanggal'], true);
             $start = date("Y-m-d", strtotime($test['startDate']));
-
+//            Yii::error($start);
             $endate = date("Y-m-d", strtotime($test['endDate']));
         }
 //         Yii::error($params['test']);
         $kry = TblKaryawan::aktif($niknama);
         /////
         $begin = new \DateTime($start);
-//        $begine = $begin->format('Y-m-d');
+        $begin1 = $begin->modify("+1 day");
+        $begine = $begin1->format('Y-m-d');
+        Yii::error($begine);
         $end = new \DateTime($endate);
         $end = $end->modify('+1 day');
         $ende = $end->format('Y-m-d');
@@ -104,9 +106,9 @@ class AbsensiController extends Controller {
 
 //        Yii::error($start);
         //array periode
-        $period = new \DatePeriod($begin, $interval, $end);
-        $abs = AbsensiEttLog::absen($start, $endate);
-        $arrtgl = $this->Hitunghr($start, $endate);
+        $period = new \DatePeriod($begin1, $interval, $end);
+        $abs = AbsensiEttLog::absen($begine, $endate);
+        $arrtgl = $this->Hitunghr($begine, $endate);
         //== menentukan hari libur 
         $libr = \app\models\TblKalender::find()
                 ->where('tgl>="' . $start . '" AND tgl<="' . $endate . '"')
@@ -185,7 +187,7 @@ class AbsensiController extends Controller {
 
         $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'data' => $dnew, 'start' => $start, 'end' => $endate), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $dnew, 'start' => strtotime($begine), 'end' => strtotime($endate)), JSON_PRETTY_PRINT);
     }
 
     public function Izin($nik, $tanggal) {
@@ -753,6 +755,7 @@ class AbsensiController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
 //        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+        
         $section = [];
         foreach ($params['Sections'] as $key => $value) {
             $section[] = $value['id_section'];
@@ -1056,23 +1059,21 @@ class AbsensiController extends Controller {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_sdokter[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Srt Dokter)';
+                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
                                         }
                                     } else {
                                         $ket_sdokter[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Srt Dokter)';
+                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
                                     }
                                 }
                                 if ($dataabs['ket'] == 'Absent') {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_absent[$r->nik] += 1;
-//                                            $potongan_abs[$r->nik] += 1;
                                             $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                         }
                                     } else {
                                         $ket_absent[$r->nik] += 1;
-//                                        $potongan_abs[$r->nik] += 1;
                                         $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                     }
                                 }
@@ -1080,12 +1081,10 @@ class AbsensiController extends Controller {
                                     if (isset($dataabs['tanggal_kembali'])) {
                                         if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
                                             $ket_izin[$r->nik] += 1;
-//                                            $potongan_abs[$r->nik] += 1;
                                             $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                         }
                                     } else {
                                         $ket_izin[$r->nik] += 1;
-//                                        $potongan_abs[$r->nik] += 1;
                                         $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
                                     }
                                 }
@@ -1103,6 +1102,8 @@ class AbsensiController extends Controller {
                                 //cek di keterangan absen
                                 if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent' OR $dataabs['ket'] == 'Setengah Hari') {
                                     $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                                }else{
+                                    $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
                                 }
                             } else if (isset($tgl_libur[$val])) {
                                 $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
@@ -1221,7 +1222,7 @@ class AbsensiController extends Controller {
                     'sth' => $ketsetengah,
                     'cth' => $ketcuti,
                     'ptga' => $potabs,
-                    'thp' => (25 - ($ketabsen + $ketizin + $ketsakit)),
+                    'thp' => (25 - ($ketabsen + $ketizin + $ketsakit + $ketsetengah)),
                     'ptgs' => $ptgse,
                     'ket' => implode(', ', $penjelasan[$r->nik])
                 ];
