@@ -159,13 +159,17 @@ class TblKaryawan extends \yii\db\ActiveRecord {
     public static function aktif($niknama = '', $section = '', $lokasi_kntr = 'SUKOREJO') {
         $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="' . $lokasi_kntr . '"')->orderBy('nik')->indexBy('nik');
         if (!empty($niknama)) {
-            $query->andWhere('(nik LIKE "%' . $niknama . '%" OR nama LIKE "%' . $niknama . '%")');
+            if (is_array($niknama)) {
+                $query->andWhere(['in', 'nik', $niknama]);
+            } else {
+                $query->andWhere('(nik LIKE "%' . $niknama . '%" OR nama LIKE "%' . $niknama . '%")');
+            }
         }
-        
+
         if (!empty($section)) {
             if (is_array($section)) {
 //                Yii::error($section);
-                    $query->andWhere(['in','section',$section]);
+                $query->andWhere(['in', 'section', $section]);
             } else {
                 $query->andWhere("section = '" . $section . "'");
             }

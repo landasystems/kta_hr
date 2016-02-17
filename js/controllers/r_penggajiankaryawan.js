@@ -3,21 +3,22 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     var paramRef;
     $scope.form = {};
     $scope.listsecs = [{}];
+    $scope.listnama = [{}];
     $scope.form.tanggal = new Date();
     $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
 
- $scope.exceln = function () {
+    $scope.exceln = function () {
 //        Data.get(controller_link + '/view/' + id).then(function (data) {
-            window.open('api/web/absensi/gjkryexcel?excel=ex');
+        window.open('api/web/absensi/gjkryexcel?excel=ex');
 //        });
     };
 
     $scope.printn = function () {
 //        Data.get(controller_link + '/view/' + id).then(function (data) {
-            window.open('api/web/absensi/gjkryexcel?excel=print');
+        window.open('api/web/absensi/gjkryexcel?excel=print');
 //        });
     };
 
@@ -81,11 +82,19 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     Data.get('lokasikantor').then(function (data) {
         $scope.listLokasi = data.data;
     });
-    
+
     Data.get('section/list').then(function (data) {
 //        console.log(data.data);
         $scope.listsecs = data.data;
     });
+
+    $scope.listnm = function (section) {
+//        console.log(section);
+        Data.post('absensi/listkar', section).then(function (data) {
+            $scope.listnama = data.data;
+        });
+    };
+
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {

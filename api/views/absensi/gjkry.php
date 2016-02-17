@@ -109,15 +109,15 @@ foreach ($data as $value) {
         ?>
         <table>
             <tr style="line-height: 20px;">
-                <th style="width:331px" rowspan="2"class="border-right"><u>REKAPITULASI GAJI KARYAWAN</u><br><center>FR-HRD-026</center></th>
-            <th rowspan="2" style="text-align:left;">
+                <th style="font-size: 12px;width:331px" rowspan="2"class="border-right"><u>REKAPITULASI GAJI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
+            <th rowspan="2" style="font-size: 12px;text-align:left;">
                 Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y', $start)); ?> - <?= Yii::$app->landa->date2ind(date('d-m-Y', $end)) ?><br>
                 Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>
 
             </th>
-            <th style="width:110px" class="border-all">Approved</th>
-            <th style="width:110px" class="border-all">Checked</th>
-            <th style="width:110px" class="border-all">Prepared</th>
+            <th style="font-size: 12px;width:110px" class="border-all">Approved</th>
+            <th style="font-size: 12px;width:110px" class="border-all">Checked</th>
+            <th style="font-size: 12px;width:110px" class="border-all">Prepared</th>
             </tr>
             <tr>
                 <td style="height:50px;" class="border-all"></td>
@@ -125,6 +125,27 @@ foreach ($data as $value) {
                 <td  class="border-all"></td>
             </tr>
         </table>
+        <?php
+    } else {
+        ?>
+        <table>
+            <tr style="line-height: 20px;">
+                <th style="width:331px" rowspan="2" colspan="3"class="border-right"><u>REKAPITULASI GAJI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
+            <th rowspan="2" colspan="12"style="text-align:left;">
+                Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y', $start)); ?> - <?= Yii::$app->landa->date2ind(date('d-m-Y', $end)) ?><br>
+                Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>
+
+            </th>
+            <th style="width:110px" class="border-all">Approved</th>
+            <th style="width:110px"  class="border-all">Checked</th>
+            <th style="width:110px" cclass="border-all">Prepared</th>
+            </tr>
+            <tr>
+                <td style="height:50px;" class="border-all"></td>
+                <td  class="border-all" ></td>
+                <td  class="border-all"></td>
+            </tr>
+        </table> 
         <?php
     }
     if ($_GET['excel'] == 'ex') {
@@ -202,7 +223,7 @@ foreach ($data as $value) {
                             <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg4'] ?></td>
                             <td style="font-size: 12px;width:25px;text-align: center"><?= $val['mg5'] ?></td>
                             <td style="font-size: 12px;width:90px;text-align: center"><?= $val['ttlinc'] ?></td>
-                            <td style="font-size: 12px;width:27px;text-align: center"><?=$val['absh']?></td>
+                            <td style="font-size: 12px;width:27px;text-align: center"><?= $val['absh'] ?></td>
                             <td style="font-size: 12px;width:25px;text-align: center"><?= $val['ijnh'] ?></td>
                             <td style="font-size: 12px;width:25px;text-align: center"><?= $val['skh'] ?></td>
                             <td style="font-size: 12px;width:25px;text-align: center"><?= $val['sdh'] ?></td>

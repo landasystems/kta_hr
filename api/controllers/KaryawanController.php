@@ -106,6 +106,7 @@ class KaryawanController extends Controller
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
     }
+    
 
     public function actionIndex()
     {

@@ -25,6 +25,7 @@ class AbsensiController extends Controller {
                     'lembur' => ['get'],
                     'listsec' => ['get'],
                     'penggajian' => ['post'],
+                    'listkar' => ['post'],
                     'penggajiankaryawan' => ['post'],
                     'minggu' => ['get'],
                     'rekap' => ['get'],
@@ -81,6 +82,8 @@ class AbsensiController extends Controller {
         );
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
+    
+    
 
     public function actionRekap() {
         $params = $_REQUEST;
@@ -750,15 +753,48 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
+    
+    public function actionListkar() {
+        $params = json_decode(file_get_contents("php://input"), true);
+//        Yii::error($params);
+        $section = [];
+        foreach ($params as $key => $value) {
+            $section[] = $value['id_section'];
+        }
+        
+//        Yii::error($section);
+        
+        if(empty($section)){
+            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->all();
+        }else{
+            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in','section',$section])->all();
+        }
+        
+        $data = [];
+        foreach($kar as $key => $val){
+            $data[$key]['nik'] = $val->nik;
+            $data[$key]['nama'] = $val->nama;
+        }
+        
+//        Yii::error($data);
+        
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
+    }
 
     public function actionPenggajiankaryawan() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
+//        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
 //        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
         
         $section = [];
         foreach ($params['Sections'] as $key => $value) {
             $section[] = $value['id_section'];
+        }
+        
+        $nmkr = [];
+        foreach ($params['Namakr'] as $keys => $values) {
+            $nmkr[] = $values['nik'];
         }
 
 
@@ -786,7 +822,7 @@ class AbsensiController extends Controller {
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $endate);
-        $kry = TblKaryawan::aktif($niknama, $section, $lokasi);
+        $kry = TblKaryawan::aktif($nmkr, $section, $lokasi);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
