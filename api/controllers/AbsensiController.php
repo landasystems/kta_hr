@@ -82,8 +82,6 @@ class AbsensiController extends Controller {
         );
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
-    
-    
 
     public function actionRekap() {
         $params = $_REQUEST;
@@ -753,7 +751,7 @@ class AbsensiController extends Controller {
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
-    
+
     public function actionListkar() {
         $params = json_decode(file_get_contents("php://input"), true);
 //        Yii::error($params);
@@ -761,23 +759,23 @@ class AbsensiController extends Controller {
         foreach ($params as $key => $value) {
             $section[] = $value['id_section'];
         }
-        
+
 //        Yii::error($section);
-        
-        if(empty($section)){
+
+        if (empty($section)) {
             $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->all();
-        }else{
-            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in','section',$section])->all();
+        } else {
+            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in', 'section', $section])->all();
         }
-        
+
         $data = [];
-        foreach($kar as $key => $val){
+        foreach ($kar as $key => $val) {
             $data[$key]['nik'] = $val->nik;
             $data[$key]['nama'] = $val->nama;
         }
-        
+
 //        Yii::error($data);
-        
+
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $data), JSON_PRETTY_PRINT);
     }
@@ -786,12 +784,12 @@ class AbsensiController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
 //        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
 //        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
-        
+
         $section = [];
         foreach ($params['Sections'] as $key => $value) {
             $section[] = $value['id_section'];
         }
-        
+
         $nmkr = [];
         foreach ($params['Namakr'] as $keys => $values) {
             $nmkr[] = $values['nik'];
@@ -903,59 +901,12 @@ class AbsensiController extends Controller {
         $sdh = [];
         $skh = [];
         $data_absen = [];
+        $data_absen_tes = [];
         foreach ($ijin as $arr) {
             $data_absen[$arr->nik][$arr->tanggal] = $arr->attributes;
-            if (!isset($sth[$arr->nik])) {
-                $sth[$arr->nik] = 0;
-            }
-            if (!isset($ijnh[$arr->nik])) {
-                $ijnh[$arr->nik] = 0;
-            }
-            if (!isset($absh[$arr->nik])) {
-                $absh[$arr->nik] = 0;
-            }
-            if (!isset($cth[$arr->nik])) {
-                $cth[$arr->nik] = 0;
-            }
-            if (!isset($sdh[$arr->nik])) {
-                $sdh[$arr->nik] = 0;
-            }
-            if (!isset($skh[$arr->nik])) {
-                $skh[$arr->nik] = 0;
-            }
-
-            if ($arr->ket == 'Setengah Hari') {
-                $sth[$arr->nik] += 1;
-            } else {
-                $sth[$arr->nik] += 0;
-            }
-            if ($arr->ket == 'Izin') {
-                $ijnh[$arr->nik] += 1;
-            } else {
-                $ijnh[$arr->nik] += 0;
-            }
-            if ($arr->ket == 'Absent') {
-                $absh[$arr->nik] += 1;
-            } else {
-                $absh[$arr->nik] += 0;
-            }
-            if ($arr->ket == 'Cuti') {
-                $cth[$arr->nik] +=1;
-            } else {
-                $cth[$arr->nik] +=0;
-            }
-            if ($arr->ket == 'Surat Dokter') {
-                $sdh[$arr->nik] +=1;
-            } else {
-                $sdh[$arr->nik] +=0;
-            }
-            if ($arr->ket == 'Sakit') {
-                $skh[$arr->nik] +=1;
-            } else {
-                $skh[$arr->nik] +=0;
-            }
+            $data_absen_tes["01006"][$arr->tanggal] = $arr->attributes;
         }
-
+//        Yii::error($data_absen_tes);
         //==== absen
 //        echo json_encode($ijin_jml);
 //        Yii::error($data_absen['00001']['2015-12-26']);
@@ -985,312 +936,298 @@ class AbsensiController extends Controller {
         $no = 1;
         foreach ($kry as $r) {
 
-            if ($r->nik !== '00001' && $r->nik !== '00123') {
+//            if ($r->nik !== '00000') {
+//                hempi 00001
+//                kesit 00123
+            if (isset($potongan_pinjaman[$r->nik])) { //cari potongan pinjaman, dari proses di atas
+                $potongan_pinjaman_rp = $potongan_pinjaman[$r->nik];
+            } else {
+                $potongan_pinjaman_rp = 0;
+            }
 
-                if (isset($potongan_pinjaman[$r->nik])) { //cari potongan pinjaman, dari proses di atas
-                    $potongan_pinjaman_rp = $potongan_pinjaman[$r->nik];
-                } else {
-                    $potongan_pinjaman_rp = 0;
-                }
+            /* start incentive */
 
-                /* start incentive */
+            $data = [];
+            $data2 = [];
+            $incentive = 0;
+            $ket_cuti = [];
+            $ket_sakit = [];
+            $ket_absent = [];
+            $ket_sdokter = [];
+            $ket_izin = [];
+            $potongan_abs = [];
+            $penjelasan = [];
+            $ket_stengah = [];
+            foreach ($sunday as $key => $value) {
 
-                $data = [];
-                $data2 = [];
-                $incentive = 0;
-                $ket_cuti = [];
-                $ket_sakit = [];
-                $ket_absent = [];
-                $ket_sdokter = [];
-                $ket_izin = [];
-                $potongan_abs = [];
-                $penjelasan = [];
-                $ket_stengah = [];
-                foreach ($sunday as $key => $value) {
+                foreach ($value as $val) {
 
-                    foreach ($value as $val) {
-//                      Yii::error($val);
-                        if (isset($abs[$r->nik][$val])) {
+                    if (isset($abs[$r->nik][$val])) {
 
-                            $tes = $abs[$r->nik][$val]['keluar'];
+                        $out = $abs[$r->nik][$val]['keluar'];
+                        $in = $abs[$r->nik][$val]['masuk'];
+                        $dataabs = isset($data_absen[$r->nik][$val]) ? $data_absen[$r->nik][$val] : '';
 
-                            if (!isset($ket_absent[$r->nik])) {
-                                $ket_absent[$r->nik] = 0;
-                            }
-                            if (!isset($ket_stengah[$r->nik])) {
-                                $ket_stengah[$r->nik] = 0;
-                            }
-                            /////
-                            if ($tes >= "7.45" && $tes <= "09.59") {
+                        if (!isset($ket_absent[$r->nik])) {
+                            $ket_absent[$r->nik] = 0;
+                        }
+                        if (!isset($ket_sdokter[$r->nik])) {
+                            $ket_sdokter[$r->nik] = 0;
+                        }
+                        if (!isset($ket_stengah[$r->nik])) {
+                            $ket_stengah[$r->nik] = 0;
+                        }
+                        if (!isset($ket_sakit[$r->nik])) {
+                            $ket_sakit[$r->nik] = 0;
+                        }
+                        if (!isset($ket_cuti[$r->nik])) {
+                            $ket_cuti[$r->nik] = 0;
+                        }
+                        if (!isset($ket_izin[$r->nik])) {
+                            $ket_izin[$r->nik] = 0;
+                        }
+                        /////
+
+                        if (is_array($dataabs)) {
+//                                if ($r->nik == '01006') {
+//                                    Yii::error($val);
+//                                    Yii::error($dataabs['ket']);
+//                                }
+                            if ($dataabs['ket'] == 'Absent') {
 
                                 $ket_absent[$r->nik] += 1;
-                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Pulang)';
-                                $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-                            } else if ($tes >= "10.00" && $tes <= "13.00") {
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            } else if ($dataabs['ket'] == 'Sakit') {
+
+                                $ket_sakit[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            } else if ($dataabs['ket'] == 'Setengah Hari') {
 
                                 $ket_stengah[$r->nik] += 1;
                                 $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
                                 $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-                            } else if ($tes > "13.00") {
+                            } else if ($dataabs['ket'] == 'Izin') {
+
+                                $ket_izin[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            } else if ($dataabs['ket'] == 'Cuti') {
+
+                                $ket_cuti[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            } else if ($dataabs['ket'] == 'Surat Dokter') {
+
+                                $ket_sdokter[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            } else if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent') {
 
                                 $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
                             }
+                        } else if ($out >= "7.45" && $out <= "09.59") {
 
-//                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-                        } else {
-                            $dataabs = isset($data_absen[$r->nik][$val]) ? $data_absen[$r->nik][$val] : '';
-//                        Yii::error($absensi);
+                            $ket_absent[$r->nik] += 1;
+                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Pulang)';
+                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                        } else if ($out >= "10.00" && $out <= "13.00") {
 
-                            if (!empty($dataabs)) {
+                            $ket_stengah[$r->nik] += 1;
+                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
+                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                        } else if ($out > "13.00") {
 
-                                if (!isset($ket_cuti[$r->nik])) {
-                                    $ket_cuti[$r->nik] = 0;
-                                }
-                                if (!isset($ket_sakit[$r->nik])) {
-                                    $ket_sakit[$r->nik] = 0;
-                                }
-                                if (!isset($ket_sdokter[$r->nik])) {
-                                    $ket_sdokter[$r->nik] = 0;
-                                }
-                                if (!isset($ket_absent[$r->nik])) {
-                                    $ket_absent[$r->nik] = 0;
-                                }
-                                if (!isset($ket_izin[$r->nik])) {
-                                    $ket_izin[$r->nik] = 0;
-                                }
-                                if (!isset($ket_stengah[$r->nik])) {
-                                    $ket_stengah[$r->nik] = 0;
-                                }
-                                if (!isset($potongan_abs[$r->nik])) {
-                                    $potongan_abs[$r->nik] = 0;
-                                }
+                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                        }
+                    } else {
+                        $dataabs = isset($data_absen[$r->nik][$val]) ? $data_absen[$r->nik][$val] : '';
 
-                                if ($dataabs['ket'] == 'Cuti') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_cuti[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                        }
-                                    } else {
-                                        $ket_cuti[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                    }
-                                }
+                        if (!empty($dataabs)) {
 
-                                if ($dataabs['ket'] == 'Sakit') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_sakit[$r->nik] += 1;
-//                                            $potongan_abs[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                        }
-                                    } else {
-                                        $ket_sakit[$r->nik] += 1;
-//                                        $potongan_abs[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                    }
-                                }
+                            if (!isset($ket_cuti[$r->nik])) {
+                                $ket_cuti[$r->nik] = 0;
+                            }
+                            if (!isset($ket_sakit[$r->nik])) {
+                                $ket_sakit[$r->nik] = 0;
+                            }
+                            if (!isset($ket_sdokter[$r->nik])) {
+                                $ket_sdokter[$r->nik] = 0;
+                            }
+                            if (!isset($ket_absent[$r->nik])) {
+                                $ket_absent[$r->nik] = 0;
+                            }
+                            if (!isset($ket_izin[$r->nik])) {
+                                $ket_izin[$r->nik] = 0;
+                            }
+                            if (!isset($ket_stengah[$r->nik])) {
+                                $ket_stengah[$r->nik] = 0;
+                            }
 
-                                if ($dataabs['ket'] == 'Surat Dokter') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_sdokter[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
-                                        }
-                                    } else {
-                                        $ket_sdokter[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
-                                    }
-                                }
-                                if ($dataabs['ket'] == 'Absent') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_absent[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                        }
-                                    } else {
-                                        $ket_absent[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                    }
-                                }
-                                if ($dataabs['ket'] == 'Izin') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_izin[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                        }
-                                    } else {
-                                        $ket_izin[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
-                                    }
-                                }
-                                if ($dataabs['ket'] == 'Setengah Hari') {
-                                    if (isset($dataabs['tanggal_kembali'])) {
-                                        if ($val >= $dataabs['tanggal'] && $val <= $dataabs['tanggal_kembali']) {
-                                            $ket_stengah[$r->nik] += 1;
-                                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
-                                        }
-                                    } else {
-                                        $ket_stengah[$r->nik] += 1;
-                                        $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
-                                    }
-                                }
-                                //cek di keterangan absen
-                                if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent' OR $dataabs['ket'] == 'Setengah Hari') {
-                                    $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-                                }else{
-                                    $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
-                                }
-                            } else if (isset($tgl_libur[$val])) {
+                            /////
+                            if ($dataabs['ket'] == 'Dinas Luar' OR $dataabs['ket'] == 'Izin Absent') {
+
                                 $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
-                            } else {
-                                if (!isset($ket_absent[$r->nik])) {
-                                    $ket_absent[$r->nik] = 0;
-                                }
+                            } else if ($dataabs['ket'] == 'Cuti') {
+
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                                $ket_cuti[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                            } else if ($dataabs['ket'] == 'Sakit') {
+
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                                $ket_sakit[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                            } else if ($dataabs['ket'] == 'Surat Dokter') {
+
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                                $ket_sdokter[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (SD)';
+                            } else if ($dataabs['ket'] == 'Absent') {
+
                                 $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
                                 $ket_absent[$r->nik] += 1;
-                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Absent)';
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                            } else if ($dataabs['ket'] == 'Izin') {
+
+                                $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                                $ket_izin[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (' . $dataabs['ket'] . ')';
+                            } else if ($dataabs['ket'] == 'Setengah Hari') {
+
+                                $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                                $ket_stengah[$r->nik] += 1;
+                                $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (1/2 Hari)';
                             }
+                        } else if (isset($tgl_libur[$val])) {
+                            $data2[$key] = (empty($data2[$key])) ? 0 : $data2[$key];
+                        } else {
+                            if (!isset($ket_absent[$r->nik])) {
+                                $ket_absent[$r->nik] = 0;
+                            }
+                            $data2[$key] = (empty($data2[$key])) ? 1 : $data2[$key] + 1;
+                            $ket_absent[$r->nik] += 1;
+                            $penjelasan[$r->nik][] = Date('d M y', strtotime($val)) . ' (Absent)';
                         }
                     }
-//                    Yii::error($r->nik);
-                    $teswae = isset($data2[$key]) ? $data2[$key] : 1;
-                    $data[$key] = ($teswae == 0) ? 1 : 0;
                 }
+//                    Yii::error($r->nik);
+                $teswae = isset($data2[$key]) ? $data2[$key] : 1;
+                $data[$key] = ($teswae == 0) ? 1 : 0;
+            }
 
 //            Yii::error($data);
-                foreach ($data as $newdt) {
-                    $incentive += $newdt;
-                }
-
-                /* end incentive */
-
-                /*
-                  sementara
-                 */
-
-                //deskripsi
-                $inc = $incentive;
-                $jml_inc = $r->t_kehadiran;
-                $ttl_inc = ($inc * $jml_inc);
-                $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
-                $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
-                $kesehatan = ($r->gaji_pokok * 1 / 100);
-                $pinjaman = $potongan_pinjaman_rp;
-                $nama = ($r->nik . ' - ' . $r->nama);
-
-                $mg1 = '';
-                $mg2 = '';
-                $mg3 = '';
-                $mg4 = '';
-                $mg5 = '';
-
-                if (isset($data['minggu1'])) {
-                    if ($data['minggu1'] === 1) {
-                        $mg1 = 1;
-                    } else {
-                        $mg1 = 'x';
-                    }
-                }
-                if (isset($data['minggu2'])) {
-                    if ($data['minggu2'] === 1) {
-                        $mg2 = 1;
-                    } else {
-                        $mg2 = 'x';
-                    }
-                }
-                if (isset($data['minggu3'])) {
-                    if ($data['minggu3'] === 1) {
-                        $mg3 = 1;
-                    } else {
-                        $mg3 = 'x';
-                    }
-                }
-                if (isset($data['minggu4'])) {
-                    if ($data['minggu4'] === 1) {
-                        $mg4 = 1;
-                    } else {
-                        $mg4 = 'x';
-                    }
-                }
-                if (isset($data['minggu5'])) {
-                    if ($data['minggu5'] === 1) {
-                        $mg5 = 1;
-                    } else {
-                        $mg5 = 'x';
-                    }
-                }
-                ////
-//            Yii::error($mg1);
-                //
-                $ketabsen = (isset($ket_absent[$r->nik])) ? $ket_absent[$r->nik] : 0;
-                $ketizin = (isset($ket_izin[$r->nik])) ? $ket_izin[$r->nik] : 0;
-                $ketsakit = (isset($ket_sakit[$r->nik])) ? $ket_sakit[$r->nik] : 0;
-                $ketdokter = (isset($ket_sdokter[$r->nik])) ? $ket_sdokter[$r->nik] : 0;
-                $ketsetengah = (isset($ket_stengah[$r->nik])) ? $ket_stengah[$r->nik] : 0;
-                $ketcuti = (isset($ket_cuti[$r->nik])) ? $ket_cuti[$r->nik] : 0;
-                $potabs = ($ketabsen + $ketizin + $ketsakit);
-                if (isset($r->section)) {
-                    $secmod = $r->sect->section;
-                } else {
-                    $secmod = '-';
-                }
-//                $potong_absen = ($ketabsen * 1);
-                $potong_setengah = ($ketsetengah * 0.5);
-//                $ptg = ($potongan_abs[$r->nik] != 0) ? $potongan_abs[$r->nik] : '';
-                $ptgse = ($potong_setengah == 0) ? '' : $potong_setengah;
-                //
-//                Yii::error($r->nik);
-                $models[$r->nik] = [
-                    'no' => $no,
-                    'sect' => $secmod,
-                    'nama' => $nama,
-                    'mg1' => $mg1,
-                    'mg2' => $mg2,
-                    'mg3' => $mg3,
-                    'mg4' => $mg4,
-                    'mg5' => $mg5,
-                    'ttlinc' => $incentive,
-                    'absh' => $ketabsen,
-                    'ijnh' => $ketizin,
-                    'skh' => $ketsakit,
-                    'sdh' => $ketdokter,
-                    'sth' => $ketsetengah,
-                    'cth' => $ketcuti,
-                    'ptga' => $potabs,
-                    'thp' => (25 - ($ketabsen + $ketizin + $ketsakit + $ketsetengah)),
-                    'ptgs' => $ptgse,
-                    'ket' => implode(', ', $penjelasan[$r->nik])
-                ];
-            } else {
-                $nama = ($r->nik . ' - ' . $r->nama);
-                if (isset($r->section)) {
-                    $secmod = $r->sect->section;
-                } else {
-                    $secmod = '-';
-                }
-                $models[$r->nik] = [
-                    'no' => $no,
-                    'sect' => $secmod,
-                    'nama' => $nama,
-                    'mg1' => '',
-                    'mg2' => '',
-                    'mg3' => '',
-                    'mg4' => '',
-                    'mg5' => '',
-                    'ttlinc' => '',
-                    'absh' => '',
-                    'ijnh' => '',
-                    'skh' => '',
-                    'sdh' => '',
-                    'sth' => '',
-                    'cth' => '',
-                    'ptga' => '',
-                    'thp' => '',
-                    'ptgs' => '',
-                    'ket' => ''
-                ];
+            foreach ($data as $newdt) {
+                $incentive += $newdt;
             }
+
+            /* end incentive */
+
+            /*
+              sementara
+             */
+
+            //deskripsi
+            $inc = $incentive;
+            $jml_inc = $r->t_kehadiran;
+            $ttl_inc = ($inc * $jml_inc);
+            $ttl_kopensasi = ($r->gaji_pokok + $r->t_fungsional + $r->mgm + $ttl_inc);
+            $ketengakerjaan = ($r->gaji_pokok * 3 / 100);
+            $kesehatan = ($r->gaji_pokok * 1 / 100);
+            $pinjaman = $potongan_pinjaman_rp;
+            $nama = ($r->nik . ' - ' . $r->nama);
+
+            $mg1 = '';
+            $mg2 = '';
+            $mg3 = '';
+            $mg4 = '';
+            $mg5 = '';
+
+            if (isset($data['minggu1'])) {
+                if ($data['minggu1'] === 1) {
+                    $mg1 = 1;
+                } else {
+                    $mg1 = 'x';
+                }
+            }
+            if (isset($data['minggu2'])) {
+                if ($data['minggu2'] === 1) {
+                    $mg2 = 1;
+                } else {
+                    $mg2 = 'x';
+                }
+            }
+            if (isset($data['minggu3'])) {
+                if ($data['minggu3'] === 1) {
+                    $mg3 = 1;
+                } else {
+                    $mg3 = 'x';
+                }
+            }
+            if (isset($data['minggu4'])) {
+                if ($data['minggu4'] === 1) {
+                    $mg4 = 1;
+                } else {
+                    $mg4 = 'x';
+                }
+            }
+            if (isset($data['minggu5'])) {
+                if ($data['minggu5'] === 1) {
+                    $mg5 = 1;
+                } else {
+                    $mg5 = 'x';
+                }
+            }
+            ////
+//            Yii::error($mg1);
+            //
+               
+                $ketabsen = (!empty($ket_absent[$r->nik])) ? $ket_absent[$r->nik] : 0;
+            $ketizin = (!empty($ket_izin[$r->nik])) ? $ket_izin[$r->nik] : 0;
+            $ketsakit = (!empty($ket_sakit[$r->nik])) ? $ket_sakit[$r->nik] : 0;
+            $ketdokter = (!empty($ket_sdokter[$r->nik])) ? $ket_sdokter[$r->nik] : 0;
+            $ketsetengah = (!empty($ket_stengah[$r->nik])) ? $ket_stengah[$r->nik] : 0;
+            $ketcuti = (!empty($ket_cuti[$r->nik])) ? $ket_cuti[$r->nik] : 0;
+            $potabs = ($ketabsen + $ketizin + $ketsakit);
+            if (isset($r->section)) {
+                $secmod = $r->sect->section;
+            } else {
+                $secmod = '-';
+            }
+
+            if (!empty($penjelasan[$r->nik])) {
+
+                $kets = implode(', ', $penjelasan[$r->nik]);
+            } else {
+
+                $kets = '';
+            }
+
+
+            $potong_setengah = ($ketsetengah * 0.5);
+
+            $models[$r->nik] = [
+                'no' => $no,
+                'sect' => $secmod,
+                'nama' => $nama,
+                'mg1' => $mg1,
+                'mg2' => $mg2,
+                'mg3' => $mg3,
+                'mg4' => $mg4,
+                'mg5' => $mg5,
+                'ttlinc' => $incentive,
+                'absh' => $ketabsen,
+                'ijnh' => $ketizin,
+                'skh' => $ketsakit,
+                'sdh' => $ketdokter,
+                'sth' => $ketsetengah,
+                'cth' => $ketcuti,
+                'ptga' => $potabs,
+                'thp' => (25 - ($ketabsen + $ketizin + $ketsakit + $potong_setengah)),
+                'ptgs' => $ketsetengah,
+                'ket' => $kets,
+            ];
             $no++;
         }
 

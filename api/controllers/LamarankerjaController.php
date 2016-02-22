@@ -20,6 +20,7 @@ class LamarankerjaController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'lapexcel' => ['get'],
                     'rekapperpribadi' => ['post'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -245,7 +246,6 @@ class LamarankerjaController extends Controller {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        Yii::error($params);
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
@@ -253,6 +253,18 @@ class LamarankerjaController extends Controller {
         $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
         return $this->render("/exprekap/".$render, ['models' => $models,'params' => $params]);
     }
+    public function actionLapexcel() {
+        session_start();
+        $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
+        return $this->render("/exprekap/".$render, ['models' => $models]);
+    }
+    
+    
 
     public function actionCari() {
         $params = $_REQUEST;
