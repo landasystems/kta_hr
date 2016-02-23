@@ -14,10 +14,10 @@ app.controller('siswaPrakerinCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.excelkeluar = function (form) {
+    $scope.excel = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             Data.post('prakerin/rekap', form).then(function (data) {
-                window.location = 'api/web/prakerin/excel';
+                window.open('api/web/prakerin/excel');
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");

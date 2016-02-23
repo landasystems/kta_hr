@@ -31,10 +31,23 @@ if (!isset($_GET['print'])) {
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
 <table border="1" style="border-collapse: collapse;width:100%">
     <tr>
+        <?php
+        if (!isset($_GET['print'])) {
+        ?>
+        <td colspan="4" rowspan="2" style="width:60%;text-align: center">
+            <h4>DATA KARYAWAN MAGANG</h4><br/>
+            <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
+        </td>
+        <?php
+        }else{
+            ?>
         <td colspan="3" rowspan="2" style="width:60%;text-align: center">
             <h4>DATA KARYAWAN MAGANG</h4><br/>
             <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
         </td>
+            <?php
+        }
+        ?>
         <td style="text-align: center">Dibuat</td>
         <td style="text-align: center">Diketahui</td>
     </tr>
