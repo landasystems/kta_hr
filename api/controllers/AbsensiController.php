@@ -590,7 +590,7 @@ class AbsensiController extends Controller {
                 if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
                     $absensi['keluar'] = '';
                 }
-                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => $absensi['masuk'], 'keluar' => $absensi['keluar']];
+                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => date("H:i",strtotime($absensi['masuk'])), 'keluar' => date("h:i",  strtotime($absensi['keluar']))];
             } elseif (!isset($abs[$r->nik][$date]) && $params['status'] == 'tidakhadir') {
                 $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => '', 'keluar' => ''];
             }

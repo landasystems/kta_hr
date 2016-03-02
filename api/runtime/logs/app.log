@@ -1,0 +1,2387 @@
+2015-11-25 07:02:01 [192.168.2.157][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:01 [192.168.2.157][-][-][info][application] $_COOKIE = [
+    'PHPSESSID' => '5khr8bu71l643vavj4ukee4p95'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8'
+    'HTTP_COOKIE' => 'PHPSESSID=5khr8bu71l643vavj4ukee4p95'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '192.168.2.157'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '52070'
+    'REDIRECT_URL' => '/api/web/departement/listdepartment'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/api/web/departement/listdepartment'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434921.001
+    'REQUEST_TIME' => 1448434921
+]
+2015-11-25 07:02:01 [192.168.2.157][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:01 [192.168.2.157][-][-][info][application] $_GET = [
+    '$$hashKey' => 'object:5268'
+    'Kontrak_1' => '2015-02-16T00:00:00.000Z'
+    'Kontrak_11' => '2015-09-16T00:00:00.000Z'
+    'Kontrak_2' => '2015-09-17T00:00:00.000Z'
+    'Kontrak_21' => '2015-12-17T00:00:00.000Z'
+    'agama' => 'Islam'
+    'alamat_jln' => 'JL. A SATSUI TUBUN '
+    'bulan_lahir' => '11'
+    'department' => 'PRODUCTION'
+    'dept' => 'DPRT004'
+    'desa' => 'KEBONSARI'
+    'foto' => ''
+    'gaji_pokok' => '2700000.000'
+    'id_department' => 'DPRT004'
+    'id_jabatan' => 'JBTN002'
+    'id_section' => 'SCT003'
+    'initial' => 'MUA'
+    'jabatan' => 'BODY WELDING OPERATOR'
+    'jk' => 'Laki - laki'
+    'jurusan' => '-'
+    'kabupaten' => 'MALANG'
+    'kd_kerja' => 'KR00001'
+    'kecamatan' => 'SUKUN'
+    'kerja' => 'BODY WELDING'
+    'ket' => '2'
+    'kewarganegaraan' => 'WNI'
+    'kode_bank' => ''
+    'kode_pos' => '-'
+    'krj' => 'KR00001'
+    'lokasi_kntr' => 'SUKOREJO'
+    'mgm' => '0'
+    'nama' => 'MUHAMAD ATIM'
+    'nama_bank' => ''
+    'nik' => '00565'
+    'nm_asuransi' => ''
+    'no_ijazah' => '-'
+    'no_ktp' => '3573041811740005'
+    'no_npwp' => '0'
+    'no_pasport' => '-'
+    'no_polis' => ''
+    'normatif' => '6210000.000'
+    'pendidikan' => 'SLTP'
+    'penggantian_hak' => '810000.000'
+    'pesangon' => '5400000.000'
+    'rt' => '004'
+    'rw' => '003'
+    'section' => 'METAL'
+    'sekolah' => '-'
+    'status' => 'Kerja'
+    'status_karyawan' => 'Kontrak'
+    'status_kepemilikan' => 'Karyawan'
+    'status_pernikahan' => 'Kawin'
+    'sub_section' => 'KR00001'
+    't_fungsional' => '0.000'
+    't_kehadiran' => '0.000'
+    't_masa_kerja' => '0.000'
+    'tgl_lahir' => '1974-11-13T00:00:00.000Z'
+    'tgl_masuk_kerja' => '2015-02-16T00:00:00.000Z'
+    'thp' => '2700000.000'
+    'tmpt_lahir' => 'MALANG'
+    'tmt_kerja' => ''
+    'upah_tetap' => '2700000.000'
+    'urutan_produksi' => '3'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '5khr8bu71l643vavj4ukee4p95'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8'
+    'HTTP_COOKIE' => 'PHPSESSID=5khr8bu71l643vavj4ukee4p95'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '192.168.2.157'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '52072'
+    'REDIRECT_QUERY_STRING' => '$$hashKey=object:5268&Kontrak_1=2015-02-16T00:00:00.000Z&Kontrak_11=2015-09-16T00:00:00.000Z&Kontrak_2=2015-09-17T00:00:00.000Z&Kontrak_21=2015-12-17T00:00:00.000Z&agama=Islam&alamat_jln=JL.+A+SATSUI+TUBUN+&bulan_lahir=11&department=PRODUCTION&dept=DPRT004&desa=KEBONSARI&foto=&gaji_pokok=2700000.000&id_department=DPRT004&id_jabatan=JBTN002&id_section=SCT003&initial=MUA&jabatan=BODY+WELDING+OPERATOR&jk=Laki+-+laki&jurusan=-&kabupaten=MALANG&kd_kerja=KR00001&kecamatan=SUKUN&kerja=BODY+WELDING&ket=2&kewarganegaraan=WNI&kode_bank=&kode_pos=-&krj=KR00001&lokasi_kntr=SUKOREJO&mgm=0&nama=MUHAMAD+ATIM&nama_bank=&nik=00565&nm_asuransi=&no_ijazah=-&no_ktp=3573041811740005&no_npwp=0&no_pasport=-&no_polis=&normatif=6210000.000&pendidikan=SLTP&penggantian_hak=810000.000&pesangon=5400000.000&rt=004&rw=003&section=METAL&sekolah=-&status=Kerja&status_karyawan=Kontrak&status_kepemilikan=Karyawan&status_pernikahan=Kawin&sub_section=KR00001&t_fungsional=0.000&t_kehadiran=0.000&t_masa_kerja=0.000&tgl_lahir=1974-11-13T00:00:00.000Z&tgl_masuk_kerja=2015-02-16T00:00:00.000Z&thp=2700000.000&tmpt_lahir=MALANG&tmt_kerja=&upah_tetap=2700000.000&urutan_produksi=3'
+    'REDIRECT_URL' => '/api/web/ijazah/kode'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => '$$hashKey=object:5268&Kontrak_1=2015-02-16T00:00:00.000Z&Kontrak_11=2015-09-16T00:00:00.000Z&Kontrak_2=2015-09-17T00:00:00.000Z&Kontrak_21=2015-12-17T00:00:00.000Z&agama=Islam&alamat_jln=JL.+A+SATSUI+TUBUN+&bulan_lahir=11&department=PRODUCTION&dept=DPRT004&desa=KEBONSARI&foto=&gaji_pokok=2700000.000&id_department=DPRT004&id_jabatan=JBTN002&id_section=SCT003&initial=MUA&jabatan=BODY+WELDING+OPERATOR&jk=Laki+-+laki&jurusan=-&kabupaten=MALANG&kd_kerja=KR00001&kecamatan=SUKUN&kerja=BODY+WELDING&ket=2&kewarganegaraan=WNI&kode_bank=&kode_pos=-&krj=KR00001&lokasi_kntr=SUKOREJO&mgm=0&nama=MUHAMAD+ATIM&nama_bank=&nik=00565&nm_asuransi=&no_ijazah=-&no_ktp=3573041811740005&no_npwp=0&no_pasport=-&no_polis=&normatif=6210000.000&pendidikan=SLTP&penggantian_hak=810000.000&pesangon=5400000.000&rt=004&rw=003&section=METAL&sekolah=-&status=Kerja&status_karyawan=Kontrak&status_kepemilikan=Karyawan&status_pernikahan=Kawin&sub_section=KR00001&t_fungsional=0.000&t_kehadiran=0.000&t_masa_kerja=0.000&tgl_lahir=1974-11-13T00:00:00.000Z&tgl_masuk_kerja=2015-02-16T00:00:00.000Z&thp=2700000.000&tmpt_lahir=MALANG&tmt_kerja=&upah_tetap=2700000.000&urutan_produksi=3'
+    'REQUEST_URI' => '/api/web/ijazah/kode?$$hashKey=object:5268&Kontrak_1=2015-02-16T00:00:00.000Z&Kontrak_11=2015-09-16T00:00:00.000Z&Kontrak_2=2015-09-17T00:00:00.000Z&Kontrak_21=2015-12-17T00:00:00.000Z&agama=Islam&alamat_jln=JL.+A+SATSUI+TUBUN+&bulan_lahir=11&department=PRODUCTION&dept=DPRT004&desa=KEBONSARI&foto=&gaji_pokok=2700000.000&id_department=DPRT004&id_jabatan=JBTN002&id_section=SCT003&initial=MUA&jabatan=BODY+WELDING+OPERATOR&jk=Laki+-+laki&jurusan=-&kabupaten=MALANG&kd_kerja=KR00001&kecamatan=SUKUN&kerja=BODY+WELDING&ket=2&kewarganegaraan=WNI&kode_bank=&kode_pos=-&krj=KR00001&lokasi_kntr=SUKOREJO&mgm=0&nama=MUHAMAD+ATIM&nama_bank=&nik=00565&nm_asuransi=&no_ijazah=-&no_ktp=3573041811740005&no_npwp=0&no_pasport=-&no_polis=&normatif=6210000.000&pendidikan=SLTP&penggantian_hak=810000.000&pesangon=5400000.000&rt=004&rw=003&section=METAL&sekolah=-&status=Kerja&status_karyawan=Kontrak&status_kepemilikan=Karyawan&status_pernikahan=Kawin&sub_section=KR00001&t_fungsional=0.000&t_kehadiran=0.000&t_masa_kerja=0.000&tgl_lahir=1974-11-13T00:00:00.000Z&tgl_masuk_kerja=2015-02-16T00:00:00.000Z&thp=2700000.000&tmpt_lahir=MALANG&tmt_kerja=&upah_tetap=2700000.000&urutan_produksi=3'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434921.012
+    'REQUEST_TIME' => 1448434921
+]
+2015-11-25 07:02:01 [192.168.2.157][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:01 [192.168.2.157][-][-][info][application] $_GET = [
+    'id' => '00565'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '5khr8bu71l643vavj4ukee4p95'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.99 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8'
+    'HTTP_COOKIE' => 'PHPSESSID=5khr8bu71l643vavj4ukee4p95'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '192.168.2.157'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '52071'
+    'REDIRECT_URL' => '/api/web/karyawan/view/00565'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/api/web/karyawan/view/00565'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434921.005
+    'REQUEST_TIME' => 1448434921
+]
+2015-11-25 07:02:05 [103.47.134.1][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:05 [103.47.134.1][-][-][info][application] $_GET = [
+    'limit' => '10'
+    'offset' => '0'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '94nd02hdnphv3as28mob897pn1'
+]
+
+$_SESSION = [
+    'user' => [
+        'id' => 1
+        'username' => 'admin'
+        'nama' => 'admin'
+        'akses' => stdClass#1
+        (
+            [master_roles] => true
+            [master_user] => true
+            [master_barang] => true
+            [master_jenisbrg] => true
+            [master_customer] => true
+            [master_supplier] => true
+            [master_modelkendaraan] => true
+            [master_chassis] => true
+            [master_jnskomplain] => true
+            [master_kalender] => true
+            [master_lokasi] => true
+            [master_jabatan] => true
+            [master_subsection] => true
+            [master_umk] => true
+            [master_departement] => true
+            [master_section] => true
+            [transaksi_bom] => true
+            [transaksi_validasibom] => true
+            [transaksi_tambahitem] => true
+            [transaksi_sti] => true
+            [transaksi_pembatalanchasis] => true
+            [transaksi_spesanankaroseri] => true
+            [transaksi_claimunit] => true
+            [transaksi_sperintahkaroseri] => true
+            [transaksi_bstk] => true
+            [transaksi_rubahbentuk] => true
+            [transaksi_ujimutu] => true
+            [transaksi_deliveryunit] => true
+            [transaksi_buktiterima] => true
+            [transaksi_spprutin] => true
+            [transaksi_sppnonrutin] => true
+            [transaksi_purchaseorder] => true
+            [transaksi_bktbarangmasuk] => true
+            [transaksi_bktbarangkeluar] => true
+            [transaksi_returbuktibarangmasuk] => true
+            [transaksi_returbuktibarangkeluar] => true
+            [transaksi_wordermasuk] => true
+            [transaksi_worderkeluar] => true
+            [transaksi_winprogress] => true
+            [transaksi_spk] => true
+            [transaksi_kpb] => true
+            [rekap_supplier] => true
+            [rekap_barang] => true
+            [rekap_customer] => true
+            [rekap_barangmasuk] => true
+            [rekap_barangkeluar] => true
+            [rekap_pergerakanbarang] => true
+            [rekap_spp] => true
+            [rekap_purchaseorder] => true
+            [rekap_rubahbentuk] => true
+            [rekap_claimunit] => true
+            [rekap_deliveryunit] => true
+            [rekap_bom] => true
+            [rekap_chassisin] => true
+            [rekap_bstk] => true
+            [rekap_suratpesanan] => true
+            [rekap_ujimutu] => true
+            [rekap_womasuk] => true
+            [rekap_wokeluar] => true
+            [rekap_retbarangmasuk] => true
+            [rekap_retbarangkeluar] => true
+            [rekap_wip] => true
+            [rekap_schedule] => true
+            [rekap_historybarang] => true
+            [rekap_historyunit] => true
+            [rekap_historywip] => true
+            [transaksi_valbarangkeluar] => true
+            [notif_bom] => true
+            [notif_chassismasuk] => true
+            [notif_wo] => true
+            [notif_wip] => true
+            [notif_barang] => true
+            [notif_unit] => true
+            [notif_abk] => true
+            [notif_monitoring] => true
+            [master_karyawan] => true
+            [master_jamsostek] => true
+            [master_apd] => true
+            [master_potongan] => true
+            [master_barangatk] => true
+            [master_stokatk] => true
+            [master_filelegalitas] => true
+            [pegawai_ijazah] => true
+            [pegawai_karyawan] => true
+            [pegawai_lamarankerja] => true
+            [pegawai_pendaftaranjamsostek] => true
+            [pegawai_penilaiankontrak] => true
+            [pegawai_magang] => true
+            [pegawai_prakerin] => true
+            [transaksi_karyawanspd] => true
+            [transaksi_agendapelatihan] => true
+            [transaksi_agendaumum] => true
+            [transaksi_atkkeluar] => true
+            [transaksi_atkmasuk] => true
+            [transaksi_karyawankeluar] => true
+            [transaksi_lamarankerja] => true
+            [transaksi_p2k3] => true
+            [transaksi_kecelakaankerja] => true
+            [transaksi_pengeluaranapd] => true
+            [transaksi_pemasukanapd] => true
+            [transaksi_pemakaianlistrikair] => true
+            [jadwal_jpelatihan] => true
+            [jadwal_auditsemester] => true
+            [jadwal_penilaian] => true
+            [jadwal_hsetalk] => true
+            [rekap_jadwalhsetalk] => true
+            [rekap_jadwalauditsemester] => true
+            [rekap_jadwalpelatihan] => true
+            [rekap_jadwalapenilaian] => true
+            [rekap_ijazahmasuk] => true
+            [rekap_ijazahkeluar] => true
+            [rekap_lamarkerjaperpribadi] => true
+            [rekap_lamarkerjaperpend] => true
+            [rekap_penilaiankontrak] => true
+            [rekap_jamsostek] => true
+            [rekap_karyawankeluar] => true
+            [rekap_karyawanmasukpertunjangan] => true
+            [rekap_karyawanmasukpergaji] => true
+            [rekap_karyawanmasukperdata] => true
+            [rekap_karyawanmasukperpend] => true
+            [rekap_karyawanmasukperpekerjaan] => true
+            [rekap_kecelakaankerja] => true
+            [rekap_laporanapd] => true
+            [rekap_pemasukanapd] => true
+            [rekap_laporanstokapd] => true
+            [rekap_pemakianlat] => true
+            [rekap_karyawanspd] => true
+            [rekap_filelegalitas] => true
+            [rekap_atkkeluar] => true
+            [rekap_atkmasuk] => true
+            [rekap_agendapelatihan] => true
+            [rekap_agendaumum] => true
+            [rekap_rekapmagang] => true
+            [rekap_siswaprakerin] => true
+            [rekap_rpenilaiankontrak] => true
+            [transaksi_ijazah] => true
+            [pegawai_karyawanmasuk] => true
+            [rekap_monitoring] => true
+            [transaksi_cekbom] => true
+            [monitoring_filelegalitas] => true
+            [monitoring_asuransikendaraan] => true
+            [monitoring_servicekendaraan] => true
+            [monitoring_stnk] => true
+            [master_kendaraan] => true
+            [rekap_moasuransi] => true
+            [rekap_moservice] => true
+            [rekap_mostnk] => true
+            [rekap_absensioperator] => true
+            [rekap_absensiproduksi] => true
+            [rekap_lembur] => true
+            [rekap_absensi] => true
+            [rekap_laporanabsensiproduksi] => true
+            [rekap_penggajianproduksi] => true
+            [rekap_lemburharian] => true
+            [rekap_absensiharian] => true
+            [pegawai_absentmasuk] => true
+            [transaksi_potongan] => true
+            [rekap_karyawaniso] => true
+            [rekap_karyawankontrak] => true
+            [tools_absennama] => true
+        )
+        'settings' => stdClass#2
+        (
+            [themeID] => '2'
+            [navbarHeaderColor] => 'bg-dark'
+            [navbarCollapseColor] => 'bg-white-only'
+            [asideColor] => 'bg-dark'
+            [container] => false
+        )
+    ]
+    'query' => yii\db\Query#3
+    (
+        [select] => [
+            0 => '*'
+        ]
+        [selectOption] => null
+        [distinct] => null
+        [from] => [
+            0 => 'tbl_absent'
+        ]
+        [groupBy] => null
+        [join] => null
+        [having] => null
+        [union] => null
+        [params] => []
+        [yii\base\Component:_events] => []
+        [yii\base\Component:_behaviors] => null
+        [where] => 'ket <> \"Hadir\" AND nama is not null'
+        [limit] => '10'
+        [offset] => '0'
+        [orderBy] => [
+            'no_absent' => 3
+        ]
+        [indexBy] => null
+    )
+    'models' => [
+        'id' => '39386'
+        'no_absent' => 'ABS0000042284'
+        'nik' => '00855'
+        'nama' => 'ROUDHOTUL JANNAH'
+        'tanggal' => '2015-11-09'
+        'tanggal_kembali' => '2015-11-10'
+        'jmasuk' => null
+        'jkeluar' => null
+        'ket' => '1'
+        'ket_uraian' => ''
+        'tgl_pembuatan' => '2015-11-25'
+        'Kontrak_1' => '2015-08-24'
+        'Kontrak_11' => '2015-11-24'
+        'Kontrak_2' => '2015-11-25'
+        'Kontrak_21' => '2016-02-25'
+        'initial' => 'ROJ'
+        'foto' => ''
+        'status_kepemilikan' => 'Karyawan'
+        'status_karyawan' => 'Kontrak'
+        'department' => 'DPRT001'
+        'section' => 'SCT005'
+        'sub_section' => 'KR00011'
+        'status_kelompok' => null
+        'nik_ketua' => null
+        'jabatan' => 'JBTN061'
+        'lokasi_kntr' => 'SUKOREJO'
+        'tmt_kerja' => '-'
+        'pendidikan' => 'S1 '
+        'sekolah' => 'UNIVERSITAS MUHAMMADIYAH MALANG'
+        'jurusan' => 'KOMPUTER'
+        'no_ijazah' => 'DP-BAA-02-100'
+        'tmpt_lahir' => 'MALANG'
+        'tgl_lahir' => '1991-10-10'
+        'bulan_lahir' => '10'
+        'alamat_jln' => 'JL. SEKARGADUNG NO. 24 '
+        'rt' => '01'
+        'rw' => '01'
+        'desa' => 'SINGOSARI'
+        'kecamatan' => 'SINGOSARI'
+        'kabupaten' => 'MALANG'
+        'kode_pos' => '-'
+        'no_ktp' => '3507245010910002'
+        'agama' => 'Islam'
+        'status_pernikahan' => 'Belum kawin'
+        'kewarganegaraan' => 'WNI'
+        'tgl_masuk_kerja' => '2015-08-24'
+        'kode_bank' => '-'
+        'nama_bank' => '-'
+        'gaji_pokok' => '0.000'
+        't_fungsional' => '0.000'
+        't_kehadiran' => '0.000'
+        'thp' => '0.000'
+        'mgm' => '0'
+        'upah_tetap' => '0.000'
+        'pesangon' => '0.000'
+        't_masa_kerja' => '0.000'
+        'penggantian_hak' => '0.000'
+        'normatif' => '0.000'
+        'jk' => 'Perempuan'
+        'tgl_keluar_kerja' => null
+        'alasan_keluar' => null
+        'status' => 'Kerja'
+        'no_polis' => '-'
+        'nm_asuransi' => '-'
+        'no_npwp' => '0'
+        'no_pasport' => '-'
+        'kd_kerja' => 'KR00011'
+        'kerja' => 'IT'
+        'id_section' => 'SCT005'
+        'ket_absen' => 'Izin'
+    ]
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=94nd02hdnphv3as28mob897pn1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '103.47.134.1'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '23816'
+    'REDIRECT_QUERY_STRING' => 'limit=10&offset=0'
+    'REDIRECT_URL' => '/api/web/absent'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'limit=10&offset=0'
+    'REQUEST_URI' => '/api/web/absent?limit=10&offset=0'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434925.06
+    'REQUEST_TIME' => 1448434925
+]
+2015-11-25 07:02:09 [103.47.134.1][-][-][error][application] 2015-11-09T17:00:00.000Z===
+    in /var/www/hrd/api/controllers/AbsentController.php:187
+2015-11-25 07:02:09 [103.47.134.1][-][-][error][application] 2015-11-10T16:59:59.999Z
+    in /var/www/hrd/api/controllers/AbsentController.php:188
+2015-11-25 07:02:09 [103.47.134.1][-][-][info][application] $_GET = [
+    'id' => '39386'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '94nd02hdnphv3as28mob897pn1'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1498'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://hr.tugasanda.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=94nd02hdnphv3as28mob897pn1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '103.47.134.1'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '23816'
+    'REDIRECT_URL' => '/api/web/absent/update/39386'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/api/web/absent/update/39386'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434929.481
+    'REQUEST_TIME' => 1448434929
+]
+2015-11-25 07:02:09 [103.47.134.1][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:09 [103.47.134.1][-][-][info][application] $_GET = [
+    'id' => '39386'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '94nd02hdnphv3as28mob897pn1'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1498'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://hr.tugasanda.com'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=94nd02hdnphv3as28mob897pn1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '103.47.134.1'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '23816'
+    'REDIRECT_URL' => '/api/web/absent/update/39386'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/api/web/absent/update/39386'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434929.481
+    'REQUEST_TIME' => 1448434929
+]
+2015-11-25 07:02:09 [103.47.134.1][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:09 [103.47.134.1][-][-][info][application] $_GET = [
+    'id' => 'ABS0000042284'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '94nd02hdnphv3as28mob897pn1'
+]
+
+$_SESSION = [
+    'user' => [
+        'id' => 1
+        'username' => 'admin'
+        'nama' => 'admin'
+        'akses' => stdClass#1
+        (
+            [master_roles] => true
+            [master_user] => true
+            [master_barang] => true
+            [master_jenisbrg] => true
+            [master_customer] => true
+            [master_supplier] => true
+            [master_modelkendaraan] => true
+            [master_chassis] => true
+            [master_jnskomplain] => true
+            [master_kalender] => true
+            [master_lokasi] => true
+            [master_jabatan] => true
+            [master_subsection] => true
+            [master_umk] => true
+            [master_departement] => true
+            [master_section] => true
+            [transaksi_bom] => true
+            [transaksi_validasibom] => true
+            [transaksi_tambahitem] => true
+            [transaksi_sti] => true
+            [transaksi_pembatalanchasis] => true
+            [transaksi_spesanankaroseri] => true
+            [transaksi_claimunit] => true
+            [transaksi_sperintahkaroseri] => true
+            [transaksi_bstk] => true
+            [transaksi_rubahbentuk] => true
+            [transaksi_ujimutu] => true
+            [transaksi_deliveryunit] => true
+            [transaksi_buktiterima] => true
+            [transaksi_spprutin] => true
+            [transaksi_sppnonrutin] => true
+            [transaksi_purchaseorder] => true
+            [transaksi_bktbarangmasuk] => true
+            [transaksi_bktbarangkeluar] => true
+            [transaksi_returbuktibarangmasuk] => true
+            [transaksi_returbuktibarangkeluar] => true
+            [transaksi_wordermasuk] => true
+            [transaksi_worderkeluar] => true
+            [transaksi_winprogress] => true
+            [transaksi_spk] => true
+            [transaksi_kpb] => true
+            [rekap_supplier] => true
+            [rekap_barang] => true
+            [rekap_customer] => true
+            [rekap_barangmasuk] => true
+            [rekap_barangkeluar] => true
+            [rekap_pergerakanbarang] => true
+            [rekap_spp] => true
+            [rekap_purchaseorder] => true
+            [rekap_rubahbentuk] => true
+            [rekap_claimunit] => true
+            [rekap_deliveryunit] => true
+            [rekap_bom] => true
+            [rekap_chassisin] => true
+            [rekap_bstk] => true
+            [rekap_suratpesanan] => true
+            [rekap_ujimutu] => true
+            [rekap_womasuk] => true
+            [rekap_wokeluar] => true
+            [rekap_retbarangmasuk] => true
+            [rekap_retbarangkeluar] => true
+            [rekap_wip] => true
+            [rekap_schedule] => true
+            [rekap_historybarang] => true
+            [rekap_historyunit] => true
+            [rekap_historywip] => true
+            [transaksi_valbarangkeluar] => true
+            [notif_bom] => true
+            [notif_chassismasuk] => true
+            [notif_wo] => true
+            [notif_wip] => true
+            [notif_barang] => true
+            [notif_unit] => true
+            [notif_abk] => true
+            [notif_monitoring] => true
+            [master_karyawan] => true
+            [master_jamsostek] => true
+            [master_apd] => true
+            [master_potongan] => true
+            [master_barangatk] => true
+            [master_stokatk] => true
+            [master_filelegalitas] => true
+            [pegawai_ijazah] => true
+            [pegawai_karyawan] => true
+            [pegawai_lamarankerja] => true
+            [pegawai_pendaftaranjamsostek] => true
+            [pegawai_penilaiankontrak] => true
+            [pegawai_magang] => true
+            [pegawai_prakerin] => true
+            [transaksi_karyawanspd] => true
+            [transaksi_agendapelatihan] => true
+            [transaksi_agendaumum] => true
+            [transaksi_atkkeluar] => true
+            [transaksi_atkmasuk] => true
+            [transaksi_karyawankeluar] => true
+            [transaksi_lamarankerja] => true
+            [transaksi_p2k3] => true
+            [transaksi_kecelakaankerja] => true
+            [transaksi_pengeluaranapd] => true
+            [transaksi_pemasukanapd] => true
+            [transaksi_pemakaianlistrikair] => true
+            [jadwal_jpelatihan] => true
+            [jadwal_auditsemester] => true
+            [jadwal_penilaian] => true
+            [jadwal_hsetalk] => true
+            [rekap_jadwalhsetalk] => true
+            [rekap_jadwalauditsemester] => true
+            [rekap_jadwalpelatihan] => true
+            [rekap_jadwalapenilaian] => true
+            [rekap_ijazahmasuk] => true
+            [rekap_ijazahkeluar] => true
+            [rekap_lamarkerjaperpribadi] => true
+            [rekap_lamarkerjaperpend] => true
+            [rekap_penilaiankontrak] => true
+            [rekap_jamsostek] => true
+            [rekap_karyawankeluar] => true
+            [rekap_karyawanmasukpertunjangan] => true
+            [rekap_karyawanmasukpergaji] => true
+            [rekap_karyawanmasukperdata] => true
+            [rekap_karyawanmasukperpend] => true
+            [rekap_karyawanmasukperpekerjaan] => true
+            [rekap_kecelakaankerja] => true
+            [rekap_laporanapd] => true
+            [rekap_pemasukanapd] => true
+            [rekap_laporanstokapd] => true
+            [rekap_pemakianlat] => true
+            [rekap_karyawanspd] => true
+            [rekap_filelegalitas] => true
+            [rekap_atkkeluar] => true
+            [rekap_atkmasuk] => true
+            [rekap_agendapelatihan] => true
+            [rekap_agendaumum] => true
+            [rekap_rekapmagang] => true
+            [rekap_siswaprakerin] => true
+            [rekap_rpenilaiankontrak] => true
+            [transaksi_ijazah] => true
+            [pegawai_karyawanmasuk] => true
+            [rekap_monitoring] => true
+            [transaksi_cekbom] => true
+            [monitoring_filelegalitas] => true
+            [monitoring_asuransikendaraan] => true
+            [monitoring_servicekendaraan] => true
+            [monitoring_stnk] => true
+            [master_kendaraan] => true
+            [rekap_moasuransi] => true
+            [rekap_moservice] => true
+            [rekap_mostnk] => true
+            [rekap_absensioperator] => true
+            [rekap_absensiproduksi] => true
+            [rekap_lembur] => true
+            [rekap_absensi] => true
+            [rekap_laporanabsensiproduksi] => true
+            [rekap_penggajianproduksi] => true
+            [rekap_lemburharian] => true
+            [rekap_absensiharian] => true
+            [pegawai_absentmasuk] => true
+            [transaksi_potongan] => true
+            [rekap_karyawaniso] => true
+            [rekap_karyawankontrak] => true
+            [tools_absennama] => true
+        )
+        'settings' => stdClass#2
+        (
+            [themeID] => '2'
+            [navbarHeaderColor] => 'bg-dark'
+            [navbarCollapseColor] => 'bg-white-only'
+            [asideColor] => 'bg-dark'
+            [container] => false
+        )
+    ]
+    'query' => yii\db\Query#3
+    (
+        [select] => [
+            0 => '*'
+        ]
+        [selectOption] => null
+        [distinct] => null
+        [from] => [
+            0 => 'tbl_absent'
+        ]
+        [groupBy] => null
+        [join] => null
+        [having] => null
+        [union] => null
+        [params] => []
+        [yii\base\Component:_events] => []
+        [yii\base\Component:_behaviors] => null
+        [where] => 'ket <> \"Hadir\" AND nama is not null'
+        [limit] => '10'
+        [offset] => '0'
+        [orderBy] => [
+            'no_absent' => 3
+        ]
+        [indexBy] => null
+    )
+    'models' => [
+        'id' => '39386'
+        'no_absent' => 'ABS0000042284'
+        'nik' => '00855'
+        'nama' => 'ROUDHOTUL JANNAH'
+        'tanggal' => '2015-11-09'
+        'tanggal_kembali' => '2015-11-10'
+        'jmasuk' => null
+        'jkeluar' => null
+        'ket' => '1'
+        'ket_uraian' => ''
+        'tgl_pembuatan' => '2015-11-25'
+        'Kontrak_1' => '2015-08-24'
+        'Kontrak_11' => '2015-11-24'
+        'Kontrak_2' => '2015-11-25'
+        'Kontrak_21' => '2016-02-25'
+        'initial' => 'ROJ'
+        'foto' => ''
+        'status_kepemilikan' => 'Karyawan'
+        'status_karyawan' => 'Kontrak'
+        'department' => 'DPRT001'
+        'section' => 'SCT005'
+        'sub_section' => 'KR00011'
+        'status_kelompok' => null
+        'nik_ketua' => null
+        'jabatan' => 'JBTN061'
+        'lokasi_kntr' => 'SUKOREJO'
+        'tmt_kerja' => '-'
+        'pendidikan' => 'S1 '
+        'sekolah' => 'UNIVERSITAS MUHAMMADIYAH MALANG'
+        'jurusan' => 'KOMPUTER'
+        'no_ijazah' => 'DP-BAA-02-100'
+        'tmpt_lahir' => 'MALANG'
+        'tgl_lahir' => '1991-10-10'
+        'bulan_lahir' => '10'
+        'alamat_jln' => 'JL. SEKARGADUNG NO. 24 '
+        'rt' => '01'
+        'rw' => '01'
+        'desa' => 'SINGOSARI'
+        'kecamatan' => 'SINGOSARI'
+        'kabupaten' => 'MALANG'
+        'kode_pos' => '-'
+        'no_ktp' => '3507245010910002'
+        'agama' => 'Islam'
+        'status_pernikahan' => 'Belum kawin'
+        'kewarganegaraan' => 'WNI'
+        'tgl_masuk_kerja' => '2015-08-24'
+        'kode_bank' => '-'
+        'nama_bank' => '-'
+        'gaji_pokok' => '0.000'
+        't_fungsional' => '0.000'
+        't_kehadiran' => '0.000'
+        'thp' => '0.000'
+        'mgm' => '0'
+        'upah_tetap' => '0.000'
+        'pesangon' => '0.000'
+        't_masa_kerja' => '0.000'
+        'penggantian_hak' => '0.000'
+        'normatif' => '0.000'
+        'jk' => 'Perempuan'
+        'tgl_keluar_kerja' => null
+        'alasan_keluar' => null
+        'status' => 'Kerja'
+        'no_polis' => '-'
+        'nm_asuransi' => '-'
+        'no_npwp' => '0'
+        'no_pasport' => '-'
+        'kd_kerja' => 'KR00011'
+        'kerja' => 'IT'
+        'id_section' => 'SCT005'
+        'ket_absen' => 'Izin'
+    ]
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=94nd02hdnphv3as28mob897pn1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '103.47.134.1'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '23816'
+    'REDIRECT_URL' => '/api/web/absent/view/ABS0000042284'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/api/web/absent/view/ABS0000042284'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434929.737
+    'REQUEST_TIME' => 1448434929
+]
+2015-11-25 07:02:09 [103.47.134.1][-][-][warning][yii\log\Dispatcher::dispatch] Unable to send log via yii\debug\LogTarget: PHP Warning 'yii\base\ErrorException' with message 'touch(): Utime failed: Permission denied' 
+
+in /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php:73
+
+Stack trace:
+#0 [internal function]: yii\base\ErrorHandler->handleError(2, 'touch(): Utime ...', '/var/www/hrd/ap...', 73, Array)
+#1 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(73): touch('/var/www/hrd/ap...')
+#2 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(61): yii\debug\LogTarget->updateIndexFile('/var/www/hrd/ap...', Array)
+#3 /var/www/hrd/api/vendor/yiisoft/yii2-debug/LogTarget.php(112): yii\debug\LogTarget->export(Array)
+#4 /var/www/hrd/api/vendor/yiisoft/yii2/log/Dispatcher.php(183): yii\debug\LogTarget->collect(Array, true)
+#5 /var/www/hrd/api/vendor/yiisoft/yii2/log/Logger.php(173): yii\log\Dispatcher->dispatch(Array, true)
+#6 [internal function]: yii\log\Logger->flush(true)
+#7 {main}
+2015-11-25 07:02:09 [103.47.134.1][-][-][info][application] $_GET = [
+    'limit' => '10'
+    'offset' => '0'
+]
+
+$_COOKIE = [
+    'PHPSESSID' => '94nd02hdnphv3as28mob897pn1'
+]
+
+$_SESSION = [
+    'user' => [
+        'id' => 1
+        'username' => 'admin'
+        'nama' => 'admin'
+        'akses' => stdClass#1
+        (
+            [master_roles] => true
+            [master_user] => true
+            [master_barang] => true
+            [master_jenisbrg] => true
+            [master_customer] => true
+            [master_supplier] => true
+            [master_modelkendaraan] => true
+            [master_chassis] => true
+            [master_jnskomplain] => true
+            [master_kalender] => true
+            [master_lokasi] => true
+            [master_jabatan] => true
+            [master_subsection] => true
+            [master_umk] => true
+            [master_departement] => true
+            [master_section] => true
+            [transaksi_bom] => true
+            [transaksi_validasibom] => true
+            [transaksi_tambahitem] => true
+            [transaksi_sti] => true
+            [transaksi_pembatalanchasis] => true
+            [transaksi_spesanankaroseri] => true
+            [transaksi_claimunit] => true
+            [transaksi_sperintahkaroseri] => true
+            [transaksi_bstk] => true
+            [transaksi_rubahbentuk] => true
+            [transaksi_ujimutu] => true
+            [transaksi_deliveryunit] => true
+            [transaksi_buktiterima] => true
+            [transaksi_spprutin] => true
+            [transaksi_sppnonrutin] => true
+            [transaksi_purchaseorder] => true
+            [transaksi_bktbarangmasuk] => true
+            [transaksi_bktbarangkeluar] => true
+            [transaksi_returbuktibarangmasuk] => true
+            [transaksi_returbuktibarangkeluar] => true
+            [transaksi_wordermasuk] => true
+            [transaksi_worderkeluar] => true
+            [transaksi_winprogress] => true
+            [transaksi_spk] => true
+            [transaksi_kpb] => true
+            [rekap_supplier] => true
+            [rekap_barang] => true
+            [rekap_customer] => true
+            [rekap_barangmasuk] => true
+            [rekap_barangkeluar] => true
+            [rekap_pergerakanbarang] => true
+            [rekap_spp] => true
+            [rekap_purchaseorder] => true
+            [rekap_rubahbentuk] => true
+            [rekap_claimunit] => true
+            [rekap_deliveryunit] => true
+            [rekap_bom] => true
+            [rekap_chassisin] => true
+            [rekap_bstk] => true
+            [rekap_suratpesanan] => true
+            [rekap_ujimutu] => true
+            [rekap_womasuk] => true
+            [rekap_wokeluar] => true
+            [rekap_retbarangmasuk] => true
+            [rekap_retbarangkeluar] => true
+            [rekap_wip] => true
+            [rekap_schedule] => true
+            [rekap_historybarang] => true
+            [rekap_historyunit] => true
+            [rekap_historywip] => true
+            [transaksi_valbarangkeluar] => true
+            [notif_bom] => true
+            [notif_chassismasuk] => true
+            [notif_wo] => true
+            [notif_wip] => true
+            [notif_barang] => true
+            [notif_unit] => true
+            [notif_abk] => true
+            [notif_monitoring] => true
+            [master_karyawan] => true
+            [master_jamsostek] => true
+            [master_apd] => true
+            [master_potongan] => true
+            [master_barangatk] => true
+            [master_stokatk] => true
+            [master_filelegalitas] => true
+            [pegawai_ijazah] => true
+            [pegawai_karyawan] => true
+            [pegawai_lamarankerja] => true
+            [pegawai_pendaftaranjamsostek] => true
+            [pegawai_penilaiankontrak] => true
+            [pegawai_magang] => true
+            [pegawai_prakerin] => true
+            [transaksi_karyawanspd] => true
+            [transaksi_agendapelatihan] => true
+            [transaksi_agendaumum] => true
+            [transaksi_atkkeluar] => true
+            [transaksi_atkmasuk] => true
+            [transaksi_karyawankeluar] => true
+            [transaksi_lamarankerja] => true
+            [transaksi_p2k3] => true
+            [transaksi_kecelakaankerja] => true
+            [transaksi_pengeluaranapd] => true
+            [transaksi_pemasukanapd] => true
+            [transaksi_pemakaianlistrikair] => true
+            [jadwal_jpelatihan] => true
+            [jadwal_auditsemester] => true
+            [jadwal_penilaian] => true
+            [jadwal_hsetalk] => true
+            [rekap_jadwalhsetalk] => true
+            [rekap_jadwalauditsemester] => true
+            [rekap_jadwalpelatihan] => true
+            [rekap_jadwalapenilaian] => true
+            [rekap_ijazahmasuk] => true
+            [rekap_ijazahkeluar] => true
+            [rekap_lamarkerjaperpribadi] => true
+            [rekap_lamarkerjaperpend] => true
+            [rekap_penilaiankontrak] => true
+            [rekap_jamsostek] => true
+            [rekap_karyawankeluar] => true
+            [rekap_karyawanmasukpertunjangan] => true
+            [rekap_karyawanmasukpergaji] => true
+            [rekap_karyawanmasukperdata] => true
+            [rekap_karyawanmasukperpend] => true
+            [rekap_karyawanmasukperpekerjaan] => true
+            [rekap_kecelakaankerja] => true
+            [rekap_laporanapd] => true
+            [rekap_pemasukanapd] => true
+            [rekap_laporanstokapd] => true
+            [rekap_pemakianlat] => true
+            [rekap_karyawanspd] => true
+            [rekap_filelegalitas] => true
+            [rekap_atkkeluar] => true
+            [rekap_atkmasuk] => true
+            [rekap_agendapelatihan] => true
+            [rekap_agendaumum] => true
+            [rekap_rekapmagang] => true
+            [rekap_siswaprakerin] => true
+            [rekap_rpenilaiankontrak] => true
+            [transaksi_ijazah] => true
+            [pegawai_karyawanmasuk] => true
+            [rekap_monitoring] => true
+            [transaksi_cekbom] => true
+            [monitoring_filelegalitas] => true
+            [monitoring_asuransikendaraan] => true
+            [monitoring_servicekendaraan] => true
+            [monitoring_stnk] => true
+            [master_kendaraan] => true
+            [rekap_moasuransi] => true
+            [rekap_moservice] => true
+            [rekap_mostnk] => true
+            [rekap_absensioperator] => true
+            [rekap_absensiproduksi] => true
+            [rekap_lembur] => true
+            [rekap_absensi] => true
+            [rekap_laporanabsensiproduksi] => true
+            [rekap_penggajianproduksi] => true
+            [rekap_lemburharian] => true
+            [rekap_absensiharian] => true
+            [pegawai_absentmasuk] => true
+            [transaksi_potongan] => true
+            [rekap_karyawaniso] => true
+            [rekap_karyawankontrak] => true
+            [tools_absennama] => true
+        )
+        'settings' => stdClass#2
+        (
+            [themeID] => '2'
+            [navbarHeaderColor] => 'bg-dark'
+            [navbarCollapseColor] => 'bg-white-only'
+            [asideColor] => 'bg-dark'
+            [container] => false
+        )
+    ]
+    'query' => yii\db\Query#3
+    (
+        [select] => [
+            0 => '*'
+        ]
+        [selectOption] => null
+        [distinct] => null
+        [from] => [
+            0 => 'tbl_absent'
+        ]
+        [groupBy] => null
+        [join] => null
+        [having] => null
+        [union] => null
+        [params] => []
+        [yii\base\Component:_events] => []
+        [yii\base\Component:_behaviors] => null
+        [where] => 'ket <> \"Hadir\" AND nama is not null'
+        [limit] => '10'
+        [offset] => '0'
+        [orderBy] => [
+            'no_absent' => 3
+        ]
+        [indexBy] => null
+    )
+    'models' => [
+        'id' => '39386'
+        'no_absent' => 'ABS0000042284'
+        'nik' => '00855'
+        'nama' => 'ROUDHOTUL JANNAH'
+        'tanggal' => '2015-11-09'
+        'tanggal_kembali' => '2015-11-10'
+        'jmasuk' => null
+        'jkeluar' => null
+        'ket' => '1'
+        'ket_uraian' => ''
+        'tgl_pembuatan' => '2015-11-25'
+        'Kontrak_1' => '2015-08-24'
+        'Kontrak_11' => '2015-11-24'
+        'Kontrak_2' => '2015-11-25'
+        'Kontrak_21' => '2016-02-25'
+        'initial' => 'ROJ'
+        'foto' => ''
+        'status_kepemilikan' => 'Karyawan'
+        'status_karyawan' => 'Kontrak'
+        'department' => 'DPRT001'
+        'section' => 'SCT005'
+        'sub_section' => 'KR00011'
+        'status_kelompok' => null
+        'nik_ketua' => null
+        'jabatan' => 'JBTN061'
+        'lokasi_kntr' => 'SUKOREJO'
+        'tmt_kerja' => '-'
+        'pendidikan' => 'S1 '
+        'sekolah' => 'UNIVERSITAS MUHAMMADIYAH MALANG'
+        'jurusan' => 'KOMPUTER'
+        'no_ijazah' => 'DP-BAA-02-100'
+        'tmpt_lahir' => 'MALANG'
+        'tgl_lahir' => '1991-10-10'
+        'bulan_lahir' => '10'
+        'alamat_jln' => 'JL. SEKARGADUNG NO. 24 '
+        'rt' => '01'
+        'rw' => '01'
+        'desa' => 'SINGOSARI'
+        'kecamatan' => 'SINGOSARI'
+        'kabupaten' => 'MALANG'
+        'kode_pos' => '-'
+        'no_ktp' => '3507245010910002'
+        'agama' => 'Islam'
+        'status_pernikahan' => 'Belum kawin'
+        'kewarganegaraan' => 'WNI'
+        'tgl_masuk_kerja' => '2015-08-24'
+        'kode_bank' => '-'
+        'nama_bank' => '-'
+        'gaji_pokok' => '0.000'
+        't_fungsional' => '0.000'
+        't_kehadiran' => '0.000'
+        'thp' => '0.000'
+        'mgm' => '0'
+        'upah_tetap' => '0.000'
+        'pesangon' => '0.000'
+        't_masa_kerja' => '0.000'
+        'penggantian_hak' => '0.000'
+        'normatif' => '0.000'
+        'jk' => 'Perempuan'
+        'tgl_keluar_kerja' => null
+        'alasan_keluar' => null
+        'status' => 'Kerja'
+        'no_polis' => '-'
+        'nm_asuransi' => '-'
+        'no_npwp' => '0'
+        'no_pasport' => '-'
+        'kd_kerja' => 'KR00011'
+        'kerja' => 'IT'
+        'id_section' => 'SCT005'
+        'ket_absen' => 'Izin'
+    ]
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'hr.tugasanda.com'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'HTTP_REFERER' => 'http://hr.tugasanda.com/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=94nd02hdnphv3as28mob897pn1'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at hr.tugasanda.com Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'hr.tugasanda.com'
+    'SERVER_ADDR' => '192.168.10.2'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '103.47.134.1'
+    'DOCUMENT_ROOT' => '/var/www/hrd'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www/hrd'
+    'SERVER_ADMIN' => 'yuliantofrandi@gmail.com'
+    'SCRIPT_FILENAME' => '/var/www/hrd/api/web/index.php'
+    'REMOTE_PORT' => '58733'
+    'REDIRECT_QUERY_STRING' => 'limit=10&offset=0'
+    'REDIRECT_URL' => '/api/web/absent'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'limit=10&offset=0'
+    'REQUEST_URI' => '/api/web/absent?limit=10&offset=0'
+    'SCRIPT_NAME' => '/api/web/index.php'
+    'PHP_SELF' => '/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448434929.776
+    'REQUEST_TIME' => 1448434929
+]
+2015-11-27 13:49:58 [127.0.0.1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined index: ket' in /var/www/kta_hr/api/controllers/AbsentController.php:165
+Stack trace:
+#0 /var/www/kta_hr/api/controllers/AbsentController.php(165): yii\base\ErrorHandler->handleError(8, 'Undefined index...', '/var/www/kta_hr...', 165, Array)
+#1 [internal function]: app\controllers\AbsentController->actionCreate()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('create', Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absent/create/', Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#7 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#8 {main}
+2015-11-27 13:49:58 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => '06bbuk9q6isgf9fgd4l4rnmdi3'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '1557'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=06bbuk9q6isgf9fgd4l4rnmdi3'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '36344'
+    'REDIRECT_URL' => '/kta_hr/api/web/absent/create/'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absent/create/'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448606998.839
+    'REQUEST_TIME' => 1448606998
+]
+2015-11-30 11:58:10 [127.0.0.1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined variable: date' in /var/www/kta_hr/api/views/expmaster/absenkeluar.php:46
+Stack trace:
+#0 /var/www/kta_hr/api/views/expmaster/absenkeluar.php(46): yii\base\ErrorHandler->handleError(8, 'Undefined varia...', '/var/www/kta_hr...', 46, Array)
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/View.php(325): require('/var/www/kta_hr...')
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/View.php(247): yii\base\View->renderPhpFile('/var/www/kta_hr...', Array)
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/View.php(149): yii\base\View->renderFile('/var/www/kta_hr...', Array, Object(app\controllers\AbsentController))
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(371): yii\base\View->render('/expmaster/abse...', Array, Object(app\controllers\AbsentController))
+#5 /var/www/kta_hr/api/controllers/AbsentController.php(245): yii\base\Controller->render('/expmaster/abse...', Array)
+#6 [internal function]: app\controllers\AbsentController->actionPrint()
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#9 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('print', Array)
+#10 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absent/print', Array)
+#11 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#12 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#13 {main}
+2015-11-30 11:58:10 [127.0.0.1][-][-][info][application] $_GET = [
+    'print' => 'true'
+]
+
+$_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => '4rc8kis2hcsv8kds6uml8jg4m6'
+]
+
+$_SESSION = [
+    'user' => [
+        'id' => 1
+        'username' => 'admin'
+        'nama' => 'admin'
+        'akses' => stdClass#1
+        (
+            [master_roles] => true
+            [master_user] => true
+            [master_barang] => true
+            [master_jenisbrg] => true
+            [master_customer] => true
+            [master_supplier] => true
+            [master_modelkendaraan] => true
+            [master_chassis] => true
+            [master_jnskomplain] => true
+            [master_kalender] => true
+            [master_lokasi] => true
+            [master_jabatan] => true
+            [master_subsection] => true
+            [master_umk] => true
+            [master_departement] => true
+            [master_section] => true
+            [transaksi_bom] => true
+            [transaksi_validasibom] => true
+            [transaksi_tambahitem] => true
+            [transaksi_sti] => true
+            [transaksi_pembatalanchasis] => true
+            [transaksi_spesanankaroseri] => true
+            [transaksi_claimunit] => true
+            [transaksi_sperintahkaroseri] => true
+            [transaksi_bstk] => true
+            [transaksi_rubahbentuk] => true
+            [transaksi_ujimutu] => true
+            [transaksi_deliveryunit] => true
+            [transaksi_buktiterima] => true
+            [transaksi_spprutin] => true
+            [transaksi_sppnonrutin] => true
+            [transaksi_purchaseorder] => true
+            [transaksi_bktbarangmasuk] => true
+            [transaksi_bktbarangkeluar] => true
+            [transaksi_returbuktibarangmasuk] => true
+            [transaksi_returbuktibarangkeluar] => true
+            [transaksi_wordermasuk] => true
+            [transaksi_worderkeluar] => true
+            [transaksi_winprogress] => true
+            [transaksi_spk] => true
+            [transaksi_kpb] => true
+            [rekap_supplier] => true
+            [rekap_barang] => true
+            [rekap_customer] => true
+            [rekap_barangmasuk] => true
+            [rekap_barangkeluar] => true
+            [rekap_pergerakanbarang] => true
+            [rekap_spp] => true
+            [rekap_purchaseorder] => true
+            [rekap_rubahbentuk] => true
+            [rekap_claimunit] => true
+            [rekap_deliveryunit] => true
+            [rekap_bom] => true
+            [rekap_chassisin] => true
+            [rekap_bstk] => true
+            [rekap_suratpesanan] => true
+            [rekap_ujimutu] => true
+            [rekap_womasuk] => true
+            [rekap_wokeluar] => true
+            [rekap_retbarangmasuk] => true
+            [rekap_retbarangkeluar] => true
+            [rekap_wip] => true
+            [rekap_schedule] => true
+            [rekap_historybarang] => true
+            [rekap_historyunit] => true
+            [rekap_historywip] => true
+            [transaksi_valbarangkeluar] => true
+            [notif_bom] => true
+            [notif_chassismasuk] => true
+            [notif_wo] => true
+            [notif_wip] => true
+            [notif_barang] => true
+            [notif_unit] => true
+            [notif_abk] => true
+            [notif_monitoring] => true
+            [master_karyawan] => true
+            [master_jamsostek] => true
+            [master_apd] => true
+            [master_potongan] => true
+            [master_barangatk] => true
+            [master_stokatk] => true
+            [master_filelegalitas] => true
+            [pegawai_ijazah] => true
+            [pegawai_karyawan] => true
+            [pegawai_lamarankerja] => true
+            [pegawai_pendaftaranjamsostek] => true
+            [pegawai_penilaiankontrak] => true
+            [pegawai_magang] => true
+            [pegawai_prakerin] => true
+            [transaksi_karyawanspd] => true
+            [transaksi_agendapelatihan] => true
+            [transaksi_agendaumum] => true
+            [transaksi_atkkeluar] => true
+            [transaksi_atkmasuk] => true
+            [transaksi_karyawankeluar] => true
+            [transaksi_lamarankerja] => true
+            [transaksi_p2k3] => true
+            [transaksi_kecelakaankerja] => true
+            [transaksi_pengeluaranapd] => true
+            [transaksi_pemasukanapd] => true
+            [transaksi_pemakaianlistrikair] => true
+            [jadwal_jpelatihan] => true
+            [jadwal_auditsemester] => true
+            [jadwal_penilaian] => true
+            [jadwal_hsetalk] => true
+            [rekap_jadwalhsetalk] => true
+            [rekap_jadwalauditsemester] => true
+            [rekap_jadwalpelatihan] => true
+            [rekap_jadwalapenilaian] => true
+            [rekap_ijazahmasuk] => true
+            [rekap_ijazahkeluar] => true
+            [rekap_lamarkerjaperpribadi] => true
+            [rekap_lamarkerjaperpend] => true
+            [rekap_penilaiankontrak] => true
+            [rekap_jamsostek] => true
+            [rekap_karyawankeluar] => true
+            [rekap_karyawanmasukpertunjangan] => true
+            [rekap_karyawanmasukpergaji] => true
+            [rekap_karyawanmasukperdata] => true
+            [rekap_karyawanmasukperpend] => true
+            [rekap_karyawanmasukperpekerjaan] => true
+            [rekap_kecelakaankerja] => true
+            [rekap_laporanapd] => true
+            [rekap_pemasukanapd] => true
+            [rekap_laporanstokapd] => true
+            [rekap_pemakianlat] => true
+            [rekap_karyawanspd] => true
+            [rekap_filelegalitas] => true
+            [rekap_atkkeluar] => true
+            [rekap_atkmasuk] => true
+            [rekap_agendapelatihan] => true
+            [rekap_agendaumum] => true
+            [rekap_rekapmagang] => true
+            [rekap_siswaprakerin] => true
+            [rekap_rpenilaiankontrak] => true
+            [transaksi_ijazah] => true
+            [pegawai_karyawanmasuk] => true
+            [rekap_monitoring] => true
+            [transaksi_cekbom] => true
+            [monitoring_filelegalitas] => true
+            [monitoring_asuransikendaraan] => true
+            [monitoring_servicekendaraan] => true
+            [monitoring_stnk] => true
+            [master_kendaraan] => true
+            [rekap_moasuransi] => true
+            [rekap_moservice] => true
+            [rekap_mostnk] => true
+            [rekap_absensioperator] => true
+            [rekap_absensiproduksi] => true
+            [rekap_lembur] => true
+            [rekap_absensi] => true
+            [rekap_laporanabsensiproduksi] => true
+            [rekap_penggajianproduksi] => true
+            [rekap_lemburharian] => true
+            [rekap_absensiharian] => true
+            [pegawai_absentmasuk] => true
+            [transaksi_potongan] => true
+            [rekap_karyawaniso] => true
+            [rekap_karyawankontrak] => true
+            [tools_absennama] => true
+        )
+        'settings' => stdClass#2
+        (
+            [themeID] => '2'
+            [navbarHeaderColor] => 'bg-dark'
+            [navbarCollapseColor] => 'bg-white-only'
+            [asideColor] => 'bg-dark'
+            [container] => false
+        )
+    ]
+    'query' => yii\db\Query#3
+    (
+        [select] => [
+            0 => '*'
+        ]
+        [selectOption] => null
+        [distinct] => null
+        [from] => [
+            0 => 'tbl_absent'
+        ]
+        [groupBy] => null
+        [join] => null
+        [having] => null
+        [union] => null
+        [params] => []
+        [yii\base\Component:_events] => []
+        [yii\base\Component:_behaviors] => null
+        [where] => 'ket <> \"Hadir\" AND nama is not null'
+        [limit] => '10'
+        [offset] => '0'
+        [orderBy] => [
+            'no_absent' => 3
+        ]
+        [indexBy] => null
+    )
+    'models' => [
+        'id' => '39245'
+        'no_absent' => 'ABS0000042247'
+        'nik' => '00855'
+        'nama' => 'ROUDHOTUL JANNAH'
+        'tanggal' => '2015-11-27'
+        'tanggal_kembali' => '2015-11-30'
+        'jmasuk' => null
+        'jkeluar' => null
+        'ket' => '1'
+        'ket_uraian' => ''
+        'tgl_pembuatan' => '2015-11-27'
+        'Kontrak_1' => '2015-08-24'
+        'Kontrak_11' => '2015-11-24'
+        'Kontrak_2' => null
+        'Kontrak_21' => null
+        'initial' => 'ROJ'
+        'foto' => ''
+        'status_kepemilikan' => 'Karyawan'
+        'status_karyawan' => 'Kontrak'
+        'department' => 'DPRT001'
+        'section' => 'SCT005'
+        'sub_section' => 'KR00011'
+        'status_kelompok' => null
+        'nik_ketua' => null
+        'jabatan' => 'JBTN061'
+        'lokasi_kntr' => 'SUKOREJO'
+        'tmt_kerja' => '-'
+        'pendidikan' => 'S1 '
+        'sekolah' => 'UNIVERSITAS MUHAMMADIYAH MALANG'
+        'jurusan' => 'KOMPUTER'
+        'no_ijazah' => 'DP-BAA-02-100'
+        'tmpt_lahir' => 'MALANG'
+        'tgl_lahir' => '1991-10-10'
+        'bulan_lahir' => '10'
+        'alamat_jln' => 'JL. SEKARGADUNG NO. 24 '
+        'rt' => '01'
+        'rw' => '01'
+        'desa' => 'SINGOSARI'
+        'kecamatan' => 'SINGOSARI'
+        'kabupaten' => 'MALANG'
+        'kode_pos' => '-'
+        'no_ktp' => '3507245010910002'
+        'agama' => 'Islam'
+        'status_pernikahan' => 'Belum kawin'
+        'kewarganegaraan' => 'WNI'
+        'tgl_masuk_kerja' => '2015-08-24'
+        'kode_bank' => '-'
+        'nama_bank' => '-'
+        'gaji_pokok' => '0.000'
+        't_fungsional' => '0.000'
+        't_kehadiran' => '0.000'
+        'thp' => '0.000'
+        'upah_tetap' => '0.000'
+        'pesangon' => '0.000'
+        't_masa_kerja' => '0.000'
+        'penggantian_hak' => '0.000'
+        'normatif' => '0.000'
+        'jk' => 'Perempuan'
+        'tgl_keluar_kerja' => null
+        'alasan_keluar' => null
+        'status' => 'Kerja'
+        'no_polis' => '-'
+        'nm_asuransi' => '-'
+        'no_npwp' => '0'
+        'no_pasport' => '-'
+        'kd_kerja' => 'KR00011'
+        'kerja' => 'IT'
+        'id_section' => 'SCT005'
+        'ket_absen' => 'Setengah Hari'
+    ]
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, sdch'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=4rc8kis2hcsv8kds6uml8jg4m6'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '59432'
+    'REDIRECT_QUERY_STRING' => 'print=true'
+    'REDIRECT_URL' => '/kta_hr/api/web/absent/print'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'GET'
+    'QUERY_STRING' => 'print=true'
+    'REQUEST_URI' => '/kta_hr/api/web/absent/print?print=true'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1448859490.601
+    'REQUEST_TIME' => 1448859490
+]
+2015-12-28 10:16:38 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2015-12-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2015-12-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:16:38 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '133'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57299'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272598.116
+    'REQUEST_TIME' => 1451272598
+]
+2015-12-28 10:17:37 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2015-12-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2015-12-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:17:37 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '191'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57319'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272657.738
+    'REQUEST_TIME' => 1451272657
+]
+2015-12-28 10:17:46 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2016-01-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2016-01-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:17:46 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '193'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57321'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272666.249
+    'REQUEST_TIME' => 1451272666
+]
+2015-12-28 10:19:08 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2016-01-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2016-01-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:19:08 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '193'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57337'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272748.716
+    'REQUEST_TIME' => 1451272748
+]
+2015-12-28 10:19:28 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2016-01-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2016-01-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:19:28 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '135'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57350'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272768.261
+    'REQUEST_TIME' => 1451272768
+]
+2015-12-28 10:19:35 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2016-01-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2016-01-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2015-12-28 10:19:35 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    'PHPSESSID' => 'daldk86hmu6r4hf4hmba7cgu93'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '193'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; PHPSESSID=daldk86hmu6r4hf4hmba7cgu93'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '57352'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1451272775.513
+    'REQUEST_TIME' => 1451272775
+]
+2016-02-05 10:48:53 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2016-02-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2016-02-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2016-02-05 10:48:52 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    '_csrf' => '2165c399f573f7f90edc43757bb9280a081cebadf25ce1d330e9bc847b8b5a7bs:32:\"ANddNL-ej-jgw4XGYJIko745CL4Q-bLZ\";'
+    '_ga' => 'GA1.1.1491920020.1454028348'
+    'PHPSESSID' => 'f1ibip35fm8ve9kpf4g5n5u376'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '133'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; _csrf=2165c399f573f7f90edc43757bb9280a081cebadf25ce1d330e9bc847b8b5a7bs%3A32%3A%22ANddNL-ej-jgw4XGYJIko745CL4Q-bLZ%22%3B; _ga=GA1.1.1491920020.1454028348; PHPSESSID=f1ibip35fm8ve9kpf4g5n5u376'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '50379'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1454644132.195
+    'REQUEST_TIME' => 1454644132
+]
+2016-02-05 10:49:02 [127.0.0.1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php:825
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(825): PDOStatement->execute()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tdp.perbulan' in 'field list'
+The SQL being executed was: SELECT `thp`.`tgl`, `thp`.`nik`, `tdp`.`perbulan` FROM `tbl_htrans_potongan` `thp` LEFT JOIN `tbl_dtrans_potongan` `tdp` ON tdp.no = thp.no_pot WHERE tgl<="2015-11-20" AND DATE_ADD(thp.tgl, INTERVAL thp.cicilan MONTH) >= "2015-11-20"' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php:595
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(840): yii\db\Schema->convertException(Object(PDOException), 'SELECT `thp`.`t...')
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(349): yii\db\Command->queryInternal('fetchAll', NULL)
+#2 /var/www/kta_hr/api/controllers/AbsensiController.php(860): yii\db\Command->queryAll()
+#3 [internal function]: app\controllers\AbsensiController->actionPenggajian()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajian', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#9 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#10 {main}
+Additional Information:
+Array
+(
+    [0] => 42S22
+    [1] => 1054
+    [2] => Unknown column 'tdp.perbulan' in 'field list'
+)
+
+2016-02-05 10:49:02 [127.0.0.1][-][-][info][application] $_COOKIE = [
+    'YII_CSRF_TOKEN' => '5c6f32a2e0c1911c889ef823b22be4a4e8d82950'
+    '_csrf' => '2165c399f573f7f90edc43757bb9280a081cebadf25ce1d330e9bc847b8b5a7bs:32:\"ANddNL-ej-jgw4XGYJIko745CL4Q-bLZ\";'
+    '_ga' => 'GA1.1.1491920020.1454028348'
+    'PHPSESSID' => 'f1ibip35fm8ve9kpf4g5n5u376'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '135'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux i686 (x86_64)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'en-US,en;q=0.8,id;q=0.6,ms;q=0.4'
+    'HTTP_COOKIE' => 'YII_CSRF_TOKEN=5c6f32a2e0c1911c889ef823b22be4a4e8d82950; _csrf=2165c399f573f7f90edc43757bb9280a081cebadf25ce1d330e9bc847b8b5a7bs%3A32%3A%22ANddNL-ej-jgw4XGYJIko745CL4Q-bLZ%22%3B; _ga=GA1.1.1491920020.1454028348; PHPSESSID=f1ibip35fm8ve9kpf4g5n5u376'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.7 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.7 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '127.0.0.1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '127.0.0.1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '50383'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajian'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajian'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1454644142.568
+    'REQUEST_TIME' => 1454644142
+]
