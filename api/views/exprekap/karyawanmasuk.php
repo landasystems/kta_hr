@@ -36,9 +36,9 @@ if (!isset($_GET['print'])) {
     <thead>
         <tr>
             <th>NO</th>
+            <th>NIK</th>
             <th>NAMA</th>
             <th>JABATAN</th>
-            <th>NIK</th>
             <th>TANGGAL MASUK</th>
         </tr>
     </thead>
@@ -48,9 +48,9 @@ if (!isset($_GET['print'])) {
         foreach ($models as $val) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
+            echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['nama_jabatan'] . '</td>';
-            echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
             echo '</tr>';
             $no++;
