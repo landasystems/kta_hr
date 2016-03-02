@@ -29,7 +29,13 @@ angular.module('app')
                                 'vendor/modules/textAngular/textAngular.min.js'
                             ]
                         },
+                        {
+                            name: 'angularBootstrapNavTree',
+                            files: [
+                                'vendor/modules/angular-bootstrap-nav-tree/abn_tree.css',
+                                'vendor/modules/angular-bootstrap-nav-tree/abn_tree_directive.js'
+                            ]
+                        },
                     ]
                 });
-            }])
-        ;
+            }]);

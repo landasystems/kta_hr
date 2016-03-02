@@ -72,7 +72,7 @@ class KalenderController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "tbl_kalender.no ASC";
+        $sort = "tbl_kalender.tgl DESC";
         $offset = 0;
         $limit = 10;
         //        Yii::error($params);

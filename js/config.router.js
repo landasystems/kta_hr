@@ -672,6 +672,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('tools.urutjabatan', {
+                                    url: '/urutjabatan',
+                                    templateUrl: 'tpl/tools_urutjabatan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['angularBootstrapNavTree']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/tools_urutjabatan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('transaksi', {
                                     url: '/transaksi',
                                     templateUrl: 'tpl/app.html'
@@ -995,6 +1008,19 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
+                                .state('rekap.ulangtahun', {
+                                    url: '/ulangtahun',
+                                    templateUrl: 'tpl/r_ulangtahun/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_ulangtahun.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
                                 .state('rekap.karyawankontrak', {
                                     url: '/karyawankontrak',
                                     templateUrl: 'tpl/r_karyawankontrak/index.html',
@@ -1017,6 +1043,19 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_karyawanmasukpertunjangan.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.karyawanmasuk', {
+                                    url: '/karyawanmasuk',
+                                    templateUrl: 'tpl/r_karyawanmasuk/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_karyawanmasuk.js');
                                                         }
                                                 );
                                             }]
@@ -1410,6 +1449,19 @@ angular.module('app')
                                                 return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/r_absensipenggajianproduksi.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                .state('rekap.penggajiankaryawan', {
+                                    url: '/penggajiankaryawan',
+                                    templateUrl: 'tpl/r_penggajiankaryawan/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/r_penggajiankaryawan.js');
                                                         }
                                                 );
                                             }]

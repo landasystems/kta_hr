@@ -10,7 +10,7 @@
                 </div> 
             </div>
             <div class="panel-body">
-                <div class="panel panel-info" style="text-align: center">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="form-horizontal">
                             <div class="row">
@@ -20,6 +20,25 @@
                                         <div class="col-md-9">
                                             <label class="btn btn-default" ng-click="clear1()" ng-model="form.tipe" btn-radio="'kelompok'">Kelompok</label>
                                             <label class="btn btn-default" ng-click="clear2()" ng-model="form.tipe" btn-radio="'perorangan'">Perorangan</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Department</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Department" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                        {{val.id_department}}<br>
+                                                        <small>{{val.department}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group" ng-show="form.tipe == 'kelompok'">
@@ -128,9 +147,9 @@
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.initial}}</td>
                             <td align="center">{{row.status_kepemilikan}}</td>
-                            <td align="center">{{row.department}}</td>
-                            <td align="center">{{row.section}}</td>
-                            <td align="center">{{row.jabatan}}</td>
+                            <td align="center">{{row.nama_dept}}</td>
+                            <td align="center">{{row.nama_section}}</td>
+                            <td align="center">{{row.nama_jabatan}}</td>
                             <td align="center">{{row.lokasi_kntr}}</td>
                         </tr>
                         <tr>

@@ -1,52 +1,79 @@
-app.controller('rekapbarangkeluarCtrl', function ($scope, Data, toaster) {
-    //init data
+app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
-    
-    $scope.displayed = [];
-    $scope.paginations = 0;
-    $scope.is_edit = false;
-    $scope.is_view = false;
-    $scope.is_create = false;
-
-    $scope.callServer = function callServer(tableState) {
-        tableStateRef = tableState;
-        $scope.isLoading = true;
-        var offset = tableState.pagination.start || 0;
-        var limit = tableState.pagination.number || 10;
-        var param = {offset: offset, limit: limit};
-
-        if (tableState.sort.predicate) {
-            param['sort'] = tableState.sort.predicate;
-            param['order'] = tableState.sort.reverse;
-        }
-        if (tableState.search.predicateObject) {
-            param['filter'] = tableState.search.predicateObject;
-        }
-        paramRef = param;
-        Data.get('bbk/rekap', param).then(function (data) {
-            $scope.displayed = data.data;
-            $scope.displayedPrint = data.dataPrint;
-            $scope.paginations = data.totalItems;
-            if(data.totalItems != 0) {
-                tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
-            }
-        });
-
-        $scope.isLoading = false;
+    $scope.form = {};
+    $scope.form.tipe = 'kelompok';
+    $scope.show_detail = false;
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
     };
-    
-    $scope.excel = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excel';
-        });
-    }
-    $scope.excelbk = function () {
-        Data.get('bbk/rekap', paramRef).then(function (data) {
-            window.location = 'api/web/bbk/excelbk';
-        });
-    }
-   
 
+    $scope.print = function (form) {
+        if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
+            Data.post('karyawan/rekapmasuk', form).then(function (data) {
+                window.open('api/web/karyawan/excelmasuk?print=true&rekap=karyawanmasukperpend', "", "width=500");
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
 
-})
+    $scope.excel = function (form) {
+        if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
+            Data.post('karyawan/rekapmasuk', form).then(function (data) {
+                window.location = 'api/web/karyawan/excelmasuk?rekap=karyawanmasukperpend';
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+
+    $scope.cariDepartment = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('departement/cari', {nama: $query}).then(function (data) {
+                $scope.listDepartment = data.data;
+            });
+        }
+    };
+
+    $scope.cariSection = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('section/cari', {nama: $query}).then(function (data) {
+                $scope.results = data.data;
+            });
+        }
+    };
+    $scope.cariKaryawan = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('karyawan/cari', {nama: $query}).then(function (data) {
+                $scope.listKaryawan = data.data;
+            });
+        }
+    };
+
+    $scope.clear1 = function () {
+        $scope.form.Section = undefined;
+        $scope.form.tanggal = undefined;
+    };
+    $scope.clear2 = function () {
+        $scope.form.Karyawan = undefined;
+    };
+
+    $scope.listSrc = [];
+    $scope.list = [];
+    $scope.view = function (form) {
+        if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
+            $scope.show_detail = true;
+            Data.post('karyawan/rekapmasuk', form).then(function (data) {
+                $scope.listSrc = [];
+                angular.forEach(data.data, function ($value, $key) {
+                    $scope.listSrc.push($value);
+                });
+            });
+        } else {
+            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+});

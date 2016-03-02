@@ -17,8 +17,8 @@ app.controller('absensikaryawanCtrl', function ($scope, Data, toaster) {
 //        console.log(test);
         Data.get('absensi/rekap', form).then(function (data) {
             $scope.listSrc = [];
-            $scope.show_form.tanggal_startDate = new Date(data.start);
-            $scope.show_form.tanggal_endDate = new Date(data.end);
+            $scope.show_form.tanggal_startDate = data.start;
+            $scope.show_form.tanggal_endDate = data.end;
             angular.forEach(data.data, function ($value, $key) {
                 $scope.listSrc.push($value);
 

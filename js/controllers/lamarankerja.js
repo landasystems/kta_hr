@@ -38,6 +38,18 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster, FileUploader
         });
         $scope.isLoading = false;
     };
+
+    $scope.excel = function () {
+        Data.get('lamarankerja', paramRef).then(function (data) {
+            window.open('api/web/lamarankerja/lapexcel?render=rekaplamaran');
+        });
+    };
+    $scope.print = function () {
+        Data.get('lamarankerja', paramRef).then(function (data) {
+            window.open('api/web/lamarankerja/lapexcel?print=true&render=rekaplamaran');
+        });
+    };
+
     $scope.open2 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -60,6 +72,7 @@ app.controller('lamaranKerjaCtrl', function ($scope, Data, toaster, FileUploader
             $scope.form.no_lamaran = data.kode;
         });
     };
+
 
     $scope.cariJabatan = function (nama) {
         if (nama.length > 2) {

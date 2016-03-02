@@ -354,6 +354,9 @@
                                 <div class="input-group-btn dropdown-submenu" dropdown>
                                     <button type="button" class="btn btn-menu" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">KARYAWAN MASUK<span class="caret"></span></button>
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
+                                        <li ng-show="user.akses.rekap_karyawanmasuk">
+                                            <a ui-sref='rekap.karyawanmasuk'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk</a>
+                                        </li>
                                         <li ng-show="user.akses.rekap_karyawanmasukpertunjangan">
                                             <a ui-sref='rekap.karyawanmasukpertunjangan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Masuk Per Tunjangan</a>
                                         </li>
@@ -391,6 +394,9 @@
                                     <ul class="dropdown-menu sub-menu" style="width: 270px;background-color: #FFFFFF;">
                                         <li ng-show="user.akses.rekap_karyawaniso">
                                             <a ui-sref='rekap.karyawaniso'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Iso</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_ulangtahun">
+                                            <a ui-sref='rekap.ulangtahun'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Karyawan Ulang Tahun</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -464,6 +470,9 @@
                                         </li>
                                         <li ng-show="user.akses.rekap_penggajianproduksi">
                                             <a ui-sref='rekap.penggajianproduksi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Penggajian Produksi</a>
+                                        </li>
+                                        <li ng-show="user.akses.rekap_penggajiankaryawan">
+                                            <a ui-sref='rekap.penggajiankaryawan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Penggajian Karyawan</a>
                                         </li>
                                         <li ng-show="user.akses.rekap_laporanabsensiproduksi">
                                             <a ui-sref='rekap.laporanabsensiproduksi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Absensi Produksi</a>
@@ -614,6 +623,9 @@
                 </li>
                 <li ng-show="user.akses.tools_cekminggu">
                     <a ui-sref='tools.cekminggu'>Cek Minggu Incentive</a>
+                </li>
+                <li ng-show="user.akses.tools_urutjabatan">
+                    <a ui-sref='tools.urutjabatan'>Struktur Organisasi</a>
                 </li>
                 <li ng-show="user.akses.master_roles">
                     <a ui-sref="master.roles">Hak Akses</a>

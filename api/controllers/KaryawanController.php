@@ -11,9 +11,11 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 
-class KaryawanController extends Controller {
+class KaryawanController extends Controller
+{
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -27,6 +29,7 @@ class KaryawanController extends Controller {
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekapkeluar' => ['post'],
+                    'rekap-ulang-tahun' => ['post'],
                     'rekapiso' => ['post'],
                     'rekapmasuk' => ['post'],
                     'rekapkontrak' => ['post'],
@@ -37,7 +40,9 @@ class KaryawanController extends Controller {
                     'section' => ['get'],
                     'subsection' => ['get'],
                     'jabatan' => ['get'],
+                    'urut-jabatan' => ['get'],
                     'kode' => ['get'],
+                    'det-karyawan' => ['get'],
                     'ijazah' => ['get'],
                     'keluar' => ['post'],
                     'upload' => ['post'],
@@ -47,7 +52,8 @@ class KaryawanController extends Controller {
         ];
     }
 
-    public function beforeAction($event) {
+    public function beforeAction($event)
+    {
         $action = $event->id;
         if (isset($this->actions[$action])) {
             $verbs = $this->actions[$action];
@@ -69,7 +75,8 @@ class KaryawanController extends Controller {
         return true;
     }
 
-    public function actionKode() {
+    public function actionKode()
+    {
         $params = $_REQUEST;
         $query = new Query;
 
@@ -99,8 +106,10 @@ class KaryawanController extends Controller {
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'kode' => $kode));
     }
+    
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         //init variable
         $params = $_REQUEST;
         $filter = array();
@@ -170,7 +179,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
-    public function actionRekapkeluar() {
+    public function actionRekapkeluar()
+    {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $filter = array();
@@ -183,9 +193,10 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
                 ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as jabat");
 
         session_start();
         $_SESSION['query'] = $query;
@@ -200,7 +211,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
-    public function actionRekapmasuk() {
+    public function actionRekapmasuk()
+    {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $filter = array();
@@ -213,12 +225,16 @@ class KaryawanController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_karyawan')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
+                ->join('LEFT JOIN', 'tbl_department', 'tbl_department.id_department = tbl_karyawan.department')
+                ->join('LEFT JOIN', 'tbl_section', 'tbl_section.id_section = tbl_karyawan.section')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
 
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
             $adWhere .= (!empty($params['lokasi_kantor'])) ? ' AND lokasi_kntr ="' . $params['lokasi_kantor'] . '"' : '';
+            $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
             $query->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")' . $adWhere);
         } else {
             $query->where(['nik' => $params['Karyawan']['nik']]);
@@ -237,7 +253,52 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
-    public function actionRekapiso() {
+    public function actionRekapUlangTahun()
+    {
+        //init variable
+        $params = json_decode(file_get_contents("php://input"), true);
+        $sort = "day(tbl_karyawan.tgl_lahir) ASC";
+        $offset = 0;
+
+        //create query
+        $query = new Query;
+        $query->offset($offset)
+//                ->limit($limit)
+                ->from('tbl_karyawan')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_jabatan.id_jabatan = tbl_karyawan.jabatan')
+                ->join('LEFT JOIN', 'tbl_department', 'tbl_department.id_department = tbl_karyawan.department')
+                ->join('LEFT JOIN', 'tbl_section', 'tbl_section.id_section = tbl_karyawan.section')
+                ->where('(MONTH(tbl_karyawan.tgl_lahir) >="' . $params['tanggal'] . '" AND MONTH(tbl_karyawan.tgl_lahir) <="' . $params['tanggal'] . '") and tbl_karyawan.status like "kerja"')
+                ->orderBy($sort)
+                ->select("tbl_karyawan.*,tbl_jabatan.jabatan as nama_jabatan, tbl_section.section as nama_section, tbl_department.department as nama_dept");
+
+
+        session_start();
+        $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $totalItems = $query->count();
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
+                if (!empty($val['tgl_lahir'])) {
+                    $date1 = date_create($val['tgl_lahir']);
+                    $date2 = date_create(date('Y-m-d'));
+                    $diff = date_diff($date1, $date2);
+                    $models[$key]['usia'] = round(($diff->days) / 365) . ' tahun';
+                }
+            }
+        }
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionRekapiso()
+    {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $sort = "nik DESC";
@@ -289,7 +350,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
-    public function actionRekapkontrak() {
+    public function actionRekapkontrak()
+    {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $sort = "Kontrak_21 ASC, Kontrak_11 ASC";
@@ -297,15 +359,20 @@ class KaryawanController extends Controller {
 
         $query = new Query;
         $query->offset($offset)
-//                ->limit($limit)
                 ->from('tbl_karyawan')
-                ->join('LEFT JOIN', 'pekerjaan', 'tbl_karyawan.sub_section = pekerjaan.kd_kerja')
-                ->where('tbl_karyawan.status_karyawan = "Kontrak" AND tbl_karyawan.status="Kerja"')
+                ->join('LEFT JOIN', 'tbl_jabatan', 'tbl_karyawan.jabatan = tbl_jabatan.id_jabatan')
+                ->where('tbl_karyawan.status_karyawan like "Kontrak" AND tbl_karyawan.status like "Kerja"')
                 ->orderBy($sort)
                 ->select("*");
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
+            $adWhere .= (!empty($params['Jabatan']['id_jabatan'])) ? ' AND tbl_karyawan.jabatan="' . $params['Jabatan']['id_jabatan'] . '"' : '';
+            $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
+
+            if ($params['tipe_periode'] == 'rentang')
+                $query->andWhere('((Kontrak_11 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_11 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '" AND Kontrak_2 is NULL) OR (Kontrak_21 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_21 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '"))' . $adWhere);
+            else
+                $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
         }
@@ -337,7 +404,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
 
-    public function actionView($id) {
+    public function actionView($id)
+    {
 
         $model = $this->findModel($id);
         $department = [];
@@ -365,7 +433,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'ijazah' => $ijazah, 'ketua' => $ketua, 'department' => $department, 'section' => $section, 'subSection' => $subSection, 'jabatan' => $jabatan), JSON_PRETTY_PRINT);
     }
 
-    public function actionUpload() {
+    public function actionUpload()
+    {
         if (!empty($_FILES)) {
             $tempPath = $_FILES['file']['tmp_name'];
             $newName = \Yii::$app->landa->urlParsing($_FILES['file']['name']);
@@ -390,7 +459,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    public function actionRemovegambar() {
+    public function actionRemovegambar()
+    {
         $params = json_decode(file_get_contents("php://input"), true);
         $barang = Tblkaryawan::findOne($params['nik']);
         $foto = json_decode($barang->foto, true);
@@ -406,7 +476,8 @@ class KaryawanController extends Controller {
         echo json_encode($foto);
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblkaryawan();
         $model->attributes = $params;
@@ -445,7 +516,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
@@ -489,7 +561,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    public function actionKeluar($id) {
+    public function actionKeluar($id)
+    {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->status = 'Keluar';
@@ -512,7 +585,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->delete()) {
@@ -525,7 +599,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Tblkaryawan::findOne($id)) !== null) {
             return $model;
         } else {
@@ -536,7 +611,8 @@ class KaryawanController extends Controller {
         }
     }
 
-    private function setHeader($status) {
+    private function setHeader($status)
+    {
 
         $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
         $content_type = "application/json; charset=utf-8";
@@ -546,7 +622,8 @@ class KaryawanController extends Controller {
         header('X-Powered-By: ' . "Nintriva <nintriva.com>");
     }
 
-    private function _getStatusCodeMessage($status) {
+    private function _getStatusCodeMessage($status)
+    {
         $codes = Array(
             200 => 'OK',
             400 => 'Bad Request',
@@ -560,7 +637,8 @@ class KaryawanController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-    public function actionExcel() {
+    public function actionExcel()
+    {
         session_start();
         $query = $_SESSION['query'];
         $query->offset("");
@@ -570,7 +648,8 @@ class KaryawanController extends Controller {
         return $this->render("/expmaster/karyawan", ['models' => $models]);
     }
 
-    public function actionExcelmasuk() {
+    public function actionExcelmasuk()
+    {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
@@ -597,11 +676,20 @@ class KaryawanController extends Controller {
         return $this->render("/exprekap/" . $rekap, ['models' => $models, 'start' => $start, 'end' => $end, 'section' => $section]);
     }
 
-    public function actionExcelkontrak() {
+    public function actionExcelkontrak()
+    {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        $tanggal = $params['tanggal'];
+        $start = '';
+        $end = '';
+        $tanggal = '';
+        if ($params['tipe_periode'] == 'rentang') {
+            $start = $params['tanggal_rentang']['startDate'];
+            $end = $params['tanggal_rentang']['endDate'];
+        } else {
+            $tanggal = $params['tanggal'];
+        }
         $section = (!empty($params['Section']['section'])) ? $params['Section']['section'] : '';
         $query->offset("");
         $query->limit("");
@@ -623,10 +711,18 @@ class KaryawanController extends Controller {
         }
 
         $rekap = (!empty($_GET['rekap'])) ? $_GET['rekap'] : '';
-        return $this->render("/exprekap/" . $rekap, ['models' => $models, 'tanggal' => $tanggal, 'section' => $section]);
+        return $this->render("/exprekap/" . $rekap, [
+                    'models' => $models,
+                    'start' => $start,
+                    'end' => $end,
+                    'tanggal' => $tanggal,
+                    'tipe' => $params['tipe_periode'],
+                    'section' => $section
+        ]);
     }
 
-    public function actionExcelkeluar() {
+    public function actionExcelkeluar()
+    {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
@@ -639,7 +735,8 @@ class KaryawanController extends Controller {
         return $this->render("/exprekap/karyawankeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
     }
 
-    public function actionCari() {
+    public function actionCari()
+    {
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_karyawan as kar')
@@ -657,7 +754,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models));
     }
 
-    public function actionCarikontrak() {
+    public function actionCarikontrak()
+    {
 
         $params = $_REQUEST;
         $query = new Query;
@@ -676,7 +774,8 @@ class KaryawanController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models));
     }
 
-    public function actionIjazah() {
+    public function actionIjazah()
+    {
         $params = $_REQUEST;
         $query = new Query();
 
@@ -687,6 +786,79 @@ class KaryawanController extends Controller {
 
         $execute = $query->createCommand();
         $models = $execute->queryOne();
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionUrutJabatan()
+    {
+        $karyawan = TblKaryawan::findAll([
+                    'tbl_karyawan.status like "kerja"'
+        ]);
+
+        $data = [];
+        $subData = [];
+        $subSubData = [];
+//        $section = [];
+
+        $department = \app\models\Department::find()->all();
+        if (!empty($department)) {
+            foreach ($department as $k => $v) {
+                $data[$k]['label'] = $v->department;
+                $data[$k]['kode'] = $v->id_department;
+                $section = \app\models\Section::find()->where('dept ="' . $v->id_department . '"')->all();
+
+                if (!empty($section)) {
+                    foreach ($section as $ke => $va) {
+                        $subData[] = $va->section;
+                        $data[$k]['children'][$ke]['label'] = $va->section;
+                        $data[$k]['children'][$ke]['kode'] = $va->id_section;
+                        $subSection = \app\models\SubSection::find()->where('id_section="' . $va->id_section . '"')->all();
+                        if (!empty($subSection)) {
+                            foreach ($subSection as $key => $val) {
+//                                $subSubData[] = $val->kerja;
+                                $data[$k]['children'][$ke]['children'][$key]['label'] = $val->kerja;
+                                $data[$k]['children'][$ke]['children'][$key]['kode'] = $val->kd_kerja;
+//                                $data[$k]['children'][$ke]['children'][$key]['children'] = $subSubData;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $data));
+    }
+
+    public function actionDetKaryawan()
+    {
+        $params = $_REQUEST;
+        $tipeKode = substr($params['kode'], 0, 2);
+//        Yii::error($tipeKode);
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')
+                ->join('LEFT JOIN', 'tbl_section as sec', 'sec.id_section = kar.section')
+                ->join('LEFT JOIN', 'pekerjaan as sub', 'sub.kd_kerja = kar.sub_section')
+                ->join('LEFT JOIN', 'tbl_department as dep', 'dep.id_department = kar.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as jab', 'jab.id_jabatan= kar.jabatan')
+                ->select("kar.nik, kar.nama as nm_karyawan,jab.jabatan as nm_jabatan")
+                ->where('kar.status like "Kerja"');
+
+
+
+        if ($tipeKode == 'DP') {
+            $query->andWhere(['kar.department' => $params['kode']]);
+        } else if ($tipeKode == 'SC') {
+            $query->andWhere(['kar.section' => $params['kode']]);
+        } else if ($tipeKode == 'KR') {
+            $query->andWhere(['kar.sub_section' => $params['kode']]);
+        }
+        $command = $query->createCommand();
+        $models = $command->queryAll();
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));

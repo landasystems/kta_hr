@@ -28,6 +28,12 @@
                                 <input st-search="nik" class="form-control"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Periode</label>
+                            <div class="col-sm-9">
+                                <input placeholder="Tanggal Periode" date-range-picker class="form-control" st-search="tanggal" type="text"  ng-model="tanggals">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -42,8 +48,11 @@
                                 <select class="form-control" st-search="ket">
                                     <option value=""></option>
                                     <option value="Cuti">Cuti</option>
+                                    <option value="Sakit">Sakit</option>
                                     <option value="Surat Dokter">Surat Dokter</option>
                                     <option value="Izin">Izin</option>
+                                    <option value="Izin Keluar">Izin Keluar</option>
+                                    <option value="Izin Abset">Izin Absent</option>
                                     <option value="Absent">Absent</option>
                                     <option value="Sakit">Sakit</option>
                                     <option value="Libur">Libur</option>
@@ -157,26 +166,29 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Keterangan</label>
-                                <div class="col-sm-7">
+                                <div class="col-sm-9">
                                     <div class="btn-group">
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Cuti'">Cuti</label>
+                                        <label class="btn btn-default" ng-model="form.ket" btn-radio="'Sakit'">Sakit</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Surat Dokter'">Surat Dokter</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Absent'">Absent</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Izin'">Izin</label>
+                                        <label class="btn btn-default" ng-model="form.ket" btn-radio="'Izin Keluar'">Izin Keluar</label>
+                                        <label class="btn btn-default" ng-model="form.ket" btn-radio="'Izin Absent'">Izin Absen</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Dinas Luar'">Dinas Luar</label>
                                         <label class="btn btn-default" ng-model="form.ket" btn-radio="'Setengah Hari'">Setengah Hari</label>
                                     </div> 
                                 </div>
                             </div>
-                            <div class="form-group" ng-show="form.ket == 'Izin' || form.ket == 'Dinas Luar' || form.ket == 'Setengah Hari'">
+                            <div class="form-group" ng-show="form.ket == 'Izin Keluar' || form.ket == 'Izin Absent' || form.ket == 'Dinas Luar' || form.ket == 'Setengah Hari'">
                                 <label class="col-sm-3 control-label"></label>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control" ng-model="form.ket_uraian" ng-disabled="is_view">
                                 </div>
                             </div>
-                            <div class="form-group" ng-show="form.ket == 'Izin' || form.ket == 'Dinas Luar'">
+                            <div class="form-group" ng-show="form.ket == 'Izin Keluar' || form.ket == 'Izin Absent' || form.ket == 'Dinas Luar'">
                                 <label class="col-sm-3 control-label">Jam (Masuk - Keluar)</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control col-sm-2" ng-model="form.jmasuk" ng-pattern="/^[0-9:]+$/" placeholder="00:00" ng-disabled="is_view" style="width: 80px">
                                     <div style="float: left;padding: 7px;"> - </div>
                                     <input type="text" class="form-control col-sm-2" ng-model="form.jkeluar" ng-pattern="/^[0-9:]+$/" placeholder="00:00" ng-disabled="is_view" style="width: 80px">
@@ -193,6 +205,6 @@
                 </form>
             </div>
         </div>
-       
+
     </div>
 </div>

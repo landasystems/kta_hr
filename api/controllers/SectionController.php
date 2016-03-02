@@ -21,6 +21,7 @@ class SectionController extends Controller {
                     'view' => ['get'],
                     'excel' => ['get'],
                     'list' => ['get'],
+                    'all' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -58,6 +59,20 @@ class SectionController extends Controller {
         if(!empty($params['nama'])){
             $query->andWhere(['dept'=>$params['nama']]);
         }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+    public function actionAll() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_section')
+                ->select("id_section")
+                ->orderBy('id_section ASC');
 
         $command = $query->createCommand();
         $models = $command->queryAll();

@@ -7,9 +7,15 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
+                <div class="pull-right dropdown" ng-show="!isCollapsed" style="margin-top: -6px;margin-right: 8px" dropdown="">
+                    <button type="button"  class="btn btn-success" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">&nbsp;&nbsp; Laporan Lamaran Kerja <span class="caret"></span></button>
+                    <ul class="dropdown-menu" style="width: 185px;background-color: #F7F7F7;">
+                        <li><a href="#" ng-click="excel()">Excel</a></li>
+                        <li><a href="#" ng-click="print()">Print</a></li>
+                    </ul>
+                </div>
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
                 <div class="form-horizontal">
@@ -58,7 +64,7 @@
                             <th st-sort="alamat_jln">Alamat Jalan</th>
                             <th st-sort="kabupaten">Kota</th>
                             <th st-sort="jurusan">Jurusan</th>
-                            <th style="text-align:right;">Action &nbsp;</th>
+                            <th style="text-align:right;" width="100">Action &nbsp;</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
@@ -80,12 +86,12 @@
                     </tbody>
                     <tbody ng-show="isLoading">
                         <tr>
-                            <td colspan="4" class="text-center">Loading ... </td>
+                            <td colspan="12" class="text-center">Loading ... </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            <td colspan="12" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
                     </tfoot>
@@ -334,7 +340,7 @@
                     <tr>
                         <td style="width:40%">Tempat, Tanggal Lahir</td>
                         <td style="width:5%">:</td>
-                        <td>{{form.tmpt_lahir}}, {{form.tgl_lahir | date}}</td>
+                        <td>{{form.tmpt_lahir}}, {{form.tgl_lahir| date}}</td>
                     </tr>
                     <tr>
                         <td style="width:40%">Alamat</td>
@@ -391,16 +397,16 @@
                         <td style="width:5%">:</td>
                         <td>{{form.no_ijazah}}</td>
                     </tr>
-                    
+
                     <tr>
                         <td style="width:40%">Tanggal Lulus</td>
                         <td style="width:5%">:</td>
-                        <td>{{form.tgl_ijazah | date}}</td>
+                        <td>{{form.tgl_ijazah| date}}</td>
                     </tr>
-                    
+
                 </table>
             </li>
         </ul>
-        
+
     </div>
 </div>

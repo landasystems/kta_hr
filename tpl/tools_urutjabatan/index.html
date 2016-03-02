@@ -1,0 +1,50 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="urutJabatanCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">STRUKTUR ORGANISASI PT. KARYA TUGAS ANDA</h1>
+    </div>
+    <div class="wrapper-lg">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="b-a bg-light dk r r-2x">
+                        <span ng-if="doing_async">...loading...</span>
+                        <abn-tree 
+                            tree-data         = "my_data" 
+                            tree-control      = "my_tree" 
+                            on-select         = "my_tree_handler(branch)" 
+                            expand-level      = "2" 
+                            initial-selection = "Granny Smith"
+                            icon-leaf         = "fa fa-file-o"
+                            icon-expand       = "fa fa-plus"
+                            icon-collapse     = "fa fa-minus"
+                            >
+                        </abn-tree>
+                    </div>
+                </div>
+                <!--        </div>
+                        <div class="col">-->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="alert alert-info">{{output}}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="alert alert-danger">
+                            <table class="table-bordered table table-striped">
+                                <tr>
+                                    <th style="width:10%">No.</th>
+                                    <th style="text-align:center">Nama</th>
+                                    <th style="text-align:center">Jabatan</th>
+                                </tr>
+                                <tr ng-repeat="det in detailKaryawan">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{det.nm_karyawan}}</td>
+                                    <td>{{det.nm_jabatan}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

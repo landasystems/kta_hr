@@ -63,25 +63,23 @@ use Yii;
  * @property string $no_npwp
  * @property string $no_pasport
  */
-class TblKaryawan extends \yii\db\ActiveRecord
-{
+class TblKaryawan extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'tbl_karyawan';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['nik'], 'required'],
             [['Kontrak_1', 'Kontrak_11', 'Kontrak_2', 'Kontrak_21', 'tgl_lahir', 'tgl_masuk_kerja', 'tgl_keluar_kerja'], 'safe'],
-            [['gaji_pokok','mgm', 't_fungsional', 't_kehadiran', 'thp', 'upah_tetap', 'pesangon', 't_masa_kerja', 'penggantian_hak', 'normatif'], 'number'],
+            [['gaji_pokok', 'mgm', 't_fungsional', 't_kehadiran', 'thp', 'upah_tetap', 'pesangon', 't_masa_kerja', 'penggantian_hak', 'normatif'], 'number'],
             [['nik', 'initial', 'status_kepemilikan', 'status_karyawan', 'department', 'section', 'sub_section', 'lokasi_kntr', 'tmt_kerja', 'pendidikan', 'tmpt_lahir', 'bulan_lahir', 'rt', 'rw', 'desa', 'kecamatan', 'kabupaten', 'kode_pos', 'no_ktp', 'agama', 'status_pernikahan', 'kewarganegaraan', 'kode_bank', 'nama_bank', 'jk', 'status', 'ket', 'no_npwp'], 'string', 'max' => 20],
             [['nama', 'sekolah', 'jurusan', 'no_ijazah', 'alamat_jln', 'no_polis', 'no_pasport'], 'string', 'max' => 50],
             [['foto'], 'string', 'max' => 500],
@@ -93,8 +91,7 @@ class TblKaryawan extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'nik' => 'Nik',
             'nama' => 'Nama',
@@ -154,16 +151,30 @@ class TblKaryawan extends \yii\db\ActiveRecord
             'no_pasport' => 'No Pasport',
         ];
     }
-    
-    public static function aktif($niknama = '',$section = '', $lokasi_kntr = 'SUKOREJO'){
-        $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="'.$lokasi_kntr.'"')->orderBy('nik')->indexBy('nik');
-        if (!empty($niknama)){
-            $query->andWhere('(nik LIKE "%'.$niknama.'%" OR nama LIKE "%'.$niknama.'%")');
+
+    public function getSect() {
+        return $this->hasOne(Section::className(), ['id_section' => 'section']);
+    }
+
+    public static function aktif($niknama = '', $section = '', $lokasi_kntr = 'SUKOREJO') {
+        $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="' . $lokasi_kntr . '"')->orderBy('nik')->indexBy('nik');
+        if (!empty($niknama)) {
+            if (is_array($niknama)) {
+                $query->andWhere(['in', 'nik', $niknama]);
+            } else {
+                $query->andWhere('(nik LIKE "%' . $niknama . '%" OR nama LIKE "%' . $niknama . '%")');
+            }
         }
-        
-        if(!empty($section)){
-            $query->andWhere("section = '".$section."'");
+
+        if (!empty($section)) {
+            if (is_array($section)) {
+//                Yii::error($section);
+                $query->andWhere(['in', 'section', $section]);
+            } else {
+                $query->andWhere("section = '" . $section . "'");
+            }
         }
         return $query->all();
     }
+
 }

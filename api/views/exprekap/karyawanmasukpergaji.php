@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-retur-Pergerakan-Barang.xls");
+    header("Content-Disposition: attachment; filename=excel-karyawan-masuk-pergaji.xls");
 }
 
 //$start = $params['tanggal']['startDate'];

@@ -1,0 +1,183 @@
+<div ng-app="app" ng-controller="absensipenggajiankaryawanCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Penggajian Karyawan</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Penggajian Karyawan
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <form name="landaform" class="form-horizontal form-validation" method="get">
+
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan<span class="required"></span></label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">NIK/ Nama</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" ng-model="form.niknama">
+                                        </div>
+                                    </div>
+                                   -->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section</label>
+                                        <div class="col-sm-9">
+                                            <ui-select multiple ng-model="form.Sections" on-select="listnm(form.Sections)" theme="bootstrap">
+                                                <ui-select-match  placeholder="Pilih Section">{{$item.section}}</ui-select-match>
+                                                <ui-select-choices repeat="sec in listsecs | filter: $select.search">
+                                                  {{sec.section}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">Nama Karyawan</label>
+                                        <div class="col-sm-9">
+                                            <ui-select multiple ng-model="form.Namakr" theme="bootstrap">
+                                                <ui-select-match  placeholder="Pilih Karyawan">{{$item.nama}}</ui-select-match>
+                                                <ui-select-choices repeat="sec in listnama | filter: $select.search">
+                                                  {{sec.nik}} - {{sec.nama}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+<!--                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                        {{val.id_section}} - {{val.section}}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Lokasi Kantor</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="form.lokasi_kntr">
+                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                    <td>
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="exceln()">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="printn()">Print</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
+            <div class="panel-heading no-border bg-primary text-center">          
+                LAPORAN GAJI KARYAWAN PRODUKSI
+                <br/> TANGGAL : {{mulai_tanggal * 1000| date:'d MMM yyyy'}} - {{tanggal_sampai * 1000| date:'d MMM yyyy'}}
+            </div>
+            <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;width: 30px">NO</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;">NAMA</th>
+                        <th colspan="5" style="text-align: center;vertical-align: middle;">INCENTIVE</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;">TOTAL</th>
+                        <th colspan="6" style="text-align: center;vertical-align: middle;">ABSENSI</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;">TH</th>
+                        <th colspan="2" style="text-align: center;vertical-align: middle;">POTONGAN UPAH</th>
+                        <th rowspan="3" style="text-align: center;vertical-align: middle;" width="190">Ket</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" style="text-align: center;vertical-align: middle;">MINGGU</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">A</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">I</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">S</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">SD</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">C</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">ABSENT</th>
+                        <th rowspan="2" style="text-align: center;vertical-align: middle;">1/2</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center;vertical-align: middle;">I</th>
+                        <th style="text-align: center;vertical-align: middle;">II</th>
+                        <th style="text-align: center;vertical-align: middle;">III</th>
+                        <th style="text-align: center;vertical-align: middle;">IV</th>
+                        <th style="text-align: center;vertical-align: middle;">V</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="!isLoading">
+                    <tr ng-repeat="row in list">
+                        <td style="text-align: center">{{row.no}}</td>
+                        <td style="text-align: left">{{row.nama}}</td>
+                        <td style="text-align: center">{{row.mg1}}</td>
+                        <td style="text-align: center">{{row.mg2}}</td>
+                        <td style="text-align: center">{{row.mg3}}</td>
+                        <td style="text-align: center">{{row.mg4}}</td>
+                        <td style="text-align: center">{{row.mg5}}</td>
+                        <td style="text-align: center">{{row.ttlinc}}</td>
+                        <td style="text-align: center">{{row.absh}}</td>
+                        <td style="text-align: center">{{row.ijnh}}</td>
+                        <td style="text-align: center">{{row.skh}}</td>
+                        <td style="text-align: center">{{row.sdh}}</td>
+                        <td style="text-align: center">{{row.sth}}</td>
+                        <td style="text-align: center">{{row.cth}}</td>
+                        <td style="text-align: center">{{row.thp}}</td>
+                        <td style="text-align: center">{{row.ptga}}</td>
+                        <td style="text-align: center">{{row.ptgs}}</td>
+                        <td style="text-align: center">{{row.ket}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="25" class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html"></td>
+                    </tr>
+                </tbody>
+            </table>			
+        </div>
+    </div>
+</div>
+<!--FORM-->
+</div>

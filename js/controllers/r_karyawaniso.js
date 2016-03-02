@@ -14,13 +14,21 @@ app.controller('karyawanIsoCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.excel= function (form) {
+    $scope.excel = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             Data.post('karyawan/rekapiso', form).then(function (data) {
                 window.location = 'api/web/karyawan/excelmasuk?rekap=karyawaniso';
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+        }
+    };
+
+    $scope.cariDepartment = function ($query) {
+        if ($query.length >= 3) {
+            Data.get('departement/cari', {nama: $query}).then(function (data) {
+                $scope.listDepartment = data.data;
+            });
         }
     };
 
@@ -31,8 +39,8 @@ app.controller('karyawanIsoCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-    
-    $scope.setDate = function(form,tanggal){
+
+    $scope.setDate = function (form, tanggal) {
         form.tgl_start = new Date(tanggal.startDate);
         form.tgl_end = new Date(tanggal.endDate);
     };

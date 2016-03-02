@@ -59,7 +59,7 @@
         <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN REKAP ABSENSI
-                <br/> TANGGAL : {{show_form.tanggal_startDate| date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate| date:'dd-MM-yyyy'}}
+                <br/> TANGGAL : {{show_form.tanggal_startDate*1000 | date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate*1000 | date:'dd-MM-yyyy'}}
                 <!--<br/> JUMLAH : {{show_form.total}}-->
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">

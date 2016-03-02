@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=excel-retur-Pergerakan-Barang.xls");
+    header("Content-Disposition: attachment; filename=excel-rekap-karyawan-keluar.xls");
 }
 ?>
 <div style="font-size: 10px;">
@@ -28,7 +28,7 @@ if (!isset($_GET['print'])) {
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
 <table border="1" style="border-collapse: collapse;width:100%">
     <tr>
-        <td colspan="3" rowspan="2" style="width:60%;text-align: center">
+        <td colspan="5" rowspan="2" style="width:60%;text-align: center">
             <h4>DATA KARYAWAN KELUAR</h4><br/>
             <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
         </td>
@@ -45,7 +45,7 @@ if (!isset($_GET['print'])) {
         <tr>
             <th>NO</th>
             <th>NAMA</th>
-            <th>BAGIAN</th>
+            <th>JABATAN</th>
             <th>NIK</th>
             <th>TANGGAL MASUK</th>
             <th>TANGGAL KELUAR</th>
@@ -59,7 +59,7 @@ if (!isset($_GET['print'])) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
-            echo '<td align="center">' . $val['department'] . '</td>';
+            echo '<td align="center">' . $val['jabat'] . '</td>';
             echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
             echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_keluar_kerja'])) . '</td>';

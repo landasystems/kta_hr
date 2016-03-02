@@ -104,8 +104,8 @@ class MagangController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach($models as $key => $val){
-            if(!empty($val['kd_bagian'])){
+        foreach ($models as $key => $val) {
+            if (!empty($val['kd_bagian'])) {
                 $bagian = \app\models\TblBagian::findOne($val['kd_bagian']);
                 $models[$key]['Bagian'] = $bagian->attributes;
             }
@@ -116,6 +116,7 @@ class MagangController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -123,14 +124,17 @@ class MagangController extends Controller {
         $sort = "mag.no_magang DESC";
         $offset = 0;
         $limit = 10;
-
+        $starts = date('Y-m-d', strtotime($params['tanggal']['startDate']));
+        $ends = date('Y-m-d', strtotime($params['tanggal']['startDate']));
+        $siswa_magang = $this->ceksiswa($starts, $ends);
+        
         //create query
         $query = new Query;
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_magang as mag')
                 ->join('LEFT JOIN', 'tbl_bagian as bag', 'mag.bagian = bag.kd_bagian')
-                ->where('(mag.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND mag.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->where(['in','no_magang',$siswa_magang])
                 ->orderBy($sort)
                 ->select("*");
 
@@ -145,6 +149,75 @@ class MagangController extends Controller {
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function ceksiswa($start, $end) {
+
+
+        $prd = $this->periode($start, $end);
+
+        $data_ku = [];
+        foreach ($prd as $date) {
+            $tes = $this->cekid($date);
+            foreach ($tes as $set) {
+                $data_ku[] = $set;
+            }
+        }
+        $data_a = array_count_values($data_ku);
+        $data_akhir = [];
+        foreach ($data_a as $k => $value) {
+            array_push($data_akhir, $k);
+        }
+
+        return $data_akhir;
+    }
+
+    public function cekid($tanggal) {
+///
+        $model = Tblmagang::find()->all();
+        $data_mg = [];
+        foreach ($model as $model_val) {
+            $data_mg[$model_val->no_magang] = [
+                "mulai" => $model_val->tgl_mulai,
+                "selesai" => $model_val->tgl_selesai
+            ];
+        }
+        
+
+//periode per user
+        $dat = [];
+        foreach ($data_mg as $key => $val) {
+            $dat[$key][] = $this->periode($val['mulai'], $val['selesai']);
+        }
+
+//cek
+        $dataku = [];
+        foreach ($dat as $keys => $value) {
+            foreach ($value as $dt) {
+                foreach ($dt as $values) {
+
+                    if ($values == $tanggal) {
+                        $dataku[] = $keys;
+                    }
+                }
+            }
+        }
+
+        return $dataku;
+    }
+
+    public function periode($mulai, $selesai) {
+        $begin = new \DateTime($mulai);
+        $end = new \DateTime($selesai);
+        $end = $end->modify('+1 day');
+
+        $interval = new \DateInterval('P1D');
+        $daterange = new \DatePeriod($begin, $interval, $end);
+        $data = [];
+        foreach ($daterange as $date) {
+            $data[] = $date->format("Y-m-d");
+        }
+        return $data;
     }
 
     public function actionKode() {
