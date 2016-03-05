@@ -431,7 +431,7 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load('angularFileUpload').then(
+                                                return $ocLazyLoad.load(['angularFileUpload','daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/lamarankerja.js');
                                                         }

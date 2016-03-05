@@ -109,11 +109,14 @@ class LamarankerjaController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
+                if ($key == 'tanggal') {
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'tbl_lamaran_karyawan.tgl', $start, $end]);
+                } else {
                     $query->andFilterWhere(['like', $key, $val]);
-//                }
+                }
             }
         }
 
@@ -128,6 +131,7 @@ class LamarankerjaController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekapperpribadi() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -141,7 +145,7 @@ class LamarankerjaController extends Controller {
         $query->offset($offset)
 //                ->limit($limit)
                 ->from('tbl_lamaran_karyawan')
-                ->where('tgl >="'.date('Y-m-d',  strtotime($params['tanggal']['startDate'])).'" AND tgl <="'.date('Y-m-d',  strtotime($params['tanggal']['endDate'])).'"')
+                ->where('tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '"')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -251,8 +255,9 @@ class LamarankerjaController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
-        return $this->render("/exprekap/".$render, ['models' => $models,'params' => $params]);
+        return $this->render("/exprekap/" . $render, ['models' => $models, 'params' => $params]);
     }
+
     public function actionLapexcel() {
         session_start();
         $query = $_SESSION['query'];
@@ -261,10 +266,8 @@ class LamarankerjaController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
-        return $this->render("/exprekap/".$render, ['models' => $models]);
+        return $this->render("/exprekap/" . $render, ['models' => $models]);
     }
-    
-    
 
     public function actionCari() {
         $params = $_REQUEST;

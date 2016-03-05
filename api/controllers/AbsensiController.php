@@ -782,17 +782,23 @@ class AbsensiController extends Controller {
 
     public function actionPenggajiankaryawan() {
         $params = json_decode(file_get_contents("php://input"), true);
-//        $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
-//        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
 
-        $section = [];
-        foreach ($params['Sections'] as $key => $value) {
-            $section[] = $value['id_section'];
+        if (!empty($params['Sections'])) {
+            $section = [];
+            foreach ($params['Sections'] as $key => $value) {
+                $section[] = $value['id_section'];
+            }
+        } else {
+            $section = '';
         }
 
-        $nmkr = [];
-        foreach ($params['Namakr'] as $keys => $values) {
-            $nmkr[] = $values['nik'];
+        if (!empty($params['Namakr'])) {
+            $nmkr = [];
+            foreach ($params['Namakr'] as $keys => $values) {
+                $nmkr[] = $values['nik'];
+            }
+        } else {
+            $nmkr = '';
         }
 
 
@@ -815,8 +821,8 @@ class AbsensiController extends Controller {
         $arrtgl = $this->Hitunghr($date, $endate);
         $sunday = $this->Sunday($date, $endate);
 
-        // Yii::error($sunday['minggu1']);
-//         Yii::error($date);
+        Yii::error($nmkr);
+
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $endate);
