@@ -92,8 +92,8 @@
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.nik}}</td>
                         <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk| asDate | date:"shortTime"}}</td>
-                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar| asDate | date:"shortTime"}}</td>
+                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.masuk}}</td>
+                        <td style="text-align: center" ng-show="show_form.status == 'hadir'">{{row.keluar}}</td>
                         <td ng-hide="show_form.status == 'hadir'">
                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                 <button type="button" class="btn btn-info fa fa-external-link " ng-hide="row.disable" ng-click="absen(row)">

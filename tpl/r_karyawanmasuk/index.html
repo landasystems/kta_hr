@@ -129,20 +129,19 @@
                         <thead>
                             <tr>
                                 <th rowspan="3" style="text-align: center;vertical-align: center;">No</th>
+                                <th rowspan="3" style="text-align: center;vertical-align: center;">NIK</th>
                                 <th rowspan="3" style="text-align: center;vertical-align: center;">Nama</th>
                                 <th rowspan="3" style="text-align: center;vertical-align: center;">Jabatan</th>
-                                <th rowspan="3" style="text-align: center;vertical-align: center;">NIK</th>
                                 <th rowspan="3" style="text-align: center;vertical-align: center;">Tanggal Masuk</th>
                             </tr>
                         </thead>
                         <tbody ng-show="!isLoading">
                             <tr ng-repeat="row in list">
                                 <td style="text-align: center">{{$index + 1}}</td>
+                                <td style="text-align: center">{{row.nik}}</td>
                                 <td style="text-align: center">{{row.nama}}</td>
                                 <td style="text-align: center">{{row.nama_jabatan}}</td>
-                                <td style="text-align: center">{{row.nik}}</td>
                                 <td style="text-align: center">{{row.tgl_masuk_kerja| date}}</td>
-                                <td align="center"></td>
                             </tr>
                             <tr>
                                 <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
