@@ -756,16 +756,34 @@ class AbsensiController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
 //        Yii::error($params);
         $section = [];
-        foreach ($params as $key => $value) {
-            $section[] = $value['id_section'];
+        foreach ($params['department'] as $key => $value) {
+//                $section[] = $value['id_section'];
+            $section[] = $value['id_department'];
+        }
+
+        $kary = array();
+        if (isset($params['karyawan']) && !empty($params['karyawan'])) {
+            foreach ($params['karyawan'] as $val) {
+                $kary[] = $val['nik'];
+            }
         }
 
 //        Yii::error($section);
 
         if (empty($section)) {
-            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->all();
+            $kar = \app\models\TblKaryawan::find()
+                    ->select("nik,nama")
+                    ->where(['status' => 'Kerja'])
+                    ->andWhere(['NOT IN', 'nik', $kary])
+                    ->all();
         } else {
-            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in', 'section', $section])->all();
+//            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in', 'section', $section])->all();
+            $kar = \app\models\TblKaryawan::find()
+                    ->select("nik,nama")
+                    ->where(['status' => 'Kerja'])
+                    ->andWhere(['in', 'department', $section])
+                    ->andWhere(['NOT IN', 'nik', $kary])
+                    ->all();
         }
 
         $data = [];
@@ -790,6 +808,15 @@ class AbsensiController extends Controller {
             }
         } else {
             $section = '';
+        }
+
+        if (!empty($params['Department'])) {
+            $department = [];
+            foreach ($params['Department'] as $key => $value) {
+                $department[] = $value['id_department'];
+            }
+        } else {
+            $department = '';
         }
 
         if (!empty($params['Namakr'])) {
@@ -826,7 +853,7 @@ class AbsensiController extends Controller {
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $endate);
-        $kry = TblKaryawan::aktif($nmkr, $section, $lokasi);
+        $kry = TblKaryawan::aktif($nmkr, $section, $lokasi, $department);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
@@ -1189,7 +1216,7 @@ class AbsensiController extends Controller {
 //            Yii::error($mg1);
             //
                
-                $ketabsen = (!empty($ket_absent[$r->nik])) ? $ket_absent[$r->nik] : 0;
+            $ketabsen = (!empty($ket_absent[$r->nik])) ? $ket_absent[$r->nik] : 0;
             $ketizin = (!empty($ket_izin[$r->nik])) ? $ket_izin[$r->nik] : 0;
             $ketsakit = (!empty($ket_sakit[$r->nik])) ? $ket_sakit[$r->nik] : 0;
             $ketdokter = (!empty($ket_sdokter[$r->nik])) ? $ket_sdokter[$r->nik] : 0;
@@ -1200,6 +1227,12 @@ class AbsensiController extends Controller {
                 $secmod = $r->sect->section;
             } else {
                 $secmod = '-';
+            }
+            
+            if (isset($r->dep)) {
+                $dep = $r->dep->department;
+            } else {
+                $dep = '-';
             }
 
             if (!empty($penjelasan[$r->nik])) {
@@ -1216,6 +1249,7 @@ class AbsensiController extends Controller {
             $models[$r->nik] = [
                 'no' => $no,
                 'sect' => $secmod,
+                'department' => $dep,
                 'nama' => $nama,
                 'mg1' => $mg1,
                 'mg2' => $mg2,

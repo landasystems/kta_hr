@@ -113,9 +113,17 @@ class AbsentController extends Controller {
                     $value = explode(' - ', $val);
                     $start = date("Y-m-d", strtotime($value[0]));
                     $end = date("Y-m-d", strtotime($value[1]));
-                    $query->andFilterWhere(['between', 'tbl_absent.tanggal', $start, $end]);
-                }else{
-                $query->andFilterWhere(['like', $key, $val]);
+                    $arrDate = TblAbsent::createdaterange($start, $end);
+                    $arrNoAbsent = TblAbsent::ijininrange($arrDate);
+                    $query->andWhere(['in', 'no_absent', $arrNoAbsent['no_absent']]);
+                    $query->andWhere(['in', 'nik', $arrNoAbsent['nik']]);
+//                    if (!empty($arrNoAbsent)) {
+//                        foreach ($arrNoAbsent['param'] as $val) {
+//                            $query->orWhere('nik=' . $val['nik'] . ' and no_absent="' . $val['no_absent'] . '"');
+//                        }
+//                    }
+                } else {
+                    $query->andFilterWhere(['like', $key, $val]);
                 }
             }
         }
@@ -193,14 +201,14 @@ class AbsentController extends Controller {
         $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
 //        Yii::error($params['datesRange']['startDate']."===");
 //        Yii::error($params['datesRange']['endDate']);
-        
-        $deleteAll = TblAbsent::deleteAll('no_absent="'.$params['no_absent'].'" AND nama is NULL AND tgl_pembuatan is NULL');
+
+        $deleteAll = TblAbsent::deleteAll('no_absent="' . $params['no_absent'] . '" AND nama is NULL AND tgl_pembuatan is NULL');
         for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
             if ($i == 0) {
                 $model = TblAbsent::findOne($id);
                 $model->attributes = $params;
                 $model->tgl_pembuatan = date('Y-m-d');
-            }else{
+            } else {
                 $model = new TblAbsent();
             }
             $model->nik = $params['nik'];
@@ -220,10 +228,10 @@ class AbsentController extends Controller {
     }
 
     public function actionDelete($id) {
-        $model = TblAbsent::deleteAll(['no_absent'=>$id]);
+        $model = TblAbsent::deleteAll(['no_absent' => $id]);
 //        $model = $this->findModel($id);
 //        $models 
-        
+
         if ($model) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1), JSON_PRETTY_PRINT);

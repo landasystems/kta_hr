@@ -156,6 +156,10 @@ class TblKaryawan extends \yii\db\ActiveRecord {
         return $this->hasOne(Section::className(), ['id_section' => 'section']);
     }
 
+    public function getDep() {
+        return $this->hasOne(Department::className(), ['id_department' => 'department']);
+    }
+
     public static function aktif($niknama = '', $section = '', $lokasi_kntr = 'SUKOREJO', $department = null) {
         $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="' . $lokasi_kntr . '"')->orderBy('nik')->indexBy('nik');
         if (!empty($niknama)) {

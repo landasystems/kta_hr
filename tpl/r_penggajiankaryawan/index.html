@@ -32,53 +32,64 @@
                                             </div>
                                         </div>
                                     </div>
-<!--                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">NIK/ Nama</label>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control" ng-model="form.niknama">
-                                        </div>
-                                    </div>
-                                   -->
+                                    <!--                                    <div class="form-group">
+                                                                            <label class="col-md-3 control-label">NIK/ Nama</label>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" class="form-control" ng-model="form.niknama">
+                                                                            </div>
+                                                                        </div>
+                                    -->
+                                    <!--                                    <div class="form-group">
+                                                                            <label class="col-sm-3 control-label">Section</label>
+                                                                            <div class="col-sm-9">
+                                                                                <ui-select multiple ng-model="form.Sections" on-select="listnm(form.Sections)" theme="bootstrap">
+                                                                                    <ui-select-match  placeholder="Pilih Section">{{$item.section}}</ui-select-match>
+                                                                                    <ui-select-choices repeat="sec in listsecs | filter: $select.search">
+                                                                                      {{sec.section}}
+                                                                                    </ui-select-choices>
+                                                                                </ui-select>
+                                                                            </div>
+                                                                        </div>-->
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Section</label>
+                                        <label class="col-sm-3 control-label">Department</label>
                                         <div class="col-sm-9">
-                                            <ui-select multiple ng-model="form.Sections" on-select="listnm(form.Sections)" theme="bootstrap">
-                                                <ui-select-match  placeholder="Pilih Section">{{$item.section}}</ui-select-match>
-                                                <ui-select-choices repeat="sec in listsecs | filter: $select.search">
-                                                  {{sec.section}}
+                                            <ui-select multiple ng-model="form.Department" on-select="listnm(form.Department,form.Namakr)" theme="bootstrap">
+                                                <ui-select-match  placeholder="Pilih Department">{{$item.department}}</ui-select-match>
+                                                <ui-select-choices repeat="sec in listdp | filter: $select.search">
+                                                    {{sec.department}}
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
                                     </div>
-                                     <div class="form-group">
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">Nama Karyawan</label>
                                         <div class="col-sm-9">
                                             <ui-select multiple ng-model="form.Namakr" theme="bootstrap">
                                                 <ui-select-match  placeholder="Pilih Karyawan">{{$item.nama}}</ui-select-match>
                                                 <ui-select-choices repeat="sec in listnama | filter: $select.search">
-                                                  {{sec.nik}} - {{sec.nama}}
+                                                    {{sec.nik}} - {{sec.nama}}
                                                 </ui-select-choices>
                                             </ui-select>
                                         </div>
                                     </div>
-<!--                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Section</label>
-                                        <div class="col-sm-9">
-                                            <div class="input-group">
-                                                <ui-select ng-model="form.Section" theme="bootstrap">
-                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
-                                                        {{val.id_section}} - {{val.section}}
-                                                    </ui-select-choices>
-                                                </ui-select>
-                                                <span class="input-group-btn">
-                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
-                                                        <span class="glyphicon glyphicon-trash"></span>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>-->
+                                    <!--                                    <div class="form-group">
+                                                                            <label class="col-sm-3 control-label">Section</label>
+                                                                            <div class="col-sm-9">
+                                                                                <div class="input-group">
+                                                                                    <ui-select ng-model="form.Section" theme="bootstrap">
+                                                                                        <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                                                        <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                                                            {{val.id_section}} - {{val.section}}
+                                                                                        </ui-select-choices>
+                                                                                    </ui-select>
+                                                                                    <span class="input-group-btn">
+                                                                                        <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>-->
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Lokasi Kantor</label>
                                         <div class="col-sm-9">

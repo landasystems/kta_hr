@@ -1,19 +1,23 @@
 <?php
-//date_default_timezone_set("Asia/Bangkok");
-echo date_default_timezone_get();
-echo '<br/>';
-$date1 = new DateTime(date('Y-m-d', strtotime("2015-11-09T17:00:00.000Z")));
-$date2 = new DateTime(date('Y-m-d', strtotime("2015-11-10T16:59:59.999Z")));
+function getDatesFromRange($start, $end) {
+    $interval = new DateInterval('P1D');
 
-print_r($date1);
-echo '<br/>';
-print_r($date2);
+    $realEnd = new DateTime($end);
+    $realEnd->add($interval);
 
-//print_r( new DateTime);
-//echo date("Y-m-d H:i:s");
-//phpinfo();
-//echo date('Y-m-d', strtotime('+' . 0 . ' days', strtotime("2015-11-09T17:00:00.000Z")));
-//echo date('Y-m-d',strtotime("2015-11-09T17:00:00.000Z"));
+    $period = new DatePeriod(
+         new DateTime($start),
+         $interval,
+         $realEnd
+    );
+
+    foreach($period as $date) { 
+        $array[] = $date->format('Y-m-d'); 
+    }
+
+    return $array;
+}
+
+$a = getDatesFromRange('2010-10-01', '2010-10-05');
+echo json_encode($a);
 ?>
-
-hahahahahaha
