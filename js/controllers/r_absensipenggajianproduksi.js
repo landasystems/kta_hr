@@ -28,7 +28,7 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
             saveExcel(data, 'slipgaji.xls');
         });
     };
-    
+
     var myDate = new Date();
     var year = myDate.getFullYear();
     var month = ("0" + (myDate.getMonth() + 1)).slice(-2);
@@ -55,19 +55,28 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         {key: "11", value: "November"},
         {key: "12", value: "Desember"}
     ];
-    
+
     $scope.cariSection = function ($query) {
 
         if ($query.length >= 3) {
-            Data.get('section/cari',{nama: $query}).then(function (data) {
+            Data.get('section/cari', {nama: $query}).then(function (data) {
                 $scope.listSection = data.data;
             });
         }
     };
-    
-    Data.get('lokasikantor').then(function (data) {
-            $scope.listLokasi = data.data;
+
+    $scope.cariDepartment = function ($query) {
+
+//        if ($query.length >= 3) {
+        Data.get('departement/listdepartment', {nama: $query}).then(function (data) {
+            $scope.listDepartment = data.data;
         });
+//        }
+    };
+
+    Data.get('lokasikantor').then(function (data) {
+        $scope.listLokasi = data.data;
+    });
 
     $scope.listSrc = [];
     $scope.list = [];
@@ -76,9 +85,9 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
         $scope.show_form = form;
 
         Data.post('absensi/penggajian', form).then(function (data) {
-            $scope.tahun = data.tahun; 
-            $scope.tanggal_sampai = data.end; 
-            $scope.mulai_tanggal = data.start; 
+            $scope.tahun = data.tahun;
+            $scope.tanggal_sampai = data.end;
+            $scope.mulai_tanggal = data.start;
             $scope.listSrc = [];
             angular.forEach(data.data, function ($value, $key) {
                 $scope.listSrc.push($value);

@@ -590,7 +590,7 @@ class AbsensiController extends Controller {
                 if ($absensi['masuk'] == $absensi['keluar']) { //lupa absent keluar
                     $absensi['keluar'] = '';
                 }
-                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => date("H:i",strtotime($absensi['masuk'])), 'keluar' => date("h:i",  strtotime($absensi['keluar']))];
+                $models[] = ['nik' => $r->nik, 'nama' => $r->nama, 'karyawan' => $pegawai, 'masuk' => date("H:i", strtotime($absensi['masuk'])), 'keluar' => date("h:i", strtotime($absensi['keluar']))];
             } elseif (!isset($abs[$r->nik][$date]) && $params['status'] == 'tidakhadir') {
                 $absen = $this->Sttsabsen($r->nik, $date);
                 if ($absen == false) {
@@ -1251,7 +1251,8 @@ class AbsensiController extends Controller {
     public function actionPenggajian() {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
-        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+//        $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+        $department = (isset($params['Department']['id_department'])) ? $params['Department']['id_department'] : '';
 
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
@@ -1285,7 +1286,7 @@ class AbsensiController extends Controller {
         foreach ($libr as $vl) {
             $tgl_libur[$vl->tgl] = $vl->attributes;
         }
-        $kry = TblKaryawan::aktif($niknama, $section, $lokasi);
+        $kry = TblKaryawan::aktif($niknama, '', $lokasi, $department);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {

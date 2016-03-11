@@ -38,18 +38,18 @@
                                             <input type="text" class="form-control" ng-model="form.niknama">
                                         </div>
                                     </div>
-                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Section<span class="required"></span></label>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Department<span class="required"></span></label>
                                         <div class="col-sm-9">
                                             <div class="input-group">
-                                                <ui-select ng-model="form.Section" theme="bootstrap">
-                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
-                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
-                                                         {{val.id_section}} - {{val.section}}
+                                                <ui-select ng-model="form.Department" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                        {{val.id_department}} - {{val.department}}
                                                     </ui-select-choices>
                                                 </ui-select>
                                                 <span class="input-group-btn">
-                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                    <button ng-click="form.Department = undefined" class="btn btn-default">
                                                         <span class="glyphicon glyphicon-trash"></span>
                                                     </button>
                                                 </span>
@@ -57,30 +57,30 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                                <label class="col-sm-3 control-label">Lokasi Kantor</label>
-                                                <div class="col-sm-9">
-                                                     <select class="form-control" ng-model="form.lokasi_kntr">
-                                                         <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
-                                                    </select>
-                                                 </div>
-                                            </div>
+                                        <label class="col-sm-3 control-label">Lokasi Kantor</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="form.lokasi_kntr">
+                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-md-3"></label>
                                         <div class="col-md-9" style="text-align: left;">
                                             <table>
                                                 <tr>
                                                     <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
-<!--                                                    <td>
-                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
-                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
-                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
-                                                                <li><a href="#" ng-click="excel()">Export Excel</a></li>
-                                                                <li><a href="#" ng-click="excelslip()">Export Slip Gaji</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>-->
+                                                    <!--                                                    <td>
+                                                                                                            <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
+                                                                                                                <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
+                                                                                                                <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                                                                    <li><a href="#" ng-click="excel()">Export Excel</a></li>
+                                                                                                                    <li><a href="#" ng-click="excelslip()">Export Slip Gaji</a></li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                        </td>-->
                                                 </tr>
-                                                
+
                                             </table>
                                         </div>
                                     </div>
@@ -94,7 +94,7 @@
         <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
             <div class="panel-heading no-border bg-primary text-center">          
                 LAPORAN GAJI KARYAWAN PRODUKSI
-                <br/> TANGGAL : {{mulai_tanggal | date}} - {{tanggal_sampai | date}}
+                <br/> TANGGAL : {{mulai_tanggal| date}} - {{tanggal_sampai| date}}
             </div>
             <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
                 <thead>
@@ -125,16 +125,16 @@
                     <tr ng-repeat="row in list">
                         <td style="text-align: center">{{row.no}}</td>
                         <td style="text-align: left">{{row.nama}}</td>
-                        <td style="text-align: right">{{row.thp | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.gaji_pokok | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.t_fungsional | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.mgm | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.incentive | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.jml_inc | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.ttl_incentive | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.jumlah_kopensasi | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.ketenagakerjaan | currency:"":0}}</td>
-                        <td style="text-align: right">{{row.kesehatan | currency:"":0}}</td>
+                        <td style="text-align: right">{{row.thp| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.gaji_pokok| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.t_fungsional| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.mgm| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.incentive| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.jml_inc| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.ttl_incentive| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.jumlah_kopensasi| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.ketenagakerjaan| currency:"":0}}</td>
+                        <td style="text-align: right">{{row.kesehatan| currency:"":0}}</td>
                         <td style="text-align: right">{{row.pinjaman| currency:"":0}}</td>
                         <td style="text-align: right">{{row.jml_absen}}</td>
                         <td style="text-align: right">{{row.absen| currency:"":0}}</td>
