@@ -21,6 +21,7 @@ class SectionController extends Controller {
                     'view' => ['get'],
                     'excel' => ['get'],
                     'list' => ['get'],
+                    'list2' => ['post'],
                     'all' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -31,9 +32,9 @@ class SectionController extends Controller {
             ]
         ];
     }
-    
-     public function actionCari() {
-        
+
+    public function actionCari() {
+
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_section')
@@ -48,16 +49,25 @@ class SectionController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models));
     }
-    
-    public function actionList() {
-        $params = $_REQUEST;
+
+    public function actionList2() {
+        $params = json_decode(file_get_contents("php://input"), true);
         $query = new Query;
         $query->from('tbl_section')
                 ->select("*")
                 ->orderBy('id_section ASC');
 
-        if(!empty($params['nama'])){
-            $query->andWhere(['dept'=>$params['nama']]);
+        if (isset($params['nama']) and ! empty($params['nama'])) {
+            $query->andWhere(['dept' => $params['nama']]);
+        }
+
+        if (isset($params['department']) and ! empty($params['department'])) {
+            $department = [];
+            foreach ($params['department'] as $key => $value) {
+                $department[] = $value['id_department'];
+            }
+
+            $query->andWhere(['IN', 'dept', $department]);
         }
 
         $command = $query->createCommand();
@@ -67,6 +77,35 @@ class SectionController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models));
     }
+
+    public function actionList() {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_section')
+                ->select("*")
+                ->orderBy('id_section ASC');
+
+        if (isset($params['nama']) and ! empty($params['nama'])) {
+            $query->andWhere(['dept' => $params['nama']]);
+        }
+
+        if (isset($params['department']) and ! empty($params['department'])) {
+            $department = [];
+            foreach ($params['department'] as $key => $value) {
+                $department[] = $value['id_department'];
+            }
+
+            $query->andWhere(['IN', 'dept', $department]);
+        }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
     public function actionAll() {
         $params = $_REQUEST;
         $query = new Query;
@@ -120,8 +159,6 @@ class SectionController extends Controller {
 
         echo json_encode(array('status' => 1, 'kode' => 'SCT' . $kode));
     }
-    
-    
 
     public function actionIndex() {
         //init variable
@@ -153,7 +190,7 @@ class SectionController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_section')
-                ->join('JOIN','tbl_department','tbl_section.dept = tbl_department.id_department')
+                ->join('JOIN', 'tbl_department', 'tbl_section.dept = tbl_department.id_department')
                 ->orderBy($sort)
                 ->select("tbl_section.*,tbl_department.department");
 
@@ -161,9 +198,8 @@ class SectionController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-                
-                $query->andFilterWhere(['like', 'tbl_section.'.$key, $val]);
-               
+
+                $query->andFilterWhere(['like', 'tbl_section.' . $key, $val]);
             }
         }
 
@@ -191,7 +227,7 @@ class SectionController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Section();
         $model->attributes = $params;
-        
+
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -206,7 +242,7 @@ class SectionController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-    
+
         if ($model->save()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -264,8 +300,7 @@ class SectionController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-    
-      public function actionExcel() {
+    public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
         $query->offset("");
@@ -274,6 +309,7 @@ class SectionController extends Controller {
         $models = $command->queryAll();
         return $this->render("/expmaster/section", ['models' => $models]);
     }
+
 }
 
 ?>

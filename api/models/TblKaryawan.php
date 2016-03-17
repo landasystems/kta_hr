@@ -160,8 +160,8 @@ class TblKaryawan extends \yii\db\ActiveRecord {
         return $this->hasOne(Department::className(), ['id_department' => 'department']);
     }
 
-    public static function aktif($niknama = '', $section = '', $lokasi_kntr = 'SUKOREJO', $department = null) {
-        $query = TblKaryawan::find()->where('status="Kerja" AND lokasi_kntr="' . $lokasi_kntr . '"')->orderBy('nik')->indexBy('nik');
+    public static function aktif($niknama = '', $section = '', $lokasi_kntr, $department = null, $others = null) {
+        $query = TblKaryawan::find()->where('status="Kerja"')->orderBy('nik')->indexBy('nik');
         if (!empty($niknama)) {
             if (is_array($niknama)) {
                 $query->andWhere(['in', 'nik', $niknama]);
@@ -170,9 +170,14 @@ class TblKaryawan extends \yii\db\ActiveRecord {
             }
         }
 
+        if (!empty($lokasi_kntr)) {
+            $query->andWhere("lokasi_kntr = '" . $lokasi_kntr . "'");
+        } else {
+            $query->andWhere("lokasi_kntr = '" . 'SUKOREJO' . "'");
+        }
+
         if (!empty($section)) {
             if (is_array($section)) {
-//                Yii::error($section);
                 $query->andWhere(['in', 'section', $section]);
             } else {
                 $query->andWhere("section = '" . $section . "'");
@@ -181,11 +186,14 @@ class TblKaryawan extends \yii\db\ActiveRecord {
 
         if (isset($department) and ! empty($department)) {
             if (is_array($department)) {
-//                Yii::error($section);
                 $query->andWhere(['in', 'department', $department]);
             } else {
                 $query->andWhere("department = '" . $department . "'");
             }
+        }
+
+        if (isset($others['status_karyawan']) and ! empty($others['status_karyawan'])) {
+            $query->andWhere("status_karyawan = '" . $others['status_karyawan'] . "'");
         }
 
         return $query->all();

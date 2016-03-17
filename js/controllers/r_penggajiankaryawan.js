@@ -3,9 +3,9 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
     var paramRef;
     $scope.form = {};
     $scope.listdp = [{}];
+    $scope.listsecs = [{}];
     $scope.listnama = [{}];
     $scope.form.tanggal = new Date();
-    $scope.form.lokasi_kntr = "SUKOREJO";
     $scope.form.tanggal_sampai = new Date();
     $scope.show_detail = false;
     $scope.show_form = [];
@@ -83,23 +83,24 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
         $scope.listLokasi = data.data;
     });
 
-//    Data.get('section/list').then(function (data) {
-////        console.log(data.data);
-//        $scope.listsecs = data.data;
-//    });
+    $scope.form.lokasi_kntr = "SUKOREJO";
+
+    $scope.sSection = function () {
+        Data.post('section/list2', {department: $scope.form.Department}).then(function (data) {
+//        console.log(data.data);
+            $scope.listsecs = data.data;
+        });
+    }
 
     Data.get('departement/listdepartment').then(function (data) {
 //        console.log(data.data);
         $scope.listdp = data.data;
     });
 
-    $scope.listnm = function (department, kry) {
-        var data = {
-            department: department,
-            karyawan: kry,
-        }
+    $scope.listnm = function () {
+
 //        console.log(section);
-        Data.post('absensi/listkar', data).then(function (data) {
+        Data.post('absensi/listkar', $scope.form).then(function (data) {
             $scope.listnama = data.data;
         });
     };

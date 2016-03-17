@@ -39,26 +39,44 @@
                                                                             </div>
                                                                         </div>
                                     -->
-                                    <!--                                    <div class="form-group">
-                                                                            <label class="col-sm-3 control-label">Section</label>
-                                                                            <div class="col-sm-9">
-                                                                                <ui-select multiple ng-model="form.Sections" on-select="listnm(form.Sections)" theme="bootstrap">
-                                                                                    <ui-select-match  placeholder="Pilih Section">{{$item.section}}</ui-select-match>
-                                                                                    <ui-select-choices repeat="sec in listsecs | filter: $select.search">
-                                                                                      {{sec.section}}
-                                                                                    </ui-select-choices>
-                                                                                </ui-select>
-                                                                            </div>
-                                                                        </div>-->
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">Department</label>
                                         <div class="col-sm-9">
-                                            <ui-select multiple ng-model="form.Department" on-select="listnm(form.Department,form.Namakr)" theme="bootstrap">
+                                            <ui-select multiple ng-model="form.Department" on-select="sSection(); listnm();" theme="bootstrap">
                                                 <ui-select-match  placeholder="Pilih Department">{{$item.department}}</ui-select-match>
                                                 <ui-select-choices repeat="sec in listdp | filter: $select.search">
                                                     {{sec.department}}
                                                 </ui-select-choices>
                                             </ui-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section</label>
+                                        <div class="col-sm-9">
+                                            <ui-select multiple ng-model="form.Sections" on-select="listnm()" theme="bootstrap">
+                                                <ui-select-match  placeholder="Pilih Section">{{$item.section}}</ui-select-match>
+                                                <ui-select-choices repeat="sec in listsecs | filter: $select.search">
+                                                    {{sec.section}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Status Karyawan</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="form.status" ng-change="listnm()">
+                                                <option value="">Semua Status</option>
+                                                <option value="Kontrak">Kontrak</option>
+                                                <option value="Borongan">Borongan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Lokasi Kantor</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="form.lokasi_kntr" ng-change="listnm()">
+                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -90,14 +108,6 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>-->
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Lokasi Kantor</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" ng-model="form.lokasi_kntr">
-                                                <option ng-repeat="lokasi in listLokasi" value="{{lokasi.lokasi_kantor}}">{{lokasi.lokasi_kantor}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label class="col-md-3"></label>
                                         <div class="col-md-9" style="text-align: left;">

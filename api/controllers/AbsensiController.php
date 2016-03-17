@@ -754,11 +754,18 @@ class AbsensiController extends Controller {
 
     public function actionListkar() {
         $params = json_decode(file_get_contents("php://input"), true);
-//        Yii::error($params);
-        $section = [];
-        foreach ($params['department'] as $key => $value) {
-//                $section[] = $value['id_section'];
-            $section[] = $value['id_department'];
+        $dpr = array();
+        if (isset($params['Department'])) {
+            foreach ($params['Department'] as $key => $value) {
+                $dpr[] = $value['id_department'];
+            }
+        }
+
+        $section = array();
+        if (isset($params['Sections'])) {
+            foreach ($params['Sections'] as $key => $value) {
+                $section[] = $value['id_section'];
+            }
         }
 
         $kary = array();
@@ -768,28 +775,44 @@ class AbsensiController extends Controller {
             }
         }
 
-//        Yii::error($section);
+        $kar = new Query;
+        $kar->select("nik,nama")
+                ->from('tbl_karyawan')
+                ->where(['status' => 'Kerja']);
 
-        if (empty($section)) {
-            $kar = \app\models\TblKaryawan::find()
-                    ->select("nik,nama")
-                    ->where(['status' => 'Kerja'])
-                    ->andWhere(['NOT IN', 'nik', $kary])
-                    ->all();
-        } else {
-//            $kar = \app\models\TblKaryawan::find()->select("nik,nama")->where(['status' => 'Kerja'])->andWhere(['in', 'section', $section])->all();
-            $kar = \app\models\TblKaryawan::find()
-                    ->select("nik,nama")
-                    ->where(['status' => 'Kerja'])
-                    ->andWhere(['in', 'department', $section])
-                    ->andWhere(['NOT IN', 'nik', $kary])
-                    ->all();
+        if (!empty($kary)) {
+            $kar->andFilterWhere(['NOT IN', 'nik', $kary]);
         }
 
+        if (!empty($dpr)) {
+            $kar->andFilterWhere(['in', 'department', $dpr]);
+        }
+
+        if (!empty($section)) {
+            $kar->andFilterWhere(['in', 'section', $section]);
+        }
+
+        $lokasi = isset($params['lokasi_kntr']) ? $params['lokasi_kntr'] : '';
+
+        if (!empty($lokasi)) {
+            $kar->andFilterWhere(['in', 'lokasi_kntr', $lokasi]);
+        } else {
+            $kar->andFilterWhere(['in', 'lokasi_kntr', 'SUKOREJO']);
+        }
+
+        $status_karyawan = isset($params['status']) ? $params['status'] : '';
+
+        if (!empty($status_karyawan)) {
+            $kar->andFilterWhere(['in', 'status_karyawan', $status_karyawan]);
+        }
+
+        $command = $kar->createCommand();
+        $models = $command->queryAll();
+
         $data = [];
-        foreach ($kar as $key => $val) {
-            $data[$key]['nik'] = $val->nik;
-            $data[$key]['nama'] = $val->nama;
+        foreach ($models as $key => $val) {
+            $data[$key]['nik'] = $val['nik'];
+            $data[$key]['nama'] = $val['nama'];
         }
 
 //        Yii::error($data);
@@ -800,6 +823,11 @@ class AbsensiController extends Controller {
 
     public function actionPenggajiankaryawan() {
         $params = json_decode(file_get_contents("php://input"), true);
+        
+        $other['status'] = '';
+        if(!empty($params['status'])){
+            $other['status'] = $params['status'];
+        }
 
         if (!empty($params['Sections'])) {
             $section = [];
@@ -848,12 +876,10 @@ class AbsensiController extends Controller {
         $arrtgl = $this->Hitunghr($date, $endate);
         $sunday = $this->Sunday($date, $endate);
 
-        Yii::error($nmkr);
-
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $endate);
-        $kry = TblKaryawan::aktif($nmkr, $section, $lokasi, $department);
+        $kry = TblKaryawan::aktif($nmkr, $section, $lokasi, $department, $other);
 
         //============PROSES HITUNG LEMBUR
         foreach ($kry as $r) {
@@ -1228,7 +1254,7 @@ class AbsensiController extends Controller {
             } else {
                 $secmod = '-';
             }
-            
+
             if (isset($r->dep)) {
                 $dep = $r->dep->department;
             } else {

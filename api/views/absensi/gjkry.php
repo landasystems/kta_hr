@@ -18,25 +18,25 @@ $data2 = [];
 $i = 0;
 
 foreach ($data as $value) {
-    $data2[$value['department']]['title']['section'] = $value['department'];
-    $data2[$value['department']]['body'][$i]['no'] = $value['no'];
-    $data2[$value['department']]['body'][$i]['nama'] = edtnama($value['nama']);
-    $data2[$value['department']]['body'][$i]['mg1'] = $value['mg1'];
-    $data2[$value['department']]['body'][$i]['mg2'] = $value['mg2'];
-    $data2[$value['department']]['body'][$i]['mg3'] = $value['mg3'];
-    $data2[$value['department']]['body'][$i]['mg4'] = $value['mg4'];
-    $data2[$value['department']]['body'][$i]['mg5'] = $value['mg5'];
-    $data2[$value['department']]['body'][$i]['ttlinc'] = $value['ttlinc'];
-    $data2[$value['department']]['body'][$i]['absh'] = $value['absh'];
-    $data2[$value['department']]['body'][$i]['ijnh'] = $value['ijnh'];
-    $data2[$value['department']]['body'][$i]['skh'] = $value['skh'];
-    $data2[$value['department']]['body'][$i]['sdh'] = $value['sdh'];
-    $data2[$value['department']]['body'][$i]['sth'] = $value['sth'];
-    $data2[$value['department']]['body'][$i]['cth'] = $value['cth'];
-    $data2[$value['department']]['body'][$i]['ptga'] = $value['ptga'];
-    $data2[$value['department']]['body'][$i]['thp'] = $value['thp'];
-    $data2[$value['department']]['body'][$i]['ptgs'] = $value['ptgs'];
-    $data2[$value['department']]['body'][$i]['ket'] = $value['ket'];
+    $data2[$value['sect']]['title']['section'] = $value['sect'];
+    $data2[$value['sect']]['body'][$i]['no'] = $value['no'];
+    $data2[$value['sect']]['body'][$i]['nama'] = edtnama($value['nama']);
+    $data2[$value['sect']]['body'][$i]['mg1'] = $value['mg1'];
+    $data2[$value['sect']]['body'][$i]['mg2'] = $value['mg2'];
+    $data2[$value['sect']]['body'][$i]['mg3'] = $value['mg3'];
+    $data2[$value['sect']]['body'][$i]['mg4'] = $value['mg4'];
+    $data2[$value['sect']]['body'][$i]['mg5'] = $value['mg5'];
+    $data2[$value['sect']]['body'][$i]['ttlinc'] = $value['ttlinc'];
+    $data2[$value['sect']]['body'][$i]['absh'] = $value['absh'];
+    $data2[$value['sect']]['body'][$i]['ijnh'] = $value['ijnh'];
+    $data2[$value['sect']]['body'][$i]['skh'] = $value['skh'];
+    $data2[$value['sect']]['body'][$i]['sdh'] = $value['sdh'];
+    $data2[$value['sect']]['body'][$i]['sth'] = $value['sth'];
+    $data2[$value['sect']]['body'][$i]['cth'] = $value['cth'];
+    $data2[$value['sect']]['body'][$i]['ptga'] = $value['ptga'];
+    $data2[$value['sect']]['body'][$i]['thp'] = $value['thp'];
+    $data2[$value['sect']]['body'][$i]['ptgs'] = $value['ptgs'];
+    $data2[$value['sect']]['body'][$i]['ket'] = $value['ket'];
     $i++;
 }
 ?>
