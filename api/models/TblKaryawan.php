@@ -192,9 +192,11 @@ class TblKaryawan extends \yii\db\ActiveRecord {
             }
         }
 
-        if (isset($others['status_karyawan']) and ! empty($others['status_karyawan'])) {
-            $query->andWhere("status_karyawan = '" . $others['status_karyawan'] . "'");
+        if (isset($others['status']) and ! empty($others['status'])) {
+            $query->andWhere("status_karyawan = '" . $others['status'] . "'");
         }
+        
+//        echo $others['status'];
 
         return $query->all();
     }
