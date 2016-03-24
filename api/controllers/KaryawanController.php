@@ -161,18 +161,17 @@ class KaryawanController extends Controller
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-//        if (!empty($models)) {
-//            $ijazah = [];
-//            foreach ($models as $key => $val) {
-//                $ijz = Tblijazah::find()->where(['nik' => $val['nik']])->one();
-//                $ijazah = (empty($ijz)) ? [] : $ijz->attributes;
-//                if (!empty($ijazah)) {
-//                    foreach ($ijazah as $k => $v) {
-//                        $models[$key][$k] = $v;
-//                    }
-//                }
-//            }
-//        }
+        if (!empty($models)) {
+            $ijazah = [];
+            foreach ($models as $key => $val) {
+                $ijz = Tblijazah::find()->where(['nik' => $val['nik']])->one();
+                $ijazah = (empty($ijz)) ? [] : $ijz->no;
+                $models[$key] = $val;
+                if(!empty($ijazah)){
+                $models[$key]['no'] = $ijazah;
+                }
+            }
+        }
 
         $this->setHeader(200);
 
@@ -561,17 +560,18 @@ class KaryawanController extends Controller
         }
     }
 
-    public function actionKeluar($id)
+    public function actionKeluar()
     {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = $this->findModel($id);
+//        Yii::error($params);
+        $model = $this->findModel($params['form']['nik']);
         $model->status = 'Keluar';
         $model->tgl_keluar_kerja = date('Y-m-d', strtotime($params['form']['tgl_keluar_kerja']));
         $model->alasan_keluar = $params['form']['alasan_keluar'];
 
         if ($model->save()) {
-            if (!empty($params['no'])) {
-                $ijazah = Tblijazah::findOne($params['no']);
+            if (!empty($params['form']['no'])) {
+                $ijazah = Tblijazah::find()->where(['no' => $params['form']['no']])->one();
                 $ijazah->tgl_keluar = date('Y-m-d', strtotime($model->tgl_keluar_kerja));
                 $ijazah->status = 'Keluar';
 

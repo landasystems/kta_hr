@@ -44,6 +44,26 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-sm-3">Departement</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <ui-select ng-disabled="is_view" ng-model="form.Department" theme="bootstrap">
+                                                            <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                                {{val.id_department}}<br>
+                                                                <small>{{val.department}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                                 <label class="col-md-3">Section</label>
                                                 <div class="col-md-9">
                                                     <div class="input-group">
@@ -61,7 +81,47 @@
                                                         </span>
                                                     </div>
                                                 </div>
+
                                             </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-sm-3">Sub Section</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <ui-select ng-disabled="is_view" ng-model="form.SubSection" theme="bootstrap">
+                                                            <ui-select-match>{{$select.selected.kd_kerja}} - {{$select.selected.kerja}}</ui-select-match>
+                                                            <ui-select-choices  repeat="val in listSubSection">
+                                                                {{val.kd_kerja}}<br>
+                                                                <small>{{val.kerja}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.SubSection = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-sm-3">Jabatan</label>
+                                                <div class="col-sm-9">
+                                                    <div class="input-group">
+                                                        <ui-select on-select="retJabatan($item,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
+                                                            <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
+                                                            <ui-select-choices repeat="val in listJabatan">
+                                                                {{val.id_jabatan}}<br>
+                                                                <small>{{val.jabatan}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.Jabatan = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group" ng-show="form.tipe == 'kelompok'">
                                                 <label class="col-md-3">Tgl Penilaian Sampai</label>
                                                 <div class="col-md-9">

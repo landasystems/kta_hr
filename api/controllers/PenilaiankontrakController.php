@@ -25,7 +25,6 @@ class PenilaiankontrakController extends Controller {
                     'rekap' => ['post'],
                     'delete' => ['delete'],
                     'cari' => ['get'],
-                    'rekap' => ['post'],
                 ],
             ]
         ];
@@ -288,6 +287,15 @@ class PenilaiankontrakController extends Controller {
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND kar.section="' . $params['Section']['id_section'] . '"' : '';
             $query->andWhere('(pen.tgl <="' . date('Y-m-d', strtotime($params['tanggal'])) . '")' . $adWhere);
+            if(!empty($params['Department']['id_department'])){
+                $query->andWhere(['department' => $params['Department']['id_department']]);
+            }
+            if(!empty($params['Jabatan']['id_jabatan'])){
+                $query->andWhere(['jabatan' => $params['Jabatan']['id_jabatan']]);
+            }
+            if(!empty($params['SubSection']['kd_kerja'])){
+                $query->andWhere(['subsection' => $params['SubSection']['kd_kerja']]);
+            }
         } else {
             $query->where('pen.nik="' . $params['karyawan']['nik'] . '"');
         }

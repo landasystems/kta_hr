@@ -23,6 +23,7 @@ class SubsectionController extends Controller {
                     'listsection' => ['get'],
                     'list' => ['get'],
                     'cari' => ['get'],
+                    'carilist' => ['post'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -43,6 +44,25 @@ class SubsectionController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
 
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+    
+    public function actionCarilist() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('pekerjaan')
+                ->select("*")
+                ->orderBy('kd_kerja ASC')
+                ->where(['like','kerja',$params['nama']]);
+        
+        if (!empty($params['sec'])) {
+            $query->andWhere(['id_section' => $params['sec']]);
+        }
+        
+        $command = $query->createCommand();
+        $models = $command->queryAll();
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models));

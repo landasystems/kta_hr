@@ -78,6 +78,7 @@
                     <thead>
                         <tr>
                             <th style="text-align: center;vertical-align: center;" rowspan="2">NO</th>
+                            <th style="text-align: center;vertical-align: center;" rowspan="2">NIK</th>
                             <th style="text-align: center;vertical-align: center;" rowspan="2">NAMA</th>
                             <th style="text-align: center;vertical-align: center;" rowspan="2">BAGIAN</th>
                             <th style="text-align: center;vertical-align: center;" colspan="6">BULAN</th>
@@ -102,6 +103,7 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.nik}}</td>
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.bagian}}</td>
                             <td align="center"><span ng-show="row.month == '01' || row.month == '07'">{{row.day}}</span></td>

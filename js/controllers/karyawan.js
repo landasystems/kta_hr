@@ -345,9 +345,8 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
 });
 
 app.controller('modalCtrl', function ($scope, Data, $modalInstance, form) {
-
     $scope.confirmAction = function (form) {
-        Data.post('karyawan/keluar/' + form.nik, {form: form}).then(function (data) {
+        Data.post('karyawan/keluar/', {form: form}).then(function (data) {
             $modalInstance.dismiss('cancle');
         });
     };

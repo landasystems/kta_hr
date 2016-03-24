@@ -41,9 +41,39 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
         }
     };
 
+  
+
+    $scope.cariDepartment = function (data_entry) {
+        if (data_entry.length >= 3) {
+            Data.get('departement/cari', {nama: data_entry}).then(function (data) {
+                $scope.listDepartment = data.data;
+            });
+        }
+    };
+
+
+    $scope.cariSubSection = function (nama) {
+        var sec = $scope.form.Section;
+        var data = {nama: nama,sec : sec.id_section};
+        Data.get('subsection/carilist', data).then(function (data) {
+            $scope.listSubSection = data.data;
+        });
+    };
+
+    $scope.cariJabatan = function (nama) {
+       var subsec = $scope.form.SubSection;
+        var data = {nama: nama,subsec : subsec.kd_kerja};
+        Data.get('jabatan/carilist', data).then(function (data) {
+            $scope.listJabatan = data.data;
+        });
+    };
+
+    
+
     $scope.cariSection = function ($query) {
+        var id_depart = $scope.form.Department;
         if ($query.length >= 3) {
-            Data.get('section/cari', {nama: $query}).then(function (data) {
+            Data.post('section/carilist', {nama: $query,id_depart:id_depart.id_department}).then(function (data) {
                 $scope.results = data.data;
             });
         }
@@ -66,7 +96,7 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
     $scope.list = [];
     $scope.view = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
-            
+
             Data.post('penilaiankontrak/rekap', form).then(function (data) {
                 $scope.listSrc = [];
                 $scope.show_detail = true;
@@ -95,6 +125,6 @@ app.controller('penilaianKontrakCtrl', function ($scope, Data, toaster) {
             hasil = 'D';
         }
         return hasil;
-    };
-
+    }
+    ;
 });

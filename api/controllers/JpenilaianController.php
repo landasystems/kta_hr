@@ -147,7 +147,7 @@ class JpenilaianController extends Controller {
         //create query
         $query = new Query;
         $query->from('tbl_jpenilaian')
-                ->where('YEAR(tgl_penilaian)="'.date('Y',  strtotime($params['tanggal'])).'"')
+                ->where('YEAR(tgl_penilaian)="'.$params['tanggal'].'"')
                 ->orderBy($sort)
                 ->select("*");
         

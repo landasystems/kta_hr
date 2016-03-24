@@ -23,6 +23,7 @@ class SectionController extends Controller {
                     'list' => ['get'],
                     'list2' => ['post'],
                     'all' => ['get'],
+                    'carilist' => ['post'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -68,6 +69,26 @@ class SectionController extends Controller {
             }
 
             $query->andWhere(['IN', 'dept', $department]);
+        }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionCarilist() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('tbl_section')
+                ->select("*")
+                ->orderBy('id_section ASC')
+                ->where(['like', 'section', $params['nama']]);
+
+        if (!empty($params['id_depart'])) {
+            $query->andWhere(['dept' => $params['id_depart']]);
         }
 
         $command = $query->createCommand();
