@@ -61,7 +61,7 @@ class JabatanController extends Controller {
     }
 
     public function actionCarilist() {
-        $params = json_decode(file_get_contents("php://input"), true);
+        $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_jabatan')
                 ->select("*")

@@ -75,8 +75,8 @@ if (!isset($_GET['print'])) {
             echo '<td align="center">' . $no . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['bagian'] . '</td>';
-            echo '<td align="center">' . $val['tgl_mulai'] . '</td>';
-            echo '<td align="center">' . $val['tgl_selesai'] . '</td>';
+            echo '<td align="center">' .  date('d M Y',strtotime($val['tgl_mulai'])) . '</td>';
+            echo '<td align="center">' . date('d M Y',strtotime($val['tgl_selesai'])) . '</td>';
             echo '<td align="center">' . $val['asal_sekolah'] . '</td>';
             $no++;
         }

@@ -294,7 +294,7 @@ class PenilaiankontrakController extends Controller {
                 $query->andWhere(['jabatan' => $params['Jabatan']['id_jabatan']]);
             }
             if(!empty($params['SubSection']['kd_kerja'])){
-                $query->andWhere(['subsection' => $params['SubSection']['kd_kerja']]);
+                $query->andWhere(['sub_section' => $params['SubSection']['kd_kerja']]);
             }
         } else {
             $query->where('pen.nik="' . $params['karyawan']['nik'] . '"');

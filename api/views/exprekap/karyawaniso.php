@@ -73,7 +73,7 @@ if (!isset($_GET['print'])) {
                 <th  style="text-align: center;vertical-align: center;">NO KTP</th>
                 <th  style="text-align: center;vertical-align: center;">AGAMA</th>
                 <th  style="text-align: center;vertical-align: center;">STATUS</th>
-                <th  style="text-align: center;vertical-align: center;">TGL MASUK KERJA</th>
+                <th  style="text-align: center;vertical-align: center; width: 170px;">TGL MASUK KERJA</th>
                 <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (TH)</th>
                 <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (BLN)</th>
             </tr>
@@ -88,7 +88,7 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['nama'] . '</td>';
                 echo '<td align="center">' . $val['pendidikan'] . '</td>';
                 echo '<td align="center">' . $val['tmpt_lahir'] . '</td>';
-                echo '<td align="center">' . $val['tgl_lahir'] . '</td>';
+                echo '<td align="center">' . date('m/d/Y', strtotime($val['tgl_lahir'])) . '</td>';
                 echo '<td align="center">' . $val['usia'] . '</td>';
                 echo '<td align="center">' . $val['alamat_jln'] . '</td>';
                 echo '<td align="center">' . $val['desa'] . '</td>';
@@ -97,7 +97,7 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">&nbsp;' . $val['no_ktp'] . '</td>';
                 echo '<td align="center">' . $val['agama'] . '</td>';
                 echo '<td align="center">' . $val['status_pernikahan'] . '</td>';
-                echo '<td align="center">' . $val['tgl_masuk_kerja'] . '</td>';
+                echo '<td align="center">' . date('m/d/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
                 echo '<td align="center">' . $val['tahun'] . '</td>';
                 echo '<td align="center">' . $val['bulan'] . '</td>';
                 echo '</tr>';

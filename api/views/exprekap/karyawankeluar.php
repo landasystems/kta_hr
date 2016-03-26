@@ -26,22 +26,21 @@ if (!isset($_GET['print'])) {
 <br>
 <hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<table border="1" style="border-collapse: collapse;width:100%">
-    <tr>
-        <td colspan="5" rowspan="2" style="width:60%;text-align: center">
-            <h4>DATA KARYAWAN KELUAR</h4><br/>
-            <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
-        </td>
-        <td style="text-align: center">Dibuat</td>
-        <td style="text-align: center">Diketahui</td>
-    </tr>
-    <tr>
-        <td style="height: 45px;"></td>
-        <td></td>
-    </tr>
-</table>
+
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
+        <tr>
+            <th colspan="5" rowspan="2" style="width:60%;text-align: center">
+                <h4>DATA KARYAWAN KELUAR</h4><br/>
+                <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
+            </th>
+            <th style="text-align: center">Dibuat</th>
+            <th style="text-align: center">Diketahui</th>
+        </tr>
+        <tr>
+            <th style="height: 45px;"></th>
+            <th></th>
+        </tr>
         <tr>
             <th>NO</th>
             <th>NAMA</th>

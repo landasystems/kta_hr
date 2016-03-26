@@ -33,8 +33,9 @@ app.controller('karyawanIsoCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.cariSection = function ($query) {
+        var id_depart = $scope.form.Department;
         if ($query.length >= 3) {
-            Data.get('section/cari', {nama: $query}).then(function (data) {
+            Data.post('section/carilist', {nama: $query,id_depart:id_depart.id_department}).then(function (data) {
                 $scope.results = data.data;
             });
         }

@@ -89,7 +89,7 @@
                                                     <div class="input-group">
                                                         <ui-select ng-disabled="is_view" ng-model="form.SubSection" theme="bootstrap">
                                                             <ui-select-match>{{$select.selected.kd_kerja}} - {{$select.selected.kerja}}</ui-select-match>
-                                                            <ui-select-choices  repeat="val in listSubSection">
+                                                            <ui-select-choices refresh="cariSubSection($select.search)" repeat="val in listSubSection">
                                                                 {{val.kd_kerja}}<br>
                                                                 <small>{{val.kerja}}</small>
                                                             </ui-select-choices>
@@ -108,7 +108,7 @@
                                                     <div class="input-group">
                                                         <ui-select on-select="retJabatan($item,form)" ng-disabled="is_view" ng-model="form.Jabatan" theme="bootstrap">
                                                             <ui-select-match>{{$select.selected.id_jabatan}} - {{$select.selected.jabatan}}</ui-select-match>
-                                                            <ui-select-choices repeat="val in listJabatan">
+                                                            <ui-select-choices refresh="cariJabatan($select.search)" repeat="val in listJabatan">
                                                                 {{val.id_jabatan}}<br>
                                                                 <small>{{val.jabatan}}</small>
                                                             </ui-select-choices>

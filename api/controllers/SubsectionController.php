@@ -23,7 +23,7 @@ class SubsectionController extends Controller {
                     'listsection' => ['get'],
                     'list' => ['get'],
                     'cari' => ['get'],
-                    'carilist' => ['post'],
+                    'carilist' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'delete' => ['delete'],
@@ -50,7 +50,7 @@ class SubsectionController extends Controller {
     }
     
     public function actionCarilist() {
-        $params = json_decode(file_get_contents("php://input"), true);
+        $params = $_REQUEST;
         $query = new Query;
         $query->from('pekerjaan')
                 ->select("*")

@@ -196,7 +196,10 @@ class KaryawanController extends Controller
                 ->where('status like "%Keluar%" AND (tgl_keluar_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_keluar_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("tbl_karyawan.*,tbl_jabatan.jabatan as jabat");
-
+        
+        if(!empty($params['status'])){
+            $query->andWhere(['status_karyawan' => $params['status']]);
+        }
         session_start();
         $_SESSION['query'] = $query;
         $_SESSION['params'] = $params;
@@ -232,8 +235,10 @@ class KaryawanController extends Controller
 
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+            $adWhere = (!empty($params['status'])) ? ' AND tbl_karyawan.status_karyawan="' . $params['status']. '"' : '';
             $adWhere .= (!empty($params['lokasi_kantor'])) ? ' AND lokasi_kntr ="' . $params['lokasi_kantor'] . '"' : '';
             $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
+//           Yii::error($adWhere);
             $query->where('(tgl_masuk_kerja >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl_masuk_kerja <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")' . $adWhere);
         } else {
             $query->where(['nik' => $params['Karyawan']['nik']]);
@@ -304,6 +309,7 @@ class KaryawanController extends Controller
         $offset = 0;
         $limit = 10;
         $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
+        $adWhere .= (!empty($params['Department']['id_department'])) ? ' AND department="' . $params['Department']['id_department'] . '"' : '';
         $query = new Query;
         $query->offset($offset)
 //                ->limit($limit)

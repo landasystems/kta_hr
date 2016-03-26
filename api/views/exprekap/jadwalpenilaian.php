@@ -47,6 +47,7 @@ if (!isset($_GET['print'])) {
     <thead>
         <tr>
             <th style="text-align: center;vertical-align: center;" rowspan="2">NO</th>
+            <th style="text-align: center;vertical-align: center;" rowspan="2">NIK</th>
             <th style="text-align: center;vertical-align: center;" rowspan="2">NAMA</th>
             <th style="text-align: center;vertical-align: center;" rowspan="2">BAGIAN</th>
             <th style="text-align: center;vertical-align: center;" colspan="6">BULAN</th>
@@ -86,6 +87,7 @@ if (!isset($_GET['print'])) {
 
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
+            echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['bagian'] . '</td>';
             echo '<td align="center">' . $satu . '</td>';

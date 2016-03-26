@@ -127,14 +127,14 @@ class MagangController extends Controller {
         $starts = date('Y-m-d', strtotime($params['tanggal']['startDate']));
         $ends = date('Y-m-d', strtotime($params['tanggal']['startDate']));
         $siswa_magang = $this->ceksiswa($starts, $ends);
-        
+
         //create query
         $query = new Query;
-        $query->offset($offset)
-                ->limit($limit)
-                ->from('tbl_magang as mag')
+        $query->from('tbl_magang as mag')
                 ->join('LEFT JOIN', 'tbl_bagian as bag', 'mag.bagian = bag.kd_bagian')
-                ->where(['in','no_magang',$siswa_magang])
+                ->where(['in', 'no_magang', $siswa_magang])
+//                ->offset($offset)
+//                ->limit($limit)
                 ->orderBy($sort)
                 ->select("*");
 
@@ -182,7 +182,7 @@ class MagangController extends Controller {
                 "selesai" => $model_val->tgl_selesai
             ];
         }
-        
+
 
 //periode per user
         $dat = [];
