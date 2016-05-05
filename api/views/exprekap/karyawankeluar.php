@@ -24,7 +24,6 @@ if (!isset($_GET['print'])) {
 
 <br>
 <br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
 
 <table width="100%" border="1" style="border-collapse: collapse">
@@ -38,14 +37,14 @@ if (!isset($_GET['print'])) {
             <th style="text-align: center">Diketahui</th>
         </tr>
         <tr>
-            <th style="height: 45px;"></th>
+            <th style="height: 50px;"></th>
             <th></th>
         </tr>
         <tr>
             <th>NO</th>
+            <th>NIK</th>
             <th>NAMA</th>
             <th>JABATAN</th>
-            <th>NIK</th>
             <th>TANGGAL MASUK</th>
             <th>TANGGAL KELUAR</th>
             <th>ALASAN KELUAR</th>
@@ -55,13 +54,15 @@ if (!isset($_GET['print'])) {
         <?php
         $no = 1;
         foreach ($models as $val) {
+            $date_msk = new \DateTime($val['tgl_masuk_kerja']);
+            $date_klr = new \DateTime($val['tgl_keluar_kerja']);
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
+            echo '<td align="center">' . $val['nik'] . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['jabat'] . '</td>';
-            echo '<td align="center">' . $val['nik'] . '</td>';
-            echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
-            echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_keluar_kerja'])) . '</td>';
+            echo '<td align="center">' . $date_msk->format("d-M-Y"). '</td>';
+            echo '<td align="center">' . $date_klr->format("d-M-Y") . '</td>';
             echo '<td align="center">' . $val['alasan_keluar'] . '</td>';
             echo '</tr>';
             $no++;

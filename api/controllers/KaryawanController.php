@@ -167,6 +167,7 @@ class KaryawanController extends Controller
                 $ijz = Tblijazah::find()->where(['nik' => $val['nik']])->one();
                 $ijazah = (empty($ijz)) ? [] : $ijz->no;
                 $models[$key] = $val;
+                $models[$key]['status'] = ucfirst(strtolower($val['status']));
                 if(!empty($ijazah)){
                 $models[$key]['no'] = $ijazah;
                 }
@@ -235,7 +236,7 @@ class KaryawanController extends Controller
 
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
-            $adWhere = (!empty($params['status'])) ? ' AND tbl_karyawan.status_karyawan="' . $params['status']. '"' : '';
+            $adWhere .= (!empty($params['status'])) ? ' AND tbl_karyawan.status_karyawan="' . $params['status']. '"' : '';
             $adWhere .= (!empty($params['lokasi_kantor'])) ? ' AND lokasi_kntr ="' . $params['lokasi_kantor'] . '"' : '';
             $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
 //           Yii::error($adWhere);

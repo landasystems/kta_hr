@@ -27,36 +27,49 @@ if (!isset($_GET['print'])) {
 
 <br>
 <br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h3>REKAP KARYAWAN MASUK PER GAJI</h3><br/></center>
-<span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
+
 
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
         <tr>
-            <th>NO</th>
-            <th>NIK</th>
-            <th>NAMA</th>
-            <th>JABATAN</th>
-            <th>TANGGAL MASUK</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $no = 1;
-        foreach ($models as $val) {
-            echo '<tr>';
-            echo '<td align="center">' . $no . '</td>';
-            echo '<td align="center">' . $val['nik'] . '</td>';
-            echo '<td align="center">' . $val['nama'] . '</td>';
-            echo '<td align="center">' . $val['nama_jabatan'] . '</td>';
-            echo '<td align="center">' . date('d/m/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
-            echo '</tr>';
-            $no++;
-        }
+            <th colspan="3" rowspan="2">
+    <center><h3>REKAP KARYAWAN MASUK PER GAJI</h3></center>
+    <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
+</th>
+<th>Dibuat</th>
+<th>Diperiksa</th>
+</tr>
+<tr>
+    <th style="height: 80px;"></th>
+    <th></th>
+</tr>
+<tr>
+    <th>NO</th>
+    <th>NIK</th>
+    <th>NAMA</th>
+    <th>JABATAN</th>
+    <th>TANGGAL MASUK</th>
+</tr>
+</thead>
+<tbody>
+    <?php
+    $no = 1;
+    foreach ($models as $val) {
+        $date = new \DateTime($val['tgl_masuk_kerja'])
         ?>
-    </tbody>
+        <tr>
+            <td align="center"><?= $no ?></td>
+            <td align="center"><?= $val['nik'] ?></td>
+            <td align="center"><?= $val['nama'] ?></td>
+            <td align="center"><?= $val['nama_jabatan'] ?></td>
+            <td align="center"><?= $date->format("d-M-Y") ?></td>
+        </tr>
+        <?php
+        $no++;
+    }
+    ?>
+</tbody>
 </table>
 <?php
 if (isset($_GET['print'])) {
