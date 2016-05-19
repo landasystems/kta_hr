@@ -34,7 +34,12 @@ app.controller('lokasikantorCtrl', function ($scope, Data, toaster) {
         Data.get('lokasikantor', paramRef).then(function (data) {
             window.location = 'api/web/lokasikantor/excel';
         });
-    }
+    };
+    $scope.print = function () {
+        Data.get('lokasikantor', paramRef).then(function (data) {
+            window.open('api/web/lokasikantor/excel?print=true');
+        });
+    };
 
     $scope.create = function (form) {
         $scope.is_edit = true;
@@ -83,6 +88,7 @@ app.controller('lokasikantorCtrl', function ($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('lokasikantor/delete/' + row.id_lokasi_kantor).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus")
             });
         }
     };

@@ -24,6 +24,7 @@ class UmkController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
+                    'excel' => ['get'],
                 ],
             ]
         ];
@@ -52,7 +53,6 @@ class UmkController extends Controller {
         return true;
     }
 
-    
     public function actionIndex() {
         //init variable
         $params = $_REQUEST;
@@ -87,7 +87,16 @@ class UmkController extends Controller {
                 ->select("*");
 
         //filter
+        if (isset($params['filter'])) {
+            $filter = (array) json_decode($params['filter']);
+            foreach ($filter as $key => $val) {
+
+                $query->andFilterWhere(['like', $key, $val]);
+            }
+        }
         
+        session_start();
+        $_SESSION['query'] = $query;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -95,7 +104,7 @@ class UmkController extends Controller {
 
         $this->setHeader(200);
 
-        echo json_encode(array('status' => 1, 'dataumk' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
 
     public function actionView($id) {
@@ -106,13 +115,28 @@ class UmkController extends Controller {
         echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
     }
 
-    
+    public function actionKode() {
+        $query = new Query;
+        $query->from('tbl_umk')
+                ->select('*')
+                ->orderBy('no_umk DESC')
+                ->limit(1);
 
-    public function actionUpdate($id) {
+        $command = $query->createCommand();
+        $models = $command->query()->read();
+        $kode_mdl = (substr($models['no_umk'], -3) + 1);
+        $kode = substr('000' . $kode_mdl, strlen($kode_mdl));
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'kode' => 'UMK' . $kode));
+    }
+
+    public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = $this->findModel($id);
+        $model = new Umk();
         $model->attributes = $params;
-        Yii::error($params);
+        $model->tahun = $params['tahun'];
+
         if ($model->save()) {
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
@@ -122,7 +146,33 @@ class UmkController extends Controller {
         }
     }
 
-    
+    public function actionUpdate($id) {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $model = $this->findModel($id);
+        $model->attributes = $params;
+        $model->tahun = $params['tahun'];
+
+        if ($model->save()) {
+            $this->setHeader(200);
+            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        } else {
+            $this->setHeader(400);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
+        }
+    }
+
+    public function actionDelete($id) {
+        $model = $this->findModel($id);
+
+        if ($model->delete()) {
+            $this->setHeader(200);
+            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        } else {
+
+            $this->setHeader(400);
+            echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
+        }
+    }
 
     protected function findModel($id) {
         if (($model = Umk::findOne($id)) !== null) {
@@ -159,14 +209,18 @@ class UmkController extends Controller {
         return (isset($codes[$status])) ? $codes[$status] : '';
     }
 
-    
-     public function actionExcel() {
+    public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("excel", ['models'=>$models]);
+        return $this->render("/expmaster/umk", ['models' => $models]);
     }
+    
+   
+
 }
 
 ?>

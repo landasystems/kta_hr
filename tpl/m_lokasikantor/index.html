@@ -5,8 +5,10 @@
                 <div class="wrapper-md" ng-show="!is_edit">
                     <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
                         <div class="panel-heading">
-                            <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
+                            <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Excel</button>
                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                                <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
+                                <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                                 <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                             </div> 
                         </div>
@@ -32,6 +34,8 @@
                                     <tr>
                                         <th st-sort="id_lokasi_kantor">Kode</th>
                                         <th st-sort="lokasi_kantor">Lokasi Kantor</th>
+                                        <th st-sort="alamat">Alamat Kantor</th>
+                                        <th st-sort="no_telpon">No Telpon</th>
                                         <th style="text-align:right;">Action &nbsp;</th>
                                     </tr>
                                 </thead>
@@ -39,10 +43,12 @@
                                     <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                                         <td>{{row.id_lokasi_kantor}}</td>
                                         <td>{{row.lokasi_kantor}}</td>
+                                        <td>{{row.alamat}}</td>
+                                        <td>{{row.no_telpon}}</td>
                                         <td>
                                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                                <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                                <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                                <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                                <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                             </div> 
                                         </td>
                                     </tr>
@@ -82,6 +88,18 @@
                                         <label class="col-sm-2 control-label">Lokasi Kantor</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" ng-model="form.lokasi_kantor" ng-disabled="is_view" required >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Alamat Kantor</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="form.alamat" ng-disabled="is_view" required >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">No Telpon</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" ng-model="form.no_telpon" ng-disabled="is_view" required >
                                         </div>
                                     </div>
                                 </div>

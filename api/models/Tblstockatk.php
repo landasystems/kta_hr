@@ -11,6 +11,8 @@ use Yii;
  * @property string $nama_brng
  * @property integer $jumlah_brng
  * @property integer $min_stock
+ * @property integer $merk
+ * @property integer $keterangan
  *
  * @property TblDpermohonanAtk[] $tblDpermohonanAtks
  */
@@ -30,10 +32,11 @@ class Tblstockatk extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kode_brng'], 'required'],
+            [['kode_brng', 'nama_brng', 'merk'], 'required'],
             [['jumlah_brng', 'min_stock'], 'integer'],
             [['kode_brng'], 'string', 'max' => 20],
-            [['nama_brng'], 'string', 'max' => 200]
+            [['nama_brng', 'merk'], 'string', 'max' => 200],
+            [['keterangan'], 'safe']
         ];
     }
 

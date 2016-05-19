@@ -170,6 +170,9 @@ class FilelegalitasController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tbldataflegalitas();
         $model->attributes = $params;
+        $model->keterangan = $params['keterangan'];
+        $model->periode_mulai = $params['periode_mulai'];
+        $model->periode_akhir = $params['periode_akhir'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -182,8 +185,12 @@ class FilelegalitasController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
+        \Yii::error($params);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        $model->keterangan = $params['keterangan'];
+        $model->periode_mulai = $params['periode_mulai'];
+        $model->periode_akhir = $params['periode_akhir'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -245,14 +252,14 @@ class FilelegalitasController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
-        $params = $_SESSION['params'];
-        $start = $params['tanggal']['startDate'];
-        $end = $params['tanggal']['endDate'];
+//        $params = $_SESSION['params'];
+//        $start = $params['tanggal']['startDate'];
+//        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/filelegalitas", ['models' => $models, 'start' => $start, 'end' => $end]);
+        return $this->render("/expmaster/filelegalitas", ['models' => $models]);
     }
 
     public function actionCari() {

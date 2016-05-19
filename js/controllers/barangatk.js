@@ -31,6 +31,11 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
             window.location = 'api/web/barangatk/excel';
         });
     };
+    $scope.print = function () {
+        Data.get('barangatk', paramRef).then(function (data) {
+            window.open('api/web/barangatk/excel?print=true');
+        });
+    }
     
     $scope.create = function(form) {
         $scope.is_create = true;
@@ -79,6 +84,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('barangatk/delete/' + row.kode_brng).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     };

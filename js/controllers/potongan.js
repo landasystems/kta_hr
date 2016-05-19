@@ -25,6 +25,18 @@ app.controller('potonganCtrl', function($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    
+    $scope.excel = function () {
+        Data.get('potongan', paramRef).then(function (data) {
+            window.location = 'api/web/potongan/excel';
+        });
+    }
+    $scope.print = function () {
+        Data.get('potongan', paramRef).then(function (data) {
+            window.open('api/web/potongan/excel?print=true');
+        });
+    }
+    
     $scope.create = function(form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -50,7 +62,7 @@ app.controller('potonganCtrl', function($scope, Data, toaster) {
         $scope.formtitle = "Lihat Data : " + form.kode_potongan;
     };
     $scope.save = function(form) {
-        var url = ($scope.is_create == true) ? 'potongan/create/' : 'potongan/update/' + form.kd_barang;
+        var url = ($scope.is_create == true) ? 'potongan/create/' : 'potongan/update/' + form.kode_potongan;
         Data.post(url, form).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
@@ -72,6 +84,7 @@ app.controller('potonganCtrl', function($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('potongan/delete/' + row.kode_potongan).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     };

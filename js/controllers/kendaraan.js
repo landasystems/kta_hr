@@ -32,6 +32,11 @@ app.controller('kendaraanCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/kendaraan/excel';
         });
     };
+    $scope.print = function () {
+        Data.get('kendaraan', paramRef).then(function (data) {
+            window.open('api/web/kendaraan/excel?print=true');
+        });
+    };
     
     $scope.create = function (form) {
         $scope.is_create = true;
@@ -78,6 +83,7 @@ app.controller('kendaraanCtrl', function ($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('kendaraan/delete/' + row.id).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     }

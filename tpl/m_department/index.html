@@ -7,6 +7,7 @@
                         <div class="panel-heading">
                             <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                                <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
                                 <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                                 <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                             </div> 
@@ -42,8 +43,8 @@
                                         <td>{{row.department}}</td>
                                         <td>
                                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                                <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                                <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                                <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                                <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                             </div> 
                                         </td>
                                     </tr>

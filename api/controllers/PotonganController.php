@@ -213,13 +213,13 @@ class PotonganController extends Controller {
     }
 
     public function actionExcel() {
-        session_start();
+         session_start();
         $query = $_SESSION['query'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/barang", ['models' => $models]);
+        return $this->render("/expmaster/potongan", ['models' => $models]);
     }
 
     public function actionCari() {

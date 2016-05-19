@@ -80,7 +80,7 @@ class BarangatkController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "kode_brng DESC";
+        $sort = "kode_brng ASC";
         $offset = 0;
         $limit = 10;
 
@@ -95,9 +95,9 @@ class BarangatkController extends Controller {
             $sort = $params['sort'];
             if (isset($params['order'])) {
                 if ($params['order'] == "false")
-                    $sort.=" ASC";
-                else
                     $sort.=" DESC";
+                else
+                    $sort.=" ASC";
             }
         }
 
@@ -210,6 +210,9 @@ class BarangatkController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblstockatk();
         $model->attributes = $params;
+        
+        $model->merk = $params['merk'];
+        $model->keterangan = $params['keterangan'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -224,6 +227,9 @@ class BarangatkController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
+        
+        $model->merk = $params['merk'];
+        $model->keterangan = $params['keterangan'];
 
         if ($model->save()) {
             $this->setHeader(200);

@@ -19,6 +19,7 @@ class KendaraanController extends Controller {
                 'actions' => [
                     'index' => ['get'],
                     'view' => ['get'],
+                    'listmerk' => ['get'],
                     'excel' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -29,6 +30,8 @@ class KendaraanController extends Controller {
             ]
         ];
     }
+
+    
 
     public function beforeAction($event) {
         $action = $event->id;

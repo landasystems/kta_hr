@@ -1,10 +1,25 @@
 <?php
-header("Content-type: application/vnd-ms-excel");
-header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
+if (!isset($_GET['print'])) {
+//    header("Content-type: application/vnd-ms-excel");
+//    header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
+}
 ?>
-<h3>Data Master Kendaraan</h3>
-<br><br>
-<table border="1">
+<table width="100%" style="border-collapse: collapse;" border="1">
+    <tr>
+        <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+        <td rowspan="2" style="text-align: center;">
+            LAPORAN MASTER KENDARAAN
+        </td>
+        <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td colspan="2" style="text-align: center;">Diketahui</td>
+        <td colspan="2" style="text-align: center;">Diperiksa</td>
+        <td colspan="2" style="text-align: center;">Dibuat</td>
+    </tr>
+    <tr>
+        <td colspan="2" style="width: 100px;height: 80px;"></td>
+        <td colspan="2" style="width: 100px;"></td>
+        <td colspan="2" style="width: 100px;" ></td>
+    </tr>
     <tr>
         <th>NOPOL</th>
         <th>MERK</th>
@@ -30,9 +45,9 @@ header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
         $user = (!empty($arr['user'])) ? $arr['user'] : '';
         ?>
         <tr>
-            <td>&nbsp;<?= $nopol ?></td>
-            <td>&nbsp;<?= $merk ?></td>
-            <td>&nbsp;<?= $type?></td>
+            <td style="min-width: 90px;">&nbsp;<?= $nopol ?></td>
+            <td style="text-align: center;">&nbsp;<?= $merk ?></td>
+            <td>&nbsp;<?= $type ?></td>
             <td>&nbsp;<?= $model ?></td>
             <td>&nbsp;<?= $warna ?></td>
             <td>&nbsp;<?= $thn_pembuatan ?></td>
@@ -44,3 +59,15 @@ header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
     <?php } ?>
 </table>
 
+<?php
+if (isset($_GET['print'])) {
+    ?>
+    <script type="text/javascript">
+        window.print();
+        setTimeout(function () {
+            window.close();
+        }, 1);
+    </script>
+    <?php
+}
+?>

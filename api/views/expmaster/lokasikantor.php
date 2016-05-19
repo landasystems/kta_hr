@@ -1,15 +1,14 @@
 <?php
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
-header("Content-Disposition: attachment; filename=excel-master-kalender.xls");
+    header("Content-Disposition: attachment; filename=excel-master-subsetion.xls");
 }
-
 ?>
 <table width="100%" style="border-collapse: collapse;" border="1">
     <tr>
         <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
         <td rowspan="2" style="text-align: center;">
-             LAPORAN MASTER KALENDER
+            LAPORAN MASTER LOKASI KANTOR
         </td>
         <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
         <td style="text-align: center;">Diketahui</td>
@@ -22,19 +21,20 @@ header("Content-Disposition: attachment; filename=excel-master-kalender.xls");
         <td style="width: 100px;" ></td>
     </tr>
     <tr>
-        <th>No</th>
-        <th>Tanggal</th>
-        <th colspan="4">Keterangan</th>
+        <th>Kode</th>
+        <th >Lokasi Kantor</th>
+        <th colspan="2">Alamat Kantor</th>
+        <th colspan="2">No Telpon</th>
     </tr>
     <?php
     foreach ($models as $arr) {
-        
         ?>
         <tr>
-            <td>&nbsp;<?=$arr['no']?></td>
-            <td>&nbsp;<?=date('d-m-Y',  strtotime($arr['tgl']))?></td>
-            <td colspan="4" style="text-align:  center;"><?=$arr['ket']?></td>
-            
+            <td>&nbsp;<?= $arr['id_lokasi_kantor'] ?></td>
+            <td  style="text-align: center;"><?= $arr['lokasi_kantor'] ?></td>
+            <td colspan="2"><?= $arr['alamat'] ?></td>
+            <td colspan="2"><?= $arr['no_telpon'] ?></td>
+
         </tr>
     <?php } ?>
 </table>

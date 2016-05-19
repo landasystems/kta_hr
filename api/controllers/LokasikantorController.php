@@ -214,7 +214,7 @@ class LokasikantorController extends Controller {
         $query = $_SESSION['query'];
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("excel", ['models'=>$models]);
+        return $this->render("/expmaster/lokasikantor", ['models'=>$models]);
     }
 }
 

@@ -27,7 +27,7 @@ class LokasiKantor extends \yii\db\ActiveRecord
     {
         return [
             [['id_lokasi_kantor'], 'unique'],
-            [['lokasi_kantor'], 'safe'],
+            [['lokasi_kantor','alamat','no_telpon'], 'safe'],
             [['id_lokasi_kantor', 'lokasi_kantor'], 'string', 'max' => 20]
         ];
     }
@@ -40,6 +40,8 @@ class LokasiKantor extends \yii\db\ActiveRecord
         return [
             'id_lokasi_kantor' => 'Id Lokasi Kantor',
             'lokasi_kantor' => 'Lokasi Kantor',
+            'alamat' => 'Alamat',
+            'no_telpon' => 'No Telpon',
         ];
     }
 }

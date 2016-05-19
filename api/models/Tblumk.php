@@ -28,7 +28,8 @@ class Tblumk extends \yii\db\ActiveRecord
         return [
             [['no_umk'], 'required'],
             [['umk'], 'number'],
-            [['no_umk'], 'string', 'max' => 20]
+            [['tahun'], 'number'],
+            [['no_umk', 'tahun'], 'string', 'max' => 20]
         ];
     }
 
@@ -40,6 +41,7 @@ class Tblumk extends \yii\db\ActiveRecord
         return [
             'no_umk' => 'No Umk',
             'umk' => 'Umk',
+            'tahun' => 'Tahun',
         ];
     }
 }

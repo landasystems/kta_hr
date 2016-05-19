@@ -34,6 +34,11 @@ app.controller('departmentCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/departement/excel';
         });
     }
+    $scope.print = function () {
+        Data.get('departement', paramRef).then(function (data) {
+            window.open('api/web/departement/excel?print=true');
+        });
+    }
 
     $scope.create = function (form) {
         $scope.is_edit = true;

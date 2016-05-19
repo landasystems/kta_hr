@@ -7,6 +7,7 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                    <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
                     <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
@@ -15,7 +16,7 @@
                 <div class="form-horizontal">
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">No</label>
+                            <label class="col-sm-2 control-label">Kode</label>
                             <div class="col-sm-3">
                                 <input st-search="no" class="form-control"/>
                             </div>
@@ -25,7 +26,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Nama File</label>
+                            <label class="col-sm-2 control-label">Nama Legalitas</label>
                             <div class="col-sm-3">
                                 <input st-search="nm_file" class="form-control"/>
                             </div>
@@ -41,10 +42,13 @@
                             </div>
                             <label class="col-sm-2 control-label">Jenis Legalitas</label>
                             <div class="col-sm-3">
-                                <select class="form-control" st-seach="jns_legalitas">
-                                    <option value="Legalitas Umum">Legalitas Umum</option>
-                                    <option value="Legalitas Alat">Legalitas Alat</option>
-                                    <option value="Akta">Akta</option>
+                                <select class="form-control" st-search="jns_legalitas">
+                                    <option value="">All</option>
+                                    <option value="Legalitas Umum">LEGALITAS UMUM</option>
+                                    <option value="Legalitas Alat">LEGALITAS ALAT</option>
+                                    <option value="Akta">AKTA</option>
+                                    <option value="k3">K3</option>
+                                    <option value="Perizinan">PERIZINAN</option>
                                 </select>
                             </div>
                         </div>
@@ -57,7 +61,7 @@
                         <tr>
                             <th st-sort="no">Kode</th>
                             <th st-sort="no_file">No File</th>
-                            <th st-sort="nm_file">Nama File</th>
+                            <th st-sort="nm_file">Nama Legalitas</th>
                             <th st-sort="instansi">Instansi</th>
                             <th st-sort="atas_nm">Atas Nama</th>
                             <th st-sort="jns_legalitas">Jenis Legalitas</th>
@@ -71,11 +75,11 @@
                             <td>{{row.nm_file}}</td>
                             <td>{{row.instansi}}</td>
                             <td>{{row.atas_nm}}</td>
-                            <td>{{row.jns_legalitas}}</td>
-                            <td>
+                            <td style="text-transform: uppercase; min-width: 120px;">{{row.jns_legalitas}}</td>
+                            <td style="min-width: 100px;">
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -138,13 +142,46 @@
                                     <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.atas_nm">
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Jenis Legalitas</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-3 control-label">Periode Awal</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.periode_mulai" is-open="opened1" ng-click="open1($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Periode Akhir</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group" style="padding:0px;margin:0px">
+                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.periode_akhir" is-open="opened2" ng-click="open2($event)"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Keterangan</label>
+                                <div class="col-sm-9">
+                                    <textarea type="text" class="form-control" ng-readonly="is_view" ng-model="form.keterangan"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Jenis Legalitas</label>
+                                <div class="col-sm-9">
                                     <select class="form-control" ng-model="form.jns_legalitas">
-                                        <option value="Legalitas Umum">Legalitas Umum</option>
-                                        <option value="Legalitas Alat">Legalitas Alat</option>
-                                        <option value="Akta">Akta</option>
+                                        <option value="Legalitas Umum">LEGALITAS UMUM</option>
+                                        <option value="Legalitas Alat">LEGALITAS ALAT</option>
+                                        <option value="Akta">AKTA</option>
+                                        <option value="k3">K3</option>
+                                        <option value="Perizinan">PERIZINAN</option>
                                     </select>
                                 </div>
                             </div>
@@ -155,7 +192,7 @@
                         <div class="col-md-12 col-sm-12">
                             <center>
                                 <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
+                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="" ng-click="save(form)">&nbsp;Simpan</button>
                             </center>
                         </div>
                     </div>

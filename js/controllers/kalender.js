@@ -35,6 +35,12 @@ app.controller('kalenderCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/kalender/excel';
         });
     };
+    
+    $scope.print = function () {
+        Data.get('kalender', paramRef).then(function (data) {
+            window.open('api/web/kalender/excel?print=true');
+        });
+    }
 
     $scope.open1 = function ($event) {
         $event.preventDefault();
@@ -89,6 +95,7 @@ app.controller('kalenderCtrl', function ($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('kalender/delete/' + row.no).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus")
             });
         }
     };

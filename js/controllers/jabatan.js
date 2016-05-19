@@ -40,6 +40,11 @@ app.controller('jabatanCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/jabatan/excel';
         });
     }
+    $scope.print = function () {
+        Data.get('jabatan', paramRef).then(function (data) {
+            window.open('api/web/jabatan/excel?print=true');
+        });
+    }
     
     Data.get('subsection/list').then(function(data) {
         $scope.listsubsection = data.data;
@@ -105,6 +110,7 @@ app.controller('jabatanCtrl', function ($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('jabatan/delete/' + row.id_jabatan).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus")
             });
         }
     };

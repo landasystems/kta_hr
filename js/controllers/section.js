@@ -34,7 +34,12 @@ app.controller('sectionCtrl', function ($scope, Data, toaster) {
         Data.get('section', paramRef).then(function (data) {
             window.location = 'api/web/section/excel';
         });
-    }
+    };
+    $scope.print = function () {
+        Data.get('section', paramRef).then(function (data) {
+            window.open('api/web/section/excel?print=true');
+        });
+    };
 
     Data.get('departement/listdepartment').then(function (data) {
         $scope.listdept = data.data;
@@ -87,6 +92,7 @@ app.controller('sectionCtrl', function ($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('section/delete/' + row.id_section).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus")
             });
         }
     };

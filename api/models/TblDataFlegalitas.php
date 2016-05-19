@@ -12,6 +12,10 @@ use Yii;
  * @property string $nm_file
  * @property string $instansi
  * @property string $atas_nm
+ * @property string $periode
+ * @property string $periode_mulai
+ * @property string $periode_akhir
+ * @property string $keterangan
  * @property string $jns_legalitas
  * @property string $tgl_pengesahan
  */
@@ -32,11 +36,11 @@ class TblDataFlegalitas extends \yii\db\ActiveRecord
     {
         return [
             [['no'], 'required'],
-            [['tgl_pengesahan'], 'safe'],
+            [['tgl_pengesahan', 'keterangan', 'periode_mulai', 'periode_akhir'], 'safe'],
             [['no', 'no_file'], 'string', 'max' => 20],
-            [['nm_file'], 'string', 'max' => 300],
+            [['nm_file', 'periode'], 'string', 'max' => 300],
             [['instansi', 'atas_nm'], 'string', 'max' => 400],
-            [['jns_legalitas'], 'string', 'max' => 100]
+            [['jns_legalitas'], 'string', 'max' => 100],
         ];
     }
 
@@ -49,8 +53,12 @@ class TblDataFlegalitas extends \yii\db\ActiveRecord
             'no' => 'No',
             'no_file' => 'No File',
             'nm_file' => 'Nm File',
-            'instansi' => 'Instansi',
+            'instansi' =>'Instansi',
             'atas_nm' => 'Atas Nm',
+            'periode' => 'Periode',
+            'periode_mulai' => 'Periode Mulai',
+            'periode_akhir' => 'Periode Akhir',
+            'keterangan' => 'Keterangan',
             'jns_legalitas' => 'Jns Legalitas',
             'tgl_pengesahan' => 'Tgl Pengesahan',
         ];
