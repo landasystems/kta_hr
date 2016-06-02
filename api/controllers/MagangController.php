@@ -101,6 +101,7 @@ class MagangController extends Controller {
 
         session_start();
         $_SESSION['query'] = $query;
+        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -325,13 +326,13 @@ class MagangController extends Controller {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        $start = $params['tanggal']['startDate'];
-        $end = $params['tanggal']['endDate'];
+//        $start = $params['tanggal']['startDate'];
+//        $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/rekapmagang", ['models' => $models, 'start' => $start, 'end' => $end]);
+        return $this->render("/exprekap/rekapmagang", ['models' => $models, 'params' => $params ]);
     }
 
     public function actionCari() {

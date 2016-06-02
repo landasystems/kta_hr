@@ -2,6 +2,11 @@
 if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=excel-rekap-lamaran-krja.xls");
+    $judul = '9';
+    $col2 = '2';
+} else {
+    $judul = '5';
+    $col2 = '1';
 }
 ?>
 <style type="text/css">
@@ -61,125 +66,121 @@ if (!isset($_GET['print'])) {
         border:none;
     }
 </style>
-<div style="width:26cm">
-    <?php
-    if (!isset($_GET['print'])) {
-        ?>
-        <table border="1">
-            <tr>
-                <!--<td style="border-top: 1px solid black;" colspan="13"></td>-->
-                <th height="30" colspan="13" rowspan="2">
-            <h3>  LAMARAN MASUK</h3>
-            </th>
-            <th  colspan="3">Dibuat</th>
-            <th colspan="2">Diketahui</th>
-            </tr>
-            <tr>
-    <!--                <th height="30" colspan="13">
-                    LAMARAN MASUK
-                </th>-->
-                <th   colspan="3" rowspan="2" ></th>
-                <th   colspan="2" rowspan="2" ></th>
-            </tr>
-            <tr>
-                <th  height="25" colspan="13"></th>
-            </tr>
-        </table>
-        <table border="1">
+<table width="100%" style="border-collapse: collapse;" border="1">
+    <tr>
+        <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+        <td colspan="<?= $judul ?>" rowspan="2" style="text-align: center;">
+            LAPORAN MASTER LAMARAN MASUK
+        </td>
+        <td colspan="<?= $col2 ?>" rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td colspan="<?= $col2 ?>" style="text-align: center;">Diketahui</td>
+        <td colspan="<?= $col2 ?>" style="text-align: center;">Diperiksa</td>
+        <td colspan="<?= $col2 ?>" style="text-align: center;">Dibuat</td>
+    </tr>
+    <tr>
+        <td colspan="<?= $col2 ?>" style="width: 100px;height: 80px;"></td>
+        <td colspan="<?= $col2 ?>" style="width: 100px;"></td>
+        <td colspan="<?= $col2 ?>" style="width: 100px;" ></td>
+    </tr>
+    <tr>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">NO</th>
+        <th style="font-size: 12px;text-align: center;" rowspan="2">NO LAMARAN</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TANGGAL</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">UNTUK POSISI</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">NAMA</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">PEND. AKHIR</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">JURUSAN</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">IN FORMAL</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;" colspan="2">PENGALAMAN</th>
+        <?php
+        if (!isset($_GET['print'])) {
+            ?>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TEMPAT LAHIR</th>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TANGGAL LAHIR</th>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;" colspan="6">ALAMAT</th>
             <?php
         } else {
+            
+        }
+        ?>
+    </tr>
+    <tr>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;">PERUSAHAAN</th>
+        <th style="font-size: 12px;text-align: center;vertical-align: middle;">BAGIAN</th>
+        <?php
+        if (!isset($_GET['print'])) {
             ?>
-            <table>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;">JALAN</th>
+            <th width="100" style="font-size: 12px;text-align: center;vertical-align: middle;">RT</th>
+            <th width="100" style="font-size: 12px;text-align: center;vertical-align: middle;">RW</th>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;">KEL</th>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;">KEC</th>
+            <th style="font-size: 12px;text-align: center;vertical-align: middle;">KAB/KOTA</th>
+            <?php
+        } else {
+            
+        }
+        ?>
+    </tr>
+
+
+    <?php
+    $no = 1;
+    foreach ($models as $value) {
+        ?>
+        <tr>
+            <td style="font-size: 12px;text-align: center;" ><?= $no ?></td>
+            <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= $value['no_lamaran'] ?></td>
+            <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= date("d-m-Y", strtotime($value['tgl'])) ?></td>
+            <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['posisi']) ?></td>
+            <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['nama']) ?></td>
+            <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= strtoupper($value['pendidikan']) ?></td>
+            <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['jurusan']) ?></td>
+            <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['informal']) ?></td>
+            <td style="font-size: 12px;vertical-align: middle;">
                 <?php
-            }
-            ?>
-            <thead>
-
-                <tr>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">NO</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">NO LAMARAN</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TANGGAL</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">UNTUK POSISI</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">NAMA</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">PEND. AKHIR</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">JURUSAN</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">IN FORMAL</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" colspan="2">PENGALAMAN</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TEMPAT LAHIR</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="2">TANGGAL LAHIR</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;" colspan="6">ALAMAT</th>
-                </tr>
-                <tr>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">PERUSAHAAN</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">BAGIAN</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">JALAN</th>
-                    <th width="100" style="font-size: 12px;text-align: center;vertical-align: middle;">RT</th>
-                    <th width="100" style="font-size: 12px;text-align: center;vertical-align: middle;">RW</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">KEL</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">KEC</th>
-                    <th style="font-size: 12px;text-align: center;vertical-align: middle;">KAB/KOTA</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $no = 1;
-                foreach ($models as $value) {
-                    $rowsp1 = !empty($value['pk_perusahaan1']) ? 1 : 0;
-                    $rowsp2 = !empty($value['pk_perusahaan2']) ? 1 : 0;
-                    $rowsp3 = !empty($value['pk_perusahaan3']) ? 1 : 0;
-
-                    $rowsp = ($rowsp1 + $rowsp2 + $rowsp3);
-
-                    $pengalaman1 = !empty($value['pk_perusahaan1']) ? "1. " . $value['pk_perusahaan1'] : '';
-                    $pengalaman2 = !empty($value['pk_perusahaan2']) ? "2. " . $value['pk_perusahaan2'] : '';
-                    $pengalaman3 = !empty($value['pk_perusahaan3']) ? "3. " . $value['pk_perusahaan3'] : '';
-                    $bagian1 = !empty($value['pk_bagian1']) ? "1. " . $value['pk_bagian1'] : '';
-                    $bagian2 = !empty($value['pk_bagian2']) ? "2. " . $value['pk_bagian2'] : '';
-                    $bagian3 = !empty($value['pk_bagian3']) ? "3. " . $value['pk_bagian3'] : '';
-                    ?>
-                    <tr>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= $no ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= $value['no_lamaran'] ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= date("d-m-Y", strtotime($value['tgl'])) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['posisi']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['nama']) ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['pendidikan']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['jurusan']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['informal']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;"><?= strtoupper($pengalaman1) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;"><?= strtoupper($bagian1) ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['tempat_lahir']) ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= date('d-M-Y', strtotime($value['tanggal_lahir'])) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['alamat_jln']) ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= $value['rt'] ?></td>
-                        <td style="font-size: 12px;text-align: center;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= $value['rw'] ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['kelurahan']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['kecamatan']) ?></td>
-                        <td style="font-size: 12px;vertical-align: middle;" rowspan="<?= $rowsp ?>"><?= strtoupper($value['kabupaten']) ?></td>
-                    </tr>
-                    <?php
-                    if ($rowsp >= 2) {
-                        ?>
-                        <tr>
-                            <td style="font-size: 12px;vertical-align: middle;"><?= $pengalaman2 ?></td>
-                            <td style="font-size: 12px;vertical-align: middle;"><?= $bagian2 ?></td>
-                        </tr>
-                        <?php
-                    }
-                    if ($rowsp == 3) {
-                        ?>
-                        <tr>
-                            <td style="font-size: 12px;vertical-align: middle;"><?= $pengalaman3 ?></td>
-                            <td style="font-size: 12px;vertical-align: middle;"><?= $bagian3 ?></td>
-                        </tr>
-                        <?php
-                    }
-                    $no++;
+                $n= 0;
+                foreach ($value['perusahaan'] as $per) {
+                    $n++;
+                    echo "$n. ".strtoupper($per)."<br/>";
                 }
                 ?>
-            </tbody>
-        </table>
-</div>
+            </td>
+            <td style="font-size: 12px;vertical-align: middle;">
+                <?php
+                $o= 0;
+                foreach ($value['bagian'] as $bag) {
+                    $o++;
+                    echo "$o. ".strtoupper($bag)."<br/>";
+                }
+                ?>
+                
+            </td>
+            <?php
+            if (!isset($_GET['print'])) {
+                ?>
+                <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= strtoupper($value['tempat_lahir']) ?></td>
+                <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= date('d-M-Y', strtotime($value['tanggal_lahir'])) ?></td>
+                <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['alamat_jln']) ?></td>
+                <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= $value['rt'] ?></td>
+                <td style="font-size: 12px;text-align: center;vertical-align: middle;" ><?= $value['rw'] ?></td>
+                <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['kelurahan']) ?></td>
+                <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['kecamatan']) ?></td>
+                <td style="font-size: 12px;vertical-align: middle;" ><?= strtoupper($value['kabupaten']) ?></td>
+                <?php
+            } else {
+                
+            }
+            ?>
+        </tr>
+
+       
+    <?php
+    $no++;
+}
+?>
+
+</table>
 <?php
 if (isset($_GET['print'])) {
     ?>

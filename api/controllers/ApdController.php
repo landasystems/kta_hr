@@ -90,9 +90,9 @@ class ApdController extends Controller {
             $sort = $params['sort'];
             if (isset($params['order'])) {
                 if ($params['order'] == "false")
-                    $sort.=" ASC";
-                else
                     $sort.=" DESC";
+                else
+                    $sort.=" ASC";
             }
         }
 

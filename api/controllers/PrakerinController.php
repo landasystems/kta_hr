@@ -101,11 +101,12 @@ class PrakerinController extends Controller {
 
         session_start();
         $_SESSION['query'] = $query;
+        $_SESSION['params'] = '';
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach($models as $key => $val){
-            if(!empty($val['kd_bagian'])){
+        foreach ($models as $key => $val) {
+            if (!empty($val['kd_bagian'])) {
                 $bagian = \app\models\TblBagian::findOne($val['kd_bagian']);
                 $models[$key]['Bagian'] = $bagian->attributes;
             }
@@ -116,7 +117,7 @@ class PrakerinController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-    
+
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -253,8 +254,13 @@ class PrakerinController extends Controller {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
-        $start = $params['tanggal']['startDate'];
-        $end = $params['tanggal']['endDate'];
+        if (!empty($params['tanggal'])) {
+            $start = $params['tanggal']['startDate'];
+            $end = $params['tanggal']['endDate'];
+        } else {
+            $start = '';
+            $end = '';
+        }
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();

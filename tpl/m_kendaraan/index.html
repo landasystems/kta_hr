@@ -22,7 +22,10 @@
                             </div>
                             <label class="col-sm-2 control-label">Merk</label>
                             <div class="col-sm-3">
-                                <input st-search="merk" class="form-control"/>
+                                <select stInputEvent="change" st-search="merk" class="form-control">    
+                                    <option value="">-Pilih Merk-</option>
+                                    <option ng-repeat="kendaraan in listmerk" value="{{kendaraan.merk}}">{{kendaraan.merk}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">

@@ -129,7 +129,7 @@ class TranspotonganController extends Controller {
         if (!empty($models)) {
             foreach ($models as $key => $val) {
                 if (!empty($val['nik'])) {
-                    $pegawai = \app\models\Tblkaryawan::findOne($val['nik']);
+                    $pegawai = \app\models\TblKaryawan::findOne($val['nik']);
                     $models[$key]['Karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
                 }
                 $qDet = new Query();

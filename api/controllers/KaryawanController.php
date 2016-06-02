@@ -373,11 +373,13 @@ class KaryawanController extends Controller
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND section="' . $params['Section']['id_section'] . '"' : '';
             $adWhere .= (!empty($params['Jabatan']['id_jabatan'])) ? ' AND tbl_karyawan.jabatan="' . $params['Jabatan']['id_jabatan'] . '"' : '';
-            $adWhere .= (!empty($params['Jabatan']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
+            $adWhere .= (!empty($params['Department']['id_department'])) ? ' AND tbl_karyawan.department="' . $params['Department']['id_department'] . '"' : '';
 
             if ($params['tipe_periode'] == 'rentang')
+//                $query->andWhere('((Kontrak_11 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_11 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '" ) OR (Kontrak_21 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_21 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '"))' . $adWhere);
                 $query->andWhere('((Kontrak_11 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_11 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '" AND Kontrak_2 is NULL) OR (Kontrak_21 >= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['startDate'])) . '" AND Kontrak_21 <= "' . date('Y-m-d', strtotime($params['tanggal_rentang']['endDate'])) . '"))' . $adWhere);
             else
+//                $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" ) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
                 $query->andWhere('((MONTH(Kontrak_11) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_11) >="' . date('Y', strtotime($params['tanggal'])) . '" AND Kontrak_2 is NULL) OR (MONTH(Kontrak_21) >="' . date('m', strtotime($params['tanggal'])) . '" AND YEAR(Kontrak_21) >="' . date('Y', strtotime($params['tanggal'])) . '"))' . $adWhere);
         } else {
             $query->andWhere(['nik' => $params['Karyawan']['nik']]);
@@ -652,7 +654,7 @@ class KaryawanController extends Controller
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/karyawan", ['models' => $models]);
+        return $this->render("/expmaster/karyawan", ['data' => $models]);
     }
 
     public function actionExcelmasuk()

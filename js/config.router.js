@@ -219,7 +219,7 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load([]).then(
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/jamsostek.js');
                                                         }
@@ -491,7 +491,7 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-                                                return $ocLazyLoad.load(['']).then(
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
                                                         function () {
                                                             return $ocLazyLoad.load('js/controllers/pendaftaranjamsostek.js');
                                                         }

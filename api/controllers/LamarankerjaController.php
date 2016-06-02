@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Tbllamarankaryawan;
+use app\models\Tbllamarandetails;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -126,7 +127,6 @@ class LamarankerjaController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
@@ -164,18 +164,40 @@ class LamarankerjaController extends Controller {
 
     public function actionView($id) {
 
-        $model = $this->findModel($id);
-
+//        $model = $this->findModel($id);
+        $detail = array();
+//        $findDet = \app\models\Tbllamarandeatils::findAll(['no_lamaran' => $id]);
+        $findDet = Tbllamarandetails::findAll(['no_lamaran' => $id]);
+        if (!empty($findDet)) {
+            foreach ($findDet as $key => $val) {
+                $detail[$key] = $val->attributes;
+                $detail[$key]['tanggal']['startDate'] = $val->periode_awal;
+                $detail[$key]['tanggal']['endDate'] = $val->periode_akhir;
+            }
+        }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => array_filter($detail)), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
+
         $model = new Tbllamarankaryawan();
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+            foreach ($params['detail'] as $key => $val) {
+                $detail = new Tbllamarandetails();
+                $detail->attributes = $val;
+                if (!empty($detail->perusahaan)) {
+                    $detail->no_lamaran = $model->no_lamaran;
+                    $detail->periode_awal = date('Y-m-d', strtotime($val['tanggal']['startDate']));
+                    $detail->periode_akhir = date('Y-m-d', strtotime($val['tanggal']['endDate']));
+                    $detail->save();
+                }
+            }
+
+
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -186,10 +208,26 @@ class LamarankerjaController extends Controller {
 
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
+
+//        Yii::error($params);
         $model = $this->findModel($id);
-        $model->attributes = $params;
+        $model->attributes = $params['form'];
 
         if ($model->save()) {
+            $deleteAll = Tbllamarandetails::deleteAll('no_lamaran="' . $params['form']['no_lamaran'] . '"');
+            foreach ($params['detail'] as $key => $val) {
+
+                $detail = new Tbllamarandetails();
+                $detail->attributes = $val;
+
+                if (!empty($detail->perusahaan)) {
+                    $detail->no_lamaran = $model->no_lamaran;
+                    $detail->periode_awal = date('Y-m-d', strtotime($val['tanggal']['startDate']));
+                    $detail->periode_akhir = date('Y-m-d', strtotime($val['tanggal']['endDate']));
+                    $detail->save();
+                }
+            }
+
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -250,6 +288,7 @@ class LamarankerjaController extends Controller {
         session_start();
         $query = $_SESSION['query'];
         $params = $_SESSION['params'];
+
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
@@ -265,8 +304,21 @@ class LamarankerjaController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
+        foreach ($models as $key => $value) {
+            $models[$key] = $value;
+            $detail = Tbllamarandetails::find()->where(['no_lamaran' => $value['no_lamaran']])->all();
+            $perusahaan = [];
+            $bagian = [];
+            foreach ($detail as $ky => $val) {
+                $perusahaan[$ky] = $val->perusahaan;
+                $bagian[$ky] = $val->bagian;
+            }
+            $models[$key]['perusahaan'] = (!empty($perusahaan)) ? $perusahaan : [];
+            $models[$key]['bagian'] = (!empty($bagian)) ? $bagian : [];
+        }
+//        Yii::error($models);
         $render = (!empty($_GET['render'])) ? $_GET['render'] : '';
-        return $this->render("/exprekap/" . $render, ['models' => $models]);
+        return $this->render("/exprekap/" . $render, ['models' => $models, 'detail' => $detail]);
     }
 
     public function actionCari() {

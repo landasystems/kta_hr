@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['print'])) {
-//    header("Content-type: application/vnd-ms-excel");
-//    header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=excel-master-kendaraan.xls");
 }
 ?>
 <table width="100%" style="border-collapse: collapse;" border="1">

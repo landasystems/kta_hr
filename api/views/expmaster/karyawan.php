@@ -1,69 +1,61 @@
 <?php
-header("Content-type: application/vnd-ms-excel");
-header("Content-Disposition: attachment; filename=excel-master-barang.xls");
-$data = array();
-$i = 0;
-foreach ($models as $key => $val) {
-    $data[$val['kat']]['title']['kategory'] = $val['kat'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['title'] = $val['jenis_brg'];
-
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['kd_barang'] = $val['kd_barang'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['nm_barang'] = $val['nm_barang'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['jenis_brg'] = $val['jenis_brg'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['satuan'] = $val['satuan'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['max'] = $val['max'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['min'] = $val['min'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['saldo'] = $val['saldo'];
-    $data[$val['kat']]['jenis_brg'][$val['jenis_brg']]['body'][$i]['qty'] = $val['qty'];
-    $i++;
+if (!isset($_GET['print'])) {
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=excel-master-karyawan.xls");
 }
 ?>
-<h3>Data Master Barang</h3>
-<br><br>
-<table border="1">
+<table width="100%" style="border-collapse: collapse;" border="1">
     <tr>
-        <th>Kode Barang</th>
-        <th>Nama barang</th>
-        <th>Satuan</th>
-        <th>Min Stok</th>
-        <th>Maks Stok</th>
-        <th>Stok</th>
-        <th>Qty</th>
+        <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+        <td rowspan="2" style="text-align: center;">
+            LAPORAN MASTER KARYAWAN
+        </td>
+        <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td style="text-align: center;">Diketahui</td>
+        <td style="text-align: center;">Diperiksa</td>
+        <td style="text-align: center;">Dibuat</td>
+    </tr>
+    <tr>
+        <td style="width: 100px;height: 80px;"></td>
+        <td style="width: 100px;"></td>
+        <td style="width: 100px;" ></td>
+    </tr>
+</table >
+<table width="100%" style="border-collapse: collapse;" border="1">
+    <tr >
+        <th>Kode</th>
+        <th>Nama</th>
+        <th>Status Karyawan</th>
+        <th>Jabatan</th>
+        <th>Lokasi Kantor</th>
+        <th>Status</th>
     </tr>
     <?php
     foreach ($data as $arr) {
+//echo $arr['kerja'];    
         ?>
-    <tr><td colspan="7" style="background-color: rgb(226, 222, 222);">&nbsp;<b><?= $arr['title']['kategory'] ?></b></td><tr>
-            <?php
-            foreach ($arr['jenis_brg'] as $keys) {
-                ?>
-            <tr>
-                <td></td>
-                <td><b><?= $keys['title'] ?></b></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-
-            </tr>
-            <?php
-            foreach ($keys['body'] as $value) {
-                ?>
-                <tr>
-                    <td>&nbsp;<?= $value['kd_barang'] ?></td>
-                    <td><?= $value['nm_barang'] ?></td>
-                    <td>&nbsp;<?= $value['satuan'] ?></td>
-                    <td>&nbsp;<?= $value['min'] ?></td>
-                    <td>&nbsp;<?= $value['max'] ?></td>
-                    <td>&nbsp;<?= $value['qty'] ?></td>
-                    <td>&nbsp;<?= $value['saldo'] ?></td>
-
-                </tr>
-                <?php
-            }
-        }
+        <tr>
+            <td><?= $arr['nik'] ?></td>
+            <td style="text-align: center;"><?= $arr['nama'] ?></td>
+            <td style="text-transform: uppercase;"><?= $arr['status_karyawan'] ?></td>
+            <td><?= $arr['jabatan'] ?></td>
+            <td><?= $arr['lokasi_kntr'] ?></td>
+            <td style="text-transform: uppercase;"><?= $arr['status'] ?></td>
+        </tr>
+        <?php
     }
     ?>
 </table>
 
+<?php
+if (isset($_GET['print'])) {
+    ?>
+    <script type="text/javascript">
+        window.print();
+        setTimeout(function () {
+            window.close();
+        }, 1);
+    </script>
+    <?php
+}
+?>

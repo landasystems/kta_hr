@@ -66,6 +66,11 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
             window.location = 'api/web/magang/excel';
         });
     };
+    $scope.print = function () {
+        Data.get('magang', paramRef).then(function (data) {
+            window.open('api/web/magang/excel?print=true');
+        });
+    }
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -137,6 +142,7 @@ app.controller('magangCtrl', function ($scope, Data, toaster, FileUploader) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('magang/delete/' + row.no_magang).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     }

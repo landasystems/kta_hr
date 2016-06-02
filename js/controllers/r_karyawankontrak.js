@@ -31,7 +31,7 @@ app.controller('karyawanKontrakCtrl', function ($scope, Data, toaster, $modal) {
 
     $scope.cariDepartment = function ($query) {
         if ($query.length >= 3) {
-            Data.get('department/cari', {nama: $query}).then(function (data) {
+            Data.get('departement/cari', {nama: $query}).then(function (data) {
                 $scope.listDepartment = data.data;
             });
         }
@@ -222,4 +222,15 @@ app.controller('modalCtrl', function ($scope, Data, toaster, $modalInstance, for
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+    $scope.excel = function () {
+//        Data.post('penilaiankontrak/view/' + forms.nik, form).then(function (data) {
+            window.location = 'api/web/penilaiankontrak/excell';
+//        });
+    }
+    $scope.print = function () {
+        Data.get('penilaiankontrak', paramRef).then(function (data) {
+            window.open('api/web/penilaiankontrak/excell?print=true');
+        });
+    }
 });

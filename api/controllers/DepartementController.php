@@ -25,7 +25,7 @@ class DepartementController extends Controller {
                     'update' => ['post'],
                     'delete' => ['delete'],
                     'kode' => ['get'],
-                    'cari' => ['get'],
+                    'cari' => ['get']
                 ],
             ]
         ];
@@ -139,17 +139,16 @@ class DepartementController extends Controller {
     }
 
     public function actionCari() {
-
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_department')
-                ->select("*")
-                ->where(['like', 'id_department', $params['nama']])
-                ->orWhere(['like', 'department', $params['nama']]);
+                ->select("department,id_department")
+                ->where(['like', 'department', $params['nama']])
+                ->orWhere(['like', 'id_department', $params['nama']]);
 
         $command = $query->createCommand();
         $models = $command->queryAll();
-
+        
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models));

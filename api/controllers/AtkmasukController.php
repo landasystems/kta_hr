@@ -127,7 +127,7 @@ class AtkmasukController extends Controller {
         
         foreach($models as $key => $val){
             if(!empty($val['kd_karyawan'])){
-                $pegawai = \app\models\Tblkaryawan::findOne($val['kd_karyawan']);
+                $pegawai = \app\models\TblKaryawan::findOne($val['kd_karyawan']);
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }

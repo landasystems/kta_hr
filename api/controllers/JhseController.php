@@ -124,7 +124,7 @@ class JhseController extends Controller {
 
         foreach ($models as $key => $val) {
             if (!empty($val['nik_karyawan'])) {
-                $karyawan = \app\models\Tblkaryawan::findOne($val['nik_karyawan']);
+                $karyawan = \app\models\TblKaryawan::findOne($val['nik_karyawan']);
                 $models[$key]['karyawan'] = (empty($karyawan)) ? array() : $karyawan->attributes;
             }
         }

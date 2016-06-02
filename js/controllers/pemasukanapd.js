@@ -44,7 +44,7 @@ app.controller('pemasukanApdCtrl', function ($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Pengeluaran APD";
         $scope.form = {};
-        $scope.detBarang = [{}];
+        $scope.detBarang = [];
         $scope.form.tgl = new Date();
         Data.get('pemasukanapd/kode', form).then(function (data) {
             $scope.form.no_transaksi = data.kode;

@@ -75,7 +75,7 @@ class FilelegalitasController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "no DESC";
+        $sort = "no ASC";
         $offset = 0;
         $limit = 10;
 
@@ -90,9 +90,9 @@ class FilelegalitasController extends Controller {
             $sort = $params['sort'];
             if (isset($params['order'])) {
                 if ($params['order'] == "false")
-                    $sort.=" ASC";
-                else
                     $sort.=" DESC";
+                else
+                    $sort.=" ASC";
             }
         }
 

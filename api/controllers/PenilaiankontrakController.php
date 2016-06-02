@@ -20,6 +20,7 @@ class PenilaiankontrakController extends Controller {
                     'index' => ['get'],
                     'view' => ['post'],
                     'excel' => ['get'],
+                    'excell' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekap' => ['post'],
@@ -135,8 +136,10 @@ class PenilaiankontrakController extends Controller {
 
         $getInstance = $query->createCommand();
         $model = $getInstance->queryOne();
-
         $this->setHeader(200);
+        
+         session_start();
+         $_SESSION['excell'] = $model;
         echo json_encode(array('status' => 1, 'data' => $model), JSON_PRETTY_PRINT);
     }
 
@@ -253,6 +256,33 @@ class PenilaiankontrakController extends Controller {
         };
 
         return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
+    }
+    public function actionExcell() {
+        session_start();
+        $models = $_SESSION['excell'];
+        echo $models.'a';
+//        $query->offset("");
+//        $query->limit("");
+//        $command = $query->createCommand();
+//        $models = $command->queryAll();
+        
+////        $params = $_SESSION['params'];
+//
+//        $penilaian = function($angka) {
+//            $hasil = '';
+//            if ($angka == 4) {
+//                $hasil = 'A';
+//            } else if ($angka == 3) {
+//                $hasil = 'B';
+//            } else if ($angka == 2) {
+//                $hasil = 'C';
+//            } else {
+//                $hasil = 'D';
+//            }
+//            return $hasil;
+//        };
+//
+//        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
     }
 
     public function actionCari() {

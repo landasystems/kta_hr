@@ -25,6 +25,18 @@ app.controller('apdCtrl', function($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    
+    $scope.excel = function() {
+        Data.get('apd', paramRef).then(function(data) {
+            window.location = 'api/web/apd/excel';
+        });
+    };
+    $scope.print = function () {
+        Data.get('apd', paramRef).then(function (data) {
+            window.open('api/web/apd/excel?print=true');
+        });
+    };
+    
     $scope.create = function(form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -72,12 +84,9 @@ app.controller('apdCtrl', function($scope, Data, toaster) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('apd/delete/' + row.kode_apd).then(function(result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     };
-    $scope.excel = function() {
-        Data.get('apd', paramRef).then(function(data) {
-            window.location = 'api/web/apd/excel';
-        });
-    };
+    
 });

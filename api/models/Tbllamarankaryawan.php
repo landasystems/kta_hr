@@ -23,12 +23,6 @@ use Yii;
  * @property string $jurusan
  * @property string $informal
  * @property string $foto
- * @property string $pk_perusahaan1
- * @property string $pk_bagian1
- * @property string $pk_perusahaan2
- * @property string $pk_bagian2
- * @property string $pk_perusahaan3
- * @property string $pk_bagian3
  */
 class Tbllamarankaryawan extends \yii\db\ActiveRecord
 {
@@ -50,7 +44,7 @@ class Tbllamarankaryawan extends \yii\db\ActiveRecord
             [['tgl', 'tanggal_lahir','telp'], 'safe'],
             [['no_lamaran', 'rt', 'rw','telp'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 50],
-            [['posisi', 'jurusan', 'informal', 'pk_perusahaan1', 'pk_bagian1', 'pk_perusahaan2', 'pk_bagian2', 'pk_perusahaan3', 'pk_bagian3'], 'string', 'max' => 200],
+            [['posisi', 'jurusan', 'informal'], 'string', 'max' => 200],
             [['alamat_jln'], 'string', 'max' => 250],
             [['kelurahan', 'kecamatan', 'kabupaten', 'tempat_lahir', 'pendidikan'], 'string', 'max' => 100],
             [['foto'], 'string', 'max' => 500]
@@ -80,12 +74,6 @@ class Tbllamarankaryawan extends \yii\db\ActiveRecord
             'jurusan' => 'Jurusan',
             'informal' => 'Informal',
             'foto' => 'Foto',
-            'pk_perusahaan1' => 'Pk Perusahaan1',
-            'pk_bagian1' => 'Pk Bagian1',
-            'pk_perusahaan2' => 'Pk Perusahaan2',
-            'pk_bagian2' => 'Pk Bagian2',
-            'pk_perusahaan3' => 'Pk Perusahaan3',
-            'pk_bagian3' => 'Pk Bagian3',
         ];
     }
 }

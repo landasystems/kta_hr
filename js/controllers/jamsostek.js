@@ -27,24 +27,63 @@ app.controller('jamsostekCtrl', function ($scope, Data, toaster) {
         $scope.isLoading = false;
     };
 
-    $scope.openedDet = -1;
+// start date picker
+
+
+    $scope.setStatus = function () {
+        $scope.openedDet = -1;
+    };
 
     $scope.openDet = function ($event, $index) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.openedDet = $index;
     };
-    $scope.setStatus = function () {
-        $scope.openedDet = -1;
+
+    $scope.open1 = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.opened1 = true;
     };
+
+    $scope.clear1 = function () {
+        $scope.form.Section = undefined;
+        $scope.form.tanggal = undefined;
+    };
+    $scope.clear2 = function () {
+        $scope.form.Karyawan = undefined;
+    };
+
+    $scope.clearTgl = function () {
+        $scope.form.tanggal = undefined;
+    };
+    $scope.clearRentang = function () {
+        $scope.form.tanggal_rentang = undefined;
+    };
+
+//    end date picker
+
+//start print and export
+    $scope.excel = function () {
+        Data.get('jamsostek', paramRef).then(function (data) {
+            window.location = 'api/web/jamsostek/excel';
+        });
+    }
+    $scope.print = function () {
+        Data.get('jamsostek', paramRef).then(function (data) {
+            window.open('api/web/jamsostek/excel?print=true');
+        });
+    }
+//end print and export
 
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah Jamsostek";
+        $scope.formtitle = "Form Tambah BPJS Ketenaga Kerjaan";
         $scope.form = {};
         $scope.detJamsostek = [{}];
+
     };
     $scope.update = function (form) {
         $scope.form = form;
@@ -59,11 +98,18 @@ app.controller('jamsostekCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        $scope.detJamsostek = [{}];
         $scope.formtitle = "Lihat Data : " + form.nik;
+        $scope.retDetail(form);
     };
-    $scope.save = function (form) {
-        var url = ($scope.is_create == true) ? 'barang/create/' : 'barang/update/' + form.id;
-        Data.post(url, form).then(function (result) {
+    $scope.save = function (form, detail) {
+        var data = {
+            form: form,
+            detail: detail
+        };
+
+        var url = ($scope.is_create == true) ? 'jamsostek/create/' : 'jamsostek/update/' + form.id;
+        Data.post(url, data).then(function (result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {
@@ -82,15 +128,21 @@ app.controller('jamsostekCtrl', function ($scope, Data, toaster) {
     };
     $scope.delete = function (row) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
-            Data.delete('barang/delete/' + row.id).then(function (result) {
+            Data.delete('jamsostek/delete/' + row.id).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
                 toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     };
     $scope.retDetail = function (form) {
-        Data.get('tbljamsostek/view/' + form.id).then(function (data) {
-            $scope.detJamsostek = data.data;
+        Data.get('jamsostek/view/' + form.nik).then(function (data) {
+//            $scope.detJamsostek = data.data;
+            if ((data.data).length > 0) {
+
+                $scope.detJamsostek = data.data;
+            } else {
+                $scope.detJamsostek = [{}];
+            }
         });
     };
 

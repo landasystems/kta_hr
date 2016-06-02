@@ -7,20 +7,50 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                    <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
                     <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
                 <div class="form-horizontal">
-                    <div class="col-md-12 col-sm-12">
+                    <div class="col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">NO</label>
-                            <div class="col-sm-3">
-                                <input st-search="no" class="form-control"/>
+                            <label class="col-sm-3 control-label">NO</label>
+                            <div class="col-sm-9">
+                                <input st-search="no_jpenilaian" class="form-control"/>
                             </div>
-                            <div class="col-sm-3">
-                                
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Tanggal</label>
+                            <div class="col-sm-9">
+                                <input st-search="tgl_penilaian" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Penilai</label>
+                            <div class="col-sm-9">
+                                <input st-search="penilai" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Dept. Penilai</label>
+                            <div class="col-sm-9">
+                                <input st-search="dep_penilai" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Yang Dinilai</label>
+                            <div class="col-sm-9">
+                                <input st-search="nama" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Bagian</label>
+                            <div class="col-sm-9">
+                                <input st-search="bagian" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -49,8 +79,8 @@
                             <td>{{row.bagian}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>

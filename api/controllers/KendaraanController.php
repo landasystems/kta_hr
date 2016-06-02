@@ -31,7 +31,21 @@ class KendaraanController extends Controller {
         ];
     }
 
-    
+    public function actionListmerk() {
+
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_kendaraan')
+                ->distinct("merk")
+                ->select("merk");
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+
+        $this->setHeader(200);
+
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
 
     public function beforeAction($event) {
         $action = $event->id;

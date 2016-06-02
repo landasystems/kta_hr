@@ -7,55 +7,33 @@ if (!isset($_GET['print'])) {
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
-<div style="font-size: 10px;">
-    <table>
-        
-        <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
-            <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
-            <td></td>
-        </tr>
-        
-        <tr>
-            <td style="font-size: 10px;">Autobody, Manufacturing - Transport Services</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="font-size: 10px;">Minning Contractor - Trading Channel</td>
-            <td></td>
-        </tr>
-    </table>
-</div>
-
-<br>
-<br>
-<hr>
-<div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<table border="1" style="border-collapse: collapse;width:100%">
+<table width="100%" style="border-collapse: collapse;" border="1">
     <tr>
-         <?php
-        if (!isset($_GET['print'])) {
-        ?>
-        <td colspan="4" rowspan="2" style="width:60%;text-align: center">
+        <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+        <td rowspan="2" style="text-align: center;">
             <h4>DATA SISWA PRAKERIN</h4><br/>
-            <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
+            <span>
+                <?php
+                if ($start == '') {
+                    
+                } else {
+                    ?>
+                    PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?>
+                    <?php
+                }
+                ?>
+
+            </span>
         </td>
-        <?php
-        }else{
-        ?>
-        <td colspan="3" rowspan="2" style="width:60%;text-align: center">
-            <h4>DATA SISWA PRAKERIN</h4><br/>
-            <span>PERIODE : <?= date('d F Y',strtotime($start)).' S/D '.date('d F Y',strtotime($end)); ?></span>
-        </td>
-        <?php
-        }
-        ?>
-        <td style="text-align: center">Dibuat</td>
-        <td style="text-align: center">Diketahui</td>
+        <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td style="text-align: center;">Diketahui</td>
+        <td style="text-align: center;">Diperiksa</td>
+        <td style="text-align: center;">Dibuat</td>
     </tr>
     <tr>
-        <td style="height: 45px;"></td>
-        <td></td>
+        <td style="width: 100px;height: 80px;"></td>
+        <td style="width: 100px;"></td>
+        <td style="width: 100px;" ></td>
     </tr>
 </table>
 <table width="100%" border="1" style="border-collapse: collapse">
@@ -75,11 +53,11 @@ if (!isset($_GET['print'])) {
         foreach ($models as $val) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
-            echo '<td align="center">' . $val['nama'] . '</td>';
+            echo '<td>' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['bagian'] . '</td>';
-            echo '<td align="center">' . $val['tgl_mulai'] . '</td>';
-            echo '<td align="center">' . $val['tgl_selesai'] . '</td>';
-            echo '<td align="center">' . $val['asal_sekolah'] . '</td>';
+            echo '<td align="center">' . date('d-M-y', strtotime($val['tgl_mulai'])) . '</td>';
+            echo '<td align="center">' . date('d-M-y', strtotime($val['tgl_selesai']))  . '</td>';
+            echo '<td>' . $val['asal_sekolah'] . '</td>';
             $no++;
         }
         ?>

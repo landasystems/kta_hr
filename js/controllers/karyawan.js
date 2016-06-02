@@ -48,6 +48,11 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             window.location = 'api/web/karyawan/excel';
         });
     };
+    $scope.print = function () {
+        Data.get('karyawan', paramRef).then(function (data) {
+            window.open('api/web/karyawan/excel?print=true');
+        });
+    }
 
     $scope.create = function (form) {
         $scope.is_create = true;
@@ -258,6 +263,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('karyawan/delete/' + row.nik).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     };
@@ -274,6 +280,7 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
             }
         }).result.finally(function () {  //after modal closed event;
             $scope.callServer(tableStateRef);
+           
         });
     };
     //============================GAMBAR===========================//
@@ -348,6 +355,7 @@ app.controller('modalCtrl', function ($scope, Data, $modalInstance, form) {
     $scope.confirmAction = function (form) {
         Data.post('karyawan/keluar/', {form: form}).then(function (data) {
             $modalInstance.dismiss('cancle');
+             toaster.pop('success', "Berhasil", "karyawan berhasil dikeluarkan");
         });
     };
 

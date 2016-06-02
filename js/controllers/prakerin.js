@@ -66,11 +66,16 @@ app.controller('prakerinCtrl', function ($scope, Data, toaster, FileUploader) {
             window.location = 'api/web/prakerin/excel';
         });
     };
+    $scope.print = function () {
+        Data.get('prakerin', paramRef).then(function (data) {
+            window.open('api/web/prakerin/excel?print=true');
+        });
+    };
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah Data Magang";
+        $scope.formtitle = "Form Tambah Data Prakerin";
         $scope.form = {};
         $scope.form.tgl = new Date();
         $scope.form.tgl_mulai = new Date();
@@ -137,6 +142,7 @@ app.controller('prakerinCtrl', function ($scope, Data, toaster, FileUploader) {
         if (confirm("Apa anda yakin akan MENGHAPUS PERMANENT item ini ?")) {
             Data.delete('prakerin/delete/' + row.no_prakerin).then(function (result) {
                 $scope.displayed.splice($scope.displayed.indexOf(row), 1);
+                toaster.pop('success', "Berhasil", "Data berhasil dihapus");
             });
         }
     }

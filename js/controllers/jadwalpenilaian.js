@@ -25,6 +25,18 @@ app.controller('jadwalPenilaianCtrl', function($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    
+    $scope.excel = function () {
+        Data.get('jpenilaian', paramRef).then(function (data) {
+            window.location = 'api/web/jpenilaian/excell';
+        });
+    }
+    $scope.print = function () {
+        Data.get('jpenilaian', paramRef).then(function (data) {
+            window.open('api/web/jpenilaian/excell?print=true');
+        });
+    }
+    
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();

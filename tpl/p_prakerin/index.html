@@ -9,7 +9,8 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed"><i class="fa fa-search"></i> Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <!--<button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>-->
+                    <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
+                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
@@ -28,6 +29,18 @@
                                 <input st-search="pra.nama" class="form-control"/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Tanggal Input</label>
+                            <div class="col-sm-9">
+                                <input st-search="pra.tgl" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Bagian</label>
+                            <div class="col-sm-9">
+                                <input st-search="pra.bagian" class="form-control"/>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -40,6 +53,18 @@
                             <label class="col-sm-3 control-label">No Surat Rekomendasi</label>
                             <div class="col-sm-9">
                                 <input st-search="pra.no_surat_rekomendasi" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Tanggal Mulai</label>
+                            <div class="col-sm-9">
+                                <input st-search="pra.tgl_mulai" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Tanggal Selesai</label>
+                            <div class="col-sm-9">
+                                <input st-search="pra.tgl_selesai" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -73,8 +98,8 @@
                             <td>{{row.bagian}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);"></button>
+                                    <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);"></button>
                                 </div> 
                             </td>
                         </tr>
@@ -105,8 +130,8 @@
                 <form name="landaform" class="form-horizontal form-validation">
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
-                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noiprae.jpg'}}" class="img-thumbnail"></center>
-                            <center><input type="file" nv-file-select="" uploader="uploader" /></center>
+                            <center><img ng-src="img/{{(form.foto) ? 'barang/'+form.foto : 'noimage.jpg'}}" class="img-responsive img-thumbnail"><br/></center>
+                            <center><input class="form-control" type="file" nv-file-select="" uploader="uploader" /></center>
                         </div>
                         <div class="col-md-8 col-sm-12">
                             <div class="form-group">

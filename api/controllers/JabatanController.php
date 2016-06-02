@@ -345,6 +345,7 @@ class JabatanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
         return $this->render("/expmaster/jabatan", ['models' => $models]);
     }
 

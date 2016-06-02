@@ -76,7 +76,7 @@ class PemasukanapdController extends Controller {
         //init variable
         $params = $_REQUEST;
         $filter = array();
-        $sort = "no_transaksi DESC";
+        $sort = "no_transaksi ASC";
         $offset = 0;
         $limit = 10;
 
@@ -125,12 +125,12 @@ class PemasukanapdController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-        foreach ($models as $key => $val) {
-            if (!empty($val['nik_karyawan'])) {
-                $pegawai = \app\models\Tblkaryawan::findOne($val['nik_karyawan']);
-                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
-            }
-        }
+//        foreach ($models as $key => $val) {
+//            if (!empty($val['nik_karyawan'])) {
+//                $pegawai = \app\models\Tblkaryawan::findOne($val['nik_karyawan']);
+//                $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
+//            }
+//        }
 
         $this->setHeader(200);
 

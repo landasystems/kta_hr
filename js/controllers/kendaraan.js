@@ -38,6 +38,10 @@ app.controller('kendaraanCtrl', function ($scope, Data, toaster) {
         });
     };
     
+    Data.get('kendaraan/listmerk').then(function (data) {
+        $scope.listmerk = data.data;
+    });
+    
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;

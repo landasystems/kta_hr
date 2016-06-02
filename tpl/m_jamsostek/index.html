@@ -1,6 +1,6 @@
 <div ng-app="app" ng-controller="jamsostekCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Data Master - Jamsostek</h1>
+        <h1 class="m-n font-thin h3">Data Master - BPJS Ketenaga Kerjaan</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
@@ -34,7 +34,7 @@
                         <tr>
                             <th st-sort="nn">NIK</th>
                             <th st-sort="kpj">Nama</th>
-<!--                            <th st-sort="p_kepesertaan">P_KEPESERTAAN</th>-->
+                            <!--                            <th st-sort="p_kepesertaan">P_KEPESERTAAN</th>-->
                             <th style="text-align:right;">Action &nbsp;</th>
                         </tr>
                     </thead>
@@ -120,7 +120,6 @@
                                         <th style="text-align: center;">JKK</th>
                                         <th style="text-align: center;">PENSIUN</th>
                                         <th style="text-align: center;">IURAN / Premi</th>
-                                        <th style="text-align: center;">Hub Keluarga</th>
                                         <th style="text-align: center;">Keterangan</th>
                                         <th style="text-align: center;">#</th>
                                     </tr>
@@ -128,7 +127,7 @@
                                 <tbody>
                                     <tr ng-repeat="det in detJamsostek">
                                         <td>
-                                            <select ng-change="setType(det,form.upah_tetap)" ng-model="det.nn" class="form-control">
+                                            <select ng-change="setType(det, form.upah_tetap)" ng-model="det.nn" class="form-control">
                                                 <option value="NN040454">NN040454</option>
                                                 <option value="NN040356">NN040356</option>
                                                 <option value="02140106">02140106</option>
@@ -138,13 +137,13 @@
                                         <td>
                                             <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.kpj" ng-disabled="is_view">
                                         </td>
-                                        <td style="text-align: center;width:15%">
-                                            <div class="input-group" style="padding:0px;margin:0px">
-                                            <input required type="text" ng-disabled="is_view" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="det.periode_kepesertaan" is-open="openedDet == $index" ng-change="setStatus()" ng-click="openDet($event, $index)"/>
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-calendar-o"></i>
-                                            </span>
-                                        </div>
+                                        <td style="max-width: 100px;">
+                                           <div class="input-group">
+                                                <input type="text" class="form-control"  datepicker-popup="MM/yyyy" ng-disabled="is_view" ng-model="det.periode_kepesertaan" is-open="openedDet == $index" ng-change="setStatus()" ng-click="openDet($event, $index)"/>
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                            </div>
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
                                             <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.jht" ng-readonly="is_nn == false" ng-disabled="is_view">
@@ -162,9 +161,6 @@
                                             <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9.]+$/" ng-model="det.iuran" ng-disabled="is_view">
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.hub_keluarga" ng-readonly="is_nn" ng-disabled="is_view">
-                                        </td>
-                                        <td style="alignment-adjust: middle!important;">
                                             <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-model="det.keterangan" ng-readonly="is_nn == false" ng-disabled="is_view">
                                         </td>
                                         <td style="text-align: center;">
@@ -177,10 +173,10 @@
                             </table>
                         </div>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-12 col-sm-12">
+                        <div class="col-md-12 col-sm-12" style="margin-bottom: 170px;">
                             <center>
                                 <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form, detJamsostek)">&nbsp;Simpan</button>
+                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-click="save(form, detJamsostek)">&nbsp;Simpan</button>
                             </center>
                         </div>
                     </div>

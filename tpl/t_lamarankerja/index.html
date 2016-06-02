@@ -7,15 +7,10 @@
             <div class="panel-heading">
                 <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+                    <button type="button" class="btn btn-default fa fa-print" ng-show="!isCollapsed" ng-click="print();">&nbsp;Print</button>
+                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
-                <div class="pull-right dropdown" ng-show="!isCollapsed" style="margin-top: -6px;margin-right: 8px" dropdown="">
-                    <button type="button"  class="btn btn-success" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">&nbsp;&nbsp; Laporan Lamaran Kerja <span class="caret"></span></button>
-                    <ul class="dropdown-menu" style="width: 185px;background-color: #F7F7F7;">
-                        <li><a href="#" ng-click="excel()">Excel</a></li>
-                        <li><a href="#" ng-click="print()">Print</a></li>
-                    </ul>
-                </div>
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
                 <div class="form-horizontal">
@@ -39,6 +34,7 @@
                             <div class="col-sm-3">
                                 <input placeholder="Tanggal Periode" date-range-picker class="form-control" st-search="tanggal" type="text"  ng-model="tanggals">
                             </div>
+
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Jurusan</label>
@@ -48,6 +44,16 @@
                             <label class="col-sm-2 control-label">Pendidikan</label>
                             <div class="col-sm-3">
                                 <input st-search="pendidikan" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Alamat Jalan</label>
+                            <div class="col-sm-3">
+                                <input class="form-control" st-search="alamat_jln" >
+                            </div>
+                            <label class="col-sm-2 control-label">Kota</label>
+                            <div class="col-sm-3">
+                                <input st-search="kabupaten" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -78,8 +84,8 @@
                             <td>{{row.jurusan}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -238,45 +244,60 @@
                         </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
+                        Riwayat pekerjaan
+                        <hr/>
                         <div class="col-md-12 col-sm-12">
-                            <div class="m-l-xs m-t-xs m-b-xs font-bold">Riwayat Pengalaman Kerja</div>
-                            <table class="table table-responsive table-bordered table-striped table-hover det-trans">
+                            <table class="table table-bordered det-trans table-responsive" >
                                 <thead>
                                     <tr>
-                                        <th style="width:10%">No.</th>
-                                        <th>Nama Perusahaan</th>
-                                        <th> Bagian</th>
+                                        <th style="text-align: center;">Nama Perusahaan</th>
+                                        <th style="text-align: center;">Periode</th>
+                                        <th style="text-align: center;">Bagian</th>
+                                        <th style="width:10% !important;text-align: center;">
+                                            <button type="button" ng-disabled="is_view" class="btn btn-info fa fa-plus" ng-click="addrow()" ng-show="$index == 0" style="width:100%; height:34px;"></button>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="text-align: center">1</td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_perusahaan1" ng-disabled="is_view" ></td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_bagian1" ng-disabled="is_view" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">2</td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_perusahaan2" ng-disabled="is_view" ></td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_bagian2" ng-disabled="is_view" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">3</td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_perusahaan3" ng-disabled="is_view" ></td>
-                                        <td><input type="text" class="form-control" ng-model="form.pk_bagian3" ng-disabled="is_view" ></td>
+                                    <tr ng-repeat="det in detRiwayat">
+                                        <td style="text-align: center;">
+                                            <input type="text"  class="form-control" ng-model="det.perusahaan" ng-disabled="is_view">
+                                        </td>
+                                        <td style="text-align: center; max-width: 170px;">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" date-range-picker ng-disabled="is_view" ng-model="det.tanggal" is-open="openedDet == $index" ng-change="setStatus()" ng-click="openDet($event, $index)"/>
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                            </div>
+<!--                                            <div class="input-group">
+                                                <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal_rentang" ng-disabled="is_view" is-open="openedDet == $index" ng-change="setStatus()" ng-click="openDet($event, $index)" >
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar-o"></i>
+                                                </span>
+                                            </div>-->
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <input type="text" class="form-control" ng-model="det.bagian" ng-disabled="is_view" >
+                                        </td>
+<!--                                        <td style="text-align: center;">
+                                            <input placeholder="Bulan / Tahun" type="text" class="form-control" ng-model="det.periode_akhir" ng-disabled="is_view">
+                                        </td>-->
+
+                                        <td style="text-align: center;">
+                                            <button type="button" ng-disabled="is_view" class="btn btn-info fa fa-plus" ng-click="addrow()" ng-show="$index == 0" style="width:100%; height:34px;"></button>
+                                            <button type="button" ng-disabled="is_view" class="btn btn-danger fa fa-minus-circle" ng-show="$index > 0" ng-click="removeRow($index)" style="width:100%;height:34px;"></button>
+                                        </td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3"></td>
-                                    </tr>
-                                </tfoot>
+                                <tfoot></tfoot>
                             </table>
                         </div>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-12 col-sm-12">
+                        <div class="col-md-12 col-sm-12" style="margin-bottom: 200px;">
                             <center>
                                 <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
+                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-click="save(form, detRiwayat)">&nbsp;Simpan</button>
                             </center>
                         </div>
                     </div>
@@ -355,7 +376,7 @@
                     <tr>
                         <td style="width:40%">Agama</td>
                         <td style="width:5%">:</td>
-                        <td>{{form.agama}}</td>
+                        <td>{{form.agama}}</td>	
                     </tr>
                     <tr>
                         <td style="width:40%">Status Pernikahan</td>

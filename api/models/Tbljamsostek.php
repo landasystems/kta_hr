@@ -28,8 +28,8 @@ class Tbljamsostek extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kpj'], 'required'],
-            [['p_kepesertaan'], 'safe'],
+//            [['kpj'], 'required'],
+            [['p_kepesertaan','kpj'], 'safe'],
             [['kpj'], 'string', 'max' => 50],
             [['nik', 'nn'], 'string', 'max' => 20]
         ];

@@ -35,11 +35,11 @@ class TblJamsostekDet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nik', 'periode_kepesertaan', 'upah_tk', 'jht', 'jkm', 'jkk', 'pensiun', 'iuran',], 'required'],
-            [['upah_tk', 'jht', 'jkm', 'jkk', 'pensiun', 'iuran'], 'integer'],
-            [['periode_kepesertaan','nn','kpj','hub_keluarga'], 'safe'],
+            [['nik', 'periode_kepesertaan', 'jht', 'jkm', 'jkk', 'pensiun', 'iuran'], 'required'],
+            [['id','upah_tk', 'jht', 'jkm', 'jkk', 'pensiun', 'iuran'], 'integer'],
+            [['nn','kpj','hub_keluarga', 'upah_tk'], 'safe'],
             [['keterangan','nn','kpj','hub_keluarga'], 'string'],
-            [['nik'], 'string', 'max' => 11]
+            [['nik'], 'string', 'max' => 100]
         ];
     }
 
