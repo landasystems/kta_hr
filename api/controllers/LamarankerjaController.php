@@ -222,8 +222,8 @@ class LamarankerjaController extends Controller {
 
                 if (!empty($detail->perusahaan)) {
                     $detail->no_lamaran = $model->no_lamaran;
-                    $detail->periode_awal = date('Y-m-d', strtotime($val['tanggal']['startDate']));
-                    $detail->periode_akhir = date('Y-m-d', strtotime($val['tanggal']['endDate']));
+                    $detail->periode_awal = isset($val['tanggal']['startDate']) ? date('Y-m-d', strtotime($val['tanggal']['startDate'])) : '';
+                    $detail->periode_akhir = isset($val['tanggal']['endDate']) ? date('Y-m-d', strtotime($val['tanggal']['endDate'])) : '';
                     $detail->save();
                 }
             }
