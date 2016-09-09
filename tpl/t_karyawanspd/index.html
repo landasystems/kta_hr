@@ -1,4 +1,4 @@
-<div ng-app="app" ng-controller="karyawanSpdCtrl">
+<div ng-app="app" ng-controller="tkaryawanSpdCtrl">
     <div class="bg-light lter b-b wrapper-md">
         <h1 class="m-n font-thin h3">Transaksi - Karyawan SPD</h1>
     </div>
@@ -15,21 +15,19 @@
                 <div class="form-horizontal">
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">NO</label>
+                            <label class="col-sm-2 control-label">Nik</label>
                             <div class="col-sm-3">
-                                <input st-search="no" class="form-control"/>
+                                <input st-search="nik" class="form-control"/>
                             </div>
-                            <label class="col-sm-2 control-label">No Ijazah</label>
+                            <label class="col-sm-2 control-label">Nama Pegawai</label>
                             <div class="col-sm-3">
-                                <input st-search="no_ijazah" class="form-control"/>
+                                <input st-search="nama" class="form-control"/>
                             </div>
-                            <label class="col-sm-2 control-label">Atas Nama</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">NO SPD</label>
                             <div class="col-sm-3">
-                                <input st-search="atas_nama" class="form-control"/>
-                            </div>
-                            <label class="col-sm-2 control-label">Status</label>
-                            <div class="col-sm-3">
-                                <input st-search="status" class="form-control"/>
+                                <input st-search="no_spd" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -60,8 +58,8 @@
                             <td>{{row.transportasi}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button type="button" tooltip="Edit" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button type="button" tooltip="Hapus" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -122,10 +120,11 @@
                                 <label class="col-sm-4 control-label">NIK</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
-                                        <ui-select on-select="getKaryawan($select.item,form)" ng-model="form.karyawan" theme="bootstrap" required>
-                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                        <ui-select on-select="getKaryawan($item,form)" ng-model="form.karyawan" theme="bootstrap" required>
+                                            <ui-select-match placeholder="Ketik Minimal 3 karakter">{{$select.selected.nik}}</ui-select-match>
                                             <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in results">
-                                                {{val.kerja}}
+                                                {{val.nik}}<br>
+                                                <small>{{val.nama}}</small>
                                             </ui-select-choices>
                                         </ui-select>
                                         <span class="input-group-btn">
@@ -163,31 +162,47 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Transportasi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.transportasi" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.transportasi" ng-disabled="is_view">
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Level Transportasi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.level_transportasi" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.level_transportasi" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>  
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Tarif Penginapan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.tarif_penginapan" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.tarif_penginapan" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Uang Saku/ Hari</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.uang_saku" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.uang_saku" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Uang Makan/ Hari</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.uang_makan" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.uang_makan" ng-pattern="/^[0-9]+$/" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -235,13 +250,19 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Lain-lain</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-pattern="/^[0-9]+$/" ng-model="form.lain" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-pattern="/^[0-9]+$/" ng-model="form.lain" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Bon Sementara</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="is_view" ng-pattern="/^[0-9]+$/" ng-model="form.bon_sementara" ng-disabled="is_view">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Rp</span>
+                                        <input type="text" class="form-control" ng-readonly="is_view" ng-pattern="/^[0-9]+$/" ng-model="form.bon_sementara" ng-disabled="is_view">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">

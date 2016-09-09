@@ -168,6 +168,7 @@ class KaryawanspdController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblkaryawanspd();
         $model->attributes = $params;
+        $model->nik = $params['karyawan']['nik'];
 
         if ($model->save()) {
             $this->setHeader(200);

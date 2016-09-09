@@ -52,15 +52,19 @@
                     <thead>
                         <tr>
                             <th style="text-align: center;vertical-align: center;">NO</th>
-                            <th style="text-align: center;vertical-align: center;">TANGGAL</th>
-                            <th style="text-align: center;vertical-align: center;">AGENDA</th>
+                            <th style="text-align: center;vertical-align: center;">No Agenda</th>
+                            <th style="text-align: center;vertical-align: center;">Tanggal</th>
+                            <th style="text-align: center;vertical-align: center;">Agenda</th>
+                            <th style="text-align: center;vertical-align: center;">Keterangan</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.no_agenda}}</td>
                             <td align="center">{{row.tgl | date}}</td>
-                            <td align="center">{{row.agenda}}</td>
+                            <td align="left">{{row.agenda}}</td>
+                            <td align="left">{{row.keterangan}}</td>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
                         </tr>

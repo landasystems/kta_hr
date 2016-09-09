@@ -64,8 +64,8 @@ app.controller('absenMasukCtrl', function ($scope, $state, $stateParams, Data, t
     $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawan/cari', data).then(function (data) {
-                $scope.listKaryawan = data.data;
+            Data.get('apppegawai/cari', data).then(function (data) {
+                $scope.listnama = data.data;
             });
         }
     };
@@ -73,17 +73,6 @@ app.controller('absenMasukCtrl', function ($scope, $state, $stateParams, Data, t
         form.nik = item.nik;
         form.nama = item.nama;
     };
-
-//    $scope.setTanggal = function(form){
-//       var tglAwal= new Date(form.datesRange.startDate);
-//       var tglAkhir= new Date(form.datesRange.endDate);
-//       
-//       $scope.form.datesRange = {
-//           startDate : tglAwal,
-//           endDate : tglAkhir
-//       };
-//       
-//    };
 
 
 

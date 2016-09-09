@@ -226,6 +226,18 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Lokasi Kantor</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
+                                                    <option value="SUKOREJO">Sukorejo</option>
+                                                    <option value="SURABAYA">Surabaya</option>
+                                                    <option value="JAKARTA">Jakarta</option>
+                                                    <option value="MEDAN">Medan</option>
+                                                    <option value="BANDUNG">Bandung</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!--                                    <div class="col-md-4 col-sm-12 img-thumbnail">
@@ -261,23 +273,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">Lokasi Kantor</label>
-                                            <div class="col-sm-8">
-                                                <select class="form-control" ng-model="form.lokasi_kntr" ng-disabled="is_view" >
-                                                    <option value="SUKOREJO">Sukorejo</option>
-                                                    <option value="SURABAYA">Surabaya</option>
-                                                    <option value="JAKARTA">Jakarta</option>
-                                                    <option value="MEDAN">Medan</option>
-                                                    <option value="BANDUNG">Bandung</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Status Kepemilikan</label>
                                             <div class="col-sm-8">
                                                 <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Karyawan'">Karyawan</label>
                                                 <label class="btn btn-default" ng-model="form.status_kepemilikan" btn-radio="'Owner'">Owner</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Status</label>
+                                            <div class="col-sm-8">
+                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'Kerja'">Kerja</label>
+                                                <label class="btn btn-default" ng-model="form.status" btn-radio="'Keluar'">Keluar</label>
                                             </div>
                                         </div>
                                         <div class="form-group">

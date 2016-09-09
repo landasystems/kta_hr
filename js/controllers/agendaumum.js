@@ -1,4 +1,4 @@
-app.controller('agendaUmumCtrl', function($scope, Data, toaster) {
+app.controller('magendaUmumCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];

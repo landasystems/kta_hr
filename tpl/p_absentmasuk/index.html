@@ -47,18 +47,17 @@
                             <div class="col-sm-9">
                                 <select class="form-control" st-search="ket">
                                     <option value=""></option>
-                                    <option value="Cuti">Cuti</option>
-                                    <option value="Sakit">Sakit</option>
-                                    <option value="Surat Dokter">Surat Dokter</option>
-                                    <option value="Izin">Izin</option>
-                                    <option value="Izin Keluar">Izin Keluar</option>
-                                    <option value="Izin Abset">Izin Absent</option>
                                     <option value="Absent">Absent</option>
-                                    <option value="Sakit">Sakit</option>
-                                    <option value="Libur">Libur</option>
+                                    <option value="Cuti">Cuti</option>
                                     <option value="Dinas Luar">Dinas Luar</option>
+                                    <option value="Izin">Izin</option>
+                                    <option value="Izin Absent">Izin Absent</option>
+                                    <option value="Izin Keluar">Izin Keluar</option>
+                                    <option value="Libur">Libur</option>
                                     <option value="Minggu">Minggu</option>
+                                    <option value="Sakit">Sakit</option>
                                     <option value="Setengah Hari">Setengah Hari</option>
+                                    <option value="Surat Dokter">Surat Dokter</option>
                                 </select>
                             </div>
                         </div>
@@ -93,8 +92,8 @@
                             <td>{{row.ket}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);"></button>
+                                    <button type="button" tooltip="Edit" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button type="button" tooltip="Hapus" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);"></button>
                                 </div> 
                             </td>
                         </tr>

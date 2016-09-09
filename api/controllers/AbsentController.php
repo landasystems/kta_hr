@@ -122,6 +122,8 @@ class AbsentController extends Controller {
 //                            $query->orWhere('nik=' . $val['nik'] . ' and no_absent="' . $val['no_absent'] . '"');
 //                        }
 //                    }
+                } else if ($key == "ket") {
+                    $query->andFilterWhere(['=', $key, $val]);
                 } else {
                     $query->andFilterWhere(['like', $key, $val]);
                 }

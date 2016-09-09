@@ -1,4 +1,4 @@
-app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
+app.controller('tkaryawanSpdCtrl', function ($scope, Data, toaster) {
     //init data;
     var tableStateRef;
     var paramRef;
@@ -46,6 +46,22 @@ app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/karyawanspd/excel';
         });
     };
+    $scope.cariKaryawan = function (nama) {
+        if (nama.length > 2) {
+            var data = {nama: nama};
+            Data.get('karyawan/cari', data).then(function (data) {
+                $scope.results = data.data;
+            });
+        }
+    };
+    
+    $scope.getKaryawan = function (item, form) {
+        form.sub_section = item.sub_section;
+        form.nama = item.nama;
+        form.jabatan = item.jabatan;
+        form.department = item.department;
+    };
+
     $scope.create = function (form) {
         $scope.is_create = true;
         $scope.is_edit = true;
@@ -65,8 +81,8 @@ app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.form.tgl = new Date(form.tgl);
-        $scope.form.tgl_berangkat = new Date(form.tgl_mulai);
-        $scope.form.tgl_kembali = new Date(form.tgl_selesai);
+        $scope.form.tgl_berangkat = new Date(form.tgl_berangkat);
+        $scope.form.tgl_kembali = new Date(form.tgl_kembali);
         $scope.formtitle = "Edit Data : " + form.no_spd;
     };
     $scope.view = function (form) {
@@ -74,6 +90,9 @@ app.controller('karyawanSpdCtrl', function ($scope, Data, toaster) {
         $scope.is_create = false;
         $scope.is_edit = true;
         $scope.is_view = true;
+        $scope.form.tgl = new Date(form.tgl);
+        $scope.form.tgl_berangkat = new Date(form.tgl_berangkat);
+        $scope.form.tgl_kembali = new Date(form.tgl_kembali);
         $scope.formtitle = "Lihat Data : " + form.no_spd;
     };
     $scope.save = function (form) {

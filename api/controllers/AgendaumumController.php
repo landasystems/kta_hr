@@ -108,16 +108,20 @@ class AgendaumumController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
+                if($key == 'tanggal'){
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'tbl_agenda_umum.tgl', $start, $end]);
+                }else{
                 $query->andFilterWhere(['like', $key, $val]);
-//                }
+                }
             }
         }
 
         session_start();
-        $_SESSION['query'] = $query;
+//        $_SESSION['query'] = $query;
+//        $_SESSION['params'] = $params;
 
         $command = $query->createCommand();
         $models = $command->queryAll();
@@ -132,7 +136,7 @@ class AgendaumumController extends Controller {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
         $filter = array();
-        $sort = "no_agenda DESC";
+        $sort = "no_agenda ASC";
         $offset = 0;
         $limit = 10;
 
@@ -252,6 +256,7 @@ class AgendaumumController extends Controller {
         $end = $params['tanggal']['endDate'];
         $query->offset("");
         $query->limit("");
+        $query->orderBy("no_agenda ASC");
         $command = $query->createCommand();
         $models = $command->queryAll();
         return $this->render("/exprekap/agendaumum", ['models' => $models, 'start' => $start, 'end' => $end]);

@@ -14,7 +14,7 @@ app.controller('agendaUmumCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.excelkeluar = function (form) {
+    $scope.excel = function (form) {
         if ('tanggal' in form && form.tanggal.startDate != null) {
             Data.post('agendaumum/rekap', form).then(function (data) {
                 window.location = 'api/web/agendaumum/excel';
@@ -23,14 +23,6 @@ app.controller('agendaUmumCtrl', function ($scope, Data, toaster) {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
         }
     };
-
-//    $scope.cariBarang = function ($query) {
-//        if ($query.length >= 3) {
-//            Data.get('agendaumum/cari', {agendaumum: $query}).then(function (data) {
-//                $scope.resultsagendaumum = data.data;
-//            });
-//        }
-//    };
 
     $scope.listSrc = [];
     $scope.list = [];
