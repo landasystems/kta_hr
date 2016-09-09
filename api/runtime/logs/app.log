@@ -43959,3 +43959,574 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1458181979.789
     'REQUEST_TIME' => 1458181979
 ]
+2016-03-17 04:12:56 [::1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined index: status_karyawan' in /var/www/kta_hr/api/models/TblKaryawan.php:199
+Stack trace:
+#0 /var/www/kta_hr/api/models/TblKaryawan.php(199): yii\base\ErrorHandler->handleError(8, 'Undefined index...', '/var/www/kta_hr...', 199, Array)
+#1 /var/www/kta_hr/api/controllers/AbsensiController.php(882): app\models\TblKaryawan::aktif('', '', 'SUKOREJO', Array, Array)
+#2 [internal function]: app\controllers\AbsensiController->actionPenggajiankaryawan()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajiankarya...', Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#9 {main}
+2016-03-17 04:12:55 [::1][-][-][info][application] $_POST = [
+    '{\"tanggal\":\"2016-03-17T04:12:38_896Z\",\"tanggal_sampai\":\"2016-03-17T04:12:38_896Z\",\"tahun\":2016,\"bulan\":\"03\",\"lokasi_kntr\":\"SUKOREJO\",\"Department\":' => [
+        '{\"id_department\":\"DPRT004\",\"department\":\"TAM (PRODUCTION)\"}' => ''
+    ]
+]
+
+$_COOKIE = [
+    'PHPSESSID' => 'mjpplc5ggn913qq4ud23sgmqo4'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '227'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=mjpplc5ggn913qq4ud23sgmqo4'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '51993'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1458187975.003
+    'REQUEST_TIME' => 1458187975
+]
+2016-03-17 04:13:28 [::1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined index: status_karyawan' in /var/www/kta_hr/api/models/TblKaryawan.php:196
+Stack trace:
+#0 /var/www/kta_hr/api/models/TblKaryawan.php(196): yii\base\ErrorHandler->handleError(8, 'Undefined index...', '/var/www/kta_hr...', 196, Array)
+#1 /var/www/kta_hr/api/controllers/AbsensiController.php(882): app\models\TblKaryawan::aktif('', '', 'SUKOREJO', Array, Array)
+#2 [internal function]: app\controllers\AbsensiController->actionPenggajiankaryawan()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajiankarya...', Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#9 {main}
+2016-03-17 04:13:28 [::1][-][-][info][application] $_POST = [
+    '{\"tanggal\":\"2016-03-17T04:12:38_896Z\",\"tanggal_sampai\":\"2016-03-17T04:12:38_896Z\",\"tahun\":2016,\"bulan\":\"03\",\"lokasi_kntr\":\"SUKOREJO\",\"Department\":' => [
+        '{\"id_department\":\"DPRT004\",\"department\":\"TAM (PRODUCTION)\"}' => ''
+    ]
+]
+
+$_COOKIE = [
+    'PHPSESSID' => 'mjpplc5ggn913qq4ud23sgmqo4'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '227'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=mjpplc5ggn913qq4ud23sgmqo4'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '51994'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1458188008.373
+    'REQUEST_TIME' => 1458188008
+]
+2016-03-17 04:13:51 [::1][-][-][error][yii\base\ErrorException:8] exception 'yii\base\ErrorException' with message 'Undefined index: status_karyawan' in /var/www/kta_hr/api/models/TblKaryawan.php:199
+Stack trace:
+#0 /var/www/kta_hr/api/models/TblKaryawan.php(199): yii\base\ErrorHandler->handleError(8, 'Undefined index...', '/var/www/kta_hr...', 199, Array)
+#1 /var/www/kta_hr/api/controllers/AbsensiController.php(882): app\models\TblKaryawan::aktif('', '', 'SUKOREJO', Array, Array)
+#2 [internal function]: app\controllers\AbsensiController->actionPenggajiankaryawan()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('penggajiankarya...', Array)
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('absensi/penggaj...', Array)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#8 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#9 {main}
+2016-03-17 04:13:51 [::1][-][-][info][application] $_POST = [
+    '{\"tanggal\":\"2016-03-17T04:12:38_896Z\",\"tanggal_sampai\":\"2016-03-17T04:12:38_896Z\",\"tahun\":2016,\"bulan\":\"03\",\"lokasi_kntr\":\"SUKOREJO\",\"Department\":' => [
+        '{\"id_department\":\"DPRT004\",\"department\":\"TAM (PRODUCTION)\"}' => ''
+    ]
+]
+
+$_COOKIE = [
+    'PHPSESSID' => 'mjpplc5ggn913qq4ud23sgmqo4'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '227'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => 'PHPSESSID=mjpplc5ggn913qq4ud23sgmqo4'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '51996'
+    'REDIRECT_URL' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/absensi/penggajiankaryawan'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1458188031.25
+    'REQUEST_TIME' => 1458188031
+]
+2016-04-26 14:34:16 [::1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=loca...', 'root', 'landak', NULL)
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#12 [internal function]: app\controllers\SiteController->actionLogin()
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#17 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#19 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#10 [internal function]: app\controllers\SiteController->actionLogin()
+#11 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#12 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#16 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#17 {main}
+Additional Information:
+
+2016-04-26 14:34:16 [::1][-][-][info][application] $_POST = [
+    '{\"$error\":{},\"$name\":\"form\",\"$dirty\":true,\"$pristine\":false,\"$valid\":true,\"$invalid\":false,\"$submitted\":false,\"username\":\"admin\",\"password\":\"landak123\"}' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s:32:\"PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ\";'
+    '_identity' => '9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs:16:\"[191,\"\",2592000]\";'
+    'PHPSESSID' => '79klgbcn5of6gstrs7mcqh6ml2'
+    'ci_session' => '3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '152'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_csrf=53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s%3A32%3A%22PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ%22%3B; _identity=9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs%3A16%3A%22%5B191%2C%22%22%2C2592000%5D%22%3B; PHPSESSID=79klgbcn5of6gstrs7mcqh6ml2; ci_session=3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '42305'
+    'REDIRECT_URL' => '/kta_hr/api/web/site/login/'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/site/login/'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1461681256.403
+    'REQUEST_TIME' => 1461681256
+]
+2016-04-26 14:34:57 [::1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=loca...', 'root', 'landak', NULL)
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#12 [internal function]: app\controllers\SiteController->actionLogin()
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#17 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#19 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#10 [internal function]: app\controllers\SiteController->actionLogin()
+#11 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#12 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#16 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#17 {main}
+Additional Information:
+
+2016-04-26 14:34:57 [::1][-][-][info][application] $_POST = [
+    '{\"$error\":{},\"$name\":\"form\",\"$dirty\":true,\"$pristine\":false,\"$valid\":true,\"$invalid\":false,\"$submitted\":true,\"username\":\"admin\",\"password\":\"landak123\"}' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s:32:\"PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ\";'
+    '_identity' => '9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs:16:\"[191,\"\",2592000]\";'
+    'PHPSESSID' => '79klgbcn5of6gstrs7mcqh6ml2'
+    'ci_session' => '3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '151'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_csrf=53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s%3A32%3A%22PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ%22%3B; _identity=9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs%3A16%3A%22%5B191%2C%22%22%2C2592000%5D%22%3B; PHPSESSID=79klgbcn5of6gstrs7mcqh6ml2; ci_session=3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '42310'
+    'REDIRECT_URL' => '/kta_hr/api/web/site/login/'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/site/login/'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1461681297.513
+    'REQUEST_TIME' => 1461681297
+]
+2016-04-26 14:35:02 [::1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=loca...', 'root', 'landak', NULL)
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#12 [internal function]: app\controllers\SiteController->actionLogin()
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#17 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#19 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#10 [internal function]: app\controllers\SiteController->actionLogin()
+#11 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#12 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#16 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#17 {main}
+Additional Information:
+
+2016-04-26 14:35:02 [::1][-][-][info][application] $_POST = [
+    '{\"$error\":{},\"$name\":\"form\",\"$dirty\":true,\"$pristine\":false,\"$valid\":true,\"$invalid\":false,\"$submitted\":true,\"username\":\"admin\",\"password\":\"landak123\"}' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s:32:\"PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ\";'
+    '_identity' => '9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs:16:\"[191,\"\",2592000]\";'
+    'PHPSESSID' => '79klgbcn5of6gstrs7mcqh6ml2'
+    'ci_session' => '3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '151'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_csrf=53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s%3A32%3A%22PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ%22%3B; _identity=9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs%3A16%3A%22%5B191%2C%22%22%2C2592000%5D%22%3B; PHPSESSID=79klgbcn5of6gstrs7mcqh6ml2; ci_session=3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '42311'
+    'REDIRECT_URL' => '/kta_hr/api/web/site/login/'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/site/login/'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1461681302.56
+    'REQUEST_TIME' => 1461681302
+]
+2016-04-26 14:35:11 [::1][-][-][error][yii\db\Exception] exception 'PDOException' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:579
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(579): PDO->__construct('mysql:host=loca...', 'root', 'landak', NULL)
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(529): yii\db\Connection->createPdoInstance()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#9 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#10 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#11 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#12 [internal function]: app\controllers\SiteController->actionLogin()
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#16 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#17 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#18 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#19 {main}
+
+Next exception 'yii\db\Exception' with message 'SQLSTATE[42000] [1049] Unknown database 'purchassing'' in /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php:534
+Stack trace:
+#0 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(836): yii\db\Connection->open()
+#1 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(823): yii\db\Connection->getMasterPdo()
+#2 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Schema.php(444): yii\db\Connection->getSlavePdo()
+#3 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Connection.php(732): yii\db\Schema->quoteValue('admin')
+#4 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(164): yii\db\Connection->quoteValue('admin')
+#5 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(794): yii\db\Command->getRawSql()
+#6 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Command.php(363): yii\db\Command->queryInternal('fetch', NULL)
+#7 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/Query.php(243): yii\db\Command->queryOne()
+#8 /var/www/kta_hr/api/vendor/yiisoft/yii2/db/ActiveQuery.php(285): yii\db\Query->one(NULL)
+#9 /var/www/kta_hr/api/controllers/SiteController.php(69): yii\db\ActiveQuery->one()
+#10 [internal function]: app\controllers\SiteController->actionLogin()
+#11 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/InlineAction.php(55): call_user_func_array(Array, Array)
+#12 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Controller.php(151): yii\base\InlineAction->runWithParams(Array)
+#13 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Module.php(455): yii\base\Controller->runAction('login', Array)
+#14 /var/www/kta_hr/api/vendor/yiisoft/yii2/web/Application.php(84): yii\base\Module->runAction('site/login/', Array)
+#15 /var/www/kta_hr/api/vendor/yiisoft/yii2/base/Application.php(375): yii\web\Application->handleRequest(Object(yii\web\Request))
+#16 /var/www/kta_hr/api/web/index.php(12): yii\base\Application->run()
+#17 {main}
+Additional Information:
+
+2016-04-26 14:35:11 [::1][-][-][info][application] $_POST = [
+    '{\"$error\":{},\"$name\":\"form\",\"$dirty\":true,\"$pristine\":false,\"$valid\":true,\"$invalid\":false,\"$submitted\":true,\"username\":\"admin\",\"password\":\"landak123\"}' => ''
+]
+
+$_COOKIE = [
+    '_csrf' => '53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s:32:\"PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ\";'
+    '_identity' => '9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs:16:\"[191,\"\",2592000]\";'
+    'PHPSESSID' => '79klgbcn5of6gstrs7mcqh6ml2'
+    'ci_session' => '3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+]
+
+$_SERVER = [
+    'REDIRECT_STATUS' => '200'
+    'HTTP_HOST' => 'localhost'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'CONTENT_LENGTH' => '151'
+    'HTTP_PRAGMA' => 'no-cache'
+    'HTTP_CACHE_CONTROL' => 'no-cache'
+    'HTTP_ACCEPT' => 'application/json, text/plain, */*'
+    'HTTP_ORIGIN' => 'http://localhost'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36'
+    'CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+    'HTTP_REFERER' => 'http://localhost/kta_hr/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate'
+    'HTTP_ACCEPT_LANGUAGE' => 'id-ID,id;q=0.8,en-US;q=0.6,en;q=0.4'
+    'HTTP_COOKIE' => '_csrf=53fbdbe99e6741b5893d9c505fba319560e42b588890dc5667e5d7545d547ad7s%3A32%3A%22PSMGb_aad1gxsPmOQ8TbMI1_Qyg41KlQ%22%3B; _identity=9520b660c1edf7c48e0ac06cb0845fa44058631888d4d4304343a4c343e8addbs%3A16%3A%22%5B191%2C%22%22%2C2592000%5D%22%3B; PHPSESSID=79klgbcn5of6gstrs7mcqh6ml2; ci_session=3a5b9b45337204ad8f074375dbaecd5c6b01f1d9'
+    'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+    'SERVER_SIGNATURE' => '<address>Apache/2.4.10 (Ubuntu) Server at localhost Port 80</address>
+'
+    'SERVER_SOFTWARE' => 'Apache/2.4.10 (Ubuntu)'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_ADDR' => '::1'
+    'SERVER_PORT' => '80'
+    'REMOTE_ADDR' => '::1'
+    'DOCUMENT_ROOT' => '/var/www'
+    'REQUEST_SCHEME' => 'http'
+    'CONTEXT_PREFIX' => ''
+    'CONTEXT_DOCUMENT_ROOT' => '/var/www'
+    'SERVER_ADMIN' => 'webmaster@localhost'
+    'SCRIPT_FILENAME' => '/var/www/kta_hr/api/web/index.php'
+    'REMOTE_PORT' => '42313'
+    'REDIRECT_URL' => '/kta_hr/api/web/site/login/'
+    'GATEWAY_INTERFACE' => 'CGI/1.1'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'REQUEST_METHOD' => 'POST'
+    'QUERY_STRING' => ''
+    'REQUEST_URI' => '/kta_hr/api/web/site/login/'
+    'SCRIPT_NAME' => '/kta_hr/api/web/index.php'
+    'PHP_SELF' => '/kta_hr/api/web/index.php'
+    'REQUEST_TIME_FLOAT' => 1461681311.373
+    'REQUEST_TIME' => 1461681311
+]
