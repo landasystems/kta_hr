@@ -5,19 +5,20 @@
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
             <div class="panel-heading">
-                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
+                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
+                    <!--<button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="print();">&nbsp;Export Excel</button>-->
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
             <div collapse="isCollapsed" class="panel-body collapse" style="height: 0px;">
                 <div class="form-horizontal">
                     <div class="col-md-12 col-sm-12">
+
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">NO</label>
+                            <label class="col-sm-2 control-label">Jabatan Dalam P2K3</label>
                             <div class="col-sm-3">
-                                <input st-search="tim.no" class="form-control"/>
+                                <input st-search="tim.bagian" class="form-control"/>
                             </div>
                             <label class="col-sm-2 control-label">Nama Karyawan</label>
                             <div class="col-sm-3">
@@ -25,9 +26,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Bagian</label>
+                            <label class="col-sm-2 control-label">Jabatan Dalam Perusahaan</label>
                             <div class="col-sm-3">
-                                <input st-search="tim.bagian" class="form-control"/>
+                                <input st-search="sec.section" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -52,8 +53,8 @@
                             <td>{{row.bagian}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button tooltip="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button tooltip="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -86,14 +87,14 @@
                     <div class="col-md-12 col-sm-12">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">NO</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-3 control-label">NO</label>
+                                <div class="col-sm-6">
                                     <input type="text" class="form-control" ng-readonly="true" ng-model="form.no_tim" ng-disabled="is_view">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-3 control-label required">Tanggal</label>
+                                <div class="col-sm-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl" is-open="opened1" ng-click="open1($event)"/>
                                         <span class="input-group-addon">
@@ -102,38 +103,129 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Nama Karyawan</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-3 control-label required">Jenis Usaha</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.jns_usaha" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label required">Dalam Wilayah</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.dalam_wilayah" ng-disabled="is_view">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label required">Dalam Pengawasan</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" ng-model="form.dalam_pengawasan" ng-disabled="is_view">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label required">Jml Tenaga Kerja</label>
+                                <div class="col-sm-7">
                                     <div class="input-group">
-                                        <ui-select on-select="retKaryawan($select.selected,form)" ng-disabled="is_view" ng-model="form.karyawan" theme="bootstrap">
-                                            <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
-                                            <ui-select-choices refresh="cari($select.search)" repeat="val in listKaryawan">
-                                                {{val.nik}}<br>
-                                                <small>{{val.nama}}</small>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <span class="input-group-btn">
-                                            <button ng-click="form.karyawan = undefined" class="btn btn-default">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
+                                        <input type="text" class="form-control" ng-model="form.jml_tenaga_kerja" ng-disabled="is_view">
+                                        <span class="input-group-addon">
+                                            Orang
                                         </span>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Bagian</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="form.bagian" ng-disabled="is_view">
+                                <label class="col-sm-4 control-label required">Alamat</label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control" rows="3" ng-model="form.alamat"></textarea>
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Detail Susunan Keanggotaan</div>
+                        <div class="col-md-12 col-sm-12">
+                            <table class="table table-bordered det-trans table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">No</th>
+                                        <th style="width: 300px;text-align: center;">Nama</th>
+                                        <th style="text-align: center;">Jabatan Dalam P2K3</th>
+                                        <th style="text-align: center;">Jabatan Dalam Perusahaan</th>
+                                        <th style="text-align: center;">Keterangan</th>
+                                        <th style="text-align: center;">
+                                            <button tooltip="Tambah List" type="button" ng-disabled="is_view" class="btn btn-success fa fa-plus" ng-click="addrow()" style="width:100%;"></button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="det in detp2k3">
+                                        <td style="text-align: center;vertical-align: middle">
+                                            {{$index + 1}} 
+                                        </td>
+                                        <td >
+                                            <div class="input-group">
+                                                <ui-select on-select="retKaryawan(det,$select.selected)" ng-disabled="is_view" ng-model="det.karyawan" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                    <ui-select-choices refresh="cari($select.search)" repeat="val in listKaryawan">
+                                                        {{val.nik}}<br>
+                                                        <small>{{val.nama}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button tooltip="Hapus Karyawan" ng-click="det.karyawan = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select ng-model="det.bagian" class="form-control">
+                                                <option value="1">Ketua</option>
+                                                <option value="2">Wakil Ketua</option>
+                                                <option value="3">Sekretris / HSE Officer</option>
+                                                <option value="4">Seksi APAR/Hidrant ( Ketua )</option>
+                                                <option value="5">Seksi APAR/Hidrant ( Wakil Ketua )</option>
+                                                <option value="6">Seksi APAR/Hidrant ( Sekretaris )</option>
+                                                <option value="7">Seksi APAR/Hidrant</option>
+                                                <option value="8">Seksi Alat Pelindng Diri ( Ketua )</option>
+                                                <option value="9">Seksi Alat Pelindng Diri ( Wakil Ketua )</option>
+                                                <option value="10">Seksi Alat Pelindng Diri ( Sekretaris )</option>
+                                                <option value="11">Seksi Alat Pelindng Diri</option>
+                                                <option value="12">Seksi Emergency Response Team ( Ketua )</option>
+                                                <option value="13">Seksi Emergency Response Team ( Wakil Ketua )</option>
+                                                <option value="14">Seksi Emergency Response Team ( Sekretaris )</option>
+                                                <option value="15">Seksi Emergency Response Team</option>
+                                                <option value="16">Seksi P2K3 ( Ketua )</option>
+                                                <option value="17">Seksi P2K3 ( Wakil Ketua )</option>
+                                                <option value="18">Seksi P2K3 ( Sekretaris )</option>
+                                                <option value="19">Seksi P2K3</option>
+                                                <option value="20">Seksi Audit ( Ketua )</option>
+                                                <option value="21">Seksi Audit ( Wakil Ketua )</option>
+                                                <option value="22">Seksi Audit ( Sekretaris )</option>
+                                                <option value="23">Seksi Audit</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="det.jabatan" ng-disabled="true">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" ng-model="det.keterangan" ng-disabled="is_view">
+                                        </td>
+                                        <td>
+                                            <button tooltip="Hapus List" type="button" ng-disabled="is_view" class="btn btn-danger fa fa-trash" ng-click="removeRow($index)" style="width:100%;height:34px;"></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="line line-dashed b-b line-lg pull-in"></div>
                         <div class="col-md-12 col-sm-12">
                             <center>
                                 <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
+                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form, detp2k3)">&nbsp;Simpan</button>
                             </center>
                         </div>
                     </div>

@@ -25,6 +25,11 @@ app.controller('auditSemesterCtrl', function ($scope, Data, toaster) {
         });
         $scope.isLoading = false;
     };
+    $scope.excel = function() {
+        Data.get('jauditsemester', paramRef).then(function(data) {
+            window.location = 'api/web/jauditsemester/excel';
+        });
+    };
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();

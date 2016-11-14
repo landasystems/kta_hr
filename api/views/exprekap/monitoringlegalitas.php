@@ -10,7 +10,7 @@ if (!isset($_GET['print'])) {
 <div style="font-size: 10px;">
     <table>
         <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+            <td rowspan="3" style="width:10% !important;"><img src="../../../img/logo.png"  align="left" style="margin-right: 8px"/></td>
             <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
             <td></td>
         </tr>
@@ -25,15 +25,25 @@ if (!isset($_GET['print'])) {
     </table>
 </div>
 
-<br>
-<br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h4>MONITORING FILE LEGALITAS</h4><br/></center>
-<span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
-
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
+        <tr>
+            <td rowspan="2"colspan="3">
+                MONITORING FILE LEGALITAS
+            </td>
+            <td rowspan="2"colspan="3">
+                PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?>
+            </td>
+            <td style="text-align: center;">Diketahui</td>
+            <td style="text-align: center;">Diperiksa</td>
+            <td style="text-align: center;">Dibuat</td>
+        </tr>
+        <tr>
+            <td style="height: 100px;"></td>
+            <td></td>
+            <td></td>
+        </tr>
         <tr>
             <th style="text-align: center;vertical-align: center;">NO</th>
             <th style="text-align: center;vertical-align: center;">MASA BERLAKU</th>
@@ -51,7 +61,7 @@ if (!isset($_GET['print'])) {
         $no = 1;
         $tgl = '';
         foreach ($models as $val) {
-            $tgl = (empty($val['tgl_pengesahan']))? '' : $val['tgl_pengesahan'];
+            $tgl = (empty($val['tgl_pengesahan'])) ? '' : $val['tgl_pengesahan'];
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
             echo '<td align="center">' . $val['masa_berlaku'] . '</td>';

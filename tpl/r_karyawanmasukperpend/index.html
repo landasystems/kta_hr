@@ -1,10 +1,10 @@
-<div ng-app="app" ng-controller="karyawanMasukCtrl">
+<div ng-app="app" ng-controller="karyawanMPendCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Masuk Per Tunjangan</h1>
+        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Masuk Per Pendidikan</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Karyawan Masuk Per Tunjangan
+            <div class="panel-heading">.:: Karyawan Masuk Per Pendidikan
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
@@ -151,7 +151,7 @@
                                 <td align="center">{{row.jurusan}}</td>
                                 <td align="center">{{row.no_ijazah}}</td>
                                 <td align="center">{{row.tmpt_lahir}}</td>
-                                <td align="center">{{row.tgl_lahir | date}}</td>
+                                <td align="center">{{row.tgl_lahir}}</td>
                                 <td align="center">{{row.bulan_lahir}}</td>
                                 <td align="center"></td>
                             </tr>

@@ -41,7 +41,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_create = true;
         $scope.is_edit = true;
         $scope.is_view = false;
-        $scope.formtitle = "Form Tambah APD";
+        $scope.formtitle = "Form Tambah Barang ATK";
         $scope.form = {};
         Data.get('barangatk/kode',form).then(function(data){
             $scope.form.kode_brng = data.kode;

@@ -55,21 +55,17 @@
                             <th style="text-align: center;vertical-align: center;">NO</th>
                             <th style="text-align: center;vertical-align: center;">KODE BARANG</th>
                             <th style="text-align: center;vertical-align: center;">NAMA BARANG</th>
-                            <th style="text-align: center;vertical-align: center;">HARGA</th>
-                            <th style="text-align: center;vertical-align: center;">SATUAN</th>
-                            <th style="text-align: center;vertical-align: center;">SALDO AWAL</th>
+                            <th style="text-align: center;vertical-align: center;">STOK AWAL</th>
                             <th style="text-align: center;vertical-align: center;">MASUK</th>
                             <th style="text-align: center;vertical-align: center;">KELUAR</th>
-                            <th style="text-align: center;vertical-align: center;">SALDO AKHIR</th>
+                            <th style="text-align: center;vertical-align: center;">STOK AKHIR</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
                             <td align="center">{{row.kode_brng}}</td>
-                            <td align="center">{{row.nama_brng}}</td>
-                            <td align="center"></td>
-                            <td align="center"></td>
+                            <td align="center">{{row.nama_brng}} - {{row.merk}}</td>
                             <td align="center">{{row.saldo_awal}}</td>
                             <td align="center">{{row.masuk}}</td>
                             <td align="center">{{row.keluar}}</td>

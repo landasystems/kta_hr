@@ -143,6 +143,7 @@ class MasuransiController extends Controller {
                 ->limit($limit)
                 ->from('tbl_monitoring_ansuransi')
                 ->where('(tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+//               ->where("YEAR(masa_berlaku_sampai) = '{$params['tahun']}'")
                 ->orderBy($sort)
                 ->select("*");
 
@@ -247,12 +248,41 @@ class MasuransiController extends Controller {
     public function actionExcel() {
         session_start();
         $query = $_SESSION['query'];
+        $params = $_SESSION['params'];
         $query->offset("");
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        $params = $_SESSION['params'];
-        return $this->render("/exprekap/moasuransi", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        $data = [];
+        foreach ($models as $key => $value) {
+            
+            $list = $this->Listbln2($value['masa_berlaku_sampai']);
+            $data[$key] = array_merge($value, $list);
+        }
+//        return $this->render("/exprekap/moasuransi", ['models' => $data, 'tahun' => $params['tahun']]);
+        return $this->render("/exprekap/moasuransi", ['models' => $data, 'start' => $params['tanggal']['startDate'],'end' => $params['tanggal']['endDate']]);
+    }
+    
+     public function Listbln2($tanggal) {
+        
+        
+        
+        $arr_bln = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        $str = new \DateTime($tanggal);
+        $bln = $str->format("M");
+        $day = $str->format("d");
+        $format = $str->modify("last day of previous month");
+        $blns = $format->format("M");
+        $data = [];
+
+        foreach ($arr_bln as $key) {
+            if ($key == $bln) {
+                $data[$key] = ["day" => $day, "style" => "bg-green"];
+            } else {
+                $data[$key] = ["day" => "", "style" => ""];
+            }
+        }
+        return $data;
     }
 
     public function actionCari() {

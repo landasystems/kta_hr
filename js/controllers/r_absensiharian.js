@@ -9,23 +9,15 @@ app.controller('absensiharianCtrl', function ($state, $scope, Data, toaster) {
     $scope.show_form = [];
 
     $scope.print = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.open('api/web/karyawan/excelkeluar?print=true', "", "width=500");
+            Data.post('absensi/absensiharian', form).then(function (data) {
+                window.open('api/web/absensi/absharianexcel?print=true', "", "width=500");
             });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
+       
     };
 
-    $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelkeluar';
+    $scope.excelkeluar = function (form) {Data.post('absensi/absensiharian', form).then(function (data) {
+               window.location ='api/web/absensi/absharianexcel';
             });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
     };
     
     $scope.cariSection = function ($query) {

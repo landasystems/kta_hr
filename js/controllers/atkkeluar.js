@@ -29,11 +29,11 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
 
         $scope.isLoading = false;
     };
-    $scope.excel = function () {
-        Data.get('atkkeluar', paramRef).then(function (data) {
-            window.location = 'api/web/atkkeluar/excel';
-        });
-    };
+//    $scope.excel = function () {
+//        Data.get('atkkeluar', paramRef).then(function (data) {
+//            window.location = 'api/web/atkkeluar/excell';
+//        });
+//    };
 
     $scope.open1 = function ($event) {
         $event.preventDefault();

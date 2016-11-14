@@ -21,6 +21,7 @@ class AtkkeluarController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'excell' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekap' => ['post'],
@@ -127,7 +128,7 @@ class AtkkeluarController extends Controller {
         
         foreach($models as $key => $val){
             if(!empty($val['kd_karyawan'])){
-                $pegawai = \app\models\Tblkaryawan::findOne($val['kd_karyawan']);
+                $pegawai = \app\models\TblKaryawan::findOne($val['kd_karyawan']);
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
         }
@@ -300,8 +301,78 @@ class AtkkeluarController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+        if (isset($_GET['print'])) {
+           return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+     } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/rekap-atk-keluar.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 5;
+            $objPHPExcel->getActiveSheet()->setCellValue('B3', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 80 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(20);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':I' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->mergeCells("A{$row}:B{$row}");
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $arr['no_transaksi'])
+                        ->setCellValue('C' . $row, date('d-m-Y',strtotime($arr['tgl'])))
+                        ->setCellValue('D' . $row, $arr['kd_brng'])
+                        ->setCellValue('E' . $row, $arr['nm_brng'])
+                        ->setCellValue('E' . $row, $arr['jmlh_brng'])
+                        ->setCellValue('E' . $row, $arr['nama']);
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-atk-keluar.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
+        
+        
     }
+    
 
     public function actionCari() {
         $params = $_REQUEST;

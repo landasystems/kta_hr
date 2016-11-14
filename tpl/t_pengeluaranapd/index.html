@@ -5,9 +5,9 @@
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
             <div class="panel-heading">
-                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian & Export Data</button>
+                <button class="btn btn-default btn-xs" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Pencarian</button>
                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                    <button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>
+                    <!--<button type="button" class="btn btn-default fa fa-file-excel-o" ng-show="!isCollapsed" ng-click="excel();">&nbsp;Export Excel</button>-->
                     <button type="button" class="btn btn-primary fa fa-plus-square-o" ng-click="create();">&nbsp;Tambah Data</button>
                 </div> 
             </div>
@@ -50,8 +50,8 @@
                             <td>{{row.nama}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button tooltip="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button tooltip="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -103,7 +103,7 @@
                         </div>
                         <div class='col-md-6 col-sm-12'>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Pegawai Yang Mengeluarkan</label>
+                                <label class="col-sm-4 control-label">Pegawai Yang Meminta APD</label>
                                 <div class="col-sm-8">
                                     <ui-select on-select="getPegawai(form,$item)" ng-model="form.karyawan" theme="bootstrap">
                                         <ui-select-match placeholder="Cari Pegawai">{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
@@ -116,11 +116,17 @@
                                     </ui-select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Bagian</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.bagian" ng-disabled="is_view">
+                                </div>
+                            </div>
                         </div>
 
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Detail Pengeluaran ATK</div>
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Detail Pengeluaran APD</div>
                         <div class="col-md-12 col-sm-12">
                             <table class="table table-bordered det-trans table-responsive">
                                 <thead>

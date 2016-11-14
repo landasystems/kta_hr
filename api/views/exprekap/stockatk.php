@@ -7,48 +7,27 @@ if (!isset($_GET['print'])) {
 $start = $params['tanggal']['startDate'];
 $end = $params['tanggal']['endDate'];
 ?>
-<div style="font-size: 10px;">
-    <table>
-        <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
-            <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="font-size: 10px;">Autobody, Manufacturing - Transport Services</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="font-size: 10px;">Minning Contractor - Trading Channel</td>
-            <td></td>
-        </tr>
-    </table>
-</div>
 
-<br>
-<br>
-<hr>
 
-<table border="1" style="border-collapse: collapse;width:100%">
-    <tr>
-        <td colspan="3" rowspan="2" style="width:60%;text-align: center">
-            <h4>LAPORAN STOCK ATK</h4><br/>
-            FR-HRD-038 REV.00
-        </td>
-        <td rowspan="2">
-            <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span><br/>
-            Dicetak: <?= date('d F Y'); ?>
-        </td>
-        <td style="text-align: center">Dibuat</td>
-        <td style="text-align: center">Diperiksa</td>
-    </tr>
-    <tr>
-        <td style="height: 45px;"></td>
-        <td></td>
-    </tr>
-</table>
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
+        <tr>
+          <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+            <td colspan="2" rowspan="2" style="width:60%;text-align: center">
+                <h4>LAPORAN STOCK ATK</h4><br/>
+                FR-HRD-038 REV.00
+            </td>
+            <td rowspan="2" colspan="2">
+                <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span><br/>
+                Dicetak: <?= date('d F Y'); ?>
+            </td>
+            <td colspan="2"style="text-align: center">Dibuat</td>
+            <td colspan="2" style="text-align: center">Diperiksa</td>
+        </tr>
+        <tr>
+            <td colspan="2"style="height: 50px;"></td>
+            <td colspan="2"></td>
+        </tr>
         <tr>
             <th style="text-align: center;vertical-align: center;">NO</th>
             <th style="text-align: center;vertical-align: center;">KODE BARANG</th>

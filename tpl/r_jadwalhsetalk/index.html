@@ -1,10 +1,10 @@
 <div ng-app="app" ng-controller="jadwalHseTalkCtrl">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3">Data Rekap - Jadwal HSE Talk</h1>
+        <h1 class="m-n font-thin h3">Data Rekap - HSE Talk</h1>
     </div>
     <div class="wrapper-md" ng-show="!is_edit">
         <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
-            <div class="panel-heading">.:: Jadwal HSE Talk
+            <div class="panel-heading">.:: HSE Talk
                 <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
                     <br>    
                 </div> 
@@ -32,7 +32,7 @@
                                                             <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Jadwal HSE Talk<span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="excelkeluar(form)">Export Excel</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -60,7 +60,7 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
-                            <td align="center">{{row.tgl_hse}}</td>
+                            <td align="center">{{row.tgl_hse | date}}</td>
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.materi}}</td>
                         </tr>

@@ -7,8 +7,9 @@ if (!isset($_GET['print'])) {
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
-<table width="100%" style="border-collapse: collapse;" border="1">
-    <tr>
+<table width="100%" border="1" style="border-collapse: collapse">
+    <thead>
+        <tr>
         <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
         <td rowspan="2" style="text-align: center;">
             <h4>DATA SISWA PRAKERIN</h4><br/>
@@ -35,9 +36,6 @@ if (!isset($_GET['print'])) {
         <td style="width: 100px;"></td>
         <td style="width: 100px;" ></td>
     </tr>
-</table>
-<table width="100%" border="1" style="border-collapse: collapse">
-    <thead>
         <tr>
             <th style="text-align: center;vertical-align: center;">NO</th>
             <th style="text-align: center;vertical-align: center;">NAMA</th>
@@ -57,7 +55,7 @@ if (!isset($_GET['print'])) {
             echo '<td align="center">' . $val['bagian'] . '</td>';
             echo '<td align="center">' . date('d-M-y', strtotime($val['tgl_mulai'])) . '</td>';
             echo '<td align="center">' . date('d-M-y', strtotime($val['tgl_selesai']))  . '</td>';
-            echo '<td>' . $val['asal_sekolah'] . '</td>';
+            echo '<td colspan="2">' . $val['asal_sekolah'] . '</td>';
             $no++;
         }
         ?>

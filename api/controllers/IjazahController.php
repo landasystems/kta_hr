@@ -124,9 +124,9 @@ class IjazahController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        if(!empty($models)){
-            foreach($models as $key => $val){
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $pegawai = \app\models\TblKaryawan::findOne($val['nik']);
                 $models[$key]['pegawai'] = (empty($pegawai)) ? [] : $pegawai->attributes;
             }
@@ -209,8 +209,8 @@ class IjazahController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblijazah();
         $model->attributes = $params;
-        if ($params['status']=='Masuk')
-            $model->tgl_keluar=null;
+        if ($params['status'] == 'Masuk')
+            $model->tgl_keluar = null;
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -225,8 +225,8 @@ class IjazahController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-        if ($params['status']=='Masuk')
-            $model->tgl_keluar=null;
+        if ($params['status'] == 'Masuk')
+            $model->tgl_keluar = null;
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -293,7 +293,78 @@ class IjazahController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        if (isset($_GET['print'])) {
+
+            return $this->render("/exprekap/ijazahmasuk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/ijazah-masuk.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 11;
+//
+            $objPHPExcel->getActiveSheet()->setCellValue('A5', " Dicetak :  " . date("d F Y"));
+            $objPHPExcel->getActiveSheet()->mergeCells('A8:D8')->setCellValue('A8', " PERIODE :  " . date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 100 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 0;
+            foreach ($models as $r => $arr) {
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//////
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $r + 1);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date('d-M-Y', strtotime($arr['tgl_masuk'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['atas_nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['no_ijazah']);
+                $objPHPExcel->getActiveSheet()->mergeCells('E' . $row . ':F' . $row)->setCellValue('E' . $row, $arr['nama_sekolah']);
+//                    
+            }
+//
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="ijzah-masuk.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionExcelkeluar() {
@@ -304,7 +375,76 @@ class IjazahController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/ijazahkeluar", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        $start = $params['tanggal']['startDate'];
+        $end = $params['tanggal']['endDate'];
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/ijazahkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/ijazah-keluar.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+             $baseRow = 11;
+//
+            $objPHPExcel->getActiveSheet()->setCellValue('A5', " Dicetak :  " . date("d F Y"));
+            $objPHPExcel->getActiveSheet()->mergeCells('A8:D8')->setCellValue('A8', " PERIODE :  " . date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 100 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 0;
+            foreach ($models as $r => $arr) {
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//////
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $r + 1);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date('d-M-Y', strtotime($arr['tgl_keluar'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['atas_nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['no_ijazah']);
+                $objPHPExcel->getActiveSheet()->mergeCells('E' . $row . ':F' . $row)->setCellValue('E' . $row, $arr['nama_sekolah']);
+//                    
+            }
+//
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="ijzah-keluar.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

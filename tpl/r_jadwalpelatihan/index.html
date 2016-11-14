@@ -63,7 +63,7 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
-                            <td align="center">{{row.tgl}}</td>
+                            <td align="center">{{row.tgl|date:'mediumDate'}}</td>
                             <td align="center">{{row.jam}}</td>
                             <td align="center">{{row.tmpt}}</td>
                             <td align="center"></td>

@@ -3,11 +3,12 @@ if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=excel-retur-Pergerakan-Barang.xls");
 }
+
 ?>
 <div style="font-size: 10px;">
     <table>
         <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+            <td rowspan="3" style="width:10% !important;"><img src="../../../img/logo.png" align="left" style="margin-right: 8px"/></td>
             <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
             <td></td>
         </tr>
@@ -71,6 +72,7 @@ if (!isset($_GET['print'])) {
                             <td style="text-align: center">' . $penilaian($val['administratif']) . '</td>
                             <td>' . $val['keterangan'] . '</td>
                         </tr>';
+            $no++;
         }
         ?>
     </tbody>

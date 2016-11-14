@@ -9,23 +9,14 @@ app.controller('absensipenggajianproduksiCtrl', function ($scope, Data, toaster,
     $scope.show_form = [];
 
     $scope.print = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
-            Data.post('karyawan/rekapkeluar', form).then(function (data) {
-                window.open('api/web/karyawan/excelkeluar?print=true', "", "width=500");
+            Data.post('absensi/absensiharian', form).then(function (data) {
+                window.open('api/web/absensi/penggajianexcel?print=true', "", "width=500");
             });
-        } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
-        }
+       
     };
-
-    $scope.excel = function () {
-        Data.post('absensi/penggajianexcel', $scope.listSrc).then(function (data) {
-            saveExcel(data, 'gaji.xls');
-        });
-    };
-    $scope.excelslip = function () {
-        Data.post('absensi/slipgajiexcel', $scope.listSrc).then(function (data) {
-            saveExcel(data, 'slipgaji.xls');
+    $scope.excel = function (form) {
+        Data.post('absensi/penggajian', form).then(function (data) {
+            window.location ='api/web/absensi/penggajianexcel';
         });
     };
 

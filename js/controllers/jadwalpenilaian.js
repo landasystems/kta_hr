@@ -1,4 +1,4 @@
-app.controller('jadwalPenilaianCtrl', function($scope, Data, toaster) {
+app.controller('mjadwalPenilaianCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];

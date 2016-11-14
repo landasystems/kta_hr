@@ -32,7 +32,7 @@
                                                             <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Pengeluaran ATK<span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="excelkeluar(form)">Export Excel</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -53,7 +53,6 @@
                         <tr>
                             <th style="text-align: center;vertical-align: center;">NO TRANSAKSI</th>
                             <th style="text-align: center;vertical-align: center;">TANGGAL TRANSAKSI</th>
-                            <th style="text-align: center;vertical-align: center;">KODE ATK</th>
                             <th style="text-align: center;vertical-align: center;">NAMA ATK</th>
                             <th style="text-align: center;vertical-align: center;">JUMLAH</th>
                             <th style="text-align: center;vertical-align: center;">PENGAMBIL</th>
@@ -63,7 +62,6 @@
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{row.no_transaksi}}</td>
                             <td align="center">{{row.tgl | date}}</td>
-                            <td align="center">{{row.kd_brng}}</td>
                             <td align="center">{{row.nm_brng}}</td>
                             <td align="center">{{row.jmlh_brng}}</td>
                             <td align="center">{{row.nama}}</td>

@@ -140,10 +140,10 @@ class JauditsemesterController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_djaudit_semester as det')
-                ->join('LEFT JOIN','tbl_hjaudit_semester as jad','det.no = jad.no_audit')
-                ->join('LEFT JOIN','tbl_karyawan as tee','det.auditee = tee.nik')
-                ->join('LEFT JOIN','tbl_karyawan as tor','det.auditor = tor.nik')
-                ->where('(jad.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND jad.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '") AND jad.audit_ke='.$params['audit_ke'])
+                ->join('LEFT JOIN', 'tbl_hjaudit_semester as jad', 'det.no = jad.no_audit')
+                ->join('LEFT JOIN', 'tbl_karyawan as tee', 'det.auditee = tee.nik')
+                ->join('LEFT JOIN', 'tbl_karyawan as tor', 'det.auditor = tor.nik')
+                ->where('(jad.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND jad.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '") AND jad.audit_ke=' . $params['audit_ke'])
                 ->orderBy($sort)
                 ->select("jad.no_audit as no_audit, jad.tgl as tgl, jad.jam as jam, det.dept_auditee, det.dept_auditor, tee.nama as auditee, tor.nama as auditor");
 
@@ -279,7 +279,85 @@ class JauditsemesterController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/jadwalauditsemester", ['models' => $models, 'start' => $start, 'end' => $end]);
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/jadwalauditsemester", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/jadwal-audit.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 12;
+            $objPHPExcel->getActiveSheet()->setCellValue('A5', "Tgl Pelaporan :  " . date('d F Y'));
+            $objPHPExcel->getActiveSheet()->setCellValue('A9', "PERIODE :  " . date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 70 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+                $val1 = (!empty($models[$r - 1])) ? $models[$r - 1]['no_audit'] : '';
+                $val2 = (!empty($models[$r])) ? $models[$r]['no_audit'] : '';
+                if ($val1 == $val2) {
+                    $tgl = '';
+                    $jam = '';
+                } else {
+                    $tgl = date('d/m/Y', strtotime($arr['tgl']));
+                    $jam = $arr['jam'];
+                }
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row,$tgl);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $jam);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['dept_auditee']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['auditee']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['dept_auditor']);
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $arr['auditor']);
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="jadwal-audit-semester.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
 }

@@ -41,7 +41,7 @@
                             <th st-sort="tgl_kejadian">Tanggal Kejadian</th>
                             <th st-sort="nik">NIK</th>
                             <th st-sort="nama">Nama Pegawai</th>
-                            <th st-sort="sub_section">Sub Section</th>
+                            <th st-sort="department">Department</th>
                             <th st-sort="keterangan">Keterangan</th>
                             <th st-sort="biaya">Biaya</th>
                             <th style="text-align:right;">Action &nbsp;</th>
@@ -53,25 +53,25 @@
                             <td>{{row.tgl_kejadian| date}}</td>
                             <td>{{row.nik}}</td>
                             <td>{{row.nama}}</td>
-                            <td>{{row.bagian}}</td>
+                            <td>{{row.departement_nama}}</td>
                             <td>{{row.keterangan}}</td>
                             <td>{{row.biaya | currency}}</td>
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                    <button type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                    <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button tooltip='Edit' type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                    <button tooltip='Hapus' type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
                     </tbody>
                     <tbody ng-show="isLoading">
                         <tr>
-                            <td colspan="4" class="text-center">Loading ... </td>
+                            <td colspan="8" class="text-center">Loading ... </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            <td colspan="8" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
                     </tfoot>
@@ -129,9 +129,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Bagian</label>
+                                <label class="col-sm-4 control-label">Departement</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.bagian" ng-disabled="is_view">
+                                    <input type="text" class="form-control" ng-readonly="true" ng-model="form.departement_nama" ng-disabled="is_view">
+                                    <input type="hidden" class="form-control" ng-model="form.department" >
                                 </div>
                             </div>
                         </div>

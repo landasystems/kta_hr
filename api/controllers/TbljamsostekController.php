@@ -104,8 +104,8 @@ class TbljamsostekController extends Controller {
         $models = $command->queryAll();
         $totalItems = $query->count();
 
-        if(!empty($models)) {
-            foreach($models as $key => $val){
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $karyawan = \app\models\TblKaryawan::findOne($val['nik']);
                 $models[$key]['karyawan'] = (!empty($karyawan)) ? $karyawan->attributes : [];
             }
@@ -132,7 +132,9 @@ class TbljamsostekController extends Controller {
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'jam.nik = kar.nik')
                 ->orderBy($sort)
                 ->select("*");
-
+        $start = date("Y-m-d", strtotime($params['tanggal']['startDate']));
+        $end = date("Y-m-d", strtotime($params['tanggal']['endDate']));
+        $query->andFilterWhere(['between', 'jam.p_kepesertaan', $start, $end]);
         session_start();
         $_SESSION['query'] = $query;
         $_SESSION['params'] = $params;
@@ -262,7 +264,81 @@ class TbljamsostekController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/jamsostek", ['models' => $models, 'start' => $start, 'end' => $end]);
+
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/jamsostek", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/rekap-jamsostek.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 13;
+            $objPHPExcel->getActiveSheet()->setCellValue('A5', "Tgl Pelaporan :  " . date('d F Y'));
+            $objPHPExcel->getActiveSheet()->mergeCells('C8:G8')->setCellValue('C8', " PERIODE :  " . date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 80 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+                $noJamsostek = (empty($arr['no_jamsostek'])) ? '' : $arr['no_jamsostek'];
+                $jabatan = (empty($arr['jabatan'])) ? '' : $arr['jabatan'];
+                $subSection = (empty($arr['sub_section'])) ? '' : $arr['sub_section'];
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':I' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->mergeCells("C{$row}:D{$row}");
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no)
+                        ->setCellValue('B' . $row, $arr['nama'])
+                        ->setCellValue('C' . $row, $subSection)
+                        ->setCellValue('E' . $row, $jabatan)
+                        ->setCellValue('F' . $row, $arr['nn'])
+                        ->setCellValue('G' . $row, $arr['kpj'])
+                        ->setCellValue('H' . $row, $noJamsostek)
+                        ->setCellValue('I' . $row, date("d-M-Y", strtotime($arr['p_kepesertaan'])));
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-jamsostek.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
 }

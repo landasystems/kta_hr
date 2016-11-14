@@ -214,7 +214,77 @@ class LokasikantorController extends Controller {
         $query = $_SESSION['query'];
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/lokasikantor", ['models'=>$models]);
+        
+        if (isset($_GET['print'])) {
+         return $this->render("/expmaster/lokasikantor", ['models'=>$models]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/master-lokasi-kantor.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 4;
+//
+            $objPHPExcel->getActiveSheet()->setCellValue('C1', " Tgl Pelaporan :  " . date("d F Y"));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 83 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            foreach ($models as $r => $arr) {
+                $id_lokasi_kantor = (!empty($arr['id_lokasi_kantor'])) ? $arr['id_lokasi_kantor'] : '';
+                $lokasi_kantor = (!empty($arr['lokasi_kantor'])) ? $arr['lokasi_kantor'] : '';
+                $alamat = (!empty($arr['alamat'])) ? $arr['alamat'] : '';
+                $no_telpon = (!empty($arr['no_telpon'])) ? $arr['no_telpon'] : '';
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $id_lokasi_kantor);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $lokasi_kantor);
+                $objPHPExcel->getActiveSheet()->mergeCells('C' . $row . ':D' . $row)->setCellValue('C' . $row, $alamat);
+                $objPHPExcel->getActiveSheet()->mergeCells('E' . $row . ':F' . $row)->setCellValue('E' . $row, $alamat);
+//
+            }
+//
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="master-lokasi-kantor.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 }
 

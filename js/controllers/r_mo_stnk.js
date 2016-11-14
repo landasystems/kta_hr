@@ -5,29 +5,41 @@ app.controller('moStnkCtrl', function ($scope, Data, toaster) {
     $scope.show_detail = false;
 
     $scope.print = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+         if ('tahun' in form && form.tahun != null) {
             Data.post('mstnk/rekap', form).then(function (data) {
-                window.open('api/web/mstnk/excel?print=true', "", "width=500");
+                window.open('api/web/mstnk/excelrekap?print=true', "", "width=500");
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Pilih tahun terlebih dahulu");
         }
     };
 
     $scope.excelkeluar = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+         if ('tahun' in form && form.tahun != null) {
             Data.post('mstnk/rekap', form).then(function (data) {
-                window.location = 'api/web/mstnk/excel';
+                window.location = 'api/web/mstnk/excelrekap';
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Pilih tahun terlebih dahulu");
         }
     };
+
+    var date = new Date,
+            years = [],
+            year = date.getFullYear();
+
+    for (var i = year-2; i < year + 3; i++) {
+        years.push(i);
+    }
+    
+    $scope.year = year;
+    $scope.years = years;
+    console.log(year);
 
     $scope.listSrc = [];
     $scope.list = [];
     $scope.view = function (form) {
-        if ('tanggal' in form && form.tanggal.startDate != null) {
+        if ('tahun' in form && form.tahun != null) {
             $scope.show_detail = true;
             Data.post('mstnk/rekap', form).then(function (data) {
                 $scope.listSrc = [];
@@ -36,7 +48,7 @@ app.controller('moStnkCtrl', function ($scope, Data, toaster) {
                 });
             });
         } else {
-            toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
+            toaster.pop('error', "Terjadi Kesalahan", "Pilih tahun terlebih dahulu");
         }
     };
 });

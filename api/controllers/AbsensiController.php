@@ -20,7 +20,7 @@ class AbsensiController extends Controller {
                 'actions' => [
                     'absensiharian' => ['post'],
                     'absensiproduksi' => ['post'],
-                    'absensioperator' => ['get'],
+                    'absensioperator' => ['post'],
                     'lemburharian' => ['get'],
                     'lembur' => ['get'],
                     'listsec' => ['get'],
@@ -29,8 +29,9 @@ class AbsensiController extends Controller {
                     'penggajiankaryawan' => ['post'],
                     'minggu' => ['get'],
                     'rekap' => ['get'],
-                    'penggajianexcel' => ['post'],
+                    'penggajianexcel' => ['get'],
                     'gjkryexcel' => ['get'],
+                    'absharianexcel' => ['get'],
                     'karyawanexcel' => ['post'],
                 ],
             ]
@@ -341,6 +342,8 @@ class AbsensiController extends Controller {
                 if (!empty($data['minggu5'])) {
                     if ($tanggal < $data['minggu5']) {
                         $minggu5[] = $tanggal;
+                    } elseif ($tanggal > $data['minggu5']) {
+                        $minggu5[] = $tanggal;
                     }
                 } else {
                     $minggu5[] = $tanggal;
@@ -415,6 +418,10 @@ class AbsensiController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $section = (isset($params['Section']['id_section'])) ? $params['Section']['id_section'] : '';
+        $kry = TblKaryawan::aktif($niknama, $section);
+//        $kry = [];
+        
+//        Yii::error($section);
         $bulan = $params['bulan'];
         $tahun = $params['tahun'];
         $awaltgl = $tahun . "-" . $bulan . "-1";
@@ -436,7 +443,8 @@ class AbsensiController extends Controller {
         $htghr = $this->Htghr($mm, $yy);
 
         //==========================[karyawan]=======================
-        $kry = TblKaryawan::aktif($niknama, $section);
+//        
+//        $kry = TblKaryawan::aktif($niknama);
         $data = [];
         $hadir = [];
         $i = 0;
@@ -566,24 +574,18 @@ class AbsensiController extends Controller {
     }
 
     public function actionAbsensiharian() {
-//        $params = $_REQUEST;
         $params = json_decode(file_get_contents("php://input"), true);
         $niknama = (isset($params['niknama'])) ? $params['niknama'] : '';
         $lokasi_kntr = (isset($params['lokasi_kntr'])) ? $params['lokasi_kntr'] : '';
-//        $sec = json_decode($params['Section'], true);
-//        $section = (isset($sec)) ? $sec['id_section'] : '';
         $section = (isset($params['section'])) ? $params['section'] : '';
         $date = date('Y-m-d', strtotime($params['tanggal']));
         $models = [];
 
         $abs = AbsensiEttLog::absen($date, $date);
-//        Yii::error($abs);
         $kry = TblKaryawan::aktif($niknama, $section, $lokasi_kntr);
-
-//        Yii::error($ijn);
+        
         foreach ($kry as $r) {
             $pegawai = ['nik' => $r->nik, 'nama' => $r->nama];
-//            Yii::error($pegawai);
             if (isset($abs[$r->nik][$date]) && $params['status'] == 'hadir') {
                 $absensi = $abs[$r->nik][$date];
 
@@ -598,9 +600,19 @@ class AbsensiController extends Controller {
                 }
             }
         }
+         session_start();
+         
+        $_SESSION['exccelharian'] = $models;
 
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $models,'tes' => $abs), JSON_PRETTY_PRINT);
+    }
+    
+    public function actionAbsharianexcel() {
+         session_start();
+        $params = $_SESSION['exccelharian'];
+
+        return $this->render("/absensi/absharian", ['models' => $params]);
     }
 
     public function Sttsabsen($nik, $date) {
@@ -823,9 +835,9 @@ class AbsensiController extends Controller {
 
     public function actionPenggajiankaryawan() {
         $params = json_decode(file_get_contents("php://input"), true);
-        
+
         $other['status'] = '';
-        if(!empty($params['status'])){
+        if (!empty($params['status'])) {
             $other['status'] = $params['status'];
         }
 
@@ -1533,16 +1545,21 @@ class AbsensiController extends Controller {
 //                'lembur' => $lembur[$r->nik]];
             $no++;
         }
+        
+        session_start();
+        $_SESSION['data_penggajian']['data'] = $models;
+        $_SESSION['data_penggajian']['tahun'] = $tahun;
 
-//        Yii::error($models);
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models, 'tahun' => $tahun, 'start' => $date, 'end' => $endate), JSON_PRETTY_PRINT);
     }
 
     public function actionPenggajianexcel() {
-        $params = json_decode(file_get_contents("php://input"), true);
-        return $this->render("/absensi/penggajian", ['models' => $params]);
+         session_start();
+         $params = $_SESSION['data_penggajian']['data'];
+         $tahun = $_SESSION['data_penggajian']['tahun'];
+        return $this->render("/absensi/penggajian", ['models' => $params,'tahun' => $tahun]);
     }
 
     public function actionGjkryexcel() {
@@ -1564,9 +1581,9 @@ class AbsensiController extends Controller {
         $end = $_SESSION['tglEnd'];
 
         $params = json_decode(file_get_contents("php://input"), true);
-//        Yii::error($params);
         return $this->render("/absensi/karyawan", ['models' => $params, 'start' => $start, 'end' => $end]);
     }
+    
 
 }
 

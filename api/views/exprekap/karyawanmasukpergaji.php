@@ -27,13 +27,20 @@ if (!isset($_GET['print'])) {
 
 <br>
 <br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h3>REKAP KARYAWAN MASUK PER GAJI</h3><br/></center>
-<span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
 
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
+        <tr>
+            <td rowspan="2" colspan="4"><center><h3>REKAP KARYAWAN MASUK PER GAJI</h3><br/></center></td>
+            <td rowspan="2" colspan="7"><span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span></td>
+            <td>Dibuat</td>
+            <td>Diketahui</td>
+        </tr>
+        <tr>
+            <td style="height: 70px"></td>
+            <td></td>
+        </tr>
         <tr>
             <th  style="text-align: center;vertical-align: center;">No</th>
             <th  style="text-align: center;vertical-align: center;">NIK</th>

@@ -109,11 +109,14 @@ class JpenilaianController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
-                $query->andFilterWhere(['like', $key, $val]);
-//                }
+                if ($key == 'tanggal') {
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'tbl_jpenilaian.tgl_penilaian', $start, $end]);
+                } else {
+                    $query->andFilterWhere(['like', $key, $val]);
+                }
             }
         }
 
@@ -271,7 +274,74 @@ class JpenilaianController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
 
-        return $this->render("/exprekap/jpenilaian", ['models' => $models]);
+        
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/jpenilaian", ['models' => $models]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/master-jpenilaian.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 4;
+            $objPHPExcel->getActiveSheet()->setCellValue('C1', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 80 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $arr['no_jpenilaian']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date('d-M-y', strtotime($arr['tgl_penilaian'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['penilai']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['dep_penilai']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['bagian']);
+            }
+            
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="jadwal-penilaian.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionExcel() {
@@ -291,6 +361,7 @@ class JpenilaianController extends Controller {
             }
         }
         return $this->render("/exprekap/jadwalpenilaian", ['models' => $models, 'semester' => $semester]);
+        
     }
 
     public function actionExcelrekap() {

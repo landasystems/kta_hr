@@ -1,4 +1,4 @@
-app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
+app.controller('karyawanMTunjCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};
@@ -13,7 +13,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.print = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapmasuk', form).then(function (data) {
-                window.open('api/web/karyawan/excelmasuk?print=true&rekap=karyawanmasukperpend', "", "width=500");
+                window.open('api/web/karyawan/excelmasuk?print=true&rekap=karyawanmasukpertunj', "", "width=500");
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");
@@ -23,7 +23,7 @@ app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
     $scope.excel = function (form) {
         if (('tanggal' in form && form.tanggal != null) || ('Karyawan' in form && form.Karyawan != undefined)) {
             Data.post('karyawan/rekapmasuk', form).then(function (data) {
-                window.location = 'api/web/karyawan/excelmasuk?rekap=karyawanmasukperpend';
+                window.location = 'api/web/karyawan/excelmasuk?rekap=karyawanmasukpertunj';
             });
         } else {
             toaster.pop('error', "Terjadi Kesalahan", "Masukkan periode terlebih dahulu");

@@ -78,9 +78,9 @@
                             <td>
                                 <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
                                     <!--<input type="text" ng-model="row.nama" ng-change="testDoank();">-->
-                                    <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row);"></button>
-                                    <button title="Keluarkan Karyawan" type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modalKeluar(row)"></button>
-                                    <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                    <button tooltip="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row);"></button>
+                                    <button tooltip="Keluarkan Karyawan" type="button" class="btn btn-warning fa fa-sign-out" ng-show="row.status == 'Kerja'" ng-click="modalKeluar(row)"></button>
+                                    <button tooltip="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                 </div> 
                             </td>
                         </tr>
@@ -273,7 +273,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Status Kepemilikan</label>
                                             <div class="col-sm-8">
@@ -442,7 +442,11 @@
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Agama</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.agama" ng-disabled="is_view" >
+                                                <label class="btn btn-default" ng-model="form.agama" btn-radio="'Islam'">ISLAM</label>
+                                                <label class="btn btn-default" ng-model="form.agama" btn-radio="'Kristen'">KRISTEN</label>
+                                                <label class="btn btn-default" ng-model="form.agama" btn-radio="'Katolik'">KATOLIK</label>
+                                                <label class="btn btn-default" ng-model="form.agama" btn-radio="'Hindu'">HINDU</label>
+                                                <label class="btn btn-default" ng-model="form.agama" btn-radio="'Budha'">BUDHA</label>
                                             </div>
                                         </div>
                                         <div class="form-group">

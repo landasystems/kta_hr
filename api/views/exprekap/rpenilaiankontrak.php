@@ -3,14 +3,14 @@ if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=excel-rekap-penilaian-kontrak.xls");
 }
-
+$path_img = \Yii::$app->params['path'] . "/img/logo.png";
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
 <div style="font-size: 10px;">
     <table>
         <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+            <td rowspan="3" style="width:10% !important;"><img src="<?=$path_img?>" align="left" style="margin-right: 8px"/></td>
             <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
             <td></td>
         </tr>
@@ -27,7 +27,6 @@ if (!isset($_GET['print'])) {
 
 <br>
 <br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
 <center><h4>LAPORAN REKAP PENILAIAN KARYAWAN KONTRAK</h4><br/></center>
 <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>

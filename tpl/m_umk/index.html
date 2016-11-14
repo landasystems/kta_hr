@@ -41,8 +41,8 @@
                                         <td>Rp. {{row.umk}}</td>
                                         <td>
                                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
-                                                <button title="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
-                                                <button title="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
+                                                <button tooltip="Edit" type="button" class="btn btn-info fa fa-edit" ng-click="update(row)"></button>
+                                                <button tooltip="Hapus" type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ></button>
                                             </div> 
                                         </td>
                                     </tr>
@@ -97,8 +97,10 @@
                                             <div class="form-group" style="text-align: center">
                                                 <label class="col-sm-2 control-label">Besar UMK ( Upah Minimum Kabupaten/Kota )</label>
                                                 <div class="col-sm-4">
-                                                    <input type="text" class="form-control" ng-model="form.umk"  required >
-                                                    <input type="hidden" class="form-control" ng-disabled="is_view" ng-model="form.no_umk" >
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Rp</span>
+                                                        <input type="text" class="form-control" ng-model="form.umk"  required >
+                                                    </div>
                                                 </div>
                                             </div>
 

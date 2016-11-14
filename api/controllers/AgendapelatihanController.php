@@ -111,7 +111,7 @@ class AgendapelatihanController extends Controller {
 //                if ($key == "kat") {
 //                    $query->andFilterWhere(['=', $key, $val]);
 //                } else {
-                    $query->andFilterWhere(['like', $key, $val]);
+                $query->andFilterWhere(['like', $key, $val]);
 //                }
             }
         }
@@ -127,6 +127,7 @@ class AgendapelatihanController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -251,7 +252,77 @@ class AgendapelatihanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/agendapelatihan", ['models' => $models, 'start' => $start, 'end' => $end]);
+
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/agendapelatihan", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/agenda-pelatihan.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 6;
+            $objPHPExcel->getActiveSheet()->setCellValue('E2', "Tahun :  " . date('Y', strtotime($start)));
+//            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+//            $objDrawing->setPath($path_img);
+//            $objDrawing->setCoordinates('A2');
+//            $objDrawing->setHeight(70);
+//            $offsetX = 100 - $objDrawing->getWidth();
+//            $objDrawing->setOffsetX($offsetX);
+//            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':H' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no)
+                        ->setCellValue('B' . $row, $arr['jns_pelatihan'])
+                        ->setCellValue('C' . $row, $arr['sumber_pelatihan'])
+                        ->setCellValue('D' . $row, date("d-m-Y", strtotime($arr['waktu'])))
+                        ->setCellValue('E' . $row, "Terlampir")
+                        ->setCellValue('F' . $row, $arr['bahasan'])
+                        ->setCellValue('G' . $row, $arr['alat_peraga'])
+                        ->setCellValue('H' . $row, $arr['keterangan']);
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-agenda-pelatihan.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

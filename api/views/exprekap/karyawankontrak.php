@@ -47,7 +47,7 @@ if (!isset($_GET['print'])) {
     <br/>
     <hr/>
     <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-    <table border="1">
+    <table border="1" style="border-collapse: collapse">
         <thead>
             <tr>
                 <td colspan="6" rowspan="2" style="text-align: center;vertical-align: central;">
@@ -83,12 +83,12 @@ if (!isset($_GET['print'])) {
             <?php
             $no = 1;
             foreach ($models as $val) {
-                $tglPenilaian = (!empty($val['tgl_penilaian'])) ? date('d-M-y', strtotime($val['tgl_penilaian'])) : '';
+                $tglPenilaian = (!empty($val['tgl_penilaian'])) ? date('d-M-Y', strtotime($val['tgl_penilaian'])) : '';
                 $status_penilaian = (!empty($val['status_penilaian'])) ? $val['status_penilaian'] : '';
-                $kontrak1 = (empty($val['Kontrak_1'])) ? '' : date('d-M-y', strtotime($val['Kontrak_1']));
-                $kontrak11 = (empty($val['Kontrak_11'])) ? '' : date('d-M-y', strtotime($val['Kontrak_11']));
-                $kontrak2 = (empty($val['Kontrak_2'])) ? '' : date('d-M-y', strtotime($val['Kontrak_2']));
-                $kontrak21 = (empty($val['Kontrak_21'])) ? '' : date('d-M-y', strtotime($val['Kontrak_21']));
+                $kontrak1 = (empty($val['Kontrak_1'])) ? '' : date('d-M-Y', strtotime($val['Kontrak_1']));
+                $kontrak11 = (empty($val['Kontrak_11'])) ? '' : date('d-M-Y', strtotime($val['Kontrak_11']));
+                $kontrak2 = (empty($val['Kontrak_2'])) ? '' : date('d-M-Y', strtotime($val['Kontrak_2']));
+                $kontrak21 = (empty($val['Kontrak_21'])) ? '' : date('d-M-Y', strtotime($val['Kontrak_21']));
 
                 echo '<tr>';
                 echo '<td align="center">' . $no . '</td>';

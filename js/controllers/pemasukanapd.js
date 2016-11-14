@@ -115,7 +115,7 @@ app.controller('pemasukanApdCtrl', function ($scope, Data, toaster) {
     $scope.cariPegawai = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawan/cari', data).then(function (data) {
+            Data.get('pemasukanapd/carikar', data).then(function (data) {
                 $scope.detPegawai = data.data;
             });
         }

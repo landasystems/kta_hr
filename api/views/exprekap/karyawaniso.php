@@ -37,7 +37,7 @@ if (!isset($_GET['print'])) {
 
     <br>
     <br>
-    <hr>
+    <!--<hr>-->
     <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
     <table border="1">
         <thead>
@@ -88,16 +88,16 @@ if (!isset($_GET['print'])) {
                 echo '<td align="center">' . $val['nama'] . '</td>';
                 echo '<td align="center">' . $val['pendidikan'] . '</td>';
                 echo '<td align="center">' . $val['tmpt_lahir'] . '</td>';
-                echo '<td align="center">' . date('m/d/Y', strtotime($val['tgl_lahir'])) . '</td>';
+                echo '<td align="center">' . date('d-M-Y', strtotime($val['tgl_lahir'])) . '</td>';
                 echo '<td align="center">' . $val['usia'] . '</td>';
-                echo '<td align="center">' . $val['alamat_jln'] . '</td>';
-                echo '<td align="center">' . $val['desa'] . '</td>';
-                echo '<td align="center">' . $val['kecamatan'] . '</td>';
-                echo '<td align="center">' . $val['kabupaten'] . '</td>';
+                echo '<td align="left">' . $val['alamat_jln'] . '</td>';
+                echo '<td align="left">' . $val['desa'] . '</td>';
+                echo '<td align="left">' . $val['kecamatan'] . '</td>';
+                echo '<td align="left">' . $val['kabupaten'] . '</td>';
                 echo '<td align="center">&nbsp;' . $val['no_ktp'] . '</td>';
-                echo '<td align="center">' . $val['agama'] . '</td>';
-                echo '<td align="center">' . $val['status_pernikahan'] . '</td>';
-                echo '<td align="center">' . date('m/d/Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
+                echo '<td align="center">' . strtoupper($val['agama']) . '</td>';
+                echo '<td align="center">' . strtoupper($val['status_pernikahan']) . '</td>';
+                echo '<td align="center">' . date('d-M-Y', strtotime($val['tgl_masuk_kerja'])) . '</td>';
                 echo '<td align="center">' . $val['tahun'] . '</td>';
                 echo '<td align="center">' . $val['bulan'] . '</td>';
                 echo '</tr>';

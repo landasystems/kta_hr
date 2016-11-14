@@ -28,6 +28,7 @@ class PemasukanapdController extends Controller {
                     'jenis' => ['get'],
                     'kode' => ['get'],
                     'cari' => ['get'],
+                    'carikar' => ['get'],
                 ],
             ]
         ];
@@ -135,6 +136,19 @@ class PemasukanapdController extends Controller {
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+    
+    public function actionCarikar()
+    {
+        $params = $_REQUEST;
+        $query = new Query;
+        $query->from('tbl_karyawan as kar')->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%" AND kar.status="Kerja" AND department="DPRT013"');
+                 $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        
+        echo json_encode(array('status' => 1, 'data' => $models));
+        
     }
 
     public function actionRekap() {
@@ -300,7 +314,75 @@ class PemasukanapdController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/pemasukanapd", ['models' => $models, 'start' => $start, 'end' => $end]);
+        
+        if (isset($_GET['print'])) {
+           return $this->render("/exprekap/pemasukanapd", ['models' => $models, 'start' => $start, 'end' => $end]);
+    } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/rekap-pemasukan-apd.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 6;
+            $objPHPExcel->getActiveSheet()->setCellValue('B4', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 100 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':E' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date("d-m-Y", strtotime($arr['tgl'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['kd_apd']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['nm_apd']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['jmlh_apd']);
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-pemasukan-apd.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

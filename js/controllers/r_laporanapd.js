@@ -1,4 +1,4 @@
-app.controller('pengeluaranApdCtrl', function ($scope, Data, toaster) {
+app.controller('rpengeluaranApdCtrl', function ($scope, Data, toaster) {
     //init data
    var tableStateRef;
     var paramRef;

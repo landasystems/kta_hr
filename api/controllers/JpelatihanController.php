@@ -236,7 +236,77 @@ class JpelatihanController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/jadwalpelatihan", ['models' => $models, 'start' => $start, 'end' => $end]);
+        
+    if (isset($_GET['print'])) {
+           return $this->render("/exprekap/jadwalpelatihan", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+             $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/jadwal-pelatihan.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 4;
+            $objPHPExcel->getActiveSheet()->setCellValue('C1', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 80 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+////                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date('d-M-y', strtotime($arr['tgl'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['jam']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['tmpt']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, "");
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['kegiatan']);
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, "");
+                $no++;
+            }
+            
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="jadwal-pelatihan.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
+        
     }
 
 }

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\TblMonitoringService;
+use app\models\TblMonitoringDservice;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -157,10 +158,10 @@ class MserviceController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
+
         $details = [];
         $i = 0;
-        
+
         foreach ($models as $key => $val) {
             $detail = \app\models\Tblmonitoringdservice::findAll(['no' => $val['no_mservice']]);
             if (!empty($detail)) {
@@ -299,7 +300,125 @@ class MserviceController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/moservicekendaraan", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/moservicekendaraan", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/monitoring-service.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 7;
+            $objPHPExcel->getActiveSheet()->setCellValue('E1', "Periode :  " . date('d F Y', strtotime($params['tanggal']['startDate'])) . ' S/D ' . date('d F Y', strtotime($params['tanggal']['endDate'])));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 70 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//
+                $detail = TblMonitoringDservice::findAll(['no' => $arr['no_mservice']]);
+//                $n = 0;
+                $arr_detail = [];
+                foreach ($detail as $ky => $val) {
+                    $arr_detail[$ky]['ket'] = $val->ket_service;
+                    $arr_detail[$ky]['biaya'] = Yii::$app->landa->rp($val->biaya);
+                }
+////                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':L' . $row)->getFont()->setSize(9);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':L' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no)
+                        ->setCellValue('B' . $row, Yii::$app->landa->date2Ind(date('d-M-Y', strtotime($arr['tgl']))))
+                        ->setCellValue('C' . $row, $arr['nopol'])
+                        ->setCellValue('D' . $row, $arr['merk'])
+                        ->setCellValue('E' . $row, $arr['tipe'])
+                        ->setCellValue('F' . $row, $arr['model'])
+                        ->setCellValue('G' . $row, $arr['warna'])
+                        ->setCellValue('H' . $row, $arr['user'])
+                        ->setCellValue('I' . $row, Yii::$app->landa->rp($arr['total_biaya']));
+//
+                if (count($arr_detail) > 1) {
+                    $row_awl = $row;
+                    $row = $row_awl + (count($arr_detail) - 1);
+                    $objPHPExcel->getActiveSheet()->mergeCells("A{$row_awl}:A{$row}")
+                            ->mergeCells("B{$row_awl}:B{$row}")
+                            ->mergeCells("C{$row_awl}:C{$row}")
+                            ->mergeCells("D{$row_awl}:D{$row}")
+                            ->mergeCells("E{$row_awl}:E{$row}")
+                            ->mergeCells("F{$row_awl}:F{$row}")
+                            ->mergeCells("G{$row_awl}:G{$row}")
+                            ->mergeCells("H{$row_awl}:H{$row}")
+                            ->mergeCells("I{$row_awl}:I{$row}");
+                    $objPHPExcel->getActiveSheet()->getStyle("A{$row_awl}:A{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("B{$row_awl}:B{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("C{$row_awl}:C{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("D{$row_awl}:D{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("E{$row_awl}:E{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("F{$row_awl}:F{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("G{$row_awl}:G{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("I{$row_awl}:I{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->getStyle("H{$row_awl}:H{$row}")->applyFromArray($background);
+
+                    $r = 0;
+                    foreach ($arr_detail as $key => $val) {
+                        $r = $row_awl + $key;
+                        $objPHPExcel->getActiveSheet()->mergeCells("J{$r}:K{$r}");
+                        $objPHPExcel->getActiveSheet()->getStyle("J{$r}:L{$r}")->getFont()->setSize(9);
+                        $objPHPExcel->getActiveSheet()->getStyle("J{$r}:L{$r}")->applyFromArray($background);
+                        $objPHPExcel->getActiveSheet()->setCellValue("J" . $r, $val['ket'])
+                                ->setCellValue("L" . $r, $val['biaya']);
+                    }
+                } else if (count($arr_detail) == 1) {
+                    $objPHPExcel->getActiveSheet()->mergeCells("J{$row}:K{$row}");
+                    $objPHPExcel->getActiveSheet()->getStyle("J{$row}:L{$row}")->getFont()->setSize(9);
+                    $objPHPExcel->getActiveSheet()->getStyle("J{$row}:L{$row}")->applyFromArray($background);
+                    $objPHPExcel->getActiveSheet()->setCellValue("J" . $row, $arr_detail[0]['ket'])
+                            ->setCellValue("L" . $row, $arr_detail[0]['biaya']);
+                }
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-monitoring-service.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

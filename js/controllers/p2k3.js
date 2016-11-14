@@ -1,10 +1,11 @@
-app.controller('timP2k3Ctrl', function($scope, Data, toaster) {
+app.controller('timP2k3Ctrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
+    $scope.detp2k3 = [{}];
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
@@ -19,29 +20,52 @@ app.controller('timP2k3Ctrl', function($scope, Data, toaster) {
             param['filter'] = tableState.search.predicateObject;
         }
         paramRef = param;
-        Data.get('timp2k3', param).then(function(data) {
+        Data.get('timp2k3', param).then(function (data) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
         $scope.isLoading = false;
     };
-     $scope.open1 = function ($event) {
+    $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened1 = true;
     };
+    $scope.print = function () {
+        Data.get('timp2k3', paramRef).then(function (data) {
+            window.open('api/web/timp2k3/excel?print=true');
+        });
+    }
 
     $scope.cari = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
             Data.get('karyawan/cari', data).then(function (data) {
                 $scope.listKaryawan = data.data;
+
             });
         }
     };
-    $scope.retKaryawan = function (item, form) {
-        form.nik_karyawan = item.nik;
-        form.bagian = item.department;
+    $scope.retKaryawan = function (det, item) {
+        det.nik_karyawan = item.nik;
+        det.jabatan = item.jabatan;
+    };
+    $scope.addrow = function () {
+        $scope.detp2k3.push({
+            id: 0,
+            karyawan: [],
+            bagian: '',
+            jabatan: '',
+            keterangan: '',
+        });
+    };
+    $scope.removeRow = function (paramindex) {
+        var comArr = eval($scope.detp2k3);
+        if (comArr.length > 1) {
+            $scope.detp2k3.splice(paramindex, 1);
+        } else {
+            alert("Something gone wrong");
+        }
     };
 
     $scope.create = function (form) {
@@ -70,7 +94,11 @@ app.controller('timP2k3Ctrl', function($scope, Data, toaster) {
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.no_tim;
     };
-    $scope.save = function (form) {
+    $scope.save = function (data,detail) {
+        var form = {
+          form:data,
+          detail:detail
+        };
         var url = ($scope.is_create == true) ? 'timp2k3/create/' : 'timp2k3/update/' + form.no_tim;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {

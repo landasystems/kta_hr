@@ -10,14 +10,14 @@ if (!isset($_GET['print'])) {
         <td rowspan="2" style="text-align: center;">
             LAPORAN MASTER KENDARAAN
         </td>
-        <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td rowspan="2" colspan="2"style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
         <td colspan="2" style="text-align: center;">Diketahui</td>
-        <td colspan="2" style="text-align: center;">Diperiksa</td>
+        <td  style="text-align: center;">Diperiksa</td>
         <td colspan="2" style="text-align: center;">Dibuat</td>
     </tr>
     <tr>
         <td colspan="2" style="width: 100px;height: 80px;"></td>
-        <td colspan="2" style="width: 100px;"></td>
+        <td  style="width: 100px;"></td>
         <td colspan="2" style="width: 100px;" ></td>
     </tr>
     <tr>

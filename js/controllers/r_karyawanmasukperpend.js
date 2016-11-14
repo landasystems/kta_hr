@@ -1,4 +1,4 @@
-app.controller('karyawanMasukCtrl', function ($scope, Data, toaster) {
+app.controller('karyawanMPendCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.form = {};

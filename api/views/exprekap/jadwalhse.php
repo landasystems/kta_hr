@@ -7,33 +7,19 @@ if (!isset($_GET['print'])) {
 //$start = $params['tanggal']['startDate'];
 //$end = $params['tanggal']['endDate'];
 ?>
-<div style="font-size: 10px;">
-    <table>
-        <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
-            <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="font-size: 10px;">Autobody, Manufacturing - Transport Services</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td style="font-size: 10px;">Minning Contractor - Trading Channel</td>
-            <td></td>
-        </tr>
-    </table>
-</div>
-
-<br>
-<br>
-<hr>
-<div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
-<center><h4>LAPORAN JADWAL HSE TALK</h4><br/></center>
-<span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
-
 <table width="100%" border="1" style="border-collapse: collapse">
     <thead>
+        <tr>
+            <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
+            <td rowspan="2" style="text-align: center;">
+                <h3>LAPORAN HSE TALK</h3><br>Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+            <td style="text-align: center;">Diketahui</td>
+            <td style="text-align: center;">Dibuat</td>
+        </tr>
+        <tr>
+            <td style="width: 100px;height: 80px;"></td>
+            <td style="width: 100px;" ></td>
+        </tr>
         <tr>
             <th style="text-align: center;vertical-align: center;">NO</th>
             <th style="text-align: center;vertical-align: center;">TANGGAL HSE</th>
@@ -47,7 +33,7 @@ if (!isset($_GET['print'])) {
         foreach ($models as $val) {
             echo '<tr>';
             echo '<td align="center">' . $no . '</td>';
-            echo '<td align="center">' . $val['tgl_hse'] . '</td>';
+            echo '<td align="center">' . date("d-m-Y", strtotime($val['tgl_hse'])) . '</td>';
             echo '<td align="center">' . $val['nama'] . '</td>';
             echo '<td align="center">' . $val['materi'] . '</td>';
             $no++;

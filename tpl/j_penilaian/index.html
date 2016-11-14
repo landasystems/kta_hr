@@ -1,4 +1,4 @@
-<div ng-app="app" ng-controller="jadwalPenilaianCtrl">
+<div ng-app="app" ng-controller="mjadwalPenilaianCtrl">
     <div class="bg-light lter b-b wrapper-md">
         <h1 class="m-n font-thin h3">Jadwal - Penilaian</h1>
     </div>
@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Tanggal</label>
                             <div class="col-sm-9">
-                                <input st-search="tgl_penilaian" class="form-control"/>
+                                <input date-range-picker class="form-control" st-search="tanggal" type="text"  ng-model="tanggals">
                             </div>
                         </div>
                         <div class="form-group">

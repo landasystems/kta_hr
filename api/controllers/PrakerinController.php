@@ -265,7 +265,76 @@ class PrakerinController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/exprekap/siswaprakerin", ['models' => $models, 'start' => $start, 'end' => $end]);
+
+        if (isset($_GET['print'])) {
+
+            return $this->render("/exprekap/siswaprakerin", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/siswa-prakerin.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 5;
+//
+            $objPHPExcel->getActiveSheet()->setCellValue('C3', " PERIODE :  " . date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(75);
+            $offsetX = 70 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 0;
+            foreach ($models as $r => $arr) {
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->mergeCells('A' . $row . ':B' . $row)->setCellValue('A' . $row, $r + 1);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['bagian']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, date('d-M-y', strtotime($arr['tgl_mulai'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, date('d-M-y', strtotime($arr['tgl_selesai'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $arr['asal_sekolah']);
+////                    
+            }
+////
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="siswa-prakerin.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

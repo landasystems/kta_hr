@@ -10,7 +10,7 @@ if (!isset($_GET['print'])) {
 <div style="font-size: 10px;">
     <table>
         <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+            <td rowspan="3" style="width:10% !important;"><img src="../../../img/logo.png" align="left" style="margin-right: 8px"/></td>
             <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
             <td></td>
         </tr>
@@ -34,7 +34,7 @@ if (!isset($_GET['print'])) {
     <thead>
         <tr>
             <th colspan="3" rowspan="2">
-    <center><h3>REKAP KARYAWAN MASUK PER GAJI</h3></center>
+    <center><h3>REKAP KARYAWAN MASUK</h3></center>
     <span>PERIODE : <?= date('d F Y', strtotime($start)) . ' S/D ' . date('d F Y', strtotime($end)); ?></span>
 </th>
 <th>Dibuat</th>

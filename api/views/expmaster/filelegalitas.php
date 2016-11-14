@@ -9,7 +9,7 @@ if (!isset($_GET['print'])) {
     <tr>
         <td rowspan="2" style="text-align: center;"><img class="img-responsive" src="../../../img/logo.png"></td>
         <td rowspan="2" style="text-align: center;">
-             LAPORAN MASTER FILE LEGALITAS
+            LAPORAN MASTER FILE LEGALITAS
         </td>
         <td rowspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
         <td style="text-align: center;">Diketahui</td>
@@ -33,10 +33,11 @@ if (!isset($_GET['print'])) {
         <th>Keterangan</th>
     </tr>
     <?php
+    $no = 1;
     foreach ($models as $arr) {
         ?>
         <tr>
-            <td >&nbsp;<?= $arr['no'] ?></td>
+            <td >&nbsp;<?= $no ?></td>
             <td >&nbsp;<?= $arr['no_file'] ?></td>
             <td style="text-align: center; text-transform: uppercase;">&nbsp;<?= $arr['nm_file'] ?></td>
             <td style="text-transform: uppercase;">&nbsp;<?= $arr['instansi'] ?></td>
@@ -46,7 +47,10 @@ if (!isset($_GET['print'])) {
             <td style="text-transform: uppercase;">&nbsp;<?= $arr['keterangan'] ?></td>
 
         </tr>
-    <?php } ?>
+        <?php
+        $no++;
+    }
+    ?>
 </table>
 
 <?php

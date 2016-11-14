@@ -137,9 +137,9 @@ class PenilaiankontrakController extends Controller {
         $getInstance = $query->createCommand();
         $model = $getInstance->queryOne();
         $this->setHeader(200);
-        
-         session_start();
-         $_SESSION['excell'] = $model;
+
+        session_start();
+        $_SESSION['excell'] = $model;
         echo json_encode(array('status' => 1, 'data' => $model), JSON_PRETTY_PRINT);
     }
 
@@ -239,7 +239,6 @@ class PenilaiankontrakController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-//        $params = $_SESSION['params'];
 
         $penilaian = function($angka) {
             $hasil = '';
@@ -254,18 +253,95 @@ class PenilaiankontrakController extends Controller {
             }
             return $hasil;
         };
+        if (isset($_GET['print'])) {
+            return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
+        } else {
+             $data = array();
+            $i = 0;
 
-        return $this->render("/exprekap/rekapnilaikontrak", ['models' => $models, 'penilaian' => $penilaian]);
+            $path = \Yii::$app->params['path'] . 'api/templates/penilaian-kontrak.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 8;
+            $objPHPExcel->getActiveSheet()->setCellValue('A6', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 100 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':Q' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date('d-M-y', strtotime($arr['tgl'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['nm_kontrak']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $penilaian($arr['mutu_kerja']));
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $penilaian($arr['pengetahuan_teknis']));
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $penilaian($arr['tgjawab_pekerjaan']));
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $penilaian($arr['kerjasama_komunikasi']));
+                $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, $penilaian($arr['sikap_kerja']));
+                $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, $penilaian($arr['inisiatif']));
+                $objPHPExcel->getActiveSheet()->setCellValue('J' . $row, $penilaian($arr['rasa_turut_memiliki']));
+                $objPHPExcel->getActiveSheet()->setCellValue('K' . $row, $penilaian($arr['disiplinitas']));
+                $objPHPExcel->getActiveSheet()->setCellValue('L' . $row, $penilaian($arr['kepemimpinan']));
+                $objPHPExcel->getActiveSheet()->setCellValue('M' . $row, $penilaian($arr['pelaksanaan_managerial']));
+                $objPHPExcel->getActiveSheet()->setCellValue('N' . $row, $penilaian($arr['problem_solving']));
+                $objPHPExcel->getActiveSheet()->setCellValue('O' . $row, $penilaian($arr['kehadiran']));
+                $objPHPExcel->getActiveSheet()->setCellValue('P' . $row, $penilaian($arr['administratif']));
+                $objPHPExcel->getActiveSheet()->setCellValue('Q' . $row, $arr['keterangan']);
+                $no++;
+            }
+            
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="penilaian-kontrak.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
+
     public function actionExcell() {
         session_start();
         $models = $_SESSION['excell'];
-        echo $models.'a';
+        echo $models . 'a';
 //        $query->offset("");
 //        $query->limit("");
 //        $command = $query->createCommand();
 //        $models = $command->queryAll();
-        
 ////        $params = $_SESSION['params'];
 //
 //        $penilaian = function($angka) {
@@ -317,13 +393,13 @@ class PenilaiankontrakController extends Controller {
         if ($params['tipe'] == 'kelompok') {
             $adWhere = (!empty($params['Section']['id_section'])) ? ' AND kar.section="' . $params['Section']['id_section'] . '"' : '';
             $query->andWhere('(pen.tgl <="' . date('Y-m-d', strtotime($params['tanggal'])) . '")' . $adWhere);
-            if(!empty($params['Department']['id_department'])){
+            if (!empty($params['Department']['id_department'])) {
                 $query->andWhere(['department' => $params['Department']['id_department']]);
             }
-            if(!empty($params['Jabatan']['id_jabatan'])){
+            if (!empty($params['Jabatan']['id_jabatan'])) {
                 $query->andWhere(['jabatan' => $params['Jabatan']['id_jabatan']]);
             }
-            if(!empty($params['SubSection']['kd_kerja'])){
+            if (!empty($params['SubSection']['kd_kerja'])) {
                 $query->andWhere(['sub_section' => $params['SubSection']['kd_kerja']]);
             }
         } else {

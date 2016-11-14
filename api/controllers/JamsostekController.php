@@ -299,10 +299,131 @@ class JamsostekController extends Controller {
             } else {
                 $details = [];
             }
-//            $models[$key]['perusahaan'] = (!empty($perusahaan)) ? $perusahaan : [];
-//            $models[$key]['bagian'] = (!empty($bagian)) ? $bagian : [];
         }
-        return $this->render("/expmaster/jamsostek", ['models' => $models, 'details' => $details]);
+
+        if (isset($_GET['print'])) {
+            return $this->render("/expmaster/jamsostek", ['models' => $models, 'details' => $details]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/master-bpjs.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 5;
+            $objPHPExcel->getActiveSheet()->setCellValue('E1', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 80 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 0;
+            foreach ($models as $r => $arr) {
+                $status = ($arr['status_pernikahan'] == 'Belum Kawin') ? "Belum" : "Kawin";
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+                 $detail = TblJamsostekDet::find()->where(['nik' => $arr['nik']])->all();
+                 $arr_detail=[];
+                 foreach ($detail as $ky => $val) {
+                        $arr_detail[$ky]['nn'] = $val->nn;
+                        $arr_detail[$ky]['kpj'] = $val->kpj;
+                        $arr_detail[$ky]['p_kepesertaan'] = date ('m-Y', strtotime ($val->periode_kepesertaan));
+                        $arr_detail[$ky]['jht'] = $val->jht;
+                        $arr_detail[$ky]['jkm'] = $val->jkm;
+                        $arr_detail[$ky]['jkk'] = $val->jkk;
+                        $arr_detail[$ky]['kpj'] = $val->kpj;
+                        $arr_detail[$ky]['pensiun'] = $val->pensiun;
+                        $arr_detail[$ky]['iuran'] = $val->iuran;
+                        $arr_detail[$ky]['keterangan'] = $val->keterangan;
+                    }
+                    
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':M' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $arr['nik']);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $arr['nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $status);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['upah_tetap']);
+                
+                 if (count($arr_detail) > 1) {
+                        $row_awl = $row;
+                        $row = $row_awl + (count($arr_detail) - 1);
+                        $objPHPExcel->getActiveSheet()->mergeCells("A{$row_awl}:A{$row}")
+                                ->mergeCells("B{$row_awl}:B{$row}")
+                                ->mergeCells("C{$row_awl}:C{$row}")
+                                ->mergeCells("D{$row_awl}:D{$row}");
+                                
+                        $objPHPExcel->getActiveSheet()->getStyle("A{$row_awl}:A{$row}")->applyFromArray($background);
+                        $objPHPExcel->getActiveSheet()->getStyle("B{$row_awl}:B{$row}")->applyFromArray($background);
+                        $objPHPExcel->getActiveSheet()->getStyle("C{$row_awl}:C{$row}")->applyFromArray($background);
+                        $objPHPExcel->getActiveSheet()->getStyle("D{$row_awl}:D{$row}")->applyFromArray($background);
+                        $n = 1;
+                        $r = 0;
+                        foreach ($arr_detail as $key => $val) {
+                            $r = $row_awl + $key;
+                            $objPHPExcel->getActiveSheet()->getStyle("E{$r}:M{$r}")->getFont()->setSize(9);
+                            $objPHPExcel->getActiveSheet()->getStyle("E{$r}:M{$r}")->applyFromArray($background);
+                            $objPHPExcel->getActiveSheet()->setCellValue("E" . $r, $val['nn'])
+                                    ->setCellValue("F" . $r,  $val['kpj'])
+                                    ->setCellValue("G" . $r, date ('m-Y', strtotime ($val['p_kepesertaan'])))
+                                    ->setCellValue("H" . $r, $val['jht'])
+                                    ->setCellValue("I" . $r, $val['jkm'])
+                                    ->setCellValue("J" . $r, $val['jkk'])
+                                    ->setCellValue("K" . $r, $val['pensiun'])
+                                    ->setCellValue("L" . $r, $val['iuran'])
+                                    ->setCellValue("M" . $r, $val['keterangan']);
+                            $n++;
+                        }
+                    } else if (count($arr_detail) == 1) {
+                        $objPHPExcel->getActiveSheet()->getStyle("E{$row}:M{$row}")->getFont()->setSize(9);
+                        $objPHPExcel->getActiveSheet()->getStyle("E{$row}:M{$row}")->applyFromArray($background);
+                         $objPHPExcel->getActiveSheet()->setCellValue("E" . $row, $arr_detail[0]['nn'])
+                                    ->setCellValue("F" . $row,  $arr_detail[0]['kpj'])
+                                    ->setCellValue("G" . $row, date ('m-Y', strtotime ($arr_detail[0]['p_kepesertaan'])))
+                                    ->setCellValue("H" . $row, $arr_detail[0]['jht'])
+                                    ->setCellValue("I" . $row, $arr_detail[0]['jkm'])
+                                    ->setCellValue("J" . $row, $arr_detail[0]['jkk'])
+                                    ->setCellValue("K" . $row, $arr_detail[0]['pensiun'])
+                                    ->setCellValue("L" . $row, $arr_detail[0]['iuran'])
+                                    ->setCellValue("M" . $row, $arr_detail[0]['keterangan']);
+                    }
+                
+            }
+//
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="master-bpjs.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
     public function actionCari() {

@@ -32,7 +32,7 @@
                                                             <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Pemakaian LAT<span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="excelkeluar(form)">Export Excel</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -62,9 +62,9 @@
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
                             <td align="center">{{row.no_pemakian}}</td>
-                            <td align="center">{{row.tgl}}</td>
+                            <td align="center">{{row.tgl | date}}</td>
                             <td align="center">{{row.biaya}}</td>
-                            <td align="center">{{row.jmlh}}</td>
+                            <td align="right">{{row.jmlh | currency}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

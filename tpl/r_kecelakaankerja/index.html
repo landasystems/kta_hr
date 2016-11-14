@@ -32,7 +32,7 @@
                                                             <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Lap. Kecelakaan Kerja<span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="excelkeluar(form)">Export Excel</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -55,7 +55,7 @@
                             <th style="text-align: center;vertical-align: center;">TANGGAL KEJADIAN</th>
                             <th style="text-align: center;vertical-align: center;">NIK</th>
                             <th style="text-align: center;vertical-align: center;">NAMA</th>
-                            <th style="text-align: center;vertical-align: center;">BAGIAN</th>
+                            <th style="text-align: center;vertical-align: center;">DEPARTMENT</th>
                             <th style="text-align: center;vertical-align: center;">KETERANGAN</th>
                             <th style="text-align: center;vertical-align: center;">BIAYA</th>
                         </tr>
@@ -63,12 +63,12 @@
                     <tbody ng-show="!isLoading">
                         <tr ng-repeat="row in list">
                             <td style="text-align: center">{{$index + 1}}</td>
-                            <td align="center">{{row.tgl_kejadian}}</td>
+                            <td align="center">{{row.tgl_kejadian | date}}</td>
                             <td align="center">{{row.nik}}</td>
                             <td align="center">{{row.nama}}</td>
                             <td align="center">{{row.bagian}}</td>
                             <td align="center">{{row.keterangan}}</td>
-                            <td align="center">{{row.biaya}}</td>
+                            <td align="center">{{row.biaya | currency}}</td>
                         </tr>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>

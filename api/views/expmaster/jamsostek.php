@@ -11,15 +11,15 @@ if (!isset($_GET['print'])) {
         <td colspan="3" rowspan="2" style="text-align: center;">
             LAPORAN MASTER BPJS KETENAGA KERJAAN
         </td>
-        <td rowspan="2" colspan="2" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
+        <td rowspan="2" colspan="3" style="text-align: center"> Tgl Pelaporan :  <?= date('d F Y'); ?> </td>
         <td colspan="2" style="text-align: center;">Diketahui</td>
         <td colspan="2" style="text-align: center;">Diperiksa</td>
-        <td colspan="3" style="text-align: center;">Dibuat</td>
+        <td colspan="2" style="text-align: center;">Dibuat</td>
     </tr>
     <tr>
         <td colspan="2" style="width: 100px;height: 80px;"></td>
         <td colspan="2" style="width: 100px;"></td>
-        <td colspan="3" style="width: 100px;" ></td>
+        <td colspan="2" style="width: 100px;" ></td>
     </tr>
 <!--</table><table width="100%" style="border-collapse: collapse; " border="1">-->
     <tr >

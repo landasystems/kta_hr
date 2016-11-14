@@ -1,4 +1,4 @@
-app.controller('atkMasukCtrl', function ($scope, Data, toaster) {
+app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
     //init data
     var tableStateRef;
     var paramRef;
@@ -118,7 +118,8 @@ app.controller('atkMasukCtrl', function ($scope, Data, toaster) {
     $scope.cariPegawai = function (nama) {
         if (nama.length > 2) {
             var data = {nama: nama};
-            Data.get('karyawan/cari', data).then(function (data) {
+            Data.get('atkmasuk/carikar', data).then(function (data) {
+                
                 $scope.detPegawai = data.data;
             });
         }

@@ -33,7 +33,7 @@
                                                                 <span class="caret"></span></button>
                                                             <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
                                                                 <li><a href="#" ng-click="print(form)">Cetak</a></li>
-                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                                <li><a href="#" ng-click="excelkeluar(form)">Export Excel</a></li>
                                                             </ul>
                                                         </div>
                                                     </td>
@@ -52,14 +52,17 @@
                 <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th style="text-align: center;vertical-align: center;">NO </th>
-                            <th style="text-align: center;vertical-align: center;">TANGGAL</th>
-                            <th style="text-align: center;vertical-align: center;">JENIS PELATIHAN</th>
-                            <th style="text-align: center;vertical-align: center;">SUMBER PELATIHAN</th>
-                            <th style="text-align: center;vertical-align: center;">JUMLAH PESERTA</th>
-                            <th style="text-align: center;vertical-align: center;">BAHASAN </th>
-                            <th style="text-align: center;vertical-align: center;">ALAT PERAGA</th>
-                            <th style="text-align: center;vertical-align: center;">KETERANGAN</th>
+                            <th rowspan="2"style="text-align: center;vertical-align: middle;">NO </th>
+                            <th rowspan="2"style="text-align: center;vertical-align: middle;">Jenis Pelatihan</th>
+                            <th rowspan="2"style="text-align: center;vertical-align: middle;">Sumber Pelatihan</th>
+                            <th rowspan="2"style="text-align: center;vertical-align: middle;">Waktu</th>
+                            <th rowspan="2"style="text-align: center;vertical-align: middle;">Jumlah Peserta</th>
+                            <th colspan="2" style="text-align: center;">Uraian Pelatihan</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: middle;">Keterangan</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;vertical-align: center;">Bahasan </th>
+                            <th style="text-align: center;vertical-align: center;">Alat Peraga</th>
                         </tr>
                     </thead>
                     <tbody ng-show="!isLoading">

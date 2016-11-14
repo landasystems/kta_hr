@@ -328,7 +328,75 @@ class SectionController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        return $this->render("/expmaster/section", ['models' => $models]);
+        
+         if (isset($_GET['print'])) {
+           return $this->render("/expmaster/section", ['models' => $models]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/master-section.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 4;
+//
+            $objPHPExcel->getActiveSheet()->setCellValue('C1', " Tgl Pelaporan :  " . date("d F Y"));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A2');
+            $objDrawing->setHeight(70);
+            $offsetX = 100 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            foreach ($models as $r => $arr) {
+                $id_section = (!empty($arr['id_section'])) ? $arr['id_section'] : '';
+                $section = (!empty($arr['section'])) ? $arr['section'] : '';
+                $department = (!empty($arr['department'])) ? $arr['department'] : '';
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $id_section);
+                $objPHPExcel->getActiveSheet()->mergeCells('B' . $row . ':C' . $row)->setCellValue('B' . $row, $section);
+                $objPHPExcel->getActiveSheet()->mergeCells('D' . $row . ':F' . $row)->setCellValue('D' . $row, $department);
+//
+            }
+//
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="master-section.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
 }

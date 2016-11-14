@@ -34,10 +34,11 @@ app.controller('kecelakaanKerjaCtrl', function($scope, Data, toaster) {
         }
     };
     $scope.retKaryawan = function (item, form) {
-//        console.log(item);
+//        console.log(item.);
         form.nik = item.nik;
         form.nama = item.nama;
-        form.bagian = item.bagian;
+        form.departement_nama = item.department;
+        form.department = item.dept;
     };
     $scope.open1 = function ($event) {
         $event.preventDefault();

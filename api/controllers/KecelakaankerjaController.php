@@ -102,7 +102,7 @@ class KecelakaankerjaController extends Controller {
                 ->from('tbl_kecelakaan_kerja as kec')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = kec.nik')
                 ->orderBy($sort)
-                ->select("*,kec.sub_section as bagian");
+                ->select("*,kec.department as bagian");
 
         //filter
         if (isset($params['filter'])) {
@@ -117,11 +117,14 @@ class KecelakaankerjaController extends Controller {
         }
         $command = $query->createCommand();
         $models = $command->queryAll();
-        foreach($models as $key => $val){
-            if(!empty($val['nik'])){
+        foreach ($models as $key => $val) {
+            if (!empty($val['nik'])) {
                 $karyawan = \app\models\TblKaryawan::findOne($val['nik']);
-                if(!empty($karyawan)){
+                $depart = \app\models\Department::findOne($karyawan->department);
+                if (!empty($karyawan)) {
                     $models[$key]['karyawan'] = $karyawan->attributes;
+                    $models[$key]['departement_nama'] = $depart->department;
+                    $models[$key]['departement'] = $depart->id_department;
                 }
             }
         }
@@ -146,9 +149,10 @@ class KecelakaankerjaController extends Controller {
 //                ->limit($limit)
                 ->from('tbl_kecelakaan_kerja as kec')
                 ->join('LEFT JOIN', 'tbl_karyawan as kar', 'kar.nik = kec.nik')
+                ->join('LEFT JOIN', 'tbl_department as dpr', 'dpr.id_department = kec.department')
                 ->where('(kec.tgl_kejadian >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND kec.tgl_kejadian <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
-                ->select("*,kec.sub_section as bagian");
+                ->select("*,dpr.department as bagian");
 
         session_start();
         $_SESSION['query'] = $query;
@@ -176,7 +180,6 @@ class KecelakaankerjaController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new TblKecelakaanKerja();
         $model->attributes = $params;
-        $model->sub_section = $params['bagian'];
 //        $model->tgl = date('Y-m-d',strtotime($model->tgl));
 
         if ($model->save()) {
@@ -192,7 +195,6 @@ class KecelakaankerjaController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
         $model->attributes = $params;
-        $model->sub_section = $params['bagian'];
 
         if ($model->save()) {
             $this->setHeader(200);
@@ -261,7 +263,76 @@ class KecelakaankerjaController extends Controller {
         $models = $command->queryAll();
         $start = $params['tanggal']['startDate'];
         $end = $params['tanggal']['endDate'];
-        return $this->render("/exprekap/kecelakaankerja", ['models' => $models, 'start' => $start, 'end' => $end]);
+        if (isset($_GET['print'])) {
+           return $this->render("/exprekap/kecelakaankerja", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
+            $data = array();
+            $i = 0;
+
+            $path = \Yii::$app->params['path'] . 'api/templates/rekap-kecelakaan-kerja.xls';
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $objDrawing = new \PHPExcel_Worksheet_Drawing();
+            $objPHPExcel = $objReader->load($path);
+//
+            $background = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+                'alignment' => array(
+                    'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                ),
+                'font' => array(
+                    'bold' => false,
+                ),
+            );
+//
+            $border = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                    )
+                ),
+            );
+//
+            $baseRow = 6;
+            $objPHPExcel->getActiveSheet()->setCellValue('B4', "Tgl Pelaporan :  " . date('d F Y'));
+            $path_img = \Yii::$app->params['path'] . "/img/logo.png";
+            $objDrawing->setPath($path_img);
+            $objDrawing->setCoordinates('A1');
+            $objDrawing->setHeight(70);
+            $offsetX = 85 - $objDrawing->getWidth();
+            $objDrawing->setOffsetX($offsetX);
+            $objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+            $no = 1;
+            foreach ($models as $r => $arr) {
+
+//                set_time_limit(40);
+                if (isset($row))
+                    $row++;
+                else
+                    $row = $baseRow + $r;
+//                
+                $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+                $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+                $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':E' . $row)->applyFromArray($background);
+                $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $no);
+                $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, date("d-m-Y", strtotime($arr['tgl_kejadian'])));
+                $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['nik']);
+                $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['nama']);
+                $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['bagian']);
+                $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['keterangan']);
+                $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, Yii::$app->landa->rp($arr['biaya']));
+                $no++;
+            }
+
+            header("Content-type: application/vnd-ms-excel");
+            header('Content-Disposition: attachment;filename="rekap-kecelakaan-kerja.xlsx"');
+
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
+        }
     }
 
 }

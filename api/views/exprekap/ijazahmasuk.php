@@ -3,11 +3,12 @@ if (!isset($_GET['print'])) {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=excel-retur-Pergerakan-Barang.xls");
 }
+$path_img = \Yii::$app->params['path'] . "/img/logo.png";
 ?>
 <div style="font-size: 10px;">
     <table>
         <tr>
-            <td rowspan="3" style="width:10% !important;"><img ng-src="img/logo.png" align="left" style="margin-right: 8px"/></td>
+            <td rowspan="3" style="width:10% !important;"><img src="../../../img/logo.png" align="left" style="margin-right: 8px"/></td>
             <td style="width:40% !important;font-size: 14px !important;">PT. KARYA TUGAS ANDA</td>
             <td></td>
         </tr>
@@ -23,8 +24,6 @@ if (!isset($_GET['print'])) {
 </div>
 
 <br>
-<br>
-<hr>
 <div style="text-align: right">Dicetak: <?= date('d F Y'); ?></div>
 <table border="1" style="border-collapse: collapse;width:100%">
     <tr>

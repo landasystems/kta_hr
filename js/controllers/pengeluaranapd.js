@@ -31,7 +31,7 @@ app.controller('pengeluaranApdCtrl', function ($scope, Data, toaster) {
             window.location = 'api/web/pengeluaranapd/excel';
         });
     };
-    
+
     $scope.open1 = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -123,6 +123,12 @@ app.controller('pengeluaranApdCtrl', function ($scope, Data, toaster) {
 
     $scope.getPegawai = function (form, item) {
         form.nik_karyawan = item.nik;
+    };
+
+    $scope.getsec = function (id) {
+        Data.get("section/view/" + id).then(function (data) {
+            console.log(data);
+        });
     };
 
     $scope.retDetail = function (form) {

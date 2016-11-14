@@ -20,6 +20,7 @@ class MstnkController extends Controller {
                     'index' => ['get'],
                     'view' => ['get'],
                     'excel' => ['get'],
+                    'excelrekap' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
                     'rekap' => ['post'],
@@ -108,11 +109,14 @@ class MstnkController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
-                $query->andFilterWhere(['like', $key, $val]);
-//                }
+                if ($key == 'tanggal') {
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'tbl_monitoring_stnk.masa_berlaku', $start, $end]);
+                } else {
+                    $query->andFilterWhere(['like', $key, $val]);
+                }
             }
         }
 
@@ -122,9 +126,9 @@ class MstnkController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        if(!empty($models)){
-            foreach($models as $key => $val){
+
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
                 $file = \app\models\TblKendaraan::find()->where(['nopol' => $val['nopol']])->one();
                 $models[$key]['kendaraan'] = (!empty($file)) ? $file->attributes : [];
             }
@@ -147,7 +151,8 @@ class MstnkController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_monitoring_stnk')
-                ->where('(tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+//                ->where('(tgl >= "' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
+                ->where("YEAR(masa_berlaku) = '{$params['tahun']}'")
                 ->orderBy($sort)
                 ->select("*");
 
@@ -158,12 +163,12 @@ class MstnkController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
+        
 
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-
 
     public function actionView($id) {
 
@@ -256,8 +261,34 @@ class MstnkController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
+        $data = [];
+        foreach ($models as $key => $value) {
+            
+            $list = $this->Listbln2($value['masa_berlaku']);
+            $data[$key] = array_merge($value, $list);
+        }
+        
         $params = $_SESSION['params'];
-        return $this->render("/exprekap/mostnk", ['models' => $models, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+        return $this->render("/exprekap/mostnk", ['models' => $data, 'start' => $params['tanggal']['startDate'], 'end' => $params['tanggal']['endDate']]);
+    }
+    public function actionExcelrekap() {
+        session_start();
+        $query = $_SESSION['query'];
+        $query->offset("");
+        $query->limit("");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        
+        $data = [];
+        foreach ($models as $key => $value) {
+            
+            $list = $this->Listbln2($value['masa_berlaku']);
+            $data[$key] = array_merge($value, $list);
+        }
+        
+        $params = $_SESSION['params'];
+        return $this->render("/exprekap/mostnk", ['models' => $data, 'tahun' => $params['tahun']]);
     }
 
     public function actionCari() {
@@ -270,8 +301,31 @@ class MstnkController extends Controller {
 
         $command = $query->createCommand();
         $models = $command->queryAll();
+        
+        
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));
+    }
+     public function Listbln2($tanggal) {
+        
+        
+        
+        $arr_bln = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        $str = new \DateTime($tanggal);
+        $bln = $str->format("M");
+        $day = $str->format("d");
+        $format = $str->modify("last day of previous month");
+        $blns = $format->format("M");
+        $data = [];
+
+        foreach ($arr_bln as $key) {
+            if ($key == $bln) {
+                $data[$key] = ["day" => $day, "style" => "back-grey"];
+            } else {
+                $data[$key] = ["day" => "", "style" => ""];
+            }
+        }
+        return $data;
     }
 
 }
