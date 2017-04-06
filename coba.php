@@ -20,5 +20,5 @@ function getDatesFromRange($start, $end) {
 
 $a = getDatesFromRange('2010-10-01', '2010-10-05');
 echo json_encode($a);
-echo "test";
+echo "ajaaaaa";
 ?>
