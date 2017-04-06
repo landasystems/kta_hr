@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\TblDtransAtkKeluar;
 use app\models\TblHtransAtkKeluar;
+use app\models\DetSatuan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -103,7 +104,7 @@ class AtkkeluarController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_htrans_atk_keluar as atk')
-                ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg', 'atk.kd_karyawan=peg.nik')
                 ->orderBy($sort)
                 ->select("*");
 
@@ -111,11 +112,14 @@ class AtkkeluarController extends Controller {
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
             foreach ($filter as $key => $val) {
-//                if ($key == "kat") {
-//                    $query->andFilterWhere(['=', $key, $val]);
-//                } else {
-                $query->andFilterWhere(['like', $key, $val]);
-//                }
+                if ($key == 'tanggal') {
+                    $value = explode(' - ', $val);
+                    $start = date("Y-m-d", strtotime($value[0]));
+                    $end = date("Y-m-d", strtotime($value[1]));
+                    $query->andFilterWhere(['between', 'atk.tgl', $start, $end]);
+                } else {
+                    $query->andFilterWhere(['like', $key, $val]);
+                }
             }
         }
 
@@ -125,9 +129,9 @@ class AtkkeluarController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         $totalItems = $query->count();
-        
-        foreach($models as $key => $val){
-            if(!empty($val['kd_karyawan'])){
+
+        foreach ($models as $key => $val) {
+            if (!empty($val['kd_karyawan'])) {
                 $pegawai = \app\models\TblKaryawan::findOne($val['kd_karyawan']);
                 $models[$key]['karyawan'] = (!empty($pegawai)) ? $pegawai->attributes : array();
             }
@@ -137,6 +141,7 @@ class AtkkeluarController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
+
     public function actionRekap() {
         //init variable
         $params = json_decode(file_get_contents("php://input"), true);
@@ -150,8 +155,8 @@ class AtkkeluarController extends Controller {
         $query->offset($offset)
                 ->limit($limit)
                 ->from('tbl_dtrans_atk_keluar as det')
-                ->JOIN('LEFT JOIN','tbl_htrans_atk_keluar as atk' ,'det.no_trans = atk.no_transaksi')
-                ->join('LEFT JOIN', 'tbl_karyawan as peg','atk.kd_karyawan=peg.nik')
+                ->JOIN('LEFT JOIN', 'tbl_htrans_atk_keluar as atk', 'det.no_trans = atk.no_transaksi')
+                ->join('LEFT JOIN', 'tbl_karyawan as peg', 'atk.kd_karyawan=peg.nik')
                 ->where('(atk.tgl >="' . date('Y-m-d', strtotime($params['tanggal']['startDate'])) . '" AND atk.tgl <="' . date('Y-m-d', strtotime($params['tanggal']['endDate'])) . '")')
                 ->orderBy($sort)
                 ->select("*");
@@ -197,10 +202,11 @@ class AtkkeluarController extends Controller {
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
-                
+                $satuan = DetSatuan::findOne(['kode_atk' => $detail->kd_brng, 'id' => $detail->satuan_id]);
+                $hasil = (isset($satuan->konversi)) ? $detail->jmlh_brng * $satuan->konversi : $detail->jmlh_brng;
                 $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
-                if(!empty($stock)){
-                    $stock->jumlah_brng = ($stock->jumlah_brng - $detail->jmlh_brng);
+                if (!empty($stock)) {
+                    $stock->jumlah_brng = ($stock->jumlah_brng - $hasil);
                     $stock->save();
                 }
             }
@@ -224,14 +230,16 @@ class AtkkeluarController extends Controller {
                 $detail = TblDtransAtkKeluar::findOne($val['id']);
                 $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
                 if (empty($detail))
-                    $detail = new TblDtransAtkKeluar();                
+                    $detail = new TblDtransAtkKeluar();
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
-                
+                $satuan = DetSatuan::findOne(['kode_atk' => $detail->kd_brng, 'id' => $detail->satuan_id]);
+                $hasil = (isset($satuan->konversi)) ? $detail->jmlh_brng * $satuan->konversi : $detail->jmlh_brng;
+
                 $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
-                if(!empty($stock)){
-                    $stock->jumlah_brng = $stock->jumlah_brng + $jmlLama - $detail->jmlh_brng;
+                if (!empty($stock)) {
+                    $stock->jumlah_brng = ($stock->jumlah_brng - $jmlLama) + $hasil;
                     $stock->save();
                 }
             }
@@ -245,6 +253,14 @@ class AtkkeluarController extends Controller {
 
     public function actionDelete($id) {
         $model = $this->findModel($id);
+        $detail = TblDtransAtkKeluar::findAll(['no_trans' => $model->no_transaksi]);
+        foreach ($detail as $val) {
+            $details= TblDtransAtkKeluar::findOne($val->id);
+            $stock = \app\models\Tblstockatk::findOne($val->kd_brng);
+            $stock->jumlah_brng = $stock->jumlah_brng + $val->jmlh_brng;
+            $stock->save();
+            $details->delete();
+        }
 
         if ($model->delete()) {
             $this->setHeader(200);
@@ -302,8 +318,8 @@ class AtkkeluarController extends Controller {
         $command = $query->createCommand();
         $models = $command->queryAll();
         if (isset($_GET['print'])) {
-           return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
-     } else {
+            return $this->render("/exprekap/atkkeluar", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
             $data = array();
             $i = 0;
 
@@ -355,7 +371,7 @@ class AtkkeluarController extends Controller {
                 $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':I' . $row)->applyFromArray($background);
                 $objPHPExcel->getActiveSheet()->mergeCells("A{$row}:B{$row}");
                 $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $arr['no_transaksi'])
-                        ->setCellValue('C' . $row, date('d-m-Y',strtotime($arr['tgl'])))
+                        ->setCellValue('C' . $row, date('d-m-Y', strtotime($arr['tgl'])))
                         ->setCellValue('D' . $row, $arr['kd_brng'])
                         ->setCellValue('E' . $row, $arr['nm_brng'])
                         ->setCellValue('E' . $row, $arr['jmlh_brng'])
@@ -369,10 +385,7 @@ class AtkkeluarController extends Controller {
             $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
             $objWriter->save('php://output');
         }
-        
-        
     }
-    
 
     public function actionCari() {
         $params = $_REQUEST;

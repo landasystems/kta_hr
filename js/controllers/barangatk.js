@@ -2,6 +2,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
+    $scope.detSatuan = [{}];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
@@ -36,6 +37,20 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
             window.open('api/web/barangatk/excel?print=true');
         });
     }
+    $scope.addrow = function () {
+        $scope.detSatuan.push({ 
+            satuan: '',
+            konversi: 0, 
+        });
+    };
+     $scope.removeRow = function (paramindex) {
+        var comArr = eval($scope.detSatuan);
+        if (comArr.length > 1) {
+            $scope.detSatuan.splice(paramindex, 1);
+        } else {
+            alert("Satuan Dasar Tidak Bisa di Hapus");
+        }
+    };
     
     $scope.create = function(form) {
         $scope.is_create = true;
@@ -43,6 +58,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_view = false;
         $scope.formtitle = "Form Tambah Barang ATK";
         $scope.form = {};
+        $scope.detSatuan = [{}];
         Data.get('barangatk/kode',form).then(function(data){
             $scope.form.kode_brng = data.kode;
         });
@@ -53,6 +69,7 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = false;
         $scope.formtitle = "Edit Data : " + form.kode_brng;
+         $scope.detail(form.kode_brng);
     };
     $scope.view = function(form) {
         $scope.form = form;
@@ -60,10 +77,20 @@ app.controller('barangatkCtrl', function($scope, Data, toaster) {
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.kode_brng;
+        $scope.detail(form.kode_brng);
     };
-    $scope.save = function(form) {
+    $scope.detail = function(kode){
+         Data.post('barangatk/view', {kode:kode}).then(function(result) {
+             $scope.detSatuan = result.detail;
+         });
+    }
+    $scope.save = function(detail,form) {
+        var data = {
+          form:form,
+          detail:detail
+        };
         var url = ($scope.is_create == true) ? 'barangatk/create/' : 'barangatk/update/' + form.kode_brng;
-        Data.post(url, form).then(function(result) {
+        Data.post(url, data).then(function(result) {
             if (result.status == 0) {
                 toaster.pop('error', "Terjadi Kesalahan", result.errors);
             } else {

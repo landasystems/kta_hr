@@ -8,6 +8,7 @@ use app\models\TblHtransAtk;
 use app\models\TblHtransAtkKeluar;
 use app\models\TblDtransAtkKeluar;
 use app\models\TblDtransAtk;
+use app\models\DetSatuan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -22,11 +23,12 @@ class BarangatkController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'index' => ['get'],
-                    'view' => ['get'],
+                    'view' => ['post'],
                     'excel' => ['get'],
                     'excelstock' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
+                    'listsatuan' => ['post'],
                     'delete' => ['delete'],
                     'jenis' => ['get'],
                     'kode' => ['get'],
@@ -57,6 +59,18 @@ class BarangatkController extends Controller {
         }
 
         return true;
+    }
+     public function actionListsatuan() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $query = new Query;
+        $query->from('det_satuan')
+                ->select("*")
+                ->where([$params['tabel'] => $params['value']])
+                ->orderBy("konversi ASC");
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
     }
 
     public function actionKode() {
@@ -198,23 +212,33 @@ class BarangatkController extends Controller {
         echo json_encode(array('status' => 1, 'data' => $models), JSON_PRETTY_PRINT);
     }
 
-    public function actionView($id) {
-
-        $model = $this->findModel($id);
-
+    public function actionView() {
+        $params = json_decode(file_get_contents("php://input"), true);
+        $model = $this->findModel($params['kode']);
+        $model_all = DetSatuan::find()->where(['kode_atk' => $model->kode_brng])->all();
+        $detail = [];
+        foreach ($model_all as $key => $val) {
+            $detail[$key] = $val->attributes;
+        }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes), 'detail' => $detail), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = new Tblstockatk();
-        $model->attributes = $params;
-        
-        $model->merk = $params['merk'];
-        $model->keterangan = $params['keterangan'];
+        $model->attributes = $params['form'];
+        $model->merk = $params['form']['merk'];
+        $model->keterangan = $params['form']['keterangan'];
 
         if ($model->save()) {
+            foreach ($params['detail'] as $key => $val) {
+                $det = new DetSatuan();
+                $det->nama = $val['nama'];
+                $det->konversi = $val['konversi'];
+                $det->kode_atk = $model->kode_brng;
+                $det->save();
+            }
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -226,12 +250,26 @@ class BarangatkController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
         $model = $this->findModel($id);
-        $model->attributes = $params;
-        
-        $model->merk = $params['merk'];
-        $model->keterangan = $params['keterangan'];
+        $model->attributes = $params['form'];
+        $model->merk = $params['form']['merk'];
+        $model->keterangan = $params['form']['keterangan'];
 
         if ($model->save()) {
+            $list_id  = [];
+            foreach ($params['detail'] as $key => $val) {
+                if (isset($val['id'])) {
+                    $det = DetSatuan::findOne(['id' => $val['id']]);
+                } else {
+                    $det = new DetSatuan();
+                }
+                $det->nama = $val['nama'];
+                $det->konversi = $val['konversi'];
+                $det->kode_atk = $model->kode_brng;
+                $det->save();
+                $list_id[] = $det->id;
+            }
+            
+            $delete = DetSatuan::deleteAll("id NOT IN (". implode(',', $list_id) .") AND kode_atk='{$model->kode_brng}'");
             $this->setHeader(200);
             echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
@@ -295,10 +333,10 @@ class BarangatkController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        
-        
-         if (isset($_GET['print'])) {
-           return $this->render("/expmaster/barangatk", ['models' => $models]);
+
+
+        if (isset($_GET['print'])) {
+            return $this->render("/expmaster/barangatk", ['models' => $models]);
         } else {
             $data = array();
             $i = 0;
@@ -345,7 +383,7 @@ class BarangatkController extends Controller {
                     $row++;
                 else
                     $row = $baseRow + $r;
-                
+
                 $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
                 $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
                 $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
@@ -356,7 +394,7 @@ class BarangatkController extends Controller {
                 $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['jumlah_brng']);
                 $objPHPExcel->getActiveSheet()->mergeCells("F{$row}:G{$row}")->setCellValue('F' . $row, $arr['keterangan']);
             }
-            
+
             header("Content-type: application/vnd-ms-excel");
             header('Content-Disposition: attachment;filename="master-filelegalitas.xlsx"');
 
@@ -417,7 +455,7 @@ class BarangatkController extends Controller {
             }
         }
 
-        return $this->render("/exprekap/stockatk", ['models' => $models,'params'=> $params]);
+        return $this->render("/exprekap/stockatk", ['models' => $models, 'params' => $params]);
     }
 
     public function actionCari() {

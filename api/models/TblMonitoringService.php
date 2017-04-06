@@ -39,7 +39,7 @@ class TblMonitoringService extends \yii\db\ActiveRecord
     {
         return [
             [['no_mservice'], 'required'],
-            [['tgl'], 'safe'],
+            [['tgl','km'], 'safe'],
             [['total_biaya'], 'number'],
             [['no_mservice', 'nopol', 'merk', 'tipe', 'model', 'warna', 'thn_pembuatan'], 'string', 'max' => 20],
             [['no_rangka', 'no_mesin', 'user'], 'string', 'max' => 50]
@@ -56,6 +56,7 @@ class TblMonitoringService extends \yii\db\ActiveRecord
             'tgl' => 'Tgl',
             'nopol' => 'Nopol',
             'merk' => 'Merk',
+            'km' => 'KM',
             'tipe' => 'Tipe',
             'model' => 'Model',
             'warna' => 'Warna',

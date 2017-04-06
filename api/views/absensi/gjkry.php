@@ -117,7 +117,7 @@ foreach ($data as $value) {
         ?>
         <table >
             <tr style="line-height: 20px;">
-                <th style="font-size: 12px;width:331px" rowspan="2"class="border-right"><u>REKAPITULASI GAJI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
+                <th style="font-size: 12px;width:331px" rowspan="2"class="border-right"><u>REKAPITULASI ABSENSI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
             <th rowspan="2" style="font-size: 12px;text-align:left;">
                 Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y', $start)); ?> - <?= Yii::$app->landa->date2ind(date('d-m-Y', $end)) ?><br>
                 Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>
@@ -138,7 +138,7 @@ foreach ($data as $value) {
         ?>
         <table>
             <tr style="font-family: arial;font-size: 14;line-height: 20px;">
-                <th style="width:331px" rowspan="2" colspan="5"class="border-right"><u>REKAPITULASI GAJI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
+                <th style="width:331px" rowspan="2" colspan="5"class="border-right"><u>REKAPITULASI ABSENSI KARYAWAN BULANAN</u><br><center>FR-HRD-026</center></th>
             <th rowspan="2" colspan="10"style="text-align:left;">
                 Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y', $start)); ?> - <?= Yii::$app->landa->date2ind(date('d-m-Y', $end)) ?><br>
                 Tgl. Pelaporan : &nbsp;&nbsp;<?= Yii::$app->landa->date2ind(date('d-m-Y')); ?>

@@ -3,6 +3,7 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
+    $scope.ListSatuan = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
@@ -62,6 +63,16 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         $scope.form.tgl = new Date(form.tgl);
         $scope.retDetail(form);
     };
+    $scope.Listsat = function (kode) {
+//        console.log(kode);
+        var data = {
+            tabel: 'kode_atk',
+            value: kode,
+        }
+        Data.post('barangatk/listsatuan', data).then(function (result) {
+            $scope.ListSatuan[kode] = result.data;
+        });
+    };
     $scope.view = function (form) {
         $scope.is_edit = true;
         $scope.is_view = true;
@@ -69,12 +80,12 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         $scope.form = form;
         $scope.retDetail(form);
     };
-    $scope.save = function (form,detail) {
+    $scope.save = function (form, detail) {
         var data = {
-            form : form,
-            detail : detail
+            form: form,
+            detail: detail
         };
-        
+
         var url = ($scope.is_create == true) ? 'atkkeluar/create' : 'atkkeluar/update/' + form.no_transaksi;
         Data.post(url, data).then(function (result) {
             if (result.status == 0) {
@@ -114,6 +125,7 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         det.kd_brng = item.kode_brng;
         det.nm_brng = item.nama_brng;
         det.jumlah_brng = item.jumlah_brng;
+        $scope.Listsat(item.kode_brng);
     };
     $scope.cariPegawai = function (nama) {
         if (nama.length > 2) {
@@ -124,13 +136,16 @@ app.controller('atkKeluarCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.getPegawai= function (form, item) {
+    $scope.getPegawai = function (form, item) {
         form.kd_karyawan = item.nik;
     };
 
     $scope.retDetail = function (form) {
         Data.get('atkkeluar/view/' + form.no_transaksi).then(function (data) {
             $scope.detBarang = data.data;
+            angular.forEach($scope.detBarang, function (detail) {
+                $scope.Listsat(detail.kd_brng);
+            });
         });
     };
 

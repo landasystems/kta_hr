@@ -31,7 +31,7 @@ class TblDtransAtkKeluar extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['jmlh_brng'], 'integer'],
+            [['jmlh_brng','satuan_id'], 'integer'],
             [['no_trans', 'kd_brng', 'nm_brng'], 'string', 'max' => 20]
         ];
     }
@@ -45,6 +45,7 @@ class TblDtransAtkKeluar extends \yii\db\ActiveRecord
             'no_trans' => 'No Trans',
             'kd_brng' => 'Kd Brng',
             'nm_brng' => 'Nm Brng',
+            'satuan_id' => 'Satuan',
             'jmlh_brng' => 'Jmlh Brng',
         ];
     }

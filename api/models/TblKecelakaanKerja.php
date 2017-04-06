@@ -36,7 +36,7 @@ class TblKecelakaanKerja extends \yii\db\ActiveRecord
             [['biaya'], 'number'],
             [['no', 'nik'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 30],
-            [['sub_section'], 'string', 'max' => 50],
+//            [['sub_section'], 'string', 'max' => 50],
             [['keterangan'], 'string', 'max' => 100]
         ];
     }

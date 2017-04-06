@@ -487,6 +487,7 @@ class KaryawanController extends Controller {
         $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
         $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
         $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->nik_ketua = (!empty($params['Ketua']['nik'])) ? $params['Ketua']['nik'] : null;
         $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
         $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
         $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;
@@ -525,6 +526,7 @@ class KaryawanController extends Controller {
         $model->section = (!empty($params['Section']['id_section'])) ? $params['Section']['id_section'] : null;
         $model->sub_section = (!empty($params['SubSection']['kd_kerja'])) ? $params['SubSection']['kd_kerja'] : null;
         $model->jabatan = (!empty($params['Jabatan']['id_jabatan'])) ? $params['Jabatan']['id_jabatan'] : null;
+        $model->nik_ketua = (!empty($params['Ketua']['nik'])) ? $params['Ketua']['nik'] : null;
         $model->tgl_masuk_kerja = (!empty($params['tgl_masuk_kerja'])) ? date('Y-m-d', strtotime($params['tgl_masuk_kerja'])) : null;
         $model->Kontrak_1 = (!empty($params['Kontrak_1'])) ? date('Y-m-d', strtotime($params['Kontrak_1'])) : null;
         $model->Kontrak_11 = (!empty($params['Kontrak_11'])) ? date('Y-m-d', strtotime($params['Kontrak_11'])) : null;

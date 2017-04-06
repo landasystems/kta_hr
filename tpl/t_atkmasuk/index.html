@@ -134,6 +134,7 @@
                                         <th style="text-align: center;">Barang</th>
                                         <th style="text-align: center;">Stock Saat Ini</th>
                                         <th style="text-align: center;">Jumlah Pemasukan</th>
+                                        <th style="text-align: center">Satuan</th>
                                         <th style="width:10% !important;text-align: center;">#</th>
                                     </tr>
                                 </thead>
@@ -156,7 +157,12 @@
                                             {{det.jumlah_brng}}
                                         </td>
                                         <td style="alignment-adjust: middle!important;">
-                                            <input type="text" style="width:100%" class="form-control angka" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jmlh_brng" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="form-control" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jmlh_brng" ng-disabled="is_view">
+                                        </td>
+                                        <td style="alignment-adjust: middle!important;">
+                                            <select ng-model="det.satuan_id" class="form-control">
+                                                <option value="{{val.id}}" ng-selected="det.satuan_id == val.id" ng-repeat="val in ListSatuan[det.barang.kode_brng]">{{val.nama}}</option> 
+                                            </select>
                                         </td>
                                         <td style="text-align: center;">
                                             <button type="button" ng-disabled="is_view" class="btn btn-info fa fa-plus" ng-click="addrow()" ng-show="$index == 0" style="width:100%; height:34px;"></button>

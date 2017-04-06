@@ -32,7 +32,7 @@ class TblDtransAtk extends \yii\db\ActiveRecord
     {
         return [
             [['jmlh_brng'], 'integer'],
-            [['no_trans', 'kd_brng', 'nm_brng'], 'string', 'max' => 20]
+            [['no_trans', 'kd_brng', 'nm_brng','satuan_id'], 'string', 'max' => 20]
         ];
     }
 
@@ -46,6 +46,7 @@ class TblDtransAtk extends \yii\db\ActiveRecord
             'kd_brng' => 'Kd Brng',
             'nm_brng' => 'Nm Brng',
             'jmlh_brng' => 'Jmlh Brng',
+            'satuan_id' => 'Satuan',
         ];
     }
     

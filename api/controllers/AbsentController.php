@@ -169,10 +169,14 @@ class AbsentController extends Controller {
         $params = json_decode(file_get_contents("php://input"), true);
 
 
-        $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
-        $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
+        $begin = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
+        $end = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
 
-        for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
+         $end = $end->modify('+1 day');
+        $interval = new \DateInterval('P1D');
+        $daterange = new \DatePeriod($begin, $interval, $end);
+        $i=0;
+        foreach ($daterange as $date) {
             $model = new TblAbsent();
             if ($i == 0) {
                 $model->attributes = $params;
@@ -181,11 +185,12 @@ class AbsentController extends Controller {
             $model->nik = $params['nik'];
             $model->ket = (!empty($params['ket'] || isset($params['ket']))) ? $params['ket'] : '';
             $model->no_absent = $params['no_absent'];
-            $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
+           $model->tanggal = $date->format("Y-m-d");
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
 //            Yii::error($params['datesRange']['startDate']."===");
 //            Yii::error(date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate']))));
             $model->save();
+            $i++;
         }
         if ($model->save()) {
             $this->setHeader(200);
@@ -199,13 +204,15 @@ class AbsentController extends Controller {
     public function actionUpdate($id) {
         $params = json_decode(file_get_contents("php://input"), true);
 
-        $date1 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
-        $date2 = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
-//        Yii::error($params['datesRange']['startDate']."===");
-//        Yii::error($params['datesRange']['endDate']);
+        $begin = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['startDate'])));
+        $end = new \DateTime(date('Y-m-d', strtotime($params['datesRange']['endDate'])));
+        $end = $end->modify('+1 day');
+        $interval = new \DateInterval('P1D');
+        $daterange = new \DatePeriod($begin, $interval, $end);
 
         $deleteAll = TblAbsent::deleteAll('no_absent="' . $params['no_absent'] . '" AND nama is NULL AND tgl_pembuatan is NULL');
-        for ($i = 0; $i <= (int) ($date1->diff($date2)->d); $i++) {
+        $i = 0;
+        foreach ($daterange as $date) {
             if ($i == 0) {
                 $model = TblAbsent::findOne($id);
                 $model->attributes = $params;
@@ -216,9 +223,10 @@ class AbsentController extends Controller {
             $model->nik = $params['nik'];
             $model->ket = (!empty($params['ket'] || isset($params['ket']))) ? $params['ket'] : '';
             $model->no_absent = $params['no_absent'];
-            $model->tanggal = date('Y-m-d', strtotime('+' . $i . ' days', strtotime($params['datesRange']['startDate'])));
+            $model->tanggal = $date->format("Y-m-d");
             $model->tanggal_kembali = date('Y-m-d', strtotime($params['datesRange']['endDate']));
             $model->save();
+            $i++;
         }
         if ($model->save()) {
             $this->setHeader(200);

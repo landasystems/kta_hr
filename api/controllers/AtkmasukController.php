@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\TblDtransAtk;
 use app\models\TblHtransAtk;
+use app\models\DetSatuan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -119,7 +120,7 @@ class AtkmasukController extends Controller {
                 } elseif ($key == 'barang') {
                     $nm_barang = $this->namabarang($val);
                     $query->andWhere("no_transaksi in ('$nm_barang')");
-                }else{
+                } else {
                     $query->andFilterWhere(['like', $key, $val]);
                 }
             }
@@ -143,22 +144,21 @@ class AtkmasukController extends Controller {
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
     }
-    public function actionCarikar()
-    {
+
+    public function actionCarikar() {
         $params = $_REQUEST;
         $query = new Query;
         $query->from('tbl_karyawan as kar')->where('kar.nik like "%' . $params['nama'] . '%" OR kar.nama like "%' . $params['nama'] . '%" AND kar.status="Kerja"');
-                 $command = $query->createCommand();
+        $command = $query->createCommand();
         $models = $command->queryAll();
         $this->setHeader(200);
         $data = [];
-        foreach($models as $key => $val){
-            if($val['nik'] == "01027" OR $val['nik'] == "01025" OR $val['nik'] == '00909'){
-               $data[$key] = $val; 
+        foreach ($models as $key => $val) {
+            if ($val['nik'] == "01027" OR $val['nik'] == "01025" OR $val['nik'] == '00909') {
+                $data[$key] = $val;
             }
         }
         echo json_encode(array('status' => 1, 'data' => $data));
-        
     }
 
     public function namabarang($param) {
@@ -205,20 +205,23 @@ class AtkmasukController extends Controller {
     }
 
     public function actionView($id) {
-
-//        $model = $this->findModel($id);
+ 
         $detail = array();
-        $findDet = TblDtransAtk::findAll(['no_trans' => $id]);
-        if (!empty($findDet)) {
-            foreach ($findDet as $key => $val) {
-                $detail[$key] = $val->attributes;
-                $atk = \app\models\Tblstockatk::findOne($val->kd_brng);
+        $query = new Query;
+        $query ->select("*")->from('tbl_dtrans_atk')->where(['no_trans' => $id]);
+//        $findDet = TblDtransAtk::findAll(['no_trans' => $id]);
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        if (!empty($models)) {
+            foreach ($models as $key => $val) {
+                $detail[$key] = $val;
+                $atk = \app\models\Tblstockatk::findOne($val['kd_brng']);
                 $detail[$key]['barang'] = $atk->attributes;
                 $detail[$key]['jumlah_brng'] = $atk->jumlah_brng;
             }
         }
         $this->setHeader(200);
-        echo json_encode(array('status' => 1, 'data' => $detail), JSON_PRETTY_PRINT);
+        echo json_encode(array('status' => 1, 'data' => $detail,'id' => $id), JSON_PRETTY_PRINT);
     }
 
     public function actionCreate() {
@@ -228,14 +231,23 @@ class AtkmasukController extends Controller {
 
         if ($model->save()) {
             foreach ($params['detail'] as $key => $val) {
+
+                $satuan = DetSatuan::findOne(['kode_atk' => $val['kd_brng'], 'id' => $val['satuan_id']]);
+                $jml_awal = $val['jumlah_brng'];
+                $jml = $val['jmlh_brng'];
+                $hasil = (isset($satuan->konversi)) ? $jml * $satuan->konversi : $jml;
+                $stock = \app\models\Tblstockatk::findOne(['kode_brng' => $val['kd_brng']]);
+
+
                 $detail = new TblDtransAtk();
                 $detail->no_trans = $model->no_transaksi;
                 $detail->attributes = $val;
                 $detail->save();
 
-                $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
                 if (!empty($stock)) {
-                    $stock->jumlah_brng = ($stock->jumlah_brng + $detail->jmlh_brng);
+//                    $error = ['satuan' => $satuan->attributes, 'awl_brg' => $stock->jumlah_brng, 'hasil' => $hasil, 'penjumlahan' => ($jml_awal + $hasil)];
+//                    Yii::error($error);
+                    $stock->jumlah_brng = ($jml_awal + $hasil);
                     $stock->save();
                 }
             }
@@ -256,18 +268,38 @@ class AtkmasukController extends Controller {
         if ($model->save()) {
 //            $delDet = TblDtransAtk::deleteAll(['no_trans' => $model->no_transaksi]);
             foreach ($params['detail'] as $key => $val) {
+                $satuan = DetSatuan::findOne(['kode_atk' => $val['kd_brng'], 'id' => $val['satuan_id']]);
+                $jml_awal = $val['jumlah_brng'];
+                $jml = $val['jmlh_brng'];
+                $hasil = (isset($satuan->konversi)) ? $jml * $satuan->konversi : $jml;
+                //
                 $detail = TblDtransAtk::findOne($val['id']);
                 $jmlLama = (!empty($detail)) ? $detail->jmlh_brng : 0;
-                if (empty($detail))
-                    $detail = new TblDtransAtk();
-                $detail->no_trans = $model->no_transaksi;
-                $detail->attributes = $val;
-                $detail->save();
 
-                $stock = \app\models\Tblstockatk::findOne($detail->kd_brng);
-                if (!empty($stock)) {
-                    $stock->jumlah_brng = $stock->jumlah_brng - $jmlLama + $detail->jmlh_brng;
-                    $stock->save();
+                if (empty($detail)) {
+                    $detail = new TblDtransAtk();
+                    $detail->no_trans = $model->no_transaksi;
+                    $detail->attributes = $val;
+                    $detail->save();
+
+                    $stock = \app\models\Tblstockatk::findOne($val['kd_brng']);
+
+                    if (!empty($stock)) { 
+                        $stock->jumlah_brng = ($jml_awal + $hasil);
+                        $stock->save();
+                    }
+                    
+                } else {
+                    $detail->no_trans = $model->no_transaksi;
+                    $detail->attributes = $val;
+                    $detail->save();
+
+                    $stock = \app\models\Tblstockatk::findOne($val['kd_brng']);
+                    $pengurangan = $stock->jumlah_brng - $jmlLama;
+                    if (!empty($stock)) {
+                        $stock->jumlah_brng =  ($pengurangan + $hasil);
+                        $stock->save();
+                    }
                 }
             }
             $this->setHeader(200);
@@ -336,10 +368,10 @@ class AtkmasukController extends Controller {
         $query->limit("");
         $command = $query->createCommand();
         $models = $command->queryAll();
-        
+
         if (isset($_GET['print'])) {
-           return $this->render("/exprekap/atkmasuk", ['models' => $models, 'start' => $start, 'end' => $end]);
-    } else {
+            return $this->render("/exprekap/atkmasuk", ['models' => $models, 'start' => $start, 'end' => $end]);
+        } else {
             $data = array();
             $i = 0;
 
@@ -390,7 +422,7 @@ class AtkmasukController extends Controller {
                 $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
                 $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($background);
                 $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $arr['no_transaksi'])
-                        ->setCellValue('B' . $row, date('d-m-Y',strtotime($arr['tgl'])))
+                        ->setCellValue('B' . $row, date('d-m-Y', strtotime($arr['tgl'])))
                         ->setCellValue('C' . $row, $arr['kd_brng'])
                         ->setCellValue('D' . $row, $arr['nm_brng'])
                         ->setCellValue('E' . $row, $arr['jmlh_brng'])
@@ -404,7 +436,6 @@ class AtkmasukController extends Controller {
             $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
             $objWriter->save('php://output');
         }
-        
     }
 
     public function actionCari() {

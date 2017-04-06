@@ -104,6 +104,7 @@ app.controller('absensipenggajiankaryawanCtrl', function ($scope, Data, toaster,
             $scope.listnama = data.data;
         });
     };
+    $scope.listnm();
 
     $scope.listSrc = [];
     $scope.list = [];

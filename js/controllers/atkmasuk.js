@@ -3,6 +3,7 @@ app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
+    $scope.ListSatuan = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
@@ -49,6 +50,7 @@ app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
         $scope.form = {};
         $scope.form.tgl = new Date();
         $scope.detBarang = [{}];
+        $scope.barangAtk = [];
         Data.get('atkmasuk/kode').then(function (data) {
             $scope.form.no_transaksi = data.kode;
         });
@@ -61,6 +63,15 @@ app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
         $scope.form = form;
         $scope.form.tgl = new Date(form.tgl);
         $scope.retDetail(form);
+    };
+    $scope.Listsat = function (kode) {
+        var data = {
+            tabel: 'kode_atk',
+            value: kode,
+        }
+        Data.post('barangatk/listsatuan', data).then(function (result) {
+            $scope.ListSatuan[kode] = result.data;
+        });
     };
     $scope.view = function (form) {
         $scope.is_edit = true;
@@ -109,11 +120,13 @@ app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
             });
         }
     };
+   
 
     $scope.getBarangAtk = function (det, item) {
         det.kd_brng = item.kode_brng;
         det.nm_brng = item.nama_brng;
         det.jumlah_brng = item.jumlah_brng;
+         $scope.Listsat(item.kode_brng);
     };
     $scope.cariPegawai = function (nama) {
         if (nama.length > 2) {
@@ -130,8 +143,11 @@ app.controller('satkMasukCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.retDetail = function (form) {
-        Data.get('atkmasuk/view/' + form.no_transaksi).then(function (data) {
+        Data.get('atkmasuk/view/' + form.no_transaksi).then(function (data) { 
             $scope.detBarang = data.data;
+             angular.forEach($scope.detBarang, function (detail) {
+                $scope.Listsat(detail.kd_brng);
+            });
         });
     };
 

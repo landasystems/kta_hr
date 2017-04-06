@@ -59,12 +59,12 @@
                     </tbody>
                     <tbody ng-show="isLoading">
                         <tr>
-                            <td colspan="4" class="text-center">Loading ... </td>
+                            <td colspan="12" class="text-center">Loading ... </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
+                            <td colspan="12" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
                 </table>		
@@ -99,7 +99,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Merk</label>
                                 <div class="col-sm-8">
-                                    <input required type="text" class="form-control" ng-readonly="is_view" ng-model="form.merk">
+                                    <input type="text" class="form-control" ng-readonly="is_view" ng-model="form.merk">
                                 </div>
                             </div>
                         </div>
@@ -125,15 +125,48 @@
                             </div>
                         </div>
 
+                        <br> 
+                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Detail Satuan</div>
+                        
+                        <div class="col-md-12 col-sm-12">
+                            <table class="table table-bordered det-trans table-responsive">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 5%;text-align: center;vertical-align: middle"> 
+                                            <button type="button" ng-disabled="is_view" class="btn btn-success fa fa-plus" ng-click="addrow()"style="width:100%; height:34px;"></button></td>
+                                        <th style="text-align: center;vertical-align: middle">Satuan</th>
+                                        <th style="width: 20%;text-align: center;vertical-align: middle">Konversi</th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="det in detSatuan">
+                                       <td style="text-align: center;">
+                                           
+                                            <button type="button" ng-disabled="is_view" class="btn btn-danger fa fa-trash"ng-click="removeRow($index)" style="width:100%;height:34px;"></button>
+                                        </td>  
+                                        <td  >
+                                            <input type="text" placeholder="Nama Satuan"  class="form-control" ng-model="det.nama" ng-disabled="is_view">
+                                        </td>
+                                         
+                                        <td style="width: 50x;">
+                                            <input type="text"  placeholder="Jumlah Konversi" class="form-control"  ng-model="det.konversi" ng-disabled="is_view">
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
                         <br>
                         <div class="line line-dashed b-b line-lg pull-in"></div>
                         <div class="col-md-12 col-sm-12">
                             <center>
                                 <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan</button>
+                                <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(detSatuan,form)">&nbsp;Simpan</button>
                             </center>
                         </div>
                     </div>
+                    
                 </form>
             </div>
         </div>
