@@ -206,7 +206,11 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         var url = ($scope.is_create == true) ? 'karyawan/create/' : 'karyawan/update/' + form.nik;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
-                toaster.pop('error', "Terjadi Kesalahan", result.errors);
+             var error = '';
+                angular.forEach(result.errors, function ($value, $key) {
+                    error = error + $value + "\n";
+                });
+                toaster.pop('error', "Terjadi Kesalahan", error);
             } else {
                 $scope.is_edit = false;
                 $scope.callServer(tableStateRef); //reload grid ulang

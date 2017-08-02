@@ -77,7 +77,7 @@ class TblKaryawan extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['nik'], 'required'],
+           [['nik','status_karyawan','nama','initial','department','lokasi_kntr','status_kepemilikan','tgl_masuk_kerja','status'], 'required'],
             [['Kontrak_1', 'Kontrak_11', 'Kontrak_2', 'Kontrak_21', 'tgl_lahir', 'tgl_masuk_kerja', 'tgl_keluar_kerja'], 'safe'],
             [['gaji_pokok', 'mgm', 't_fungsional', 't_kehadiran', 'thp', 'upah_tetap', 'pesangon', 't_masa_kerja', 'penggantian_hak', 'normatif'], 'number'],
             [['nik', 'initial', 'status_kepemilikan', 'status_karyawan', 'department', 'section', 'sub_section', 'lokasi_kntr', 'tmt_kerja', 'pendidikan', 'tmpt_lahir', 'bulan_lahir', 'rt', 'rw', 'desa', 'kecamatan', 'kabupaten', 'kode_pos', 'no_ktp', 'agama', 'status_pernikahan', 'kewarganegaraan', 'kode_bank', 'nama_bank', 'jk', 'status', 'ket', 'no_npwp'], 'string', 'max' => 20],

@@ -23,6 +23,8 @@ class KaryawanController extends Controller {
                     'excel' => ['get'],
                     'excelkeluar' => ['get'],
                     'excelmasuk' => ['get'],
+                    'tes' => ['get'],
+                    'tes2' => ['get'],
                     'excelkontrak' => ['get'],
                     'create' => ['post'],
                     'update' => ['post'],
@@ -172,6 +174,285 @@ class KaryawanController extends Controller {
         $this->setHeader(200);
 
         echo json_encode(array('status' => 1, 'data' => $models, 'totalItems' => $totalItems), JSON_PRETTY_PRINT);
+    }
+
+    public function actionTes() {
+        set_time_limit(500);
+        $query = new Query;
+        $query->select("*")
+                ->from('tbl_karyawan k')
+                ->join('LEFT JOIN', 'pekerjaan as ss', 'ss.kd_kerja = k.sub_section')
+                ->join('LEFT JOIN', 'tbl_section as s', 's.id_section = k.section')
+                ->join('LEFT JOIN', 'tbl_department as d', 'd.id_department= k.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as j', 'j.id_jabatan = k.jabatan')
+                ->where(['status_karyawan' => 'Kontrak'])
+                ->andWhere(['status' => 'Kerja'])
+                ->orderBy("k.nik ASC");
+//        
+//        if($params['status'] = 'aktif'){
+//            $query->andWhere(['status' => 'Kerja']);
+//        }else{
+//            $query->andWhere(['status' => 'Keluar']);
+//        }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $path = \Yii::$app->params['path'] . 'api/templates/tes2.xls';
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+        $objPHPExcel = $objReader->load($path);
+//
+        $background = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                )
+            ),
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+            ),
+            'font' => array(
+                'bold' => false,
+            ),
+        );
+//
+        $border = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                )
+            ),
+        );
+//
+        $baseRow = 3;
+
+        $no = 0;
+        foreach ($models as $r => $arr) {
+            if (!empty($arr['nik_ketua'])) {
+                $tbl = TblKaryawan::findOne(['nik' => $arr['nik_ketua']]);
+                $ketua = $tbl->nama;
+            } else {
+                $ketua = '';
+            }
+            if (isset($row))
+                $row++;
+            else
+                $row = $baseRow + $r;
+////////
+            $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $r + 1);
+            $objPHPExcel->getActiveSheet()
+                    ->setCellValue('B' . $row, $arr['nama'])
+                    ->setCellValue('C' . $row, $arr['section'])
+                    ->setCellValue('D' . $row, $arr['Kontrak_1'])
+                    ->setCellValue('E' . $row, $arr['Kontrak_11'])
+                    ->setCellValue('F' . $row, $arr['Kontrak_2'])
+                    ->setCellValue('G' . $row, $arr['Kontrak_21']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $arr['nik']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['nama']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['initial']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['section']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['Kontrak_1']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $arr['Kontrak_11']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, $arr['Kontrak_2']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, $arr['Kontrak_21']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('J' . $row, $arr['status_kepemilikan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('K' . $row, $arr['status_karyawan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('L' . $row, $arr['department']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('M' . $row, $arr['section']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('N' . $row, $arr['kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('O' . $row, $arr['status_kelompok']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('P' . $row, $ketua);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Q' . $row, $arr['jabatan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('R' . $row, $arr['lokasi_kntr']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('S' . $row, $arr['pendidikan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('T' . $row, $arr['sekolah']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('U' . $row, $arr['jurusan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('V' . $row, $arr['no_ijazah']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('W' . $row, $arr['tmpt_lahir']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('X' . $row, $arr['tgl_lahir']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Y' . $row, $arr['alamat_jln']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Z' . $row, $arr['rt']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AA' . $row, $arr['rw']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AB' . $row, $arr['desa']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AC' . $row, $arr['kecamatan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AD' . $row, $arr['kabupaten']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AE' . $row, $arr['kode_pos']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AF' . $row, $arr['no_ktp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AG' . $row, $arr['agama']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AH' . $row, $arr['status_pernikahan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AI' . $row, $arr['kewarganegaraan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AJ' . $row, $arr['tgl_masuk_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AK' . $row, $arr['kode_bank']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AL' . $row, $arr['nama_bank']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AM' . $row, $arr['gaji_pokok']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AN' . $row, $arr['t_fungsional']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AO' . $row, $arr['t_kehadiran']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AP' . $row, $arr['thp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AQ' . $row, $arr['mgm']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AR' . $row, $arr['upah_tetap']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AS' . $row, $arr['pesangon']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AT' . $row, $arr['t_masa_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AU' . $row, $arr['penggantian_hak']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AF' . $row, $arr['normatif']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AW' . $row, $arr['jk']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AX' . $row, $arr['tgl_keluar_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AY' . $row, $arr['alasan_keluar']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AZ' . $row, $arr['status']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BA' . $row, $arr['ket']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BB' . $row, $arr['no_polis']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BC' . $row, $arr['nm_asuransi']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BD' . $row, $arr['no_npwp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BE' . $row, $arr['no_pasport']);
+//                  
+        }
+//
+        header("Content-type: application/vnd-ms-excel");
+        header('Content-Disposition: attachment;filename="karyawan-kontrak-aktif.xlsx"');
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
+    }
+    public function actionTes2() {
+        set_time_limit(500);
+        $query = new Query;
+        $query->select("*")
+                ->from('tbl_karyawan k')
+                ->join('LEFT JOIN', 'pekerjaan as ss', 'ss.kd_kerja = k.sub_section')
+                ->join('LEFT JOIN', 'tbl_section as s', 's.id_section = k.section')
+                ->join('LEFT JOIN', 'tbl_department as d', 'd.id_department= k.department')
+                ->join('LEFT JOIN', 'tbl_jabatan as j', 'j.id_jabatan = k.jabatan')
+                ->where(['status_karyawan' => 'Kontrak'])
+                ->andWhere(['status' => 'Keluar'])
+                ->orderBy("k.nik ASC");
+        
+//        if($params['status'] = 'aktif'){
+//            $query->andWhere(['status' => 'Kerja']);
+//        }else{
+//            $query->andWhere(['status' => 'Keluar']);
+//        }
+
+        $command = $query->createCommand();
+        $models = $command->queryAll();
+        $path = \Yii::$app->params['path'] . 'api/templates/tes2.xls';
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $objDrawing = new \PHPExcel_Worksheet_Drawing();
+        $objPHPExcel = $objReader->load($path);
+//
+        $background = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                )
+            ),
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+            ),
+            'font' => array(
+                'bold' => false,
+            ),
+        );
+//
+        $border = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN,
+                )
+            ),
+        );
+//
+        $baseRow = 3;
+
+        $no = 0;
+        foreach ($models as $r => $arr) {
+            if (!empty($arr['nik_ketua'])) {
+                $tbl = TblKaryawan::findOne(['nik' => $arr['nik_ketua']]);
+                $ketua = $tbl->nama;
+            } else {
+                $ketua = '';
+            }
+            if (isset($row))
+                $row++;
+            else
+                $row = $baseRow + $r;
+////////
+            $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(21);
+            $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($background);
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $r + 1);
+            $objPHPExcel->getActiveSheet()
+                    ->setCellValue('B' . $row, $arr['nama'])
+                    ->setCellValue('C' . $row, $arr['section'])
+                    ->setCellValue('D' . $row, $arr['Kontrak_1'])
+                    ->setCellValue('E' . $row, $arr['Kontrak_11'])
+                    ->setCellValue('F' . $row, $arr['Kontrak_2'])
+                    ->setCellValue('G' . $row, $arr['Kontrak_21']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $arr['nik']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $arr['nama']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $arr['initial']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $arr['section']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $arr['Kontrak_1']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $arr['Kontrak_11']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, $arr['Kontrak_2']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('I' . $row, $arr['Kontrak_21']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('J' . $row, $arr['status_kepemilikan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('K' . $row, $arr['status_karyawan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('L' . $row, $arr['department']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('M' . $row, $arr['section']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('N' . $row, $arr['kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('O' . $row, $arr['status_kelompok']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('P' . $row, $ketua);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Q' . $row, $arr['jabatan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('R' . $row, $arr['lokasi_kntr']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('S' . $row, $arr['pendidikan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('T' . $row, $arr['sekolah']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('U' . $row, $arr['jurusan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('V' . $row, $arr['no_ijazah']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('W' . $row, $arr['tmpt_lahir']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('X' . $row, $arr['tgl_lahir']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Y' . $row, $arr['alamat_jln']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('Z' . $row, $arr['rt']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AA' . $row, $arr['rw']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AB' . $row, $arr['desa']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AC' . $row, $arr['kecamatan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AD' . $row, $arr['kabupaten']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AE' . $row, $arr['kode_pos']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AF' . $row, $arr['no_ktp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AG' . $row, $arr['agama']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AH' . $row, $arr['status_pernikahan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AI' . $row, $arr['kewarganegaraan']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AJ' . $row, $arr['tgl_masuk_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AK' . $row, $arr['kode_bank']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AL' . $row, $arr['nama_bank']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AM' . $row, $arr['gaji_pokok']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AN' . $row, $arr['t_fungsional']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AO' . $row, $arr['t_kehadiran']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AP' . $row, $arr['thp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AQ' . $row, $arr['mgm']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AR' . $row, $arr['upah_tetap']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AS' . $row, $arr['pesangon']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AT' . $row, $arr['t_masa_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AU' . $row, $arr['penggantian_hak']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AF' . $row, $arr['normatif']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AW' . $row, $arr['jk']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AX' . $row, $arr['tgl_keluar_kerja']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AY' . $row, $arr['alasan_keluar']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('AZ' . $row, $arr['status']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BA' . $row, $arr['ket']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BB' . $row, $arr['no_polis']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BC' . $row, $arr['nm_asuransi']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BD' . $row, $arr['no_npwp']);
+//            $objPHPExcel->getActiveSheet()->setCellValue('BE' . $row, $arr['no_pasport']);
+//                  
+        }
+//
+        header("Content-type: application/vnd-ms-excel");
+        header('Content-Disposition: attachment;filename="karyawan-kontrak-tidak-aktif.xlsx"');
+
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save('php://output');
     }
 
     public function actionRekapkeluar() {
@@ -537,26 +818,30 @@ class KaryawanController extends Controller {
 
 
         $model->tgl_lahir = (!empty($params['tgl_lahir'])) ? date('Y-m-d', strtotime($params['tgl_lahir'])) : null;
+        if ($model->validate()) {
+            if ($model->save()) {
+                if (!empty($params['no'])) {
+                    $ijazah = Tblijazah::findOne($params['no']);
+                    if (empty($ijazah))
+                        $ijazah = new Tblijazah();
 
-        if ($model->save()) {
-            if (!empty($params['no'])) {
-                $ijazah = Tblijazah::findOne($params['no']);
-                if (empty($ijazah))
-                    $ijazah = new Tblijazah();
+                    $ijazah->attributes = $params;
+                    $ijazah->atas_nama = (!empty($params['nama'])) ? $params['nama'] : null;
+                    $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
+                    $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
+                    $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
+                    $ijazah->status = 'Masuk';
+                    $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
 
-                $ijazah->attributes = $params;
-                $ijazah->atas_nama = (!empty($params['nama'])) ? $params['nama'] : null;
-                $ijazah->tgl_ijazah = (!empty($params['tgl_ijazah'])) ? date('Y-m-d', strtotime($params['tgl_ijazah'])) : null;
-                $ijazah->tgl_masuk = (!empty($params['tgl_masuk'])) ? date('Y-m-d', strtotime($params['tgl_masuk'])) : null;
-                $ijazah->nama_sekolah = (!empty($params['sekolah'])) ? $params['sekolah'] : null;
-                $ijazah->status = 'Masuk';
-                $ijazah->tempat_lahir = (!empty($params['tmpt_lahir'])) ? $params['tmpt_lahir'] : null;
+                    $ijazah->save();
+                }
 
-                $ijazah->save();
+                $this->setHeader(200);
+                echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
+            } else {
+                $this->setHeader(400);
+                echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
             }
-
-            $this->setHeader(200);
-            echo json_encode(array('status' => 1, 'data' => array_filter($model->attributes)), JSON_PRETTY_PRINT);
         } else {
             $this->setHeader(400);
             echo json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $model->errors), JSON_PRETTY_PRINT);
