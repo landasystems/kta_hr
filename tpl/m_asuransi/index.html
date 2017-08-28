@@ -1,0 +1,45 @@
+<div ng-controller="asuransiCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Master - Asuransi</h1>
+    </div>
+
+<div class="wrapper-md">
+<table class="table table-striped" ng-show="!isEdit&&!isView">
+	<thead><th>Nama</th><th>Telepon</th><th>CP</th><th><div class="pull-right"><button class="btn btn-primary glyphicon glyphicon-plus" ng-click="new()"></button></div></th></thead>
+	<tbody>
+	<tr ng-if="asuransi.length==0"><td colspan="3">(Belum ada asuransi)</td></tr>
+	<tr ng-repeat="a in asuransi" ng-dblclick="view(a)"><td>{{a.nama}}</td><td>{{a.telepon}}</td><td>{{a.cp}}</td>
+		<td><div class="btn-group pull-right" role="group" style="margin-top: -3px;">
+			<button class="btn btn-info glyphicon glyphicon-pencil" ng-click="edit(a)"></button>
+			<button class="btn btn-danger glyphicon glyphicon-trash" ng-click="delete(a)"></button>
+		</div></td>
+	</tr>
+	</tbody>
+</table>
+
+<div class="panel panel-default" ng-show="isEdit||isView">
+	<div class="panel-heading">
+		{{isEdit?"Edit":""}}{{isView?"Lihat":""}} Asuransi
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<label class="col-md-2 control-label" for="a_nama">Nama</label>
+			<div class="col-md-4"><input type="text" id="a_nama" class="form-control" ng-model="form.nama" ng-disabled="isView"></div>
+		</div>
+		<div class="row">
+			<label class="col-md-2 control-label" for="a_telepon">Telepon</label>
+			<div class="col-md-4"><input type="text" id="a_telepon" class="form-control" ng-model="form.telepon" ng-disabled="isView"></div>
+			<label class="col-md-2 control-label" for="a_cp">CP</label>
+			<div class="col-md-4"><input type="text" id="a_cp" class="form-control" ng-model="form.cp" ng-disabled="isView"></div>
+		</div>
+		<div class="row">
+			<center>
+			<div class="btn-group">
+				<button class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()"> Batal</button>
+				<button class="btn btn-primary fa fa-save" ng-disabled="is_view" ng-click="save(form)"> Simpan</button>
+			</div></center>
+		</div>
+	</div>
+</div>
+</div>
+</div>

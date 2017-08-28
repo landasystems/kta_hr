@@ -18,7 +18,7 @@ use Yii;
  * @property string $masa_berlaku
  * @property string $ket
  */
-class TblMonitoringFlegalitas extends \yii\db\ActiveRecord
+class Tblmonitoringflegalitas extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -39,8 +39,7 @@ class TblMonitoringFlegalitas extends \yii\db\ActiveRecord
             [['no_mflegalitas', 'no_file'], 'string', 'max' => 20],
             [['nm_file'], 'string', 'max' => 200],
             [['instansi', 'atas_nm', 'jns_legalitas'], 'string', 'max' => 100],
-            [['ket'], 'string', 'max' => 300],
-            [['no_mflegalitas'], 'unique']
+            [['ket'], 'string', 'max' => 300]
         ];
     }
 

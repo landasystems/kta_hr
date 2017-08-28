@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\TblKaryawan;
 use app\models\Tblijazah;
+use app\models\DetGaji;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -47,6 +48,7 @@ class KaryawanController extends Controller {
                     'keluar' => ['post'],
                     'upload' => ['post'],
                     'removegambar' => ['post'],
+                    "riwayatgaji" => ["get"],
                 ],
             ]
         ];
@@ -107,6 +109,7 @@ class KaryawanController extends Controller {
 
     public function actionIndex() {
         //init variable
+        session_start();
         $params = $_REQUEST;
         $filter = array();
         $sort = "nik DESC";
@@ -142,6 +145,13 @@ class KaryawanController extends Controller {
                 ->orderBy($sort)
                 ->select("*");
 
+        //Untuk hak akses
+        
+        $ha = $_SESSION["user"]["akses"]->hak_akses;
+        for($a=0; $a<count($ha); $a++)
+            if($a == 0) $query->where(["hak_akses" => $ha[$a]]);
+            else $query->orWhere(["hak_akses" => $ha[$a]]);
+
         //filter
         if (isset($params['filter'])) {
             $filter = (array) json_decode($params['filter']);
@@ -150,7 +160,6 @@ class KaryawanController extends Controller {
             }
         }
 
-        session_start();
         $_SESSION['query'] = $query;
 
         $command = $query->createCommand();
@@ -726,7 +735,8 @@ class KaryawanController extends Controller {
             $uploadPath = \Yii::$app->params['pathImg'] . $_GET['folder'] . DIRECTORY_SEPARATOR . $newName;
 
             move_uploaded_file($tempPath, $uploadPath);
-            $a = \Yii::$app->landa->createImg($_GET['folder'] . '/', $newName, $_POST['nik']);
+            //Todo: fix this image generator bug
+            $a = \Yii::$app->landa->createImg($_GET['folder'] . '/', $newName, $_POST['nik'], true);
 
             $answer = array('answer' => 'File transfer completed', 'name' => $newName);
             if ($answer['answer'] == "File transfer completed") {
@@ -1737,8 +1747,6 @@ class KaryawanController extends Controller {
                 ->select("kar.nik, kar.nama as nm_karyawan,jab.jabatan as nm_jabatan")
                 ->where('kar.status like "Kerja"');
 
-
-
         if ($tipeKode == 'DP') {
             $query->andWhere(['kar.department' => $params['kode']]);
         } else if ($tipeKode == 'SC') {
@@ -1748,6 +1756,18 @@ class KaryawanController extends Controller {
         }
         $command = $query->createCommand();
         $models = $command->queryAll();
+
+        $this->setHeader(200);
+        echo json_encode(array('status' => 1, 'data' => $models));
+    }
+
+    public function actionRiwayatgaji() {
+    	$params = $_REQUEST;
+    	$query = new Query;
+    	$query->from("tbl_det_gaji as det")->select("*")->where(["id" => $params["id"]]);
+
+    	$cmd = $query->createCommand();
+    	$models = $cmd->queryAll();
 
         $this->setHeader(200);
         echo json_encode(array('status' => 1, 'data' => $models));

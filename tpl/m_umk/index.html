@@ -30,6 +30,7 @@
                                     <tr>
                                         <th st-sort="kode">Kode</th>
                                         <th st-sort="tahun">Tahun</th>
+                                        <th st-sort="kota">Lokasi</th>
                                         <th st-sort="umk">UMK</th>
                                         <th style="text-align:right;">Action &nbsp;</th>
                                     </tr>
@@ -38,6 +39,7 @@
                                     <tr ng-repeat="row in displayed" ng-dblclick="view(row)">
                                         <td>{{row.no_umk}}</td>
                                         <td>{{row.tahun}}</td>
+                                        <td>{{row.lokasikantor}}</td>
                                         <td>Rp. {{row.umk}}</td>
                                         <td>
                                             <div class="btn-group pull-right" role="group" style="margin-top: -3px;">
@@ -57,7 +59,7 @@
                                         <td colspan="6" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                                         </td>
                                     </tr>
-                            </table>		
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -82,7 +84,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Tahun</label>
                                                 <div class="col-sm-4">
-                                                    <select stInputEvent="change" ng-model="form.tahun" class="form-control" required="">    
+                                                    <select stInputEvent="change" ng-model="form.tahun" class="form-control" required="">
                                                         <option value="">-Pilih Tahun-</option>
                                                         <option value="2013">2013</option>
                                                         <option value="2014">2014</option>
@@ -94,6 +96,17 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Lokasi Kantor</label>
+                                                <div class="col-sm-4">
+                                                    <select ng-model="form.lokasikantor" class="form-control" required>
+                                                        <option value="">- Pilih Kantor -</option>
+                                                        <option ng-repeat="k in lokasikantor" value="{{k.lokasi_kantor}}">{{k.lokasi_kantor}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group" style="text-align: center">
                                                 <label class="col-sm-2 control-label">Besar UMK ( Upah Minimum Kabupaten/Kota )</label>
                                                 <div class="col-sm-4">
@@ -102,8 +115,12 @@
                                                         <input type="text" class="form-control" ng-model="form.umk"  required >
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                            	<div class="col-sm-6">
+                                            	<button tooltip="kepada semua karyawan aktif dan kontrak saja" class="btn btn-primary fa fa-check-square" ng-disabled="landaform.$invalid" ng-click="applyUmk(form)">Terapkan UMR</button>
+
+                                            	</div>
+                                            </div>
 
                                             <div class="form-group">
                                                 <div class="col-sm-6 col-sm-offset-2" style="text-align: center">

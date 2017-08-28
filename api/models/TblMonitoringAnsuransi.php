@@ -25,7 +25,7 @@ use Yii;
  * @property double $harga_pertanggungan
  * @property double $harga_premi
  */
-class TblMonitoringAnsuransi extends \yii\db\ActiveRecord
+class Tblmonitoringansuransi extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

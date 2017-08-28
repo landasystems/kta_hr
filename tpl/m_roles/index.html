@@ -43,7 +43,7 @@
                                     <button type="button" class="btn btn-danger fa fa-trash-o" ng-click="trash(row);" ng-show="row.is_deleted == 0"></button>
                                     <button type="button" class="btn btn-info fa fa-recycle" ng-click="restore(row);" ng-show="row.is_deleted == 1"></button>
                                     <button type="button" class="btn btn-danger fa fa-minus-circle" ng-click="delete(row);" ng-show="row.is_deleted == 1"></button>
-                                </div> 
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -57,7 +57,7 @@
                             <td colspan="2" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                             </td>
                         </tr>
-                </table>		
+                </table>
             </div>
         </div>
     </div>
@@ -84,6 +84,17 @@
                                 <label class="btn btn-default" ng-model="form.is_deleted" btn-radio="'0'" required>Aktif</label>
                                 <label class="btn btn-default" ng-model="form.is_deleted" btn-radio="'1'" required>Terhapus</label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Access Level</label>
+                        <div class="col-sm-4">
+                            <ui-select multiple ng-model="form.akses.hak_akses" close-on-select="false" title="Pilih hak akses">
+                                <ui-select-match placeholder="Pilih hak aksesnya...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="ha in [1,2,3,4,5,6,7] | filter: $select.search">
+                                    {{ha}}
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
 
@@ -266,6 +277,13 @@
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.master_sekolah">
                                                     <i></i>
                                                     Sekolah
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.master_asuransi">
+                                                    <i></i>
+                                                    Asuransi
                                                 </label>
                                             </div>
                                         </div>
@@ -489,6 +507,20 @@
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.transaksi_potongan">
                                                     <i></i>
                                                     Potongan
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.transaksi_lembur">
+                                                    <i></i>
+                                                    Lembur
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.transaksi_gaji">
+                                                    <i></i>
+                                                    Penggajian
                                                 </label>
                                             </div>
                                             <!--end-->
@@ -919,6 +951,13 @@
                                                     <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.rekap_absensioperator">
                                                     <i></i>
                                                     Rekap Absensi Operator
+                                                </label>
+                                            </div>
+                                            <div href="" class="list-group-item m-l">
+                                                <label class="i-checks">
+                                                    <input type="checkbox" ng-disabled="is_view" ng-model="form.akses.laporan_lembur">
+                                                    <i></i>
+                                                    Laporan Lembur
                                                 </label>
                                             </div>
                                         </div>

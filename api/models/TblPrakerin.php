@@ -17,7 +17,7 @@ use Yii;
  * @property string $bagian
  * @property string $foto
  */
-class TblPrakerin extends \yii\db\ActiveRecord
+class Tblprakerin extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

@@ -13,7 +13,6 @@ use yii\filters\VerbFilter;
 use yii\db\Query;
 
 class SiteController extends Controller {
-
     public function behaviors() {
         return [
             'verbs' => [

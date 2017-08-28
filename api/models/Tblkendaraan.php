@@ -17,7 +17,7 @@ use Yii;
  * @property string $no_mesin
  * @property string $user
  */
-class Tblkendaraan extends \yii\db\ActiveRecord
+class TblKendaraan extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -34,6 +34,7 @@ class Tblkendaraan extends \yii\db\ActiveRecord
     {
         return [
             [['nopol'], 'required'],
+            [['nopol'], 'unique'],
             [['nopol', 'merk', 'tipe', 'model', 'warna', 'thn_pembuatan'], 'string', 'max' => 20],
             [['no_rangka', 'no_mesin', 'user'], 'string', 'max' => 50]
         ];

@@ -103,21 +103,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">Tanggal Pinjaman</label>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="form.tgl" is-open="opened1" ng-click="open1($event)"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar-o"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="line line-dashed b-b line-lg pull-in"></div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="form-group">
                                 <label class="col-sm-4 control-label">Nama Karyawan</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
@@ -137,18 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Jangka Waktu</label>
-                                <div class="col-sm-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control angka" ng-model="form.cicilan" ng-change="hitungCicilan(form.cicilan);" ng-disabled="is_view" placeholder="nX">
-                                        <span class="input-group-addon">X</span>
-                                    </div>
-                                </div>
-                                <label class="col-sm-1 control-label">Angsuran</label>
-                            </div>
-                        </div>
+                        <br>
                     </div>
                     <div class="line line-dashed b-b line-lg pull-in"></div>
                     <label class="col-sm-6 control-label">Detail Potongan</label>
@@ -158,8 +132,10 @@
                                 <tr>
                                     <th style="text-align: center;">Potongan</th>
                                     <th style="text-align: center;">Besar Potongan</th>
+                                    <th style="text-align: center;">Jangka waktu</th>
+                                    <th style="text-align: center;">Tanggal Akhir Pinjaman</th>
                                     <th style="text-align: center;">Potongan Perbulan</th>
-                                    <th style="width:10% !important;text-align: center;">#</th>
+                                    <th style="width:5% !important;text-align: center;">#</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,7 +150,7 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                             <span class="input-group-btn">
-                                                <button ng-click="form.potongan = undefined" class="btn btn-default">
+                                                <button ng-click="det.potongan = undefined" class="btn btn-default">
                                                     <span class="glyphicon glyphicon-trash"></span>
                                                 </button>
                                             </span>
@@ -182,7 +158,17 @@
                                     </td>
                                     <td style="width:5%">
                                         <div style="text-align: center;">
-                                            <input type="text" style="width:100%" class="input-angka form-control angka" ng-change="hitungCicilan(form.cicilan);" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jmlh" ng-disabled="is_view">
+                                            <input type="text" style="width:100%" class="input-angka form-control angka" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jmlh" ng-change="hitungAngsuran(det)" ng-disabled="is_view">
+                                        </div>
+                                    </td>
+                                    <td style="width:5%">
+                                        <div style="text-align: center;">
+                                            <input type="text" placeholder="×" style="width:100%" class="input-angka form-control angka" ng-maxlength="15" ng-pattern="/^[0-9]+$/" ng-model="det.jangkawaktu" ng-change="hitungAngsuran(det)" ng-disabled="is_view">
+                                        </div>
+                                    </td>
+                                    <td style="width:5%">
+                                        <div style="text-align: center;">
+                                            <input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="det.tgl_pinjam" is-open="openedDet==$index" ng-click="openDet($event, $index)" ng-change="setStatus()" ng-disabled="true">
                                         </div>
                                     </td>
                                     <td style="width:5%">
@@ -196,14 +182,19 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <tfoot></tfoot>
+                            <tfoot>
+                            	<tr>
+                            	<td style="text-align:right;vertical-align:middle" colspan="4"><strong>Total potongan</strong></td>
+                            	<td><input type="text" style="width:100%" class="input-angka form-control angka" ng-model="form.total" ng-disabled="true"></td>
+                            	</tr>
+                            </tfoot>
                         </table>
                     </div>
                     <div class="line line-dashed b-b line-lg pull-in"></div>
                     <div class="col-md-12 col-sm-12">
                         <center>
                             <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                            <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form, detPotongan)">&nbsp;Simpan</button>
+                            <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-click="save(form, detPotongan)">&nbsp;Simpan</button>
                         </center>
                     </div>
             </div>

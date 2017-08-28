@@ -1,0 +1,323 @@
+<div ng-controller="t_gajiCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">
+            Transaksi Gaji
+        </h1>
+    </div>
+
+<!--Master Transaksi Gaji-->
+<div class="wrapper-md" ng-if="!isDetail&&!isEditing&&!isViewing">
+	<div class="panel panel-default">
+	<div class="panel-body">
+	<table class="table table-default">
+	<thead>
+		<th>Bulan</th>
+		<!--Todo: Sort this descending
+		Todo: implement search-->
+		<th>Departemen</th>
+		<th>Lokasi Kantor</th>
+		<th><div class="pull-right"><button class="btn btn-primary glyphicon glyphicon-plus" ng-click="newGaji()"></button></div></th>
+	</thead>
+	<tbody>
+		<tr ng-if="gaji.length == 0"><td>(Belum ada Gaji)</td></tr>
+		<tr ng-repeat="g in gaji">
+			<td>{{g.bln_thn | date: "MMMM yyyy"}}</td>
+			<td>{{g.department}}</td>
+			<td>{{g.lokasi_kantor}}</td>
+			<td>
+				<div class="btn-group pull-right">
+				<button class="btn btn-info glyphicon glyphicon-zoom-in" ng-click="detailGaji(g)"></button>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+	</table>
+	</div>
+	</div>
+</div> <!--End of wrapper-->
+
+<!--Todo: implement newGaji() in detail -->
+<!--Detail Transaksi Gaji-->
+<div class="wrapper-md" ng-if="isDetail&&!isEditing&&!isViewing">
+	<div class="panel panel-default">
+	<div class="panel-heading">
+		Detail Transaksi Penggajian
+		<div class="pull-right">
+			<button class="btn btn-default" ng-click="back()" style="margin-top: -3px"><i class="glyphicon glyphicon-arrow-left"></i> Kembali</button>
+		</div>
+	</div>
+
+	<div class="panel-body">
+
+	<form class="form-horizontal">
+	<div class="col-md-6">
+	<div class="form-group">
+		<label class="control-label col-sm-4">Bulan</label>
+		<div class="col-sm-5">
+		<select class="form-control" ng-model="filter.bulan" ng-options="sb.num as sb.name for sb in semuaBulan">
+			<option value="">-- Pilih bulan --</option>
+		</select>
+		</div>
+		<div class="col-sm-3">
+		<input type="number" ng-model="filter.tahun" class="form-control" min="2000">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-4">Departemen</label>
+		<div class="col-sm-8">
+		<select class="form-control" ng-model="filter.id_dep" ng-options="d.id_department as d.department for d in departments">
+			<option value="">-- Pilih Departemen --</option>
+		</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-4">Lokasi Kantor</label>
+		<div class="col-sm-8">
+		<select class="form-control" ng-model="filter.id_lokasi_kntr" ng-options="lk.id_lokasi_kantor as lk.lokasi_kantor for lk in lokasikantor">
+			<option value="">-- Pilih lokasi kantor--</option>
+		</select>
+		</div>
+	</div>
+	</div>
+	<table class="table table-default">
+		<thead>
+			<tr>
+			<th rowspan="2" style="text-align: center">NIK</th>
+			<th rowspan="2" style="text-align: center">Nama Karyawan</th>
+			<th rowspan="2" style="text-align: center">UMK</th>
+			<th colspan="4" style="text-align: center">Tunjangan</th>
+			<th rowspan="2" style="text-align: center">Total Tunjangan</th>
+			<th colspan="4" style="text-align: center">Potongan</th>
+			<th rowspan="2" style="text-align: center">Gaji Bersih</th>
+			</tr>
+			<tr>
+			<th style="text-align: center">Tunj. Jabatan</th><!--Tunjangan-->
+			<th style="text-align: center">Tunj. Kehadiran</th>
+			<th style="text-align: center">Tunj. Manajemen</th>
+			<th style="text-align: center">Insentif Kehadiran</th>
+			<th style="text-align: center">BPJS</th><!--Potongan-->
+			<th style="text-align: center">Pot. Pinjaman</th>
+			<th style="text-align: center">Pot. Absensi</th>
+			<th style="text-align: center">Total Potongan</th>
+			<th width="10%"><div class="pull-right">
+				<button class="btn btn-primary glyphicon glyphicon-plus" ng-click="newGaji()"></button>
+			</div></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-if="detailList.length == 0">
+				<td>(Belum ada detail gaji untuk bulan ini)</td>
+			</tr>
+			<tr ng-repeat="dg in detailList">
+			<td>{{dg.nik}}</td>
+			<td>{{dg.nama}}</td>
+			<td>{{dg.umk}}</td>
+			<td>{{dg.t_jab}}</td>
+			<td>{{dg.t_hdr}}</td>
+			<td>{{dg.t_man}}</td>
+			<td>{{dg.inc_keh}}</td>
+			<td>{{dg.tot_tunj}}</td>
+			<td>{{dg.bpjs}}</td>
+			<td>{{dg.pot_pinj}}</td>
+			<td>{{dg.pot_abs}}</td>
+			<td>{{dg.tot_pot}}</td>
+			<td>{{dg.gb}}</td>
+			<td>
+				<div class="btn-group pull-right">
+				<button class="btn btn-info glyphicon glyphicon-pencil" ng-click="editDetGaji(dg)"></button>
+				<button class="btn btn-danger glyphicon glyphicon-trash" ng-click="delDetGaji(dg)"></button>
+				</div>
+			</td>
+			</tr><!--Todo: implement editDetGaji(dg), delDetGaji(dg)-->
+		</tbody>
+	</table>
+	</form>
+	</div><!--End of panel-body-->
+</div><!--End of panel-->
+</div>
+
+<div ng-if="isEditing||isViewing">
+	<div class="wrapper-md">
+
+	<div class="panel panel-default">
+	<div class="panel-heading">
+		{{form.id==0 ? "Buat detail gaji baru" : ""}} {{form.Karyawan.nama != "" ? "untuk " + form.Karyawan.nama : ""}}
+		{{form.id!=0 && isViewing ? "Lihat detail gaji " : ""}}{{form.id!=0 && isEditing ? "Edit detail gaji " : ""}} untuk {{form.Karyawan.nama}}
+	</div>
+
+	<div class="panel-body">
+
+	<form class="form-horizontal">
+
+	<div class="row">
+	<div class="col-sm-6">
+	<div class="form-group">
+		<label class="control-label col-sm-4">Bulan</label>
+		<div class="col-sm-5">
+		<select class="form-control" ng-model="form.bulan" ng-change="setBlnThn()" ng-options="sb.num as sb.name for sb in semuaBulan">
+			<option value="">-- Pilih bulan --</option>
+		</select>
+		</div>
+		<div class="col-sm-3">
+		<input type="number" class="form-control" ng-model="form.tahun" ng-change="setBlnThn()" min="2000">
+		</div>
+	</div>
+
+	<label class="control-label col-sm-4">Karyawan</label>
+	<div class="col-sm-8">
+	<div class="input-group">
+                                    <ui-select ng-model="form.Karyawan" on-select="getKaryawan($item,form)" required="" theme="bootstrap" ng-disabled="isViewing">
+                                        <ui-select-match>
+                                            {{$select.selected.nik}} - {{$select.selected.nama}}
+                                        </ui-select-match>
+                                        <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in results">
+                                            {{val.nik}}<br><small>{{val.nama}}</small>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="form.Karyawan = undefined" ng-disabled="isViewing">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </span>
+                      </div>
+	</div>
+	</div>
+
+	<div class="col-sm-6">
+		<div class="form-group">
+		<label class="control-label col-sm-4">Lokasi Kantor</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control" value="{{form.lokasi_kntr}}" readonly>
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Departemen</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control" value="{{form.id_department}} - {{form.department}}" readonly>
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Bagian</label>
+		<div class="col-sm-8">
+			<input type="text" class="form-control" value="{{form.id_section}} - {{form.section}}" readonly>
+		</div>
+		</div>
+	</div>
+
+	</div>
+
+	<div class="line line-dashed b-b line-lg pull-in"></div>
+
+	<div class="row">
+	<div class="col-sm-6">
+		<strong>Tunjangan</strong>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">UMK</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.umk" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Tunjangan Jabatan</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.t_jab" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Tunjangan Kehadiran</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.t_hdr" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Tunjangan Manajemen</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.t_man" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Insentif Kehadiran</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.inc_keh" ng-change="compute()">
+		</div>
+		</div>
+	</div>
+
+	<div class="col-sm-6">
+		<strong>Potongan</strong>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">BPJS</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.bpjs" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Potongan Pinjaman</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.pot_pinj" ng-change="compute()">
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Potongan Absensi</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.pot_abs" ng-change="compute()">
+		</div>
+		</div>
+	</div>
+	</div>
+
+	<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group">
+		<label class="control-label col-sm-4">Total Tunjangan</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.tot_tunj" readonly>
+		</div>
+		</div>
+	</div>
+
+	<div class="col-sm-6">
+		<div class="form-group">
+		<label class="control-label col-sm-4">Total Potongan</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control" ng-model="form.tot_pot" readonly>
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Gaji Bersih</label>
+		<div class="col-sm-8">
+			<input type="number" class="form-control col-sm-8" ng-model="form.gb" readonly>
+		</div>
+		</div>
+	</div>
+	</div>
+
+            <div style="text-align: center">
+                <div class="btn-group">
+                    <button class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">Batalkan</button>
+                    <button class="btn btn-primary fa fa-save" ng-click="save(form)" ng-disabled="isViewing||preventSave">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<!--Todo: implement the form, basic CRUD
+
+t_det_trans_gaji
+id, nik, umk, t_jab, t_hdr, t_man, tot_tunj, inc_keh, bpjs, pot_pinj, pot_abs, tot_pot, gb
+-->
+
+</div>

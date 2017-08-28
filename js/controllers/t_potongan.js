@@ -1,4 +1,4 @@
-app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
+app.controller('transPotonganCtrl', function ($scope, Data, toaster, $filter) {
     var tableStateRef;
     var paramRef;
     $scope.displayed = [];
@@ -25,7 +25,6 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         });
         $scope.isLoading = false;
         Data.get('potongan/list').then(function (data) {
-//            console.log(data);
             $scope.listPotongan = data.data;
         });
     };
@@ -38,8 +37,6 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
             });
         }
     };
-
-
 
     $scope.getKaryawan = function (item, form) {
         form.nik = item.nik;
@@ -70,6 +67,16 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened2 = true;
+    };
+
+    $scope.openDet = function ($event, $index) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedDet = $index;
+    };
+
+    $scope.setStatus = function () {
+        $scope.openedDet = -1;
     };
 
     $scope.create = function (form) {
@@ -109,9 +116,13 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
     };
 
     $scope.save = function (form, detail) {
+        var det = detail;
+        for(var a=0; a<det.length; a++)
+            det[a].tgl_pinjam = $filter("date")(det[a].tgl_pinjam, "yyyy-MM-dd");
+
         var data = {
             form: form,
-            detail: detail
+            detail: det
         };
         var url = ($scope.is_create == true) ? 'transpotongan/create/' : 'transpotongan/update/' + form.no_pot;
         Data.post(url, data).then(function (result) {
@@ -141,15 +152,15 @@ app.controller('transPotonganCtrl', function ($scope, Data, toaster) {
         }
     };
 
-    $scope.hitungCicilan = function (data) {
-        var jmlh = 0;
-        var cicilan = 0;
-        var angsuran = parseInt(data);
-        angular.forEach($scope.detPotongan  , function ($value, $key) {
-            jmlh = parseInt($value.jmlh);
-            cicilan = jmlh / angsuran;
-            $scope.detPotongan[$key].perbulan = cicilan.toFixed(2);
-        });
+    $scope.hitungAngsuran = function (det) {
+    	det.perbulan = Math.round(det.jmlh / det.jangkawaktu);
+
+    	var d = $scope.form.tgl;
+    	det.tgl_pinjam = d.setMonth(d.getMonth() + parseInt(det.jangkawaktu));
+
+    	$scope.form.total = 0;
+    	for(var a=0; a<$scope.detPotongan.length; a++)
+    		$scope.form.total += Math.round($scope.detPotongan[a].perbulan);
     };
 
     $scope.addrow = function () {

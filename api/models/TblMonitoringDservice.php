@@ -7,14 +7,13 @@ use Yii;
 /**
  * This is the model class for table "tbl_monitoring_dservice".
  *
- * @property integer $id
  * @property string $no
  * @property string $ket_service
  * @property double $biaya
  *
  * @property TblMonitoringService $no0
  */
-class TblMonitoringDservice extends \yii\db\ActiveRecord
+class Tblmonitoringdservice extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -42,7 +41,6 @@ class TblMonitoringDservice extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'no' => 'No',
             'ket_service' => 'Ket Service',
             'biaya' => 'Biaya',

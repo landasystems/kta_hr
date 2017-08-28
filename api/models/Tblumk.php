@@ -27,9 +27,8 @@ class Tblumk extends \yii\db\ActiveRecord
     {
         return [
             [['no_umk'], 'required'],
-            [['umk'], 'number'],
-            [['tahun'], 'number'],
-            [['no_umk', 'tahun'], 'string', 'max' => 20]
+            [['umk', "tahun"], "number"],
+            [['no_umk', "lokasikantor"], 'string', 'max' => 20]
         ];
     }
 
@@ -42,6 +41,7 @@ class Tblumk extends \yii\db\ActiveRecord
             'no_umk' => 'No Umk',
             'umk' => 'Umk',
             'tahun' => 'Tahun',
+            "lokasikantor" => "ID Lokasi Kantor",
         ];
     }
 }
