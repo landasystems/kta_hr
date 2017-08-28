@@ -1,0 +1,100 @@
+<div ng-app="app" ng-controller="absensikaryawanCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Rekap Absensi</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Rekap Absensi
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <form name="landaform" class="form-horizontal form-validation" method="get">
+
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label required">Tanggal</label>
+                                        <div class="col-md-9">
+                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control"  type="text"  ng-model="form.tanggal">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Nama</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" ng-model="form.niknama">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid">
+                                                    </td>
+                                                    <td>
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="" ng-show="show_detail">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Action<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Print</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info" ng-hide="paginations == 0" ng-if="show_detail">
+            <div class="panel-heading no-border bg-primary text-center">          
+                LAPORAN REKAP ABSENSI
+                <br/> TANGGAL : {{show_form.tanggal_startDate*1000 | date:'dd-MM-yyyy'}} - {{show_form.tanggal_endDate*1000 | date:'dd-MM-yyyy'}}
+                <!--<br/> JUMLAH : {{show_form.total}}-->
+            </div>
+            <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;vertical-align: center;width: 100px">NIK</th>
+                        <th style="text-align: center;vertical-align: center;">Nama</th>
+                        <th style="text-align: center;vertical-align: center;" title="Absen">A</th>
+                        <th style="text-align: center;vertical-align: center;" title="Izin">I</th>
+                        <th style="text-align: center;vertical-align: center;" title="Surat Dokter">SD</th>
+                        <th style="text-align: center;vertical-align: center;" title="Setengah Hari">SH</th>
+                        <th style="text-align: center;vertical-align: center;" title="Cuti">C</th>
+                        <th style="text-align: center;vertical-align: center;" title="Sakit">S</th>
+                        <th style="text-align: center;vertical-align: center;" title="Hadir">JMLH HADIR</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="!isLoading">
+                    <tr ng-repeat="row in list">
+                        <td style="text-align: center">{{row.nik}}</td>
+                        <td style="text-align: left">{{row.nama}}</td>
+                        <td style="text-align: center" title="Absen">{{row.Absen}}</td>
+                        <td style="text-align: center" title="Izin">{{row.Izin}}</td>
+                        <td style="text-align: center" title="Surat Dokter">{{row.Surat_Dokter}}</td>
+                        <td style="text-align: center" title="Setengah Hari">{{row.Setengah_Hari}}</td>
+                        <td style="text-align: center" title="Cuti">{{row.Cuti}}</td>
+                        <td style="text-align: center" title="Sakit">{{row.Sakit}}</td>
+                        <td style="text-align: center" title="Hadir">{{row.Hadir}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="25" st-template="tpl/blocks/pagination.custom.html" colspan="12"></td>
+                    </tr>
+                </tbody>
+            </table>			
+        </div>
+    </div>
+</div>
+<!--FORM-->
+</div>

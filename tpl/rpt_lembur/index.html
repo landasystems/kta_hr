@@ -1,0 +1,117 @@
+<div ng-controller="rptLemburCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Rekap - Laporan Lembur</h1>
+    </div>
+
+<div class="wrapper-md">
+
+<div  class="panel panel-default">
+	<div class="panel-heading">
+	<div class="container">
+		<form class="form-horizontal">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="control-label col-sm-4">Departemen</label>
+
+					<div class="col-sm-8">
+					<select class="form-control" ng-model="filter.id_department" ng-options="d.id_department as d.department for d in departments" required>
+						<option value>-- Pilih departemen --</option>
+					</select>
+					</div>
+			</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Nama Pegawai/NIK</label>
+
+		<div class="col-sm-8">
+                          <div class="input-group">
+                                    <ui-select ng-model="filter.Karyawan" on-select="getKaryawan($item, filter)" theme="bootstrap" ng-disabled="isViewing">
+                                        <ui-select-match>
+                                            {{$select.selected.nik}} - {{$select.selected.nama}}
+                                        </ui-select-match>
+                                        <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in results">
+                                            {{val.nik}}<br><small>{{val.nama}}</small>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="filter.Karyawan = undefined" ng-disabled="isViewing">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </span>
+                          </div>
+                          </div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">Mulai bulan</label>
+		<div class="col-sm-5">
+		<select class="form-control" ng-model="filter.awal_bulan" ng-options="sb.num as sb.name for sb in semuaBulan" required>
+			<option value>-- Pilih bulan --</option>
+		</select>
+		</div>
+		<div class="col-sm-3">
+			<input type="number" class="form-control" ng-model="filter.awal_tahun" min="2000" required>
+		</div>
+		</div>
+
+		<div class="form-group">
+		<label class="control-label col-sm-4">s.d.</label>
+		<div class="col-sm-5">
+		<select class="form-control" ng-model="filter.akhir_bulan" ng-options="sb.num as sb.name for sb in semuaBulan" required>
+			<option value>-- Pilih bulan --</option>
+		</select>
+		</div>
+		<div class="col-sm-3">
+			<input type="number" class="form-control" ng-model="filter.akhir_tahun" min="2000" required>
+		</div>
+		</div>
+
+		<div class="btn-group pull-right">
+			<button class="btn btn-primary" ng-disabled="filter.$invalid" ng-click="applyFilter(filter)">Filter</button>
+		</div>
+
+		</div>
+		</form>
+	</div>
+	</div>
+</div>
+
+
+<div class="panel panel-default" ng-if="showFiltered">
+<div class="panel-heading">
+	Rekap Laporan Lembur untuk bulan {{getMonthName(filter.awal_bulan)}} tahun {{filter.awal_tahun}} - bulan {{getMonthName(filter.akhir_bulan)}} tahun {{filter.akhir_tahun}}
+	Dalam departemen {{filter.id_department}}<!--Todo: query status=0-->
+</div>
+<div class="panel-body">
+<table class="table table-default table-striped">
+	<thead>
+		<th>NIK</th>
+		<th>Tanggal</th>
+		<th>Tugas</th>
+		<th>Mulai</th>
+		<th>Selesai</th>
+		<th>Istirahat (jam)</th>
+		<th>UMR</th>
+		<th>Upah lembur</th>
+	</thead>
+
+	<tbody>
+		<tr ng-if="filteredData.length == 0">(Belum ada transaksi gaji untuk bulan {{getMonthName(filter.awal_bulan)}})</tr>
+		<tr ng-repeat="f in filteredData">
+			<td>{{f.nik}}</td>
+			<td>{{f.tgl}} ({{f.tgl_hari}}) {{f.harilibur ? "(libur)" : ""}}</td>
+			<td>{{f.jam_awal}}</td>
+			<td>{{f.jam_akhir}}</td>
+			<td>{{f.istirahat}}</td>
+			<td>{{f.umr}}</td>
+			<td>{{f.jml_lembur}}</td>
+		</tr>
+	</tbody>
+	<!--nik, tgl, tugas, jam_awal, jam_akhir, istirahat, umr, jml_lembur, harilibur, status-->
+	<!--Todo: ask what are teh headers-->
+	<!--Todo: query the karyawan list by department first, then query t_trans_lembur with the NIK-->
+</table>
+</div><!--End of panel-body-->
+</div>
+
+</div><!--End of wrapper-->

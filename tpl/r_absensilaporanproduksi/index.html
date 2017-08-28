@@ -1,0 +1,136 @@
+<div ng-app="app" ng-controller="absensilaporanproduksiCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Laporan Absensi </h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Laporan Absensi
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <form name="landaform" class="form-horizontal form-validation" method="get">
+
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <div class="control-group">
+                                            <label class="col-sm-3 control-label">Pilih Bulan<span class="required"></span></label>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.bulan" class="form-control" >
+                                                    <option ng-repeat="lb in listbln" ng-selected="{{lb.key == form.bulan}}" value="{{lb.key}}">{{lb.value}}</option>
+                                                </select>
+                                            </div>
+                                            <div style="float: left;padding: 7px;">s/d</div>
+                                            <div class="col-sm-4">
+                                                <select stInputEvent="change" ng-model="form.tahun" class="form-control">
+                                                    <option ng-repeat="listahun in listth" ng-selected="{{listahun == form.tahun}}" value="{{listahun}}">{{listahun}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">NIK/ Nama</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" ng-model="form.niknama">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Section<span class="required"></span></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap">
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in listSection">
+                                                         {{val.id_section}} - {{val.section}}
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="submit" class="btn btn-primary" value="Rekap" ng-click="view(form)" ng-disabled="landaform.$invalid"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info" style="overflow-x: scroll" ng-hide="paginations == 0" ng-if="show_detail">
+            <div class="panel-heading no-border bg-primary text-center">          
+                LAPORAN {{show_form.labelstatus}}
+                <br/> Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}
+
+            </div>
+            <table  st-safe-src="listSrc" st-table="list" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="text-align:center">ABSENSI</th>
+                        <th colspan="{{colsp - 1}}" style="text-align: left;">Bulan : {{show_form.tanggal_endDate| date:'MMMM yyyy'}}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" style="text-align: left;vertical-align: left;">Nama</th>
+                        <th style="text-align: center;width:30px" ng-repeat="bln in listbn">{{bln}}</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="!isLoading" ng-repeat="row in list">
+                    <tr>
+                        <td colspan="{{colsp+1}}" style="text-align: center"><b>{{row.title}}</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Tetap">
+                        <td colspan="{{colsp+1}}"><b>Tetap</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Tetap" ng-repeat="kry in row.body.Tetap.subbody">
+                        <td>{{kry.nik}}</td>
+                        <td>&nbsp;&nbsp;{{kry.nama}}</td>
+                        <td ng-repeat="tgl in kry.tanggal">{{tgl}}</td>
+                    </tr>
+
+                    <tr ng-show="row.body.Kontrak">
+                        <td colspan="{{colsp+1}}" ><b>Kontrak</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Kontrak" ng-repeat="kr in row.body.Kontrak.subbody">
+                        <td>{{kr.nik}}</td>
+                        <td>&nbsp;&nbsp;{{kr.nama}}</td>
+                        <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
+                    </tr>
+
+                    <tr ng-show="row.body.Borongan">
+                        <td colspan="{{colsp+1}}"><b>Borongan</b></td>
+                    </tr>
+                    <tr ng-show="row.body.Borongan" ng-repeat="kr in row.body.Borongan.subbody">
+                        <td>{{kr.nik}}</td>
+                        <td>&nbsp;&nbsp;{{kr.nama}}</td>
+                        <td ng-repeat="tgl in kr.tanggal">{{tgl}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">&nbsp;&nbsp;<b>Total Orang</b></td>
+                        <td ng-repeat="thadir in ttl_hadir">{{thadir}}</td>
+                    </tr>
+                </tfoot>
+            </table>			
+        </div>
+    </div>
+</div>
+<!--FORM-->
+</div>

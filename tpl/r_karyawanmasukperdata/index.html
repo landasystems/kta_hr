@@ -1,0 +1,172 @@
+<div ng-app="app" ng-controller="karyawanMasukCtrl">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3">Data Rekap - Karyawan Masuk Per Data Pribadi</h1>
+    </div>
+    <div class="wrapper-md" ng-show="!is_edit">
+        <div class="panel panel-default" st-pipe="callServer" st-table="displayed">
+            <div class="panel-heading">.:: Karyawan Masuk Per Data Pribadi
+                <div class="btn-group pull-right" role="group" style="margin-top: -4px; margin-right: 18px;">
+                    <br>    
+                </div> 
+            </div>
+            <div class="panel-body">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3">Tipe Pencarian</label>
+                                        <div class="col-md-9">
+                                            <label class="btn btn-default" ng-click="clear1()" ng-model="form.tipe" btn-radio="'kelompok'">Kelompok</label>
+                                            <label class="btn btn-default" ng-click="clear2()" ng-model="form.tipe" btn-radio="'perorangan'">Perorangan</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                                <label class="col-md-3">Department</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="form.Department" theme="bootstrap" required>
+                                                            <ui-select-match>{{$select.selected.id_department}} - {{$select.selected.department}}</ui-select-match>
+                                                            <ui-select-choices refresh="cariDepartment($select.search)" repeat="val in listDepartment">
+                                                                {{val.id_department}}<br>
+                                                                <small>{{val.department}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                            <button ng-click="form.Department = undefined" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Section</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Section" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.id_section}} - {{$select.selected.section}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariSection($select.search)" repeat="val in results">
+                                                        {{val.id_section}}<br>
+                                                        <small>{{val.section}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Section = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Lokasi Kantor</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" ng-model="form.lokasi_kantor">
+                                                <option value="SUKOREJO">SUKOREJO</option>
+                                                <option value="WARU">WARU</option>
+                                                <option value="JAKARTA">JAKARTA</option>
+                                                <option value="BANDUNG">BANDUNG</option>
+                                                <option value="MEDAN">MEDAN</option>
+                                                <option value="SURABAYA">SURABAYA</option>
+                                                <option value="GRESIK">GRESIK</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'kelompok'">
+                                        <label class="col-md-3">Periode</label>
+                                        <div class="col-md-9">
+                                            <input placeholder="Tanggal Periode" date-range-picker class="form-control" type="text"  ng-model="form.tanggal">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-show="form.tipe == 'perorangan'">
+                                        <label class="col-md-3">NIK - Nama</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <ui-select ng-model="form.Karyawan" theme="bootstrap" required>
+                                                    <ui-select-match>{{$select.selected.nik}} - {{$select.selected.nama}}</ui-select-match>
+                                                    <ui-select-choices refresh="cariKaryawan($select.search)" repeat="val in listKaryawan">
+                                                        {{val.nik}}<br>
+                                                        <small>{{val.nama}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <span class="input-group-btn">
+                                                    <button ng-click="form.Karyawan = undefined" class="btn btn-default">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3"></label>
+                                        <div class="col-md-9" style="text-align: left;">
+                                            <table>
+                                                <tr>
+                                                    <td><input type="button" class="btn btn-primary" value="Rekap" ng-click="view(form)"></td>
+                                                    <td
+                                                        <div class="pull-left dropdown" style="margin-top: 0px" dropdown="">
+                                                            <button type="button" class="btn btn-info" dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Rekap Karyawan Masuk<span class="caret"></span></button>
+                                                            <ul class="dropdown-menu" style="background-color: #F7F7F7; width: 269px;">
+                                                                <li><a href="#" ng-click="print(form)">Cetak</a></li>
+                                                                <li><a href="#" ng-click="excel(form)">Export Excel</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive" ng-hide="paginations == 0" ng-if="show_detail">
+                <table  st-safe-src="listSrc" st-table="list" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th  style="text-align: center;vertical-align: center;">No</th>
+                            <th  style="text-align: center;vertical-align: center;">NIK</th>
+                            <th  style="text-align: center;vertical-align: center;">NAMA LENGKAP</th>
+                            <th  style="text-align: center;vertical-align: center;">JALAN</th>
+                            <th  style="text-align: center;vertical-align: center;">DESA</th>
+                            <th  style="text-align: center;vertical-align: center;">KECAMATAN</th>
+                            <th  style="text-align: center;vertical-align: center;">KOTA/KABUPATEN</th>
+                            <th  style="text-align: center;vertical-align: center;">NO KTP</th>
+                            <th  style="text-align: center;vertical-align: center;">AGAMA</th>
+                            <th  style="text-align: center;vertical-align: center;">STATUS</th>
+                            <th  style="text-align: center;vertical-align: center;">TANGGAL MASUK KERJA</th>
+                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (TH)</th>
+                            <th  style="text-align: center;vertical-align: center;">LAMA BEKERJA (BLN)</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-show="!isLoading">
+                        <tr ng-repeat="row in list">
+                            <td style="text-align: center">{{$index + 1}}</td>
+                            <td align="center">{{row.nik}}</td>
+                            <td align="center">{{row.nama}}</td>
+                            <td align="center">{{row.alamat_jln}}</td>
+                            <td align="center">{{row.desa}}</td>
+                            <td align="center">{{row.kecamatan}}</td>
+                            <td align="center">{{row.kabupaten}}</td>
+                            <td align="center">{{row.no_ktp}}</td>
+                            <td align="center">{{row.agama}}</td>
+                            <td align="center">{{row.status_pernikahan}}</td>
+                            <td align="center">{{row.tgl_masuk_kerja | date}}</td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html" colspan="13"></td>
+                        </tr>
+                    </tbody>
+                </table>			
+            </div>
+        </div>
+    </div>
+    <!--FORM-->
+</div>
