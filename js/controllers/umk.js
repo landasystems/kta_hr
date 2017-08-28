@@ -3,6 +3,7 @@ app.controller('umkCtrl', function ($scope, Data, toaster) {
     var tableStateRef;
 
     $scope.displayed = [];
+    $scope.lokasikantor = [];
     $scope.is_edit = false;
     $scope.is_view = false;
     $scope.is_create = false;
@@ -26,6 +27,9 @@ app.controller('umkCtrl', function ($scope, Data, toaster) {
             $scope.displayed = data.data;
             tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
         });
+        Data.get("lokasikantor").then(function (data) {
+            $scope.lokasikantor = data.data;
+        });
 
         $scope.isLoading = false;
     };
@@ -42,13 +46,7 @@ app.controller('umkCtrl', function ($scope, Data, toaster) {
         });
     }
 
-//    Data.get('umk/').then(function (data) {
-//
-//        $scope.form = data.dataumk[0];
-//
-//    });
     $scope.view = function (form) {
-
         $scope.is_edit = true;
         $scope.is_view = true;
         $scope.formtitle = "Lihat Data : " + form.no_umk;
@@ -103,4 +101,14 @@ app.controller('umkCtrl', function ($scope, Data, toaster) {
         $scope.is_edit = false;
         $scope.is_view = false;
     };
+
+    //Terapkan UMK kepada semua pegawai yang aktif & pada daerah tertentu
+    $scope.applyUmk = function (f_umk) {
+    	Data.post("umk/applyToAll/", f_umk, "s").then(function (result) {
+    		if (result.status == 0)
+			toaster.pop('error', "Terjadi Kesalahan", result.errors);
+		else toaster.pop("success", "Berhasil", "UMK sudah ditambahkan.");
+		
+    	});
+    }
 })

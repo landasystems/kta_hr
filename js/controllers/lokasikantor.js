@@ -10,25 +10,43 @@ app.controller('lokasikantorCtrl', function ($scope, Data, toaster) {
     $scope.callServer = function callServer(tableState) {
         tableStateRef = tableState;
         $scope.isLoading = true;
-        var offset = tableState.pagination.start || 0;
-        var limit = tableState.pagination.number || 10;
+        $scope.refreshJadwal();
+    };
+
+    $scope.refreshJadwal = function () {
+        Data.get('lokasikantor').then(function (data) {
+        for(var b=0; b<data.data.length; b++) {//Parse object to array then time data from date
+        	var d = data.data[b]
+            if(d.jadwal == undefined || d.jadwal.length == 0) continue;
+            d.jadwal = $.map(JSON.parse(d.jadwal), function(value, index) { return [value]; });
+
+            for(var a=0; a<d.jadwal.length; a++) {
+                d.jadwal[a].jam_mulai = new Date(d.jadwal[a].jam_mulai); 
+                d.jadwal[a].jam_selesai = new Date(d.jadwal[a].jam_selesai); 
+            }
+        }
+        $scope.displayed = data.data;
+        console.log("data:", data);
+        console.log("data.data:", data.data);
+
+        var offset = tableStateRef.pagination.start || 0;
+        var limit = tableStateRef.pagination.number || 10;
         var param = {offset: offset, limit: limit};
 
-        if (tableState.sort.predicate) {
-            param['sort'] = tableState.sort.predicate;
-            param['order'] = tableState.sort.reverse;
+        if (tableStateRef.sort.predicate) {
+            param['sort'] = tableStateRef.sort.predicate;
+            param['order'] = tableStateRef.sort.reverse;
         }
-        if (tableState.search.predicateObject) {
-            param['filter'] = tableState.search.predicateObject;
+        if (tableStateRef.search.predicateObject) {
+            param['filter'] = tableStateRef.search.predicateObject;
         }
         paramRef = param;
-        Data.get('lokasikantor', param).then(function (data) {
-            $scope.displayed = data.data;
-            tableState.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
-        });
+
+        tableStateRef.pagination.numberOfPages = Math.ceil(data.totalItems / limit);
 
         $scope.isLoading = false;
-    };
+      });
+    }
 
     $scope.excel = function () {
         Data.get('lokasikantor', paramRef).then(function (data) {
@@ -65,6 +83,8 @@ app.controller('lokasikantorCtrl', function ($scope, Data, toaster) {
         $scope.form = form;
     };
     $scope.save = function (form) {
+        form.jadwal = JSON.stringify(form.jadwal);
+
         var url = ($scope.is_create == true) ? 'lokasikantor/create' : 'lokasikantor/update/' + form.id_lokasi_kantor;
         Data.post(url, form).then(function (result) {
             if (result.status == 0) {
@@ -91,6 +111,20 @@ app.controller('lokasikantorCtrl', function ($scope, Data, toaster) {
                 toaster.pop('success', "Berhasil", "Data berhasil dihapus")
             });
         }
+    };
+
+
+    $scope.hariSmng = function (i) {
+    	switch (i) {
+    		case 0: return "Minggu";
+    		case 1: return "Senin";
+    		case 2: return "Selasa";
+    		case 3: return "Rabu";
+    		case 4: return "Kamis";
+    		case 5: return "Jumat";
+    		case 6: return "Sabtu";
+    		default: return "Bukan hari sah";
+    	}
     };
 
 
