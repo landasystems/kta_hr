@@ -66,6 +66,8 @@ class RolesController extends Controller {
     }
 
     public function actionIndex() {
+	$GLOBALS["privileges"] = array(1,2,3,4,5,6,7);
+    	//print_r($GLOBALS["privileges"]);
         //init variable
         $params = $_REQUEST;
         $filter = array();

@@ -248,7 +248,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
                                         <div class="form-group" ng-show="form.Department.id_department == 'DPRT004'">
-                                            <label class="col-sm-4 control-label">Satus Dalam Kelompok</label>
+                                            <label class="col-sm-4 control-label">Status Dalam Kelompok</label>
                                             <div class="col-sm-8">
                                                 <label class="btn btn-default" ng-model="form.status_kelompok" btn-radio="'ketua'">Ketua Kelompok</label>
                                                 <label class="btn btn-default" ng-model="form.status_kelompok" btn-radio="'anggota'">Anggota</label>
@@ -357,11 +357,25 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div><!--Akhir dari Tanggal Masuk Kerja-->
+
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Tingkat Jabatan</label>
+                                            <div class="col-sm-8">
+                                                <select class="form-control" ng-model="form.hak_akses">
+                                                    <option value>Pilih hak aksesnya...</option>
+                                                    <option ng-repeat="ha in [1,2,3,4,5,6,7]" value="{{ha}}">{{ha}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div> <!-- Akhir dari Hak Akses -->
+
                                     <br>
                                     <div class="line line-dashed b-b line-lg pull-in"></div>
                                 </div>
                             </tab>
+
                             <tab>
                                 <tab-heading>
                                     <i class="glyphicon glyphicon-list-alt"></i> Data Diri
@@ -427,7 +441,6 @@
                                                 <input type="text" class="form-control" ng-model="form.kabupaten" ng-disabled="is_view" >
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
@@ -489,7 +502,7 @@
                             </tab>
                             <tab>
                                 <tab-heading>
-                                    <i class="glyphicon glyphicon-usd"></i> Gaji & Asuransi
+                                    <i class="glyphicon glyphicon-usd"></i> Gaji
                                 </tab-heading>
                                 <div class="row">
                                     <div class="col-md-3 col-sm-12">
@@ -507,18 +520,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label">Gaji Pokok / Upah tetap</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.gaji_pokok" ng-disabled="is_view">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">Management</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.mgm" ng-disabled="is_view">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-sm-4 control-label">Tunjangan Fungsional</label>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" ng-model="form.t_fungsional" ng-disabled="is_view" >
@@ -527,24 +528,6 @@
                                     </div>
                                     <div class="col-md-3 col-sm-12">
                                         <div class="m-l-xs m-t-xs m-b-xs font-bold">&nbsp;</div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">Tunjangan Kehadiran</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.t_kehadiran" ng-disabled="is_view">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">THP</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.thp" ng-disabled="is_view" >
-                                            </div>
-                                        </div>
-                                        <!--                                        <div class="form-group">
-                                                                                    <label class="col-sm-4 control-label">Upah Tetap</label>
-                                                                                    <div class="col-sm-8">
-                                                                                        <input type="text" class="form-control" ng-model="form.upah_tetap" ng-disabled="is_view" >
-                                                                                    </div>
-                                                                                </div>-->
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label">Pesangon</label>
                                             <div class="col-sm-8">
@@ -573,21 +556,82 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-12">
-                                        <div class="m-l-xs m-t-xs m-b-xs font-bold">Asuransi</div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">No. Polis</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.no_polis" ng-disabled="is_view">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-4 control-label">Nama Asuransi</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control" ng-model="form.nm_asuransi" ng-disabled="is_view">
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div><!--Akhir dari gaji-->
+
+	<div class="row">
+		<div class="col-md-3 col-sm-12">
+			<div class="m-l-xs m-t-xs m-b-xs font-bold">Riwayat Gaji</div>
+		</div>
+
+		<div class="col-md-12 col-sm-12">
+			<table class="table table-bordered table-striped det-trans table-responsive">
+			<thead>
+				<th>Gaji</th>
+				<th>Tunj. Jabatan</th>
+				<th>Tunj. Kehadiran</th>
+				<th>Tunj. Manajemen</th>
+				<!--<th>THP</th>-->
+				<th style="width:8%">Tanggal</th>
+				<th><button tooltip="Tambah Riwayat" class="btn btn-primary glyphicon glyphicon-plus" ng-click="add_salary()"></button></th>
+			</thead>
+			<tbody>
+				<tr ng-if="riwayatGaji.length==0"><td colspan="3">(Belum ada riwayat gaji)</td></tr>
+				<tr ng-repeat="d in (rg = (riwayatGaji | orderBy: 'status' : true))">
+				
+				<td><input type="number" class="form-control" ng-model="d.gaji" ng-change="d.saved=false" style="{{statusBg(d.status)}}"></td>
+				<td><input type="number" class="form-control" ng-model="d.t_jab" ng-change="d.saved=false" style="{{statusBg(d.status)}}"></td>
+				<td><input type="number" class="form-control" ng-model="d.t_hdr" ng-change="d.saved=false" style="{{statusBg(d.status)}}"></td>
+				<td><input type="number" class="form-control" ng-model="d.t_man" ng-change="d.saved=false" style="{{statusBg(d.status)}}"></td>
+				<!--Add double curly brackets to set the value <td><input type="number" class="form-control" disabled value="d.gaji+d.t_jab+d.t_hdr+d.t_man"></td>-->
+
+				<td>
+					<input class="form-control" ng-model="d.tgl" datepicker-popup="dd-MM-yyyy" is-open="openedDet == $index" ng-change="setStatus();d.saved=false" ng-click="openDet($event, $index)" style="{{statusBg(d.status)}}" type="text"/>
+				</td>
+				<td>
+					<div class="btn-group">
+					<button tooltip="Simpan" class="btn btn-primary glyphicon glyphicon-save" ng-click="save_salary(d)" ng-disabled="d.saved"></button>
+					<button tooltip="Aktifkan" class="btn btn-info glyphicon glyphicon-check" ng-click="activate_salary(d)" ng-if="d.status==0"></button>
+					<button tooltip="Hapus" class="btn btn-danger glyphicon glyphicon-trash" ng-click="rmv_salary(d)"></button>
+					</div>
+				</td>
+				</tr>
+			</tbody>
+			</table>
+		</div>
+	</div><!-- Akhir dari Riwayat Gaji-->
+                            </tab>
+                            <tab>
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-hand-right"></i> Asuransi
+                                </tab-heading>
+
+                                <div class="row"><!--Mulai Asuransi-->
+			<div class="col-md-3 col-sm-12">
+				<div class="m-l-xs m-t-xs m-b-xs font-bold">Asuransi</div>
+			</div>
+
+			<div class="col-md-12 col-sm-12">
+				<table class="table table-bordered table-striped det-trans table-responsive">
+					<thead><th>Nama</th><th>Telepon</th><th>CP</th>
+						<th><button tooltip="Tambah Asuransi" class="btn btn-primary glyphicon glyphicon-plus" ng-click="add_insurance()"></button></th>
+					</thead>
+					<tbody>
+						<tr ng-if="asuransi.length == 0"><td colspan="3">(Belum ada asuransi)</td></tr>
+						<tr ng-repeat="a in asuransi">
+							<td><input class="form-control" type="text" ng-model="a.nama"></td>
+							<td><input class="form-control" type="text" ng-model="a.telepon"></td>
+							<td><input class="form-control" type="text" ng-model="a.cp"></td>
+							<td>
+								<div class="btn-group">
+								<button tooltip="Simpan" class="btn btn-primary glyphicon glyphicon-save" ng-click="save_insurance(a)" ng-disabled="a.saved"></button>
+								<button tooltip="Hapus" class="btn btn-danger glyphicon glyphicon-trash" ng-click="rmv_insurance(a)"></button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- Akhir dari asuransi -->
+
                                 </div>
                             </tab>
                             <tab>
@@ -713,6 +757,8 @@
                                                                                         <input type="text" class="form-control" ng-model="form.sekolah" ng-disabled="is_view" >
                                                                                     </div>-->
                                         <!--</div>-->
+
+                                    <div class="line line-dashed b-b line-lg pull-in"></div>
                                     </div>
                                 </div>
                             </tab>
@@ -819,8 +865,8 @@
                     <div class="line line-dashed b-b line-lg pull-in"></div>
                     <div align="center">
                         <button type="submit" class="btn btn-default fa fa-arrow-circle-o-left" ng-click="cancel()">&nbsp;Back</button>
-                        <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-disabled="landaform.$invalid" ng-click="save(form)">&nbsp;Simpan Perubahan</button>
-                        <button type="submit" class="btn btn-primary fa fa-save" ng-show="is_newcopy" ng-disabled="landaform.$invalid" ng-click="saveNew(form)">&nbsp;Simpan Sbg Baru</button>
+                        <button type="submit" class="btn btn-primary fa fa-save" ng-hide="is_view" ng-click="save(form)">&nbsp;Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary fa fa-save" ng-show="is_newcopy" ng-click="saveNew(form)">&nbsp;Simpan Sbg Baru</button>
                     </div>
                 </form>
             </div>

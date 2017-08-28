@@ -2,6 +2,7 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-     'pathImg' => '/var/www/kta_hr/img/',
-   'urlImg' => 'http://localhost/kta_hr/img/',
+     'pathImg' => 'E:/xampp/htdocs/kta_hr/img/',
+     'path' => 'E:/xampp/htdocs/kta_hr/',
+   'urlImg' => 'http://localhost:1234/kta_hr/img/',
 ];

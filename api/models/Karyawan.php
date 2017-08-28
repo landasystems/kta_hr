@@ -65,17 +65,11 @@ use Yii;
  */
 class Karyawan extends \yii\db\ActiveRecord
 {
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'tbl_karyawan';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [

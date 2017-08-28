@@ -93,6 +93,9 @@
                                         <li ng-show="user.akses.master_jamsostek">
                                             <a ui-sref="master.jamsostek"><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>BPJS Ketenaga Kerjaan</a>
                                         </li>
+                                        <li ng-show="user.akses.master_asuransi">
+                                            <a ui-sref='master.asuransi'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Asuransi</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
@@ -219,6 +222,12 @@
                                         </li>
                                         <li ng-show="user.akses.transaksi_potongan">
                                             <a ui-sref='transaksi.potongan'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Potongan</a>
+                                        </li>
+                                        <li ng-show="user.akses.transaksi_lembur">
+                                            <a ui-sref='transaksi.lembur'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Lembur/Insentif</a>
+                                        </li>
+                                        <li ng-show="user.akses.transaksi_gaji">
+                                            <a ui-sref='transaksi.gaji'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Penggajian</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -491,6 +500,9 @@
                                         </li>
                                         <li ng-show="user.akses.rekap_jamsostek">
                                             <a ui-sref='rekap.jamsostek'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Jamsostek</a>
+                                        </li>
+                                        <li ng-show="user.akses.laporan_lembur">
+                                            <a ui-sref='laporan.lembur'><i class="fa fa-fw fa-angle-right text-muted m-r-xs"></i>Laporan Lembur</a>
                                         </li>
                                     </ul>
                                 </div>

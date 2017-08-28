@@ -13,36 +13,23 @@ use Yii;
  * @property string $penilaian
  * @property string $keterangan
  */
-class TblPenilaianKontrak extends \yii\db\ActiveRecord {
-
+class Tblpenilaiankontrak extends \yii\db\ActiveRecord
+{
     /**
      * @inheritdoc
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'tbl_penilaian_kontrak';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            [[
-            'tgl',
-            'mutu_kerja',
-            'pengetahuan_teknis',
-            'tgjawab_pekerjaan',
-            'kerjasama_komunikasi',
-            'sikap_kerja',
-            'inisiatif',
-            'rasa_turut_memiliki',
-            'disiplinitas',
-            'kepemimpinan',
-            'pelaksanaan_managerial',
-            'problem_solving',
-            'kehadiran',
-            'administratif',
-                ], 'safe'],
+            [['tgl'], 'safe'],
             [['nik', 'nm_kontrak', 'penilaian'], 'string', 'max' => 20],
             [['keterangan'], 'string', 'max' => 100]
         ];
@@ -51,7 +38,8 @@ class TblPenilaianKontrak extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'no_kntrk' => 'No Kntrk',
             'tgl' => 'Tgl',
@@ -60,5 +48,4 @@ class TblPenilaianKontrak extends \yii\db\ActiveRecord {
             'keterangan' => 'Keterangan',
         ];
     }
-
 }

@@ -161,9 +161,7 @@ angular.module('app')
                                     resolve: {
                                         deps: ['$ocLazyLoad',
                                             function ($ocLazyLoad) {
-
                                                 return $ocLazyLoad.load('js/controllers/lokasikantor.js');
-
                                             }]
                                     }
                                 })
@@ -324,7 +322,6 @@ angular.module('app')
                                             }]
                                     }
                                 })
-
                                 // user
                                 .state('master.user', {
                                     url: '/pengguna',
@@ -386,6 +383,20 @@ angular.module('app')
                                                 return $ocLazyLoad.load('js/controllers/sekolah.js');
                                             }]
                                     }})
+                                .state("master.asuransi", {
+                                	   url: "/asuransi",
+                                	   templateUrl: "tpl/m_asuransi/index.html",
+                                	   resolve: {
+                                	       deps: ["$ocLazyLoad",
+                                	           function ($ocLazyLoad) {
+                                	                return $ocLazyLoad.load(["daterangepicker"]).then(
+                                	                	function() {
+                                	                		return $ocLazyLoad.load("js/controllers/m_asuransi.js");
+                                	                	});
+                                	           }
+                                	       ]
+                                	   }
+                                })
 
                                 // Pegawai
                                 .state('pegawai', {
@@ -898,7 +909,46 @@ angular.module('app')
                                             }]
                                     }
                                 })
-                                //
+                                //.state("transaksi.bpjs")
+                                .state("transaksi.lembur", {
+                                    url: '/lembur',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_lembur/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/t_lembur.js');
+                                                        }
+                                                );
+                                            }]
+                                    }
+                                })
+                                .state("transaksi.gaji", {
+                                    url: '/gaji',
+                                    params: {'form': null},
+                                    templateUrl: 'tpl/t_gaji/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/t_gaji.js');
+                                                        }
+                                                );
+                                            }]
+                                            //Done: implement the database tables
+                                            //Done: implement roles
+                                            //Todo: implement t_gaji/index.html and js/controllers/t_gaji.js
+                                            //Todo: implement routing
+                                            //Todo: query tbl_det_gaji on click, select umk, t_jab, t_hdr, t_man
+                                            //Todo: query tbl_htrans_potongan on click, select tgl, nik, total_cicilan, compute subtraction until current month
+                                    }
+                                })
+                                //Akhir dari transaksi
+
+                                //Mulai rekap
                                 .state('rekap', {
                                     url: '/rekap',
                                     templateUrl: 'tpl/app.html'
@@ -1412,6 +1462,29 @@ angular.module('app')
                                             }]
                                     }})
                                 
+                                //Mulai laporan
+                                .state('laporan', {
+                                    url: '/laporan',
+                                    templateUrl: 'tpl/app.html'
+                                })
+                                .state("laporan.lembur", {
+                                    url: '/laporanlembur',
+                                    templateUrl: 'tpl/rpt_lembur/index.html',
+                                    resolve: {
+                                        deps: ['$ocLazyLoad',
+                                            function ($ocLazyLoad) {
+                                                return $ocLazyLoad.load(['daterangepicker']).then(
+                                                        function () {
+                                                            return $ocLazyLoad.load('js/controllers/rpt_lembur.js');
+                                                        }
+                                                );
+                                            }]
+                                    }})
+                                    //Done: implement roles,
+                                    //Todo: implement tpl/rpt_lembur/index.html, js/controllers/rpt_lembur.js
+                                    //Todo: implement routing
+                                    //Todo: query t_trans_lembur with these parameters: departemen, kemudian pegawai, kemudian rentang tanggal
+
                                 /* ============== ABSENSI ============================== */
                                 
                                 .state('rekap.absensiharian', {
@@ -1531,7 +1604,6 @@ angular.module('app')
                                                 );
                                             }]
                                     }})
-                                
                                 /* ===================================================== */
 
                     }

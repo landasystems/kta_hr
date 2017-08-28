@@ -1,4 +1,4 @@
-app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $modal) {
+app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $modal, $filter) {
     var kode_unik = new Date().getUTCMilliseconds() + "" + (Math.floor(Math.random() * (20 - 10 + 1)) + 10);
     var uploader = $scope.uploader = new FileUploader({
         url: 'img/upload.php?folder=barang&kode=' + kode_unik,
@@ -93,6 +93,9 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         $scope.formtitle = "Edit Data : " + form.nik;
 
         $scope.loadDetail(form.nik);
+        $scope.loadRiwayatGaji(form.nik); //Untuk riwayat gaji
+        $scope.loadAsuransi(form.nik); //Untuk detail asuransi
+
         $scope.nikSkarang = form.nik;
         if ($scope.form.no === undefined) {
             Data.get('ijazah/kode', form).then(function (data) {
@@ -352,6 +355,108 @@ app.controller('karyawanCtrl', function ($scope, Data, toaster, FileUploader, $m
         });
     };
     /* sampe di sini*/
+
+
+    //Mulai Riwayat Gaji
+$scope.riwayatGaji = [];
+
+    $scope.openDet = function ($event, $index) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.openedDet = $index;
+    };
+    $scope.setStatus = function () {
+        $scope.openedDet = -1;
+    };
+
+$scope.loadRiwayatGaji = function (nik) {
+	Data.get('riwayatgaji/' + nik, "", "s").then(function (data) {
+		if(data != "false") {
+			for(var a=0; a<data.length; a++) {
+				data[a].gaji = parseInt(data[a].gaji);
+				data[a].t_jab = parseInt(data[a].t_jab);
+				data[a].t_hdr = parseInt(data[a].t_hdr);
+				data[a].t_man = parseInt(data[a].t_man);
+				data[a].saved = true;
+			}
+			$scope.riwayatGaji = data;
+		}
+	});
+};
+
+$scope.add_salary = function () {
+	$scope.riwayatGaji.push({id: 0, nik: $scope.form.nik, status: 0, saved: false});
+};
+
+$scope.save_salary = function (f) {
+	f.tgl = $filter("date")(new Date(f.tgl), "yyyy-MM-dd");
+
+	var url = (f.id == 0) ? "riwayatgaji/insert/" : "riwayatgaji/update/" + f.id;
+	Data.post(url, f, "s").then(function (result) {
+		if(result.status == 1) toaster.pop("success", "Berhasil", "Data sudah disimpan.");
+		else toaster.pop("error", "Galat", "Ada masalah waktu menyimpan.");
+		$scope.loadRiwayatGaji(f.nik);
+	});
+};
+
+$scope.activate_salary = function (f) {
+	Data.post("riwayatgaji/activate/" + f.id, "", "s").then(function (result){
+		if(result.status == 200) { 
+			toaster.pop("success", "Berhasil", "Sudah diaktifkan.");
+
+			var i = $scope.riwayatGaji.indexOf(f);
+			for(var a=0; a<$scope.riwayatGaji.length; a++) $scope.riwayatGaji[a].status = 0;
+			$scope.riwayatGaji[i].status = 1;
+		}
+	});
+};
+
+$scope.rmv_salary = function (f) {
+	Data.post("riwayatgaji/delete/" + f.id, "", "s").then(function (result) {
+		if(result.status > 0)
+		$scope.riwayatGaji.splice($scope.riwayatGaji.indexOf(f), 1);
+	});
+};
+
+//Mulai detail asuransi
+$scope.loadAsuransi = function() {
+	Data.get("karyawan/asuransi/" + $scope.form.nik, "", "s").then(function(data){
+		if(data.data.length > 0) {
+			$scope.asuransi = data.data;
+			for(var a=0; a<$scope.asuransi.length; a++)
+				$scope.asuransi[a].saved = true;
+		} else {
+			$scope.asuransi = [];
+		}
+	});
+}
+
+$scope.add_insurance = function() {
+	$scope.asuransi.push({id: 0, nik: $scope.form.nik, saved: false});
+};
+
+$scope.save_insurance = function(i) {
+	var url = (i.id == 0) ? "karyawan/asuransi/insert" : "karyawan/asuransi/update";
+	Data.post(url, i, "s").then(function(result) {
+		if (result.status == 1) toaster.pop("success", "Berhasil", "Sudah disimpan.");
+		else toaster.pop("error", "Gagal", "Terjadi masalah waktu menyimpan.");
+		$scope.loadAsuransi();
+	});
+}
+
+$scope.rmv_insurance = function (f) {
+	if (confirm("Hapus " + f.nama + " secara permanen?")) {
+		Data.post("karyawan/asuransi/delete/" + f.id, "", "s").then(function(result) {
+			if(result.status > 0)
+				$scope.asuransi.splice($scope.asuransi.indexOf(f), 1);
+		});
+	}
+}
+
+$scope.statusBg = function (s) {
+	return (s==0) ? "background-color:#eee" : "";
+}
+
 
 });
 

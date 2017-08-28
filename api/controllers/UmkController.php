@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Umk;
+use app\models\Tblumk;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -84,7 +84,7 @@ class UmkController extends Controller {
                 ->limit($limit)
                 ->from('tbl_umk')
                 ->orderBy($sort)
-                ->select("*");
+                ->select("tbl_umk.*");
 
         //filter
         if (isset($params['filter'])) {
@@ -133,7 +133,7 @@ class UmkController extends Controller {
 
     public function actionCreate() {
         $params = json_decode(file_get_contents("php://input"), true);
-        $model = new Umk();
+        $model = new Tblumk();
         $model->attributes = $params;
         $model->tahun = $params['tahun'];
 
@@ -175,7 +175,7 @@ class UmkController extends Controller {
     }
 
     protected function findModel($id) {
-        if (($model = Umk::findOne($id)) !== null) {
+        if (($model = Tblumk::findOne($id)) !== null) {
             return $model;
         } else {
 

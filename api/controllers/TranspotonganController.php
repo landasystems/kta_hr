@@ -207,16 +207,10 @@ class TranspotonganController extends Controller {
             foreach ($params['detail'] as $key => $val) {
 //                Yii::error($params['detail']);
 //                $parentId = null;
-//                for ($i = 0; $i <= $params['form']['cicilan']; $i++) {
                 $detail = new TblDtransPotongan();
                 $detail->attributes = $val;
                 $detail->no = $params['form']['no_pot'];
-//                    $detail->parent_id = $parentId;
-//                    $detail->perbulan = (!empty($val['perbulan'])) ? $val['perbulan'] : null;
                 $detail->save();
-//                    if ($i == 0) {
-//                        $parentId = $detail->id;
-//                    }
                 $detail->getErrors();
 //                }
             }
@@ -243,6 +237,7 @@ class TranspotonganController extends Controller {
                 $detail->attributes = $val;
                 $detail->no = $model->no_pot;
                 $detail->save();
+                $detail->getErrors();
 //                
                 //-->>
 //                $parentId = null;

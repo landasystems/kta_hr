@@ -31,8 +31,8 @@ class TblDtransPotongan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['jmlh','perbulan','parent_id'], 'number'],
-            [['perbulan','parent_id'], 'safe'],
+            [['jmlh','perbulan','parent_id',"jangkawaktu"], 'number'],
+            [['perbulan','parent_id', "tgl_pinjam"], 'safe'],
             [['no', 'kd_pot', 'nm_pot'], 'string', 'max' => 20]
         ];
     }

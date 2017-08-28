@@ -63,7 +63,7 @@
                                         <td colspan="4" class="text-center" st-pagination="" st-items-by-page="10" st-template="tpl/blocks/pagination.custom.html">
                                         </td>
                                     </tr>
-                            </table>		
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -101,6 +101,19 @@
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" ng-model="form.no_telpon" ng-disabled="is_view" required >
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                    <table class="table table-striped">
+                                        <thead><th>Hari</th><th>Jam Mulai</th><th>Jam Selesai</th></thead>
+                                        <tbody>
+                                            <tr ng-repeat="d in [1,2,3,4,5,6] track by $index">
+                                                <td>{{hariSmng(d)}}</td>
+                                                <td><input type="time" class="form-control" ng-model="form.jadwal[$index].jam_mulai"></td>
+                                                <td><input type="time" class="form-control" ng-model="form.jadwal[$index].jam_selesai"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                     </div>
                                 </div>
                                 
